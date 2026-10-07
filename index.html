@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
 <style>
 :root{
   --bg:#F3F7FA; --panel:#FFFFFF; --ink:#0F2A3F; --muted:#587084; --line:#D3DFE8;
@@ -197,6 +198,10 @@ dialog p{color:var(--muted);margin:6px 0 0}
 .menu-sec h3{font-size:19px;margin-bottom:6px}
 .unpos{margin-top:22px}
 .unpos h3{font-size:18px;margin-bottom:2px}
+[hidden]{display:none!important}
+#drawBar,.dgrp{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.sw{display:inline-block;width:13px;height:13px;border-radius:3px;border:1px solid rgba(0,0,0,.25);vertical-align:-2px}
+.leaflet-draw-tooltip{font:13px Barlow,system-ui,sans-serif}
 </style>
 </head>
 <body>
@@ -221,6 +226,8 @@ dialog p{color:var(--muted);margin:6px 0 0}
     </div>
     <div class="maptools">
       <button id="placeBtn" class="btn primary">Nytt dykkested</button>
+      <button id="drawBtn" class="btn">Tegn område</button>
+      <span id="drawBar" hidden><span class="dgrp" id="dPick"><button class="btn" id="dPoly">Polygon</button><button class="btn" id="dLine">Linje</button><button class="btn" id="dRect">Rektangel</button></span><button class="btn" id="dUndo">Angre punkt</button><button class="btn primary" id="dDone">Ferdig</button><button class="btn ghost" id="dCancel">Avbryt</button></span>
       <span id="hint"></span><span id="coord"></span>
       <div class="legend"><span><i style="background:var(--alpha)"></i>Delt</span><span><i style="background:var(--magenta)"></i>Bare for deg</span></div>
       <div class="zoom" id="imgZoom"><button class="btn" id="zin" aria-label="Zoom inn">+</button><button class="btn" id="zout" aria-label="Zoom ut">−</button><button class="btn" id="zfit">Hele kartet</button></div>
@@ -257,6 +264,7 @@ dialog p{color:var(--muted);margin:6px 0 0}
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script>
@@ -344,11 +352,12 @@ async function onSession(session){
 async function start(){
   if(S.started)return;S.started=true;
   initLeaflet();
-  await Promise.all([loadCharts(),loadSites()]);
+  await Promise.all([loadCharts(),loadSites(),loadAreas()]);
   renderTabs();renderChart();renderPanel();
   sb.channel("dykkekart")
     .on("postgres_changes",{event:"*",schema:"public",table:"sites"},()=>debounced("sites",loadSites))
     .on("postgres_changes",{event:"*",schema:"public",table:"charts"},()=>debounced("charts",async()=>{await loadCharts();renderTabs();renderChart();if(S.view==="list")renderList()}))
+    .on("postgres_changes",{event:"*",schema:"public",table:"areas"},()=>debounced("areas",loadAreas))
     .on("postgres_changes",{event:"*",schema:"public",table:"logs"},()=>debounced("logs",()=>{if(S.sel)loadLogs(S.sel)}))
     .subscribe();
   window.addEventListener("focus",()=>debounced("focus",async()=>{await loadSites();if(S.sel)loadLogs(S.sel)}));
@@ -381,7 +390,7 @@ function initLeaflet(){
   sea.addTo(S.lmap);
   L.control.layers({"Sjøkart":sea,"Topografisk":topo,"Gråtone":grey},null,{position:"topright"}).addTo(S.lmap);
   L.control.scale({imperial:false}).addTo(S.lmap);
-  S.fLayer=L.layerGroup().addTo(S.lmap);S.lLayer=L.layerGroup().addTo(S.lmap);
+  S.fLayer=L.layerGroup().addTo(S.lmap);S.aLayer=L.layerGroup().addTo(S.lmap);S.dLayer=L.layerGroup().addTo(S.lmap);S.lLayer=L.layerGroup().addTo(S.lmap);hookDrawEvents();
   S.lmap.on("click",e=>liveClick(e.latlng));
   S.lmap.on("mousemove",e=>{if(isLive())$("#coord").textContent=`${e.latlng.lat.toFixed(4)}° N, ${e.latlng.lng.toFixed(4)}° Ø`});
   S.lmap.on("mouseout",()=>{$("#coord").textContent=""});
@@ -390,7 +399,7 @@ function renderLive(){
   if(!S.lmap)return;S.lLayer.clearLayers();S.fLayer.clearLayers();
   for(const {s} of filtered()){
     const icon=L.divIcon({className:"lp"+(s._priv?" priv":"")+(S.sel===s.id?" sel":""),html:flagSVG(s._priv)+`<span class="lbl">${esc(s.name)}</span>`,iconSize:[30,36],iconAnchor:[4,34]});
-    L.marker([s.lat,s.lon],{icon,title:s.name,keyboard:true}).on("click",()=>{if(S.mode==="view")openSite(s.id)}).addTo(S.lLayer)}
+    L.marker([s.lat,s.lon],{icon,title:s.name,keyboard:true}).on("click",()=>{if(S.mode==="view"&&!S.drawer&&!S.editingArea)openSite(s.id)}).addTo(S.lLayer)}
   if(S.draft&&S.draft.live)L.marker([S.draft.lat,S.draft.lon],{icon:L.divIcon({className:"lp draft",html:flagSVG(false)+'<span class="lbl">Nytt sted</span>',iconSize:[30,36],iconAnchor:[4,34]}),interactive:false,opacity:.75}).addTo(S.lLayer);
   for(const c of S.charts){if(!c.geo)continue;const k=chartCorners(c),la=k.map(p=>p[0]),lo=k.map(p=>p[1]);
     L.rectangle([[Math.min(...la),Math.min(...lo)],[Math.max(...la),Math.max(...lo)]],{color:"#C0266D",weight:2,dashArray:"6 5",fillOpacity:.05,interactive:S.mode==="view"})
@@ -407,11 +416,11 @@ async function liveClick(ll){
 function renderTabs(){
   $("#tabs").innerHTML=[LIVE,...S.charts].map(c=>`<button class="tab ${c.id===S.active?"on":""}" data-id="${esc(c.id)}">${esc(c.name)}</button>`).join("");
 }
-function switchChart(id){S.active=id;S.draft=null;setMode("view");if(S.view!=="site"){S.view="list";S.sel=null}renderTabs();renderChart();renderPanel()}
+function switchChart(id){cancelDraw();cancelShapeEdit();clearDraft();if(S.view==="area"||S.view==="areaedit"){S.view="list";S.selArea=null}S.active=id;S.draft=null;setMode("view");if(S.view!=="site"){S.view="list";S.sel=null}renderTabs();renderChart();renderPanel()}
 $("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b)switchChart(b.dataset.id)});
 function renderChart(){
-  const live=isLive();lmapEl.hidden=!live;wrap.hidden=live;$("#imgZoom").hidden=live;
-  if(live){S.lmap.invalidateSize();renderLive();return}
+  const live=isLive();updateDrawUI();lmapEl.hidden=!live;wrap.hidden=live;$("#imgZoom").hidden=live;
+  if(live){S.lmap.invalidateSize();renderLive();renderAreas();return}
   const c=activeChart();if(!c)return;
   if(S.imgFor!==c.id){S.imgFor=c.id;img.onload=fit;img.src=imgUrl(c.imagePath);img.alt="Kart: "+c.name}
   else setTimeout(fit,0);
@@ -459,8 +468,8 @@ function showCoord(e){const c=activeChart();const el=$("#coord");if(!c||!c.geo||
 function setMode(m){S.mode=m;wrap.classList.toggle("placing",m!=="view");lmapEl.style.cursor=m!=="view"?"crosshair":"";
   $("#hint").textContent=m==="place"?"Klikk på kartet der dykkestedet er. Esc avbryter.":m==="move"?"Klikk på den nye plasseringen. Esc avbryter.":"";
   $("#placeBtn").textContent=m==="place"?"Avbryt":"Nytt dykkested";if(isLive())renderLive()}
-$("#placeBtn").onclick=()=>setMode(S.mode==="place"?"view":"place");
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.mode!=="view")setMode("view")});
+$("#placeBtn").onclick=()=>{cancelDraw();cancelShapeEdit();setMode(S.mode==="place"?"view":"place")};
+document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(S.mode!=="view")setMode("view");if(S.drawer||S.drawMenu)cancelDraw();if(S.editingArea){cancelShapeEdit();if(S.view==="area")renderAreaBody()}});
 async function mapClick(e){
   if(S.mode==="view"||!img.naturalWidth)return;
   const[x,y]=evFrac(e);if(x<0||x>1||y<0||y>1)return;
@@ -492,13 +501,13 @@ function renderFrames(){
 }
 
 /* ---------- panel ---------- */
-function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="site")renderSiteView()}
+function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="site")renderSiteView();else if(S.view==="area")renderAreaView()}
 function renderListView(){
   panel.innerHTML=`<h2 id="lTitle"></h2><p class="sub" id="lSub"></p>
     <input class="search" id="q" type="search" placeholder="Søk i navn, arter, bunn, notater" value="${esc(S.q)}" aria-label="Søk">
     <div class="chips">${["alle","land","bat"].map(a=>`<button class="chip ${S.acc===a?"on":""}" data-a="${a}">${a==="alle"?"Alle":ACCESS[a]}</button>`).join("")}</div>
-    <div id="siteList"></div><div id="unpos"></div><div id="chartActions"></div>`;
-  $("#q").oninput=e=>{S.q=e.target.value;renderList();renderPins()};
+    <div id="siteList"></div><div id="unpos"></div><div id="areaList"></div><div id="chartActions"></div>`;
+  $("#q").oninput=e=>{S.q=e.target.value;renderList();renderPins();renderAreas()};
   panel.querySelector(".chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;S.acc=b.dataset.a;panel.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));renderList();renderPins()};
   renderList();
 }
@@ -525,6 +534,7 @@ function renderList(){
   const un=isLive()?allSites().filter(s=>s.lat==null||s.lon==null):[];
   $("#unpos").innerHTML=un.length?`<div class="unpos"><h3>Uten posisjon på sjøkartet</h3><p class="small" style="margin:0 0 4px">Åpne stedet og trykk «Plasser på sjøkartet».</p>${un.map(s=>siteRow(s,true)).join("")}</div>`:"";
   clickRow($("#unpos"));
+  renderAreaList();
   let a="";
   if(!isLive()){const mine=c.createdBy===S.user.id||S.me.role==="admin";
     a=`<div class="actions"><button class="btn" id="setChart">Kartinnstillinger</button>${mine&&!allSites().some(s=>s.chartId===c.id)?'<button class="btn ghost danger" id="delChart">Slett kartbladet</button>':""}</div>`}
@@ -534,7 +544,7 @@ function renderList(){
 }
 function dots(r){if(!r)return"";let h='<span aria-label="Vurdering '+r+' av 5">';for(let i=1;i<=5;i++)h+=`<svg width="9" height="9" style="margin-left:2px"><circle cx="4.5" cy="4.5" r="3.7" fill="${i<=r?"var(--kelp)":"none"}" stroke="var(--kelp)"/></svg>`;return h+"</span>"}
 
-function openSite(id){S.sel=id;S.view="site";S.draft=null;renderPins();S.logs=[];S.logsFor=id;renderSiteView();loadLogs(id)}
+function openSite(id){cancelShapeEdit();clearDraft();if(S.selArea){S.selArea=null;renderAreas()}S.sel=id;S.view="site";S.draft=null;renderPins();S.logs=[];S.logsFor=id;renderSiteView();loadLogs(id)}
 async function loadLogs(id){const {data,error}=await sb.from("logs").select("*").eq("site_id",id);if(error||S.logsFor!==id)return;
   S.logs=data.sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.created_at||"").localeCompare(a.created_at||""));renderLogs();renderStats()}
 function renderSiteView(){
@@ -560,7 +570,7 @@ function renderSiteBody(){
     ${s.photoPath?`<img class="photo" src="${esc(imgUrl(s.photoPath))}" alt="Bilde fra ${esc(s.name)}">`:""}
     ${facts.length?`<dl class="facts">${facts.map(f=>`<div><dt>${f[0]}</dt><dd>${esc(f[1])}</dd></div>`).join("")}</dl>`:""}
     <div class="windbox">${rose(s.wind||[],false,96)}<p><strong>${wind?"Tåler vind fra "+esc(wind):"Vind ikke registrert"}</strong>${wind?"Grønne sektorer gir le på plassen.":"Legg inn hvilke vindretninger plassen tåler under Rediger."}</p></div>
-    ${secs.map(x=>`<div class="sec ${x[2]}"><h3>${x[0]}</h3><p>${esc(x[1])}</p></div>`).join("")}${coords}`;
+    ${secs.map(x=>`<div class="sec ${x[2]}"><h3>${x[0]}</h3><p>${esc(x[1])}</p></div>`).join("")}${linkedAreasHTML(s)}${coords}`;
   $("#siteBody").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const id=b.dataset.go;switchChart(id);const p=sitePos(s,activeChart());if(!p)return;
     if(id==="live"){S.lmap.setView(p,15);return}
     const go=()=>centerOn(p[0],p[1],2);img.complete&&img.naturalWidth&&S.imgFor===id?setTimeout(go,0):img.addEventListener("load",()=>setTimeout(go,0),{once:true})});
@@ -735,6 +745,10 @@ function renderMenu(){
   ${admin?`<form class="f" id="mAdd"><label for="mEmail">Inviter en dykkekompis (e-post)</label><div style="display:flex;gap:8px"><input type="text" id="mEmail" inputmode="email" required placeholder="kompis@epost.no"><button class="btn primary">Legg til</button></div></form>
   <p class="small">Send dem deretter lenken til denne siden: <b>${esc(location.origin+location.pathname)}</b>. De trykker «Første gang? Lag konto» og bruker e-posten du la inn.</p>`:""}</div>
   <div class="menu-sec"><h3>Eksport</h3><p class="small" style="margin:0 0 8px">Alle steder med koordinater som GPX, for GPS, OsmAnd eller Google Earth.</p><button class="btn" id="mGpx">Last ned GPX</button></div>
+  <div class="menu-sec"><h3>GeoJSON (QGIS)</h3><p class="small" style="margin:0 0 8px">Alle dykkesteder og områder du kan se, som GeoJSON.</p><button class="btn" id="mGeo">Last ned GeoJSON</button>
+  <label for="mGeoKind" style="display:block;margin:14px 0 3px" class="small">Importer polygoner og linjer (EPSG:4326). Type for objekter uten type:</label>
+  <select id="mGeoKind" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)">${AREA_ORDER.map(k=>`<optgroup label="${AREA_TYPES[k].name}">${Object.entries(AREA_TYPES[k].vals).map(([v,x])=>`<option value="${k}:${v}">${x[0]}</option>`).join("")}</optgroup>`).join("")}</select>
+  <input type="file" id="mGeoImp" accept=".geojson,.json,application/geo+json,application/json" style="margin-top:8px"><div id="mGeoMsg" class="small"></div></div>
   ${admin?`<div class="menu-sec"><h3>Importer fra Claude-versjonen</h3><p class="small" style="margin:0 0 8px">Velg filen <b>dykkekart-migrering.json</b>. Gjøres bare én gang.</p><input type="file" id="mImp" accept=".json,application/json"><div id="mImpMsg" class="small"></div></div>`:""}
   <div class="err" id="mErr"></div>
   <div class="formbtns"><button class="btn" id="mOut">Logg ut</button><button class="btn ghost" id="mClose">Lukk</button></div>`;
@@ -742,6 +756,8 @@ function renderMenu(){
   $("#mOut").onclick=async()=>{mdlg.close();await sb.auth.signOut();location.reload()};
   $("#mName").onsubmit=async e=>{e.preventDefault();const n=$("#mNameIn").value.trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error)$("#mErr").textContent=errMsg(error);else{S.me.name=n;await loadMembers();renderMenu()}};
   $("#mGpx").onclick=downloadGpx;
+  $("#mGeo").onclick=downloadGeoJSON;
+  $("#mGeoImp").onchange=e=>{const f=e.target.files[0];if(f)importGeoJSON(f,$("#mGeoKind").value)};
   if(admin){
     $("#mAdd").onsubmit=async e=>{e.preventDefault();const em=$("#mEmail").value.trim().toLowerCase();if(!em.includes("@")){$("#mErr").textContent="Skriv inn en gyldig e-post.";return}
       const {error}=await sb.from("members").insert({email:em});if(error)$("#mErr").textContent=error.code==="23505"?"Den e-posten er allerede lagt til.":errMsg(error);else{await loadMembers();renderMenu()}};
@@ -774,6 +790,257 @@ async function importFile(file){
     say(`Ferdig: ${nc} kartblad, ${ns} dykkesteder og ${nl} loggføringer importert.`);
     await loadCharts();await loadSites();renderTabs();renderChart();
   }catch(err){say("Import stoppet: "+errMsg(err)+". Det som alt er lagt inn, er beholdt.")}
+}
+
+/* ---------- areas (polygons & lines) ---------- */
+const AREA_TYPES={
+  quality:{name:"Kvalitet",vals:{bra:["Bra","#2E9E44"],ok:["OK","#E0B020"],darlig:["Dårlig","#D0452F"]}},
+  depth:{name:"Dybde",vals:{d0:["0–10 m","#9FD3F5"],d10:["10–20 m","#4FA3E0"],d20:["20–30 m","#1F64B8"],d30:["30+ m","#0B2F6B"]}},
+  habitat:{name:"Bunntype",vals:{tare:["Tareskog","#7A6A1E"],alegras:["Ålegras","#3E8E3E"],sand:["Sand","#E3C27A"],stein:["Stein/grus","#9A8F86"],vegg:["Fjellvegg","#5E6672"],mudder:["Mudder","#6E4B2A"]}},
+  hazard:{name:"Fare",vals:{strom:["Sterk strøm","#D11A2A"],bat:["Båttrafikk","#E8551A"],garn:["Garn/teiner","#B0124F"],annet:["Annen fare","#C0392B"]}},
+  rules:{name:"Regler og vern",vals:{vern:["Verneområde","#7B3FB5"],fiskeforbud:["Fiskeforbud","#9C27B0"],forbud:["Ferdselsforbud","#4A148C"]}}
+};
+const AREA_ORDER=["depth","habitat","quality","rules","hazard"];
+S.areas=[];S.selArea=null;S.areaLayers={};S.drawer=null;S.drawMenu=false;S.drawKind=null;S.draftArea=null;S.draftLayer=null;S.editingArea=null;S.areasErr=null;
+S.lastKind="quality";S.lastValue="bra";
+try{S.hidden=new Set(JSON.parse(localStorage.getItem("dk-hidden")||"[]"))}catch(e){S.hidden=new Set()}
+function saveHidden(){try{localStorage.setItem("dk-hidden",JSON.stringify([...S.hidden]))}catch(e){}}
+function areaColor(k,v){return AREA_TYPES[k]?.vals[v]?.[1]||"#888888"}
+function areaLabel(a){const t=AREA_TYPES[a.kind];return t?(t.vals[a.value]?.[0]||a.value):a.kind}
+function rowToArea(r){return{id:r.id,name:r.name||"",kind:r.kind,value:r.value,notes:r.notes||"",geom:r.geom,siteId:r.site_id,_priv:r.private,createdBy:r.created_by,authorName:r.author_name||""}}
+function areaErr(e){const m=errMsg(e);return (e&&(e.code==="42P01"||e.code==="PGRST205"))||/areas/.test(m)&&/(does not exist|could not find)/i.test(m)?"Tabellen for områder finnes ikke ennå. Kjør areas.sql i Supabase.":m}
+async function loadAreas(){
+  const {data,error}=await sb.from("areas").select("*");
+  if(error){S.areasErr=areaErr(error);if(S.view==="list")renderList();return}
+  S.areasErr=null;S.areas=data.map(rowToArea);renderAreas();
+  if(S.view==="list")renderList();
+  else if(S.view==="area"){if(!S.areas.find(a=>a.id===S.selArea)){S.view="list";S.selArea=null;renderPanel()}else if(!S.editingArea)renderAreaBody()}
+}
+function areaStyle(kind,value,gtype,sel){
+  const c=areaColor(kind,value),line=/LineString/.test(gtype||"");
+  const st={color:c,weight:line?5:2,opacity:.95,fillColor:c,fillOpacity:line?0:(kind==="depth"?.35:.25)};
+  if(kind==="hazard")st.dashArray="8 5";if(kind==="rules")st.dashArray="2 6";
+  if(sel){st.weight+=2;st.color="#C0266D";st.fillOpacity=line?0:Math.min(.55,st.fillOpacity+.15)}
+  return st;
+}
+function areaVisible(a){if(S.hidden.has(a.kind))return false;const q=S.q.trim().toLowerCase();
+  return !q||[a.name,a.notes,areaLabel(a),AREA_TYPES[a.kind]?.name].join(" ").toLowerCase().includes(q)}
+function renderAreas(){
+  if(!S.lmap||S.editingArea)return;S.aLayer.clearLayers();S.areaLayers={};
+  const list=S.areas.filter(areaVisible).sort((a,b)=>AREA_ORDER.indexOf(a.kind)-AREA_ORDER.indexOf(b.kind));
+  for(const a of list){let gl;
+    try{gl=L.geoJSON({type:"Feature",geometry:a.geom,properties:{}},{style:()=>areaStyle(a.kind,a.value,a.geom.type,S.selArea===a.id)})}catch(e){continue}
+    gl.eachLayer(l=>{
+      l.on("click",ev=>{if(S.mode!=="view"||S.drawer||S.editingArea)return;L.DomEvent.stopPropagation(ev);openArea(a.id)});
+      l.bindTooltip(esc((a.name?a.name+" – ":"")+areaLabel(a)),{sticky:true});S.areaLayers[a.id]=l});
+    gl.addTo(S.aLayer)}
+}
+function geomSize(g){
+  const ll=c=>c.map(([lo,la])=>L.latLng(la,lo));
+  const polyArea=rings=>L.GeometryUtil&&L.GeometryUtil.geodesicArea?L.GeometryUtil.geodesicArea(ll(rings[0])):null;
+  const lineLen=c=>{const p=ll(c);let d=0;for(let i=1;i<p.length;i++)d+=p[i-1].distanceTo(p[i]);return d};
+  const fa=m=>m<100000?`${fnum(Math.round(m))} m²`:`${fnum(m/1e6,2)} km²`,fl=m=>m<2000?`${fnum(Math.round(m))} m`:`${fnum(m/1000,2)} km`;
+  try{
+    if(g.type==="Polygon"){const a=polyArea(g.coordinates);return a!=null?["Areal",fa(a)]:null}
+    if(g.type==="MultiPolygon"){let s=0;for(const p of g.coordinates){const a=polyArea(p);if(a==null)return null;s+=a}return["Areal",fa(s)]}
+    if(g.type==="LineString")return["Lengde",fl(lineLen(g.coordinates))];
+    if(g.type==="MultiLineString")return["Lengde",fl(g.coordinates.reduce((s,c)=>s+lineLen(c),0))];
+  }catch(e){}return null;
+}
+
+/* drawing */
+function updateDrawUI(){
+  const live=isLive();
+  if(!live&&(S.drawer||S.drawMenu)){cancelDraw();return}
+  $("#drawBtn").hidden=!live||S.drawMenu||!!S.drawer||!!S.editingArea;
+  $("#drawBar").hidden=!(S.drawMenu||S.drawer);
+  $("#dPick").hidden=!S.drawMenu;
+  const multi=!!S.drawer&&S.drawKind!=="rect";$("#dUndo").hidden=!multi;$("#dDone").hidden=!multi;
+}
+function startDraw(kind){
+  S.drawMenu=false;S.drawKind=kind;const c=areaColor(S.lastKind,S.lastValue);
+  const sh={color:c,weight:kind==="line"?5:2,fillColor:c,fillOpacity:.25};
+  S.drawer=kind==="poly"?new L.Draw.Polygon(S.lmap,{shapeOptions:sh,allowIntersection:false,showArea:false})
+    :kind==="line"?new L.Draw.Polyline(S.lmap,{shapeOptions:{...sh,fill:false},showLength:false})
+    :new L.Draw.Rectangle(S.lmap,{shapeOptions:sh,showArea:false});
+  S.drawer.enable();
+  $("#hint").textContent=kind==="rect"?"Klikk og dra på kartet for å tegne rektangelet.":kind==="poly"?"Klikk hjørnene. Klikk første punkt eller «Ferdig» for å avslutte.":"Klikk punktene langs linjen. Trykk «Ferdig» når du er ferdig.";
+  updateDrawUI();
+}
+function cancelDraw(){
+  const d=S.drawer;S.drawer=null;S.drawMenu=false;
+  if(d){try{d.disable()}catch(e){}}
+  if(S.mode==="view"&&!S.editingArea)$("#hint").textContent="";
+  updateDrawUI();
+}
+$("#drawBtn").onclick=()=>{setMode("view");S.drawMenu=true;updateDrawUI()};
+$("#dPoly").onclick=()=>startDraw("poly");
+$("#dLine").onclick=()=>startDraw("line");
+$("#dRect").onclick=()=>startDraw("rect");
+$("#dUndo").onclick=()=>{try{S.drawer?.deleteLastVertex()}catch(e){}};
+$("#dDone").onclick=()=>{try{S.drawer?.completeShape()}catch(e){}};
+$("#dCancel").onclick=cancelDraw;
+function hookDrawEvents(){
+  if(L.drawLocal){const d=L.drawLocal.draw.handlers;
+    d.polygon.tooltip={start:"Klikk for å starte området.",cont:"Klikk for neste hjørne.",end:"Klikk første punkt for å avslutte."};
+    d.polyline.tooltip={start:"Klikk for å starte linjen.",cont:"Klikk for neste punkt.",end:"Klikk siste punkt igjen, eller trykk Ferdig."};
+    d.polyline.error="<strong>Feil:</strong> kantene kan ikke krysse hverandre.";
+    d.rectangle.tooltip={start:"Klikk og dra for å tegne."};d.simpleshape.tooltip={end:"Slipp for å avslutte."};
+    L.drawLocal.edit.handlers.edit.tooltip={text:"Dra i hjørnene for å endre formen.",subtext:"Klikk et hjørne for å fjerne det."}}
+  S.lmap.on(L.Draw.Event.CREATED,e=>{
+    S.drawer=null;$("#hint").textContent="";updateDrawUI();
+    S.dLayer.clearLayers();S.draftLayer=e.layer;S.draftArea=e.layer.toGeoJSON().geometry;e.layer.addTo(S.dLayer);
+    S.sel=null;S.logsFor=null;S.selArea=null;S.view="areaedit";renderPins();renderAreas();renderAreaEdit(null);
+  });
+  S.lmap.on(L.Draw.Event.DRAWSTOP,()=>{if(S.drawer){S.drawer=null;if(S.mode==="view")$("#hint").textContent="";updateDrawUI()}});
+}
+function clearDraft(){S.draftArea=null;S.draftLayer=null;if(S.dLayer)S.dLayer.clearLayers()}
+
+/* area panel */
+function openArea(id){
+  cancelShapeEdit();clearDraft();S.selArea=id;S.sel=null;S.logsFor=null;S.view="area";
+  renderAreas();renderPins();renderAreaView();
+}
+function zoomToArea(a){if(!isLive())switchChart("live");try{const b=(S.areaLayers[a.id]||L.geoJSON(a.geom)).getBounds();S.lmap.fitBounds(b,{maxZoom:16,padding:[30,30]})}catch(e){}}
+function renderAreaView(){
+  panel.innerHTML=`<button class="btn ghost back" id="back">Alle steder</button><div id="areaBody"></div>`;
+  $("#back").onclick=()=>{cancelShapeEdit();S.view="list";S.selArea=null;renderAreas();renderPanel()};
+  renderAreaBody();
+}
+function renderAreaBody(){
+  const a=S.areas.find(x=>x.id===S.selArea);if(!a||!$("#areaBody"))return;
+  const t=AREA_TYPES[a.kind],site=a.siteId&&getSite(a.siteId),size=geomSize(a.geom);
+  const mine=a.createdBy===S.user.id,canDel=mine||(S.me.role==="admin"&&!a._priv);
+  const lay=S.areaLayers[a.id],canShape=!!(lay&&lay.editing);
+  const editing=S.editingArea===a.id;
+  $("#areaBody").innerHTML=`<h2>${esc(a.name||areaLabel(a))}</h2>
+    <div class="tags"><span class="tag"><i class="sw" style="background:${areaColor(a.kind,a.value)}"></i> ${esc(t?t.name:a.kind)}: ${esc(areaLabel(a))}</span>${a._priv?'<span class="tag p">Bare for deg</span>':""}</div>
+    ${size?`<dl class="facts"><div><dt>${size[0]}</dt><dd>${size[1]}</dd></div>${site?`<div><dt>Dykkested</dt><dd><button class="linkbtn" style="margin:0" id="goSite">${esc(site.name)}</button></dd></div>`:""}</dl>`:""}
+    ${a.notes?`<div class="sec"><h3>Notater</h3><p>${esc(a.notes)}</p></div>`:""}
+    <p class="small">Tegnet av ${mine?"deg":esc(a.authorName||"et medlem")}.</p>
+    <div class="actions">${editing
+      ?`<button class="btn primary" id="shSave">Lagre form</button><button class="btn ghost" id="shCancel">Avbryt</button>`
+      :`<button class="btn" id="arEdit">Rediger</button>${canShape?'<button class="btn" id="arShape">Endre form</button>':""}<button class="btn" id="arZoom">Zoom til</button>${canDel?'<button class="btn ghost danger" id="arDel">Slett området</button>':""}`}</div>`;
+  const gs=$("#goSite");if(gs)gs.onclick=()=>openSite(site.id);
+  if(editing){$("#shSave").onclick=()=>saveShape(a);$("#shCancel").onclick=()=>{cancelShapeEdit();renderAreaBody()};return}
+  $("#arEdit").onclick=()=>{S.view="areaedit";renderAreaEdit(a)};
+  $("#arZoom").onclick=()=>zoomToArea(a);
+  const sh=$("#arShape");if(sh)sh.onclick=()=>startShapeEdit(a);
+  const d=$("#arDel");if(d)d.onclick=()=>deleteArea(a);
+}
+function startShapeEdit(a){
+  if(!isLive())switchChart("live");
+  const l=S.areaLayers[a.id];if(!l||!l.editing){alert("Denne formen kan ikke endres her.");return}
+  cancelDraw();setMode("view");S.editingArea=a.id;l.editing.enable();
+  $("#hint").textContent="Dra i hjørnene for å endre formen. Klikk et hjørne for å fjerne det.";
+  updateDrawUI();renderAreaBody();
+}
+async function saveShape(a){
+  const l=S.areaLayers[a.id];if(!l)return;const g=l.toGeoJSON().geometry;
+  try{l.editing.disable()}catch(e){}S.editingArea=null;$("#hint").textContent="";updateDrawUI();
+  const {error}=await sb.from("areas").update({geom:g,updated_at:new Date().toISOString()}).eq("id",a.id);
+  if(error)alert("Kunne ikke lagre formen: "+areaErr(error));
+  await loadAreas();renderAreaBody();
+}
+function cancelShapeEdit(){
+  if(!S.editingArea)return;const l=S.areaLayers[S.editingArea];try{l?.editing?.disable()}catch(e){}
+  S.editingArea=null;if(S.mode==="view")$("#hint").textContent="";updateDrawUI();renderAreas();
+}
+async function deleteArea(a){
+  if(!confirm(`Slette området «${a.name||areaLabel(a)}»?`))return;
+  const {error}=await sb.from("areas").delete().eq("id",a.id);
+  if(error){alert("Kunne ikke slette: "+areaErr(error));return}
+  S.selArea=null;S.view="list";await loadAreas();renderPanel();
+}
+function renderAreaEdit(a){
+  const isNew=!a;let kind=a?a.kind:S.lastKind,value=a?a.value:S.lastValue;
+  const sites=S.sites.slice().sort((x,y)=>(x.name||"").localeCompare(y.name||"","nb"));
+  panel.innerHTML=`<form class="f" id="arForm"><h2>${isNew?"Nytt område":"Rediger område"}</h2>
+    <label for="arKind">Type</label><select id="arKind">${AREA_ORDER.map(k=>`<option value="${k}" ${k===kind?"selected":""}>${AREA_TYPES[k].name}</option>`).join("")}</select>
+    <label for="arVal">Verdi</label><select id="arVal"></select>
+    <p class="small" id="arSw"></p>
+    <label for="arNm">Navn (valgfritt)</label><input type="text" id="arNm" value="${esc(a?.name)}" placeholder="F.eks. Tareskogen sør for Vågøya">
+    <label for="arNotes">Notater</label><textarea id="arNotes" placeholder="Hva er spesielt med området">${esc(a?.notes)}</textarea>
+    <label for="arSite">Hører til dykkested (valgfritt)</label><select id="arSite"><option value="">Ingen</option>${sites.map(s=>`<option value="${esc(s.id)}" ${a&&a.siteId===s.id?"selected":""}>${esc(s.name)}</option>`).join("")}</select>
+    ${isNew?`<label>Hvem ser området</label><div class="radios"><label><input type="radio" name="arVis" value="shared" checked> Alle på dykkekartet</label><label><input type="radio" name="arVis" value="priv"> Bare meg</label></div>`:""}
+    <div class="err" id="arErr"></div>
+    <div class="formbtns"><button class="btn primary" id="arSave">${isNew?"Lagre området":"Lagre endringer"}</button><button type="button" class="btn ghost" id="arCancel">Avbryt</button></div></form>`;
+  const restyle=()=>{
+    $("#arSw").innerHTML=`<i class="sw" style="background:${areaColor(kind,value)}"></i> Slik vises det på kartet`;
+    if(isNew&&S.draftLayer&&S.draftLayer.setStyle)S.draftLayer.setStyle(areaStyle(kind,value,S.draftArea.type));
+  };
+  const fillVals=()=>{const vs=AREA_TYPES[kind].vals;if(!vs[value])value=Object.keys(vs)[0];
+    $("#arVal").innerHTML=Object.entries(vs).map(([k,v])=>`<option value="${k}" ${k===value?"selected":""}>${v[0]}</option>`).join("");restyle()};
+  fillVals();
+  $("#arKind").onchange=e=>{kind=e.target.value;fillVals()};
+  $("#arVal").onchange=e=>{value=e.target.value;restyle()};
+  $("#arCancel").onclick=()=>{if(isNew){clearDraft();S.view="list";renderPanel()}else{S.view="area";renderAreaView()}};
+  $("#arForm").onsubmit=async e=>{
+    e.preventDefault();const btn=$("#arSave");btn.disabled=true;$("#arErr").textContent="";
+    const row={name:$("#arNm").value.trim(),kind,value,notes:$("#arNotes").value.trim(),site_id:$("#arSite").value||null,updated_at:new Date().toISOString()};
+    try{
+      if(isNew){
+        if(!S.draftArea)throw{message:"Ingen form å lagre. Tegn området på nytt."};
+        Object.assign(row,{geom:S.draftArea,private:panel.querySelector('input[name="arVis"]:checked')?.value==="priv",created_by:S.user.id,author_name:S.me.name});
+        const {data,error}=await sb.from("areas").insert(row).select().single();if(error)throw error;
+        S.lastKind=kind;S.lastValue=value;clearDraft();S.areas.push(rowToArea(data));openArea(data.id);loadAreas();
+      }else{
+        const {error}=await sb.from("areas").update(row).eq("id",a.id);if(error)throw error;
+        await loadAreas();S.view="area";renderAreaView();
+      }
+    }catch(err){$("#arErr").textContent="Kunne ikke lagre: "+areaErr(err);btn.disabled=false}
+  };
+  $("#arNm").focus();
+}
+function areaRow(a){
+  return `<button class="row" data-area="${esc(a.id)}"><span class="flagdot"><i class="sw" style="background:${areaColor(a.kind,a.value)}"></i></span><span><span class="nm">${esc(a.name||areaLabel(a))}</span><br><span class="mt">${esc(AREA_TYPES[a.kind]?.name||a.kind)}: ${esc(areaLabel(a))}</span></span>${a._priv?'<span class="rt"><span class="tag p">Bare deg</span></span>':""}</button>`;
+}
+function renderAreaList(){
+  const el=$("#areaList");if(!el)return;
+  if(!isLive()){el.innerHTML=`<p class="small" style="margin-top:18px">Områder vises og tegnes på Sjøkart-fanen.</p>`;return}
+  const counts={};S.areas.forEach(a=>counts[a.kind]=(counts[a.kind]||0)+1);
+  const vis=S.areas.filter(areaVisible).sort((a,b)=>AREA_ORDER.indexOf(a.kind)-AREA_ORDER.indexOf(b.kind)||(a.name||areaLabel(a)).localeCompare(b.name||areaLabel(b),"nb"));
+  el.innerHTML=`<div class="unpos"><h3>Områder</h3>
+    ${S.areasErr?`<p class="err">${esc(S.areasErr)}</p>`:""}
+    <div class="chips" id="kindChips">${AREA_ORDER.map(k=>`<button class="chip ${S.hidden.has(k)?"":"on"}" data-k="${k}" aria-pressed="${!S.hidden.has(k)}">${AREA_TYPES[k].name}${counts[k]?` ${counts[k]}`:""}</button>`).join("")}</div>
+    <p class="small" style="margin:-4px 0 6px">Trykk på en type for å vise eller skjule den.</p>
+    ${vis.length?vis.map(areaRow).join(""):`<p class="emptytxt">${S.areas.length?"Ingen synlige områder.":"Ingen områder ennå. Trykk «Tegn område» under kartet."}</p>`}</div>`;
+  $("#kindChips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;const k=b.dataset.k;S.hidden.has(k)?S.hidden.delete(k):S.hidden.add(k);saveHidden();renderAreas();renderAreaList()};
+  el.querySelectorAll("[data-area]").forEach(r=>r.onclick=()=>{const a=S.areas.find(x=>x.id===r.dataset.area);if(!a)return;openArea(a.id);zoomToArea(a)});
+}
+function linkedAreasHTML(s){
+  const L2=S.areas.filter(a=>a.siteId===s.id);if(!L2.length)return"";
+  return `<div class="sec"><h3>Områder</h3>${L2.map(a=>`<button class="btn ghost" style="padding:2px 6px;margin:0 4px 4px 0" data-goarea="${esc(a.id)}"><i class="sw" style="background:${areaColor(a.kind,a.value)}"></i> ${esc(a.name||areaLabel(a))}</button>`).join("")}</div>`;
+}
+panel.addEventListener("click",e=>{const b=e.target.closest("[data-goarea]");if(!b)return;const a=S.areas.find(x=>x.id===b.dataset.goarea);if(!a)return;if(!isLive())switchChart("live");openArea(a.id);zoomToArea(a)});
+
+/* GeoJSON */
+function download(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000)}
+function downloadGeoJSON(){
+  const feats=[];
+  for(const s of S.sites)if(s.lat!=null&&s.lon!=null)feats.push({type:"Feature",geometry:{type:"Point",coordinates:[s.lon,s.lat]},
+    properties:{layer:"dykkested",name:s.name,access:ACCESS[s.access]||s.access,max_depth:s.maxDepth,bottom:s.bottom,tide:s.tide,season:s.season,wind:(s.wind||[]).join(","),hazards:s.hazards,rules:s.rules,species:s.species,notes:s.notes,rating:s.rating,log_count:s.logCount,last_dive:s.lastDive,private:s._priv}});
+  for(const a of S.areas)feats.push({type:"Feature",geometry:a.geom,properties:{layer:"omrade",name:a.name,kind:a.kind,kind_name:AREA_TYPES[a.kind]?.name,value:a.value,value_name:areaLabel(a),notes:a.notes,site:a.siteId?(getSite(a.siteId)?.name||""):"",private:a._priv}});
+  download("dykkekart.geojson",JSON.stringify({type:"FeatureCollection",features:feats},null,1),"application/geo+json");
+}
+async function importGeoJSON(file,fallback){
+  const msg=$("#mGeoMsg");const say=t=>{msg.textContent=t};
+  try{
+    const d=JSON.parse(await file.text());
+    const feats=d.type==="FeatureCollection"?d.features:d.type==="Feature"?[d]:d.type?[{type:"Feature",geometry:d,properties:{}}]:[];
+    const [fk,fv]=fallback.split(":");const rows=[];let skipped=0;
+    const firstCoord=g=>{let c=g.coordinates;while(Array.isArray(c)&&Array.isArray(c[0]))c=c[0];return c};
+    for(const f of feats){const g=f&&f.geometry;
+      if(!g||!/^(Multi)?(Polygon|LineString)$/.test(g.type)){skipped++;continue}
+      const c=firstCoord(g);if(!c||Math.abs(c[0])>180||Math.abs(c[1])>90)throw{message:"Koordinatene ser ikke ut som grader. Eksporter fra QGIS med koordinatsystem EPSG:4326 (WGS 84)."};
+      const p=f.properties||{};const k=AREA_TYPES[p.kind]&&AREA_TYPES[p.kind].vals[p.value]?p.kind:fk,v=k===p.kind?p.value:fv;
+      rows.push({name:String(p.name||p.navn||p.Name||"").slice(0,200),kind:k,value:v,notes:String(p.notes||p.notater||""),geom:g,private:false,created_by:S.user.id,author_name:S.me.name})}
+    if(!rows.length){say(`Fant ingen polygoner eller linjer${skipped?` (${skipped} andre objekter hoppet over)`:""}.`);return}
+    say(`Legger inn ${rows.length} områder…`);
+    for(let i=0;i<rows.length;i+=200){const {error}=await sb.from("areas").insert(rows.slice(i,i+200));if(error)throw error}
+    say(`Ferdig: ${rows.length} ${rows.length===1?"område":"områder"} importert${skipped?`, ${skipped} punkter eller andre objekter hoppet over`:""}.`);
+    await loadAreas();
+  }catch(err){say("Import stoppet: "+areaErr(err))}
 }
 
 /* ---------- boot ---------- */
