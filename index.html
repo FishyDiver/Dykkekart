@@ -213,6 +213,23 @@ dialog p{color:var(--muted);margin:6px 0 0}
 #errBar{position:fixed;left:12px;right:12px;bottom:12px;z-index:3000;background:#B3261E;color:#fff;padding:10px 14px;border-radius:10px;font-size:14px;box-shadow:0 4px 18px rgba(0,0,0,.3)}
 #errBar button{float:right;background:none;border:0;color:#fff;font-weight:700}
 .ver{color:var(--muted);font-size:12px;margin-left:4px}
+.vbadge{position:absolute;left:16px;top:22px;background:var(--ink);color:var(--panel);font-size:11px;font-weight:700;padding:0 5px;border-radius:8px;white-space:nowrap;pointer-events:none;line-height:16px}
+.vtxt{color:var(--alpha)}
+.visq{background:var(--soft);border-radius:10px;padding:10px 12px;margin:0 0 12px}
+.vbig{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:20px;color:var(--alpha)}.vbig.old{color:var(--muted)}
+.vform{display:grid;grid-template-columns:90px 1fr auto;gap:6px}
+.vform input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.crow{display:grid;grid-template-columns:1fr 80px 52px 58px 30px;gap:4px;margin-bottom:4px}
+.crow input,.crow select{width:100%;padding:6px 7px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.crow .btn{padding:0}
+.sptab{width:100%;border-collapse:collapse;font-size:14px}
+.sptab th{text-align:left;color:var(--muted);font-weight:500;font-size:12.5px;border-bottom:1px solid var(--line);padding:3px 4px}
+.sptab td{border-bottom:1px solid var(--line);padding:5px 4px;vertical-align:middle}
+.spsel{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);margin-bottom:8px}
+.feed{margin:4px 0 10px}.feed h3{font-size:18px;margin-bottom:4px}
+.frow{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:6px 4px}
+.frow:hover{background:var(--soft)}.frow b{color:var(--alpha);display:inline-block;min-width:46px}
+@media (max-width:480px){.vform{grid-template-columns:80px 1fr}.vform .btn{grid-column:1/-1}.crow{grid-template-columns:1fr 74px 46px 52px 26px}}
 </style>
 </head>
 <body>
@@ -221,7 +238,7 @@ dialog p{color:var(--muted);margin:6px 0 0}
 <header class="top">
   <div class="brand">
     <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver">v3</span>
+    <h1>Dykkekart</h1><span class="ver">v4</span>
   </div>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
@@ -282,7 +299,7 @@ dialog p{color:var(--muted);margin:6px 0 0}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v3 (områder + vær og tidevann)";
+const APP_VERSION="v4 (områder, vær og tidevann, fangst og sikt)";
 function showErr(m){try{const b=document.getElementById("errBar");if(!b)return;b.hidden=false;b.innerHTML=`<button aria-label="Lukk" onclick="this.parentNode.hidden=true">×</button>Noe gikk galt: ${String(m).replace(/[<>&]/g,"")}. Ta et skjermbilde og send det til Claude.`}catch(e){}}
 window.addEventListener("error",e=>showErr(e.message+(e.lineno?` (linje ${e.lineno})`:"")));
 window.addEventListener("unhandledrejection",e=>showErr(e.reason&&(e.reason.message||e.reason)||"ukjent feil"));
@@ -369,12 +386,14 @@ async function onSession(session){
 async function start(){
   if(S.started)return;S.started=true;
   initLeaflet();
-  await Promise.all([loadCharts(),loadSites(),loadAreas().catch(e=>showErr("områder: "+errMsg(e)))]);
+  await Promise.all([loadCharts(),loadSites(),loadAreas().catch(e=>showErr("områder: "+errMsg(e))),loadCatches().catch(()=>{}),loadReports().catch(()=>{})]);
   renderTabs();renderChart();renderPanel();
   try{initCond()}catch(e){showErr("vær: "+errMsg(e))}
   sb.channel("dykkekart")
     .on("postgres_changes",{event:"*",schema:"public",table:"sites"},()=>debounced("sites",loadSites))
     .on("postgres_changes",{event:"*",schema:"public",table:"charts"},()=>debounced("charts",async()=>{await loadCharts();renderTabs();renderChart();if(S.view==="list")renderList()}))
+    .on("postgres_changes",{event:"*",schema:"public",table:"catches"},()=>debounced("catches",loadCatches))
+    .on("postgres_changes",{event:"*",schema:"public",table:"vis_reports"},()=>debounced("vis",loadReports))
     .on("postgres_changes",{event:"*",schema:"public",table:"areas"},()=>debounced("areas",loadAreas))
     .on("postgres_changes",{event:"*",schema:"public",table:"logs"},()=>debounced("logs",()=>{if(S.sel)loadLogs(S.sel)}))
     .subscribe();
@@ -416,7 +435,7 @@ function initLeaflet(){
 function renderLive(){
   if(!S.lmap)return;S.lLayer.clearLayers();S.fLayer.clearLayers();
   for(const {s} of filtered()){
-    const icon=L.divIcon({className:"lp"+(s._priv?" priv":"")+(S.sel===s.id?" sel":""),html:flagSVG(s._priv)+condDot(s)+`<span class="lbl">${esc(s.name)}</span>`,iconSize:[30,36],iconAnchor:[4,34]});
+    const icon=L.divIcon({className:"lp"+(s._priv?" priv":"")+(S.sel===s.id?" sel":""),html:flagSVG(s._priv)+condDot(s)+visBadge(s)+`<span class="lbl">${esc(s.name)}</span>`,iconSize:[30,36],iconAnchor:[4,34]});
     L.marker([s.lat,s.lon],{icon,title:s.name,keyboard:true}).on("click",()=>{if(S.mode==="view"&&!S.drawer&&!S.editingArea)openSite(s.id)}).addTo(S.lLayer)}
   if(S.draft&&S.draft.live)L.marker([S.draft.lat,S.draft.lon],{icon:L.divIcon({className:"lp draft",html:flagSVG(false)+'<span class="lbl">Nytt sted</span>',iconSize:[30,36],iconAnchor:[4,34]}),interactive:false,opacity:.75}).addTo(S.lLayer);
   for(const c of S.charts){if(!c.geo)continue;const k=chartCorners(c),la=k.map(p=>p[0]),lo=k.map(p=>p[1]);
@@ -500,10 +519,10 @@ async function mapClick(e){
 
 /* ---------- pins & frames on image charts ---------- */
 function filtered(){const q=S.q.trim().toLowerCase();
-  return chartSites().filter(({s})=>(S.acc==="alle"||s.access===S.acc||s.access==="begge")&&(!q||[s.name,s.species,s.bottom,s.notes].join(" ").toLowerCase().includes(q)))}
+  return chartSites().filter(({s})=>(!S.sp||spSiteSet().has(s.id))&&(S.acc==="alle"||s.access===S.acc||s.access==="begge")&&(!q||[s.name,s.species,s.bottom,s.notes].join(" ").toLowerCase().includes(q)))}
 function renderPins(){
   if(isLive()){renderLive();return}
-  let h=filtered().map(({s,p})=>`<button class="pin ${s._priv?"priv":""} ${S.sel===s.id?"sel":""}" data-id="${esc(s.id)}" style="left:${p[0]*100}%;top:${p[1]*100}%" aria-label="${esc(s.name)}">${flagSVG(s._priv)}${condDot(s)}<span class="lbl">${esc(s.name)}</span></button>`).join("");
+  let h=filtered().map(({s,p})=>`<button class="pin ${s._priv?"priv":""} ${S.sel===s.id?"sel":""}" data-id="${esc(s.id)}" style="left:${p[0]*100}%;top:${p[1]*100}%" aria-label="${esc(s.name)}">${flagSVG(s._priv)}${condDot(s)}${visBadge(s)}<span class="lbl">${esc(s.name)}</span></button>`).join("");
   if(S.draft&&!S.draft.live&&S.draft.chartId===S.active)h+=`<span class="pin draft" style="left:${S.draft.x*100}%;top:${S.draft.y*100}%">${flagSVG(false)}<span class="lbl">Nytt sted</span></span>`;
   pinsEl.innerHTML=h;
 }
@@ -524,7 +543,7 @@ function renderListView(){
   panel.innerHTML=`<h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="small" id="condNote" style="margin:4px 0 0"></p>
     <input class="search" id="q" type="search" placeholder="Søk i navn, arter, bunn, notater" value="${esc(S.q)}" aria-label="Søk">
     <div class="chips">${["alle","land","bat"].map(a=>`<button class="chip ${S.acc===a?"on":""}" data-a="${a}">${a==="alle"?"Alle":ACCESS[a]}</button>`).join("")}</div>
-    <div id="siteList"></div><div id="unpos"></div><div id="areaList"></div><div id="chartActions"></div>`;
+    <div id="spWrap"></div><div id="visFeed"></div><div id="siteList"></div><div id="unpos"></div><div id="areaList"></div><div id="chartActions"></div>`;
   $("#q").oninput=e=>{S.q=e.target.value;renderList();renderPins();renderAreas()};
   panel.querySelector(".chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;S.acc=b.dataset.a;panel.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));renderList();renderPins()};
   renderList();
@@ -533,7 +552,7 @@ function siteRow(s,showHome){
   const meta=[ACCESS[s.access],s.maxDepth!=null?`maks ${fnum(s.maxDepth)} m`:"",s.bottom].filter(Boolean).join(", ");
   const home=showHome&&s.chartId&&s.chartId!==S.active?S.charts.find(x=>x.id===s.chartId):null;
   return `<button class="row" data-id="${esc(s.id)}"><span class="flagdot">${flagSVG(s._priv,16)}${condDot(s)}</span><span><span class="nm">${esc(s.name)}</span><br><span class="mt">${esc(meta)}</span>${home?`<br><span class="home">Kartblad: ${esc(home.name)}</span>`:""}</span>
-    <span class="rt">${dots(s.rating)}<br>${s.lastDive?"Sist "+esc(fdate(s.lastDive,true)):"Ikke logget"}</span></button>`}
+    <span class="rt">${dots(s.rating)}${latestReport(s.id)?` <b class="vtxt">${fnum(latestReport(s.id).vis,1)} m</b>`:""}<br>${s.lastDive?"Sist "+esc(fdate(s.lastDive,true)):"Ikke logget"}</span></button>`}
 function renderList(){
   if(S.view!=="list"||!$("#siteList"))return;
   const c=activeChart();
@@ -554,6 +573,7 @@ function renderList(){
   clickRow($("#unpos"));
   renderAreaList();
   const cn=$("#condNote");if(cn)cn.innerHTML=condNoteHTML();
+  renderSpWrap();renderVisFeed();
   let a="";
   if(!isLive()){const mine=c.createdBy===S.user.id||S.me.role==="admin";
     a=`<div class="actions"><button class="btn" id="setChart">Kartinnstillinger</button>${mine&&!allSites().some(s=>s.chartId===c.id)?'<button class="btn ghost danger" id="delChart">Slett kartbladet</button>':""}</div>`}
@@ -563,16 +583,16 @@ function renderList(){
 }
 function dots(r){if(!r)return"";let h='<span aria-label="Vurdering '+r+' av 5">';for(let i=1;i<=5;i++)h+=`<svg width="9" height="9" style="margin-left:2px"><circle cx="4.5" cy="4.5" r="3.7" fill="${i<=r?"var(--kelp)":"none"}" stroke="var(--kelp)"/></svg>`;return h+"</span>"}
 
-function openSite(id){cancelShapeEdit();clearDraft();if(S.selArea){S.selArea=null;renderAreas()}S.sel=id;S.view="site";S.draft=null;renderPins();S.logs=[];S.logsFor=id;renderSiteView();loadLogs(id)}
+function openSite(id){setTimeout(mobileReveal,0);cancelShapeEdit();clearDraft();if(S.selArea){S.selArea=null;renderAreas()}S.sel=id;S.view="site";S.draft=null;renderPins();S.logs=[];S.logsFor=id;renderSiteView();loadLogs(id)}
 async function loadLogs(id){const {data,error}=await sb.from("logs").select("*").eq("site_id",id);if(error||S.logsFor!==id)return;
-  S.logs=data.sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.created_at||"").localeCompare(a.created_at||""));renderLogs();renderStats()}
+  S.logs=data.sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.created_at||"").localeCompare(a.created_at||""));renderLogs();renderStats();renderSpecies()}
 function renderSiteView(){
   panel.innerHTML=`<button class="btn ghost back" id="back">Alle steder</button><div id="siteBody"></div>
-  <div id="stats"></div>
+  <div id="stats"></div><div id="speciesBox"></div>
   <div class="logs"><h3>Dykkelogg</h3>${logFormHTML()}<div id="logList"></div></div><div id="siteActions"></div>`;
   $("#back").onclick=()=>{S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel()};
-  $("#logForm").onsubmit=saveLog;
-  renderSiteBody();renderStats();renderLogs();
+  $("#logForm").onsubmit=saveLog;wireCatchEditor();
+  renderSiteBody();renderStats();renderLogs();renderSpecies();
 }
 function renderSiteBody(){
   const s=getSite(S.sel);if(!s||!$("#siteBody"))return;
@@ -586,7 +606,7 @@ function renderSiteBody(){
   $("#siteBody").innerHTML=`<h2>${esc(s.name)}</h2>
     <div class="tags">${s.access?`<span class="tag">${ACCESS[s.access]}</span>`:""}${s.rating?`<span class="tag">${dots(s.rating)}</span>`:""}${s._priv?'<span class="tag p">Bare for deg</span>':""}</div>
     ${others.length?`<div class="links" style="margin:-6px 0 12px">Vis på: ${others.map(c=>`<button class="btn ghost" style="padding:0 6px" data-go="${esc(c.id)}">${esc(c.name)}</button>`).join("")}</div>`:""}
-    <div id="condBox"></div>
+    <div id="visBox"></div><div id="condBox"></div>
     ${s.photoPath?`<img class="photo" src="${esc(imgUrl(s.photoPath))}" alt="Bilde fra ${esc(s.name)}">`:""}
     ${facts.length?`<dl class="facts">${facts.map(f=>`<div><dt>${f[0]}</dt><dd>${esc(f[1])}</dd></div>`).join("")}</dl>`:""}
     <div class="windbox">${rose(s.wind||[],false,96)}<p><strong>${wind?"Tåler vind fra "+esc(wind):"Vind ikke registrert"}</strong>${wind?"Grønne sektorer gir le på plassen.":"Legg inn hvilke vindretninger plassen tåler under Rediger."}</p></div>
@@ -594,7 +614,7 @@ function renderSiteBody(){
   $("#siteBody").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const id=b.dataset.go;switchChart(id);const p=sitePos(s,activeChart());if(!p)return;
     if(id==="live"){S.lmap.setView(p,15);return}
     const go=()=>centerOn(p[0],p[1],2);img.complete&&img.naturalWidth&&S.imgFor===id?setTimeout(go,0):img.addEventListener("load",()=>setTimeout(go,0),{once:true})});
-  renderCond(s);
+  renderCond(s);renderVis(s);
   const cp=$("#cp");if(cp)cp.onclick=()=>{navigator.clipboard?.writeText(`${s.lat}, ${s.lon}`).then(()=>{cp.textContent="Kopiert"},()=>{})};
   const canDel=s.createdBy===S.user.id||(S.me.role==="admin"&&!s._priv);
   const moveLbl=isLive()&&s.lat==null?"Plasser på sjøkartet":"Flytt på kartet";
@@ -617,23 +637,24 @@ function logFormHTML(){return `<form class="f logform" id="logForm"><div class="
   <div class="two"><div><label for="lTemp">Vanntemp (°C)</label><input type="number" id="lTemp" step="0.5"></div><div><label for="lDepth">Maks dybde (m)</label><input type="number" id="lDepth" step="0.5" min="0"></div></div>
   <label for="lCond">Forhold (strøm, vind, tidevann)</label><input type="text" id="lCond" placeholder="F.eks. stille, 1 t etter fjære">
   <label for="lNotes">Notat</label><textarea id="lNotes" placeholder="Hva du så, hva som fungerte"></textarea>
-  <div class="err" id="lErr"></div><div style="margin-top:10px"><button class="btn primary" id="lSave">Logg dykket</button></div></form>`}
+  ${catchEditorHTML()}<div class="err" id="lErr"></div><div style="margin-top:10px"><button class="btn primary" id="lSave">Logg dykket</button></div></form>`}
 function renderLogs(){
   const el=$("#logList");if(!el)return;
   if(!S.logs.length){el.innerHTML=`<p class="emptytxt">Ingen dykk logget her ennå.</p>`;return}
   el.innerHTML=S.logs.map(l=>{const m=[l.vis!=null?`sikt ${fnum(l.vis,1)} m`:"",l.temp!=null?`${fnum(l.temp,1)} °C`:"",l.depth!=null?`${fnum(l.depth,1)} m dypt`:""].filter(Boolean).join(", ");
     const mine=l.author===S.user.id,who=mine?"deg":(l.author_name||"");
     const canDel=mine||S.me.role==="admin";
-    return `<div class="log">${canDel?`<button class="btn ghost x" data-del="${esc(l.id)}">Slett</button>`:""}<div class="d">${esc(fdate(l.date))}${who?` <span class="m">av ${esc(who)}</span>`:""}</div>${m?`<div class="m">${esc(m)}</div>`:""}${l.cond?`<div class="m">${esc(l.cond)}</div>`:""}${l.notes?`<p>${esc(l.notes)}</p>`:""}</div>`}).join("");
+    return `<div class="log">${canDel?`<button class="btn ghost x" data-del="${esc(l.id)}">Slett</button>`:""}<div class="d">${esc(fdate(l.date))}${who?` <span class="m">av ${esc(who)}</span>`:""}</div>${m?`<div class="m">${esc(m)}</div>`:""}${l.cond?`<div class="m">${esc(l.cond)}</div>`:""}${l.notes?`<p>${esc(l.notes)}</p>`:""}${catchesHTML(l.id)}</div>`}).join("");
   el.onclick=async e=>{const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("Slette denne loggføringen?"))return;
     const {error}=await sb.from("logs").delete().eq("id",b.dataset.del);if(error)alert("Kunne ikke slette: "+errMsg(error));else{loadLogs(S.sel);loadSites()}};
 }
 async function saveLog(e){
   e.preventDefault();const s=getSite(S.sel);if(!s)return;const btn=$("#lSave");btn.disabled=true;$("#lErr").textContent="";
   const row={site_id:s.id,date:$("#lDate").value,vis:num($("#lVis").value),temp:num($("#lTemp").value),depth:num($("#lDepth").value),cond:$("#lCond").value.trim(),notes:$("#lNotes").value.trim(),author:S.user.id,author_name:S.me.name};
-  const {error}=await sb.from("logs").insert(row);
+  const catches=readCatchRows();
+  const {data:log,error}=await sb.from("logs").insert(row).select().single();
   if(error)$("#lErr").textContent="Kunne ikke lagre: "+errMsg(error);
-  else{["lVis","lTemp","lDepth","lCond","lNotes"].forEach(id=>$("#"+id).value="");loadLogs(s.id);loadSites()}
+  else{const warn=await afterLogSaved(s,log,catches);if(warn.length)$("#lErr").textContent=warn.join(" ");["lVis","lTemp","lDepth","lCond","lNotes"].forEach(id=>$("#"+id).value="");$("#cRows").innerHTML="";loadLogs(s.id);loadSites();loadCatches();loadReports()}
   btn.disabled=false;
 }
 
@@ -921,7 +942,7 @@ function hookDrawEvents(){
 function clearDraft(){S.draftArea=null;S.draftLayer=null;if(S.dLayer)S.dLayer.clearLayers()}
 
 /* area panel */
-function openArea(id){
+function openArea(id){setTimeout(mobileReveal,0);
   cancelShapeEdit();clearDraft();S.selArea=id;S.sel=null;S.logsFor=null;S.view="area";
   renderAreas();renderPins();renderAreaView();
 }
@@ -1213,6 +1234,80 @@ async function tideSafe(fn,row){
     if(!res.error)alert("Stedet er lagret, men dykkevinduet ble ikke lagret. Kjør tide.sql i Supabase først.")}
   return res;
 }
+
+/* ---------- catch / species log + visibility reports ---------- */
+S.catches=[];S.reports=[];S.sp="";S.catchErr=null;S.visErr=null;
+const SPECIES=["Torsk","Sei","Lyr","Hyse","Lange","Brosme","Steinbit","Breiflabb","Kveite","Rødspette","Skrubbe","Sandflyndre","Piggvar","Lomre","Uer","Berggylt","Grønngylt","Bergnebb","Rødnebb/blåstål","Makrell","Ulke","Rognkjeks","Tangsprell","Kamskjell","Harpeskjell","Blåskjell","O-skjell","Kongekrabbe","Taskekrabbe","Hummer","Sjøkreps","Kråkebolle","Sjøpølse","Sjøstjerne","Kolmule","Pigghå","Hvitting","Laks","Sjøørret","Sel","Oter"];
+function tableErr(e,file){const m=errMsg(e);return (e&&(e.code==="42P01"||e.code==="PGRST205"))||/(does not exist|could not find the table)/i.test(m)?`Tabellen finnes ikke ennå. Kjør ${file} i Supabase.`:m}
+function normSp(x){x=String(x||"").trim().replace(/\s+/g," ");return x?x[0].toLocaleUpperCase("nb")+x.slice(1):""}
+function ago(t){const d=(Date.now()-Date.parse(t))/60e3;if(d<2)return"nå nettopp";if(d<60)return`${Math.round(d)} min siden`;if(d<24*60)return`${Math.round(d/60)} t siden`;if(d<48*60)return"i går";return new Date(t).toLocaleDateString("nb-NO",{day:"numeric",month:"short"})}
+async function loadCatches(){const {data,error}=await sb.from("catches").select("*");if(error){S.catchErr=tableErr(error,"catch.sql");return}S.catchErr=null;S.catches=data;afterCatchData()}
+async function loadReports(){const since=new Date(Date.now()-14*864e5).toISOString();const {data,error}=await sb.from("vis_reports").select("*").gte("created_at",since);
+  if(error){S.visErr=tableErr(error,"catch.sql");return}S.visErr=null;S.reports=data.sort((a,b)=>b.created_at.localeCompare(a.created_at));afterVisData()}
+function afterCatchData(){if(S.view==="list")renderList();else if(S.view==="site"){renderLogs();renderSpecies()}if(S.sp)renderPins()}
+function afterVisData(){renderPins();if(S.view==="list")renderList();else if(S.view==="site"){const s=getSite(S.sel);if(s)renderVis(s)}}
+function latestReport(siteId,maxH=48){const r=S.reports.find(x=>x.site_id===siteId);return r&&(Date.now()-Date.parse(r.created_at))<maxH*3600e3?r:null}
+function visBadge(s){const r=latestReport(s.id);return r?`<span class="vbadge" title="Sikt rapportert ${esc(ago(r.created_at))}">${fnum(r.vis,1)} m</span>`:""}
+function spSiteSet(){return new Set(S.catches.filter(c=>c.species===S.sp).map(c=>c.site_id))}
+
+/* catch editor in log form */
+function catchEditorHTML(){return `<div class="catchEd"><label style="margin-top:12px">Fangst og arter sett</label><div id="cRows"></div><button type="button" class="btn ghost" id="cAdd" style="padding:3px 8px;margin-top:4px">+ Legg til art</button>
+  <datalist id="spList">${[...new Set([...S.catches.map(c=>c.species),...SPECIES])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>`}
+function addCatchRow(){const d=document.createElement("div");d.className="crow";
+  d.innerHTML=`<input type="text" list="spList" class="cSp" placeholder="Art" aria-label="Art"><select class="cKind" aria-label="Fanget eller sett"><option value="sett">Sett</option><option value="fanget">Fanget</option></select><input type="number" class="cCnt" min="1" value="1" aria-label="Antall" title="Antall"><input type="number" class="cSize" min="0" step="1" placeholder="cm" aria-label="Største lengde i cm" title="Største lengde, cm"><button type="button" class="btn ghost" aria-label="Fjern">×</button>`;
+  d.querySelector("button").onclick=()=>d.remove();$("#cRows").appendChild(d);d.querySelector(".cSp").focus()}
+function wireCatchEditor(){const b=$("#cAdd");if(b)b.onclick=addCatchRow}
+function readCatchRows(){return [...document.querySelectorAll("#cRows .crow")].map(r=>({species:normSp(r.querySelector(".cSp").value),kind:r.querySelector(".cKind").value,count:Math.max(1,Math.round(num(r.querySelector(".cCnt").value)??1)),size_cm:num(r.querySelector(".cSize").value)})).filter(c=>c.species)}
+async function afterLogSaved(s,log,catches){
+  const warn=[];
+  if(catches.length){const {error}=await sb.from("catches").insert(catches.map(c=>({...c,log_id:log.id,site_id:s.id,date:log.date,author:S.user.id,author_name:S.me.name})));if(error)warn.push("Fangst ble ikke lagret: "+tableErr(error,"catch.sql"))}
+  if(log.vis!=null&&log.date===today()){const {error}=await sb.from("vis_reports").insert({site_id:s.id,vis:log.vis,note:"Fra dykkelogg",author:S.user.id,author_name:S.me.name});if(error&&!/finnes ikke/.test(tableErr(error,"")))warn.push("Siktrapport: "+errMsg(error))}
+  return warn;
+}
+function catchesHTML(logId){const L=S.catches.filter(c=>c.log_id===logId);if(!L.length)return"";
+  const f=k=>L.filter(c=>c.kind===k).map(c=>`${c.count>1?c.count+" ":""}${esc(c.species.toLocaleLowerCase("nb"))}${c.size_cm!=null?` (${fnum(c.size_cm)} cm)`:""}`).join(", ");
+  const a=f("fanget"),b=f("sett");return `<div class="m">${a?`Fanget: ${a}`:""}${a&&b?"<br>":""}${b?`Sett: ${b}`:""}</div>`}
+function renderSpecies(){
+  const el=$("#speciesBox");if(!el)return;const s=getSite(S.sel);if(!s){el.innerHTML="";return}
+  const L=S.catches.filter(c=>c.site_id===s.id);
+  if(!L.length){el.innerHTML=S.catchErr?`<p class="small err">${esc(S.catchErr)}</p>`:"";return}
+  const dives=Math.max(1,s.logCount||new Set(L.map(c=>c.log_id)).size),by={};
+  for(const c of L){const o=by[c.species]||(by[c.species]={sp:c.species,logs:new Set(),caught:0,seen:0,max:null,last:"",months:new Array(12).fill(0)});
+    o.logs.add(c.log_id);if(c.kind==="fanget")o.caught+=c.count;else o.seen+=c.count;if(c.size_cm!=null)o.max=Math.max(o.max??0,c.size_cm);if((c.date||"")>o.last)o.last=c.date||"";if(c.date)o.months[+c.date.slice(5,7)-1]++}
+  const rows=Object.values(by).sort((a,b)=>b.logs.size-a.logs.size||a.sp.localeCompare(b.sp,"nb"));
+  const mstrip=m=>`<svg width="60" height="10" aria-hidden="true">${m.map((v,i)=>`<rect x="${i*5}" y="${v?0:6}" width="4" height="${v?10:4}" rx="1" fill="${v?"var(--alpha)":"var(--line)"}"/>`).join("")}</svg>`;
+  el.innerHTML=`<div class="logs"><h3>Arter her</h3><table class="sptab"><thead><tr><th>Art</th><th>Sett i</th><th>Fanget</th><th>Største</th><th title="Måneder arten er registrert, jan til des">Måned</th></tr></thead><tbody>
+    ${rows.map(o=>`<tr><td>${esc(o.sp)}</td><td>${o.logs.size}/${dives} dykk</td><td>${o.caught||"–"}</td><td>${o.max!=null?fnum(o.max)+" cm":"–"}</td><td>${mstrip(o.months)}</td></tr>`).join("")}</tbody></table></div>`;
+}
+
+/* visibility reports in site panel */
+function renderVis(s){
+  const el=$("#visBox");if(!el)return;
+  const R=S.reports.filter(r=>r.site_id===s.id).slice(0,3),r0=R[0],fresh=r0&&(Date.now()-Date.parse(r0.created_at))<48*3600e3;
+  el.innerHTML=`<div class="visq">${r0?`<p style="margin:0 0 6px"><strong class="vbig${fresh?"":" old"}">Sikt ${fnum(r0.vis,1)} m</strong> <span class="small">${esc(ago(r0.created_at))}, ${r0.author===S.user.id?"deg":esc(r0.author_name||"et medlem")}${r0.note?`: ${esc(r0.note)}`:""}</span></p>`:`<p class="small" style="margin:0 0 6px">Ingen siktrapport de siste 14 dagene.</p>`}
+    ${R.length>1?`<p class="small" style="margin:0 0 6px">Før: ${R.slice(1).map(r=>`${fnum(r.vis,1)} m ${esc(ago(r.created_at))}`).join(", ")}</p>`:""}
+    <form class="f vform" id="vForm"><input type="number" id="vVis" min="0" step="0.5" placeholder="Sikt (m)" aria-label="Sikt i meter" required><input type="text" id="vNote" placeholder="Kommentar (valgfritt)" aria-label="Kommentar"><button class="btn primary" id="vSave">Rapporter sikt nå</button></form>
+    ${S.visErr?`<p class="small err">${esc(S.visErr)}</p>`:""}<div class="err" id="vErr"></div></div>`;
+  $("#vForm").onsubmit=async e=>{e.preventDefault();const v=num($("#vVis").value);if(v==null)return;$("#vSave").disabled=true;
+    const {error}=await sb.from("vis_reports").insert({site_id:s.id,vis:v,note:$("#vNote").value.trim(),author:S.user.id,author_name:S.me.name});
+    if(error){$("#vErr").textContent="Kunne ikke lagre: "+tableErr(error,"catch.sql");$("#vSave").disabled=false;return}
+    await loadReports()};
+}
+
+/* list view: species filter + feed */
+function renderSpWrap(){const el=$("#spWrap");if(!el)return;
+  const cnt={};for(const c of S.catches){(cnt[c.species]||(cnt[c.species]=new Set())).add(c.site_id)}
+  const sp=Object.keys(cnt).sort((a,b)=>a.localeCompare(b,"nb"));
+  if(!sp.length){el.innerHTML="";if(S.sp){S.sp="";renderPins()}return}
+  el.innerHTML=`<select id="spSel" class="spsel" aria-label="Vis steder med art"><option value="">Alle arter</option>${sp.map(x=>`<option value="${esc(x)}" ${x===S.sp?"selected":""}>${esc(x)} (${cnt[x].size} ${cnt[x].size===1?"sted":"steder"})</option>`).join("")}</select>`;
+  $("#spSel").onchange=e=>{S.sp=e.target.value;renderList();renderPins()};
+}
+function renderVisFeed(){const el=$("#visFeed");if(!el)return;
+  const seen=new Set(),rows=[];for(const r of S.reports){if(seen.has(r.site_id))continue;const s=getSite(r.site_id);if(!s)continue;seen.add(r.site_id);if(Date.now()-Date.parse(r.created_at)<72*3600e3)rows.push([r,s])}
+  el.innerHTML=rows.length?`<div class="feed"><h3>Siste sikt</h3>${rows.slice(0,6).map(([r,s])=>`<button class="frow" data-site="${esc(s.id)}"><b>${fnum(r.vis,1)} m</b> ${esc(s.name)} <span class="small">${esc(ago(r.created_at))}${r.author===S.user.id?"":", "+esc(r.author_name||"")}</span></button>`).join("")}</div>`:"";
+  el.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>{openSite(b.dataset.site);const o=chartSites().find(o=>o.s.id===b.dataset.site);if(o){if(isLive())S.lmap.setView(o.p,Math.max(S.lmap.getZoom(),13));else centerOn(o.p[0],o.p[1])}});
+}
+function mobileReveal(){try{if(window.matchMedia("(max-width:860px)").matches)panel.scrollIntoView({behavior:"smooth",block:"start"})}catch(e){}}
 
 /* ---------- boot ---------- */
 (function boot(){
