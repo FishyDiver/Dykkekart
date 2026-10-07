@@ -4,7 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dykkekart</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤿</text></svg>">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F2A3F">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dykkekart">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
@@ -230,6 +236,7 @@ dialog p{color:var(--muted);margin:6px 0 0}
 .frow{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:6px 4px}
 .frow:hover{background:var(--soft)}.frow b{color:var(--alpha);display:inline-block;min-width:46px}
 @media (max-width:480px){.vform{grid-template-columns:80px 1fr}.vform .btn{grid-column:1/-1}.crow{grid-template-columns:1fr 74px 46px 52px 26px}}
+#offBar{position:fixed;left:50%;transform:translateX(-50%);top:calc(8px + env(safe-area-inset-top,0px));z-index:2500;background:var(--ink);color:var(--panel);font-size:13px;font-weight:600;padding:4px 12px;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
 </style>
 </head>
 <body>
@@ -238,7 +245,7 @@ dialog p{color:var(--muted);margin:6px 0 0}
 <header class="top">
   <div class="brand">
     <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver">v4</span>
+    <h1>Dykkekart</h1><span class="ver">v5</span>
   </div>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
@@ -291,6 +298,7 @@ dialog p{color:var(--muted);margin:6px 0 0}
 </dialog>
 
 <div id="errBar" hidden></div>
+<div id="offBar" hidden>Offline: viser sist hentede data</div>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -299,7 +307,22 @@ dialog p{color:var(--muted);margin:6px 0 0}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v4 (områder, vær og tidevann, fangst og sikt)";
+const APP_VERSION="v5 (app-versjon, offline)";
+function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
+function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
+function setOffline(on){const b=document.getElementById("offBar");if(b)b.hidden=!on}
+async function cachedQ(key,query){
+  const r=await query;
+  if(!r.error){setOffline(false);lsSet0("dkc:"+key,r.data);return r}
+  const c=lsGet0("dkc:"+key);
+  if(c&&isNetErr(r.error)){setOffline(true);return{data:c,error:null}}
+  return r;
+}
+window.addEventListener("online",()=>{setOffline(false);if(typeof loadSites==="function"&&S.started){loadSites();loadCharts();try{loadAreas();loadCatches();loadReports()}catch(e){}}});
+let installEvt=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installEvt=e});
+function isStandalone(){return (window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true}
+function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1)}
 function showErr(m){try{const b=document.getElementById("errBar");if(!b)return;b.hidden=false;b.innerHTML=`<button aria-label="Lukk" onclick="this.parentNode.hidden=true">×</button>Noe gikk galt: ${String(m).replace(/[<>&]/g,"")}. Ta et skjermbilde og send det til Claude.`}catch(e){}}
 window.addEventListener("error",e=>showErr(e.message+(e.lineno?` (linje ${e.lineno})`:"")));
 window.addEventListener("unhandledrejection",e=>showErr(e.reason&&(e.reason.message||e.reason)||"ukjent feil"));
@@ -320,7 +343,7 @@ function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth
 function fdate(d,short){if(!d)return"";try{return new Date(d+"T12:00:00").toLocaleDateString("nb-NO",short?{day:"numeric",month:"short"}:{day:"numeric",month:"short",year:"numeric"})}catch(e){return d}}
 function fnum(n,dec=0){return n==null?"":Number(n).toLocaleString("nb-NO",{maximumFractionDigits:dec})}
 function flagSVG(priv,size=30){const h=size*36/30;return `<svg width="${size}" height="${h}" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="#0F2A3F" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" style="fill:var(${priv?"--magenta":"--alpha"})" stroke="#0F2A3F" stroke-width="1.2"/><path d="M4 1V34" stroke="#0F2A3F" stroke-width="2.2"/><circle cx="4" cy="34" r="2.4" fill="#0F2A3F"/></svg>`}
-function errMsg(e){return (e&&(e.message||e.error_description||e.code))||String(e)}
+function errMsg(e){if(e&&isNetErr(e))return "ingen nettforbindelse. Prøv igjen når du har dekning";return (e&&(e.message||e.error_description||e.code))||String(e)}
 function imgUrl(path){return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl}
 function newPath(file){const ext=(file.name&&file.name.includes(".")?file.name.split(".").pop():"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");return `${S.user.id}/${crypto.randomUUID()}.${ext||"jpg"}`}
 async function uploadImage(file){if(file.size>45*1024*1024)throw{message:"Bildet er større enn 45 MB."};const path=newPath(file);
@@ -376,7 +399,7 @@ function authScreen(kind,msg){
 async function onSession(session){
   if(!session){S.user=null;S.me=null;authScreen("login");return}
   S.user=session.user;
-  const {data,error}=await sb.from("members").select("*");
+  const {data,error}=await cachedQ("members",sb.from("members").select("*"));
   if(error){authScreen("login",errMsg(error));return}
   S.members=data||[];S.me=S.members.find(m=>m.email.toLowerCase()===S.user.email.toLowerCase())||null;
   if(!S.me){authScreen("notmember");return}
@@ -400,8 +423,8 @@ async function start(){
   window.addEventListener("focus",()=>debounced("focus",async()=>{await loadSites();if(S.sel)loadLogs(S.sel)}));
 }
 const timers={};function debounced(k,fn){clearTimeout(timers[k]);timers[k]=setTimeout(fn,300)}
-async function loadCharts(){const {data,error}=await sb.from("charts").select("*").order("created_at");if(!error){S.charts=data.map(rowToChart);if(S.active!=="live"&&!S.charts.find(c=>c.id===S.active))S.active="live"}}
-async function loadSites(){const {data,error}=await sb.from("sites").select("*");if(!error){S.sites=data.map(rowToSite);onSites()}}
+async function loadCharts(){const {data,error}=await cachedQ("charts",sb.from("charts").select("*").order("created_at"));if(!error){S.charts=data.map(rowToChart);if(S.active!=="live"&&!S.charts.find(c=>c.id===S.active))S.active="live"}}
+async function loadSites(){const {data,error}=await cachedQ("sites",sb.from("sites").select("*"));if(!error){S.sites=data.map(rowToSite);onSites()}}
 async function loadMembers(){const {data}=await sb.from("members").select("*").order("added_at");S.members=data||[]}
 
 /* ---------- sites helpers ---------- */
@@ -584,7 +607,7 @@ function renderList(){
 function dots(r){if(!r)return"";let h='<span aria-label="Vurdering '+r+' av 5">';for(let i=1;i<=5;i++)h+=`<svg width="9" height="9" style="margin-left:2px"><circle cx="4.5" cy="4.5" r="3.7" fill="${i<=r?"var(--kelp)":"none"}" stroke="var(--kelp)"/></svg>`;return h+"</span>"}
 
 function openSite(id){setTimeout(mobileReveal,0);cancelShapeEdit();clearDraft();if(S.selArea){S.selArea=null;renderAreas()}S.sel=id;S.view="site";S.draft=null;renderPins();S.logs=[];S.logsFor=id;renderSiteView();loadLogs(id)}
-async function loadLogs(id){const {data,error}=await sb.from("logs").select("*").eq("site_id",id);if(error||S.logsFor!==id)return;
+async function loadLogs(id){const {data,error}=await cachedQ("logs:"+id,sb.from("logs").select("*").eq("site_id",id));if(error||S.logsFor!==id)return;
   S.logs=data.sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.created_at||"").localeCompare(a.created_at||""));renderLogs();renderStats();renderSpecies()}
 function renderSiteView(){
   panel.innerHTML=`<button class="btn ghost back" id="back">Alle steder</button><div id="siteBody"></div>
@@ -789,6 +812,7 @@ function renderMenu(){
   <div class="menu-sec"><h3>Medlemmer</h3>${S.members.map(m=>`<div class="mrow"><span>${esc(m.name||"(uten navn)")}<br><small>${esc(m.email)}${m.role==="admin"?", administrator":""}</small></span>${admin&&m.email.toLowerCase()!==S.user.email.toLowerCase()?`<button class="btn ghost danger" data-rm="${esc(m.email)}">Fjern</button>`:""}</div>`).join("")}
   ${admin?`<form class="f" id="mAdd"><label for="mEmail">Inviter en dykkekompis (e-post)</label><div style="display:flex;gap:8px"><input type="text" id="mEmail" inputmode="email" required placeholder="kompis@epost.no"><button class="btn primary">Legg til</button></div></form>
   <p class="small">Send dem deretter lenken til denne siden: <b>${esc(location.origin+location.pathname)}</b>. De trykker «Første gang? Lag konto» og bruker e-posten du la inn.</p>`:""}</div>
+  <div class="menu-sec"><h3>App</h3>${isStandalone()?`<p class="small" style="margin:0">Du bruker app-versjonen.</p>`:installEvt?`<p class="small" style="margin:0 0 8px">Legg Dykkekart på hjemskjermen som en app.</p><button class="btn primary" id="mInstall">Installer app</button>`:isIOS()?`<p class="small" style="margin:0">iPhone: åpne siden i Safari, trykk Del-knappen (firkant med pil opp) og velg «Legg til på Hjem-skjerm».</p>`:`<p class="small" style="margin:0">Android: åpne siden i Chrome, trykk ⋮ og velg «Installer app» eller «Legg til på startsiden».</p>`}</div>
   <div class="menu-sec"><h3>Eksport</h3><p class="small" style="margin:0 0 8px">Alle steder med koordinater som GPX, for GPS, OsmAnd eller Google Earth.</p><button class="btn" id="mGpx">Last ned GPX</button></div>
   <div class="menu-sec"><h3>GeoJSON (QGIS)</h3><p class="small" style="margin:0 0 8px">Alle dykkesteder og områder du kan se, som GeoJSON.</p><button class="btn" id="mGeo">Last ned GeoJSON</button>
   <label for="mGeoKind" style="display:block;margin:14px 0 3px" class="small">Importer polygoner og linjer (EPSG:4326). Type for objekter uten type:</label>
@@ -801,6 +825,7 @@ function renderMenu(){
   $("#mOut").onclick=async()=>{mdlg.close();await sb.auth.signOut();location.reload()};
   $("#mName").onsubmit=async e=>{e.preventDefault();const n=$("#mNameIn").value.trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error)$("#mErr").textContent=errMsg(error);else{S.me.name=n;await loadMembers();renderMenu()}};
   $("#mGpx").onclick=downloadGpx;
+  const mi=$("#mInstall");if(mi)mi.onclick=async()=>{const ev=installEvt;installEvt=null;if(!ev)return;ev.prompt();try{await ev.userChoice}catch(e){}renderMenu()};
   $("#mGeo").onclick=downloadGeoJSON;
   $("#mGeoImp").onchange=e=>{const f=e.target.files[0];if(f)importGeoJSON(f,$("#mGeoKind").value)};
   if(admin){
@@ -855,7 +880,7 @@ function areaLabel(a){const t=AREA_TYPES[a.kind];return t?(t.vals[a.value]?.[0]|
 function rowToArea(r){return{id:r.id,name:r.name||"",kind:r.kind,value:r.value,notes:r.notes||"",geom:r.geom,siteId:r.site_id,_priv:r.private,createdBy:r.created_by,authorName:r.author_name||""}}
 function areaErr(e){const m=errMsg(e);return (e&&(e.code==="42P01"||e.code==="PGRST205"))||/areas/.test(m)&&/(does not exist|could not find)/i.test(m)?"Tabellen for områder finnes ikke ennå. Kjør areas.sql i Supabase.":m}
 async function loadAreas(){
-  const {data,error}=await sb.from("areas").select("*");
+  const {data,error}=await cachedQ("areas",sb.from("areas").select("*"));
   if(error){S.areasErr=areaErr(error);if(S.view==="list")renderList();return}
   S.areasErr=null;S.areas=data.map(rowToArea);renderAreas();
   if(S.view==="list")renderList();
@@ -1241,8 +1266,8 @@ const SPECIES=["Torsk","Sei","Lyr","Hyse","Lange","Brosme","Steinbit","Breiflabb
 function tableErr(e,file){const m=errMsg(e);return (e&&(e.code==="42P01"||e.code==="PGRST205"))||/(does not exist|could not find the table)/i.test(m)?`Tabellen finnes ikke ennå. Kjør ${file} i Supabase.`:m}
 function normSp(x){x=String(x||"").trim().replace(/\s+/g," ");return x?x[0].toLocaleUpperCase("nb")+x.slice(1):""}
 function ago(t){const d=(Date.now()-Date.parse(t))/60e3;if(d<2)return"nå nettopp";if(d<60)return`${Math.round(d)} min siden`;if(d<24*60)return`${Math.round(d/60)} t siden`;if(d<48*60)return"i går";return new Date(t).toLocaleDateString("nb-NO",{day:"numeric",month:"short"})}
-async function loadCatches(){const {data,error}=await sb.from("catches").select("*");if(error){S.catchErr=tableErr(error,"catch.sql");return}S.catchErr=null;S.catches=data;afterCatchData()}
-async function loadReports(){const since=new Date(Date.now()-14*864e5).toISOString();const {data,error}=await sb.from("vis_reports").select("*").gte("created_at",since);
+async function loadCatches(){const {data,error}=await cachedQ("catches",sb.from("catches").select("*"));if(error){S.catchErr=tableErr(error,"catch.sql");return}S.catchErr=null;S.catches=data;afterCatchData()}
+async function loadReports(){const since=new Date(Date.now()-14*864e5).toISOString();const {data,error}=await cachedQ("reports",sb.from("vis_reports").select("*").gte("created_at",since));
   if(error){S.visErr=tableErr(error,"catch.sql");return}S.visErr=null;S.reports=data.sort((a,b)=>b.created_at.localeCompare(a.created_at));afterVisData()}
 function afterCatchData(){if(S.view==="list")renderList();else if(S.view==="site"){renderLogs();renderSpecies()}if(S.sp)renderPins()}
 function afterVisData(){renderPins();if(S.view==="list")renderList();else if(S.view==="site"){const s=getSite(S.sel);if(s)renderVis(s)}}
@@ -1311,6 +1336,7 @@ function mobileReveal(){try{if(window.matchMedia("(max-width:860px)").matches)pa
 
 /* ---------- boot ---------- */
 (function boot(){
+  if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
   if(!CFG.SUPABASE_URL||CFG.SUPABASE_URL.includes("YOUR-PROJECT")||!CFG.SUPABASE_KEY||CFG.SUPABASE_KEY.includes("PASTE")){authScreen("config");return}
   if(!window.supabase||!window.L){authScreen("config");$("#authBox p").textContent="Kunne ikke laste kartbibliotekene. Sjekk internettforbindelsen og last siden på nytt.";return}
   sb=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_KEY);
