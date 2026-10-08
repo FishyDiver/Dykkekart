@@ -237,6 +237,22 @@ dialog p{color:var(--muted);margin:6px 0 0}
 .frow:hover{background:var(--soft)}.frow b{color:var(--alpha);display:inline-block;min-width:46px}
 @media (max-width:480px){.vform{grid-template-columns:80px 1fr}.vform .btn{grid-column:1/-1}.crow{grid-template-columns:1fr 74px 46px 52px 26px}}
 #offBar{position:fixed;left:50%;transform:translateX(-50%);top:calc(8px + env(safe-area-inset-top,0px));z-index:2500;background:var(--ink);color:var(--panel);font-size:13px;font-weight:600;padding:4px 12px;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.pin.round{transform:translate(-15px,-37px) scale(var(--inv));transform-origin:15px 37px}
+.lp.round .lbl{left:30px;top:2px}
+.apt{background:none;border:0}
+.mbadge{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;border:1.5px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.35);vertical-align:-4px;flex:none}
+.apt .mbadge{box-shadow:0 1px 4px rgba(0,0,0,.45)}
+.mbadge.sel{box-shadow:0 0 0 3px #C0266D}
+.ipick{display:grid;grid-template-columns:repeat(auto-fill,minmax(36px,1fr));gap:4px;max-height:200px;overflow:auto;padding:4px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.ipick button{height:36px;border:1px solid var(--line);border-radius:8px;background:var(--panel);display:flex;align-items:center;justify-content:center;color:var(--ink);padding:0}
+.ipick button.on{border-color:var(--magenta);box-shadow:inset 0 0 0 2px var(--magenta)}
+.cpick{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cpick button{width:28px;height:28px;border-radius:50%;border:2px solid var(--panel);box-shadow:0 0 0 1px var(--line);padding:0}
+.cpick button.on{box-shadow:0 0 0 3px var(--magenta)}
+.cpick button.def{width:auto;border-radius:999px;padding:0 10px;background:var(--panel);color:var(--ink);font-size:13px;height:28px}
+.cpick input[type=color]{width:34px;height:28px;padding:0;border:1px solid var(--line);border-radius:6px;background:none}
+.lgd .lgh{font-weight:600;font-size:13px;margin:8px 0 2px}
+.lgd .lgi{display:inline-flex;align-items:center;gap:5px;font-size:13px;margin:0 10px 4px 0}
 </style>
 </head>
 <body>
@@ -245,7 +261,7 @@ dialog p{color:var(--muted);margin:6px 0 0}
 <header class="top">
   <div class="brand">
     <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver">v5</span>
+    <h1>Dykkekart</h1><span class="ver">v6</span>
   </div>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
@@ -261,9 +277,9 @@ dialog p{color:var(--muted);margin:6px 0 0}
     </div>
     <div class="maptools">
       <button id="placeBtn" class="btn primary">Nytt dykkested</button>
-      <button id="drawBtn" class="btn">Tegn område</button>
+      <button id="drawBtn" class="btn">Tegn</button>
       <select id="condSel" class="btn" aria-label="Vis vindforhold på kartet"><option value="off">Forhold: av</option><option value="now">Forhold nå</option><option value="+3">Om 3 timer</option><option value="+6">Om 6 timer</option><option value="d1h10">I morgen kl 10</option><option value="d1h15">I morgen kl 15</option><option value="d2h10">Overmorgen kl 10</option></select>
-      <span id="drawBar" hidden><span class="dgrp" id="dPick"><button class="btn" id="dPoly">Polygon</button><button class="btn" id="dLine">Linje</button><button class="btn" id="dRect">Rektangel</button></span><button class="btn" id="dUndo">Angre punkt</button><button class="btn primary" id="dDone">Ferdig</button><button class="btn ghost" id="dCancel">Avbryt</button></span>
+      <span id="drawBar" hidden><span class="dgrp" id="dPick"><button class="btn" id="dPoly">Polygon</button><button class="btn" id="dLine">Linje</button><button class="btn" id="dRect">Rektangel</button><button class="btn" id="dPoint">Markør</button></span><button class="btn" id="dUndo">Angre punkt</button><button class="btn primary" id="dDone">Ferdig</button><button class="btn ghost" id="dCancel">Avbryt</button></span>
       <span id="hint"></span><span id="coord"></span>
       <div class="legend"><span><i style="background:var(--alpha)"></i>Delt</span><span><i style="background:var(--magenta)"></i>Bare for deg</span></div>
       <div class="zoom" id="imgZoom"><button class="btn" id="zin" aria-label="Zoom inn">+</button><button class="btn" id="zout" aria-label="Zoom ut">−</button><button class="btn" id="zfit">Hele kartet</button></div>
@@ -307,7 +323,7 @@ dialog p{color:var(--muted);margin:6px 0 0}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v5 (app-versjon, offline)";
+const APP_VERSION="v6 (symboler, farger og markører)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -342,7 +358,7 @@ function num(v){if(v===""||v==null)return null;const n=parseFloat(String(v).trim
 function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function fdate(d,short){if(!d)return"";try{return new Date(d+"T12:00:00").toLocaleDateString("nb-NO",short?{day:"numeric",month:"short"}:{day:"numeric",month:"short",year:"numeric"})}catch(e){return d}}
 function fnum(n,dec=0){return n==null?"":Number(n).toLocaleString("nb-NO",{maximumFractionDigits:dec})}
-function flagSVG(priv,size=30){const h=size*36/30;return `<svg width="${size}" height="${h}" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="#0F2A3F" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" style="fill:var(${priv?"--magenta":"--alpha"})" stroke="#0F2A3F" stroke-width="1.2"/><path d="M4 1V34" stroke="#0F2A3F" stroke-width="2.2"/><circle cx="4" cy="34" r="2.4" fill="#0F2A3F"/></svg>`}
+function flagSVG(priv,size=30,color){const h=size*36/30;return `<svg width="${size}" height="${h}" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="#0F2A3F" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" style="fill:${color||`var(${priv?"--magenta":"--alpha"})`}" stroke="${priv&&color?"#C0266D":"#0F2A3F"}" stroke-width="${priv&&color?2.4:1.2}"/><path d="M4 1V34" stroke="#0F2A3F" stroke-width="2.2"/><circle cx="4" cy="34" r="2.4" fill="#0F2A3F"/></svg>`}
 function errMsg(e){if(e&&isNetErr(e))return "ingen nettforbindelse. Prøv igjen når du har dekning";return (e&&(e.message||e.error_description||e.code))||String(e)}
 function imgUrl(path){return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl}
 function newPath(file){const ext=(file.name&&file.name.includes(".")?file.name.split(".").pop():"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");return `${S.user.id}/${crypto.randomUUID()}.${ext||"jpg"}`}
@@ -352,7 +368,7 @@ async function uploadImage(file){if(file.size>45*1024*1024)throw{message:"Bildet
 /* ---------- mapping db <-> app ---------- */
 function rowToSite(r){return{id:r.id,chartId:r.chart_id,x:r.x,y:r.y,lat:r.lat,lon:r.lon,name:r.name,access:r.access,maxDepth:r.max_depth,bottom:r.bottom,tide:r.tide,season:r.season,
   wind:r.wind||[],hazards:r.hazards,rules:r.rules,species:r.species,notes:r.notes,rating:r.rating,photoPath:r.photo_path,_priv:r.private,createdBy:r.created_by,
-  logCount:r.log_count||0,lastDive:r.last_dive,visAvg:r.vis_avg,tideMode:r.tide_mode||"none",tideOffset:r.tide_offset||0,tideWidth:r.tide_width||60}}
+  logCount:r.log_count||0,lastDive:r.last_dive,visAvg:r.vis_avg,tideMode:r.tide_mode||"none",tideOffset:r.tide_offset||0,tideWidth:r.tide_width||60,icon:r.icon||null,color:r.color||null}}
 function rowToChart(r){return{id:r.id,name:r.name,imagePath:r.image_path,w:r.w,h:r.h,geo:r.geo,createdBy:r.created_by}}
 
 /* ---------- projections ---------- */
@@ -446,7 +462,7 @@ function initLeaflet(){
   if(S.lmap)return;
   const kv=l=>L.tileLayer(`https://cache.kartverket.no/v1/wmts/1.0.0/${l}/default/webmercator/{z}/{y}/{x}.png`,{maxZoom:18,attribution:'&copy; <a href="https://www.kartverket.no/">Kartverket</a>'});
   const sea=kv("sjokartraster"),topo=kv("topo"),grey=kv("topograatone");
-  S.lmap=L.map(lmapEl,{zoomControl:true}).setView([67.28,14.40],10);
+  S.lmap=L.map(lmapEl,{zoomControl:true,renderer:L.svg({padding:.5})}).setView([67.28,14.40],10);S.lmap.addLayer(S.lmap.options.renderer);
   sea.addTo(S.lmap);
   L.control.layers({"Sjøkart":sea,"Topografisk":topo,"Gråtone":grey},null,{position:"topright"}).addTo(S.lmap);
   L.control.scale({imperial:false}).addTo(S.lmap);
@@ -458,7 +474,7 @@ function initLeaflet(){
 function renderLive(){
   if(!S.lmap)return;S.lLayer.clearLayers();S.fLayer.clearLayers();
   for(const {s} of filtered()){
-    const icon=L.divIcon({className:"lp"+(s._priv?" priv":"")+(S.sel===s.id?" sel":""),html:flagSVG(s._priv)+condDot(s)+visBadge(s)+`<span class="lbl">${esc(s.name)}</span>`,iconSize:[30,36],iconAnchor:[4,34]});
+    const icon=L.divIcon({className:"lp"+(siteHasPin(s)?" round":"")+(s._priv?" priv":"")+(S.sel===s.id?" sel":""),html:siteMarkerHTML(s)+condDot(s)+visBadge(s)+`<span class="lbl">${esc(s.name)}</span>`,...siteAnchor(s)});
     L.marker([s.lat,s.lon],{icon,title:s.name,keyboard:true}).on("click",()=>{if(S.mode==="view"&&!S.drawer&&!S.editingArea)openSite(s.id)}).addTo(S.lLayer)}
   if(S.draft&&S.draft.live)L.marker([S.draft.lat,S.draft.lon],{icon:L.divIcon({className:"lp draft",html:flagSVG(false)+'<span class="lbl">Nytt sted</span>',iconSize:[30,36],iconAnchor:[4,34]}),interactive:false,opacity:.75}).addTo(S.lLayer);
   for(const c of S.charts){if(!c.geo)continue;const k=chartCorners(c),la=k.map(p=>p[0]),lo=k.map(p=>p[1]);
@@ -545,7 +561,7 @@ function filtered(){const q=S.q.trim().toLowerCase();
   return chartSites().filter(({s})=>(!S.sp||spSiteSet().has(s.id))&&(S.acc==="alle"||s.access===S.acc||s.access==="begge")&&(!q||[s.name,s.species,s.bottom,s.notes].join(" ").toLowerCase().includes(q)))}
 function renderPins(){
   if(isLive()){renderLive();return}
-  let h=filtered().map(({s,p})=>`<button class="pin ${s._priv?"priv":""} ${S.sel===s.id?"sel":""}" data-id="${esc(s.id)}" style="left:${p[0]*100}%;top:${p[1]*100}%" aria-label="${esc(s.name)}">${flagSVG(s._priv)}${condDot(s)}${visBadge(s)}<span class="lbl">${esc(s.name)}</span></button>`).join("");
+  let h=filtered().map(({s,p})=>`<button class="pin ${siteHasPin(s)?"round":""} ${s._priv?"priv":""} ${S.sel===s.id?"sel":""}" data-id="${esc(s.id)}" style="left:${p[0]*100}%;top:${p[1]*100}%" aria-label="${esc(s.name)}">${siteMarkerHTML(s)}${condDot(s)}${visBadge(s)}<span class="lbl">${esc(s.name)}</span></button>`).join("");
   if(S.draft&&!S.draft.live&&S.draft.chartId===S.active)h+=`<span class="pin draft" style="left:${S.draft.x*100}%;top:${S.draft.y*100}%">${flagSVG(false)}<span class="lbl">Nytt sted</span></span>`;
   pinsEl.innerHTML=h;
 }
@@ -574,7 +590,7 @@ function renderListView(){
 function siteRow(s,showHome){
   const meta=[ACCESS[s.access],s.maxDepth!=null?`maks ${fnum(s.maxDepth)} m`:"",s.bottom].filter(Boolean).join(", ");
   const home=showHome&&s.chartId&&s.chartId!==S.active?S.charts.find(x=>x.id===s.chartId):null;
-  return `<button class="row" data-id="${esc(s.id)}"><span class="flagdot">${flagSVG(s._priv,16)}${condDot(s)}</span><span><span class="nm">${esc(s.name)}</span><br><span class="mt">${esc(meta)}</span>${home?`<br><span class="home">Kartblad: ${esc(home.name)}</span>`:""}</span>
+  return `<button class="row" data-id="${esc(s.id)}"><span class="flagdot">${siteMarkerHTML(s,16)}${condDot(s)}</span><span><span class="nm">${esc(s.name)}</span><br><span class="mt">${esc(meta)}</span>${home?`<br><span class="home">Kartblad: ${esc(home.name)}</span>`:""}</span>
     <span class="rt">${dots(s.rating)}${latestReport(s.id)?` <b class="vtxt">${fnum(latestReport(s.id).vis,1)} m</b>`:""}<br>${s.lastDive?"Sist "+esc(fdate(s.lastDive,true)):"Ikke logget"}</span></button>`}
 function renderList(){
   if(S.view!=="list"||!$("#siteList"))return;
@@ -694,12 +710,16 @@ function rose(sel,editable,size){
 
 /* ---------- edit ---------- */
 function renderEdit(s){
-  const v=s||{},isNew=!s;let wind=[...(v.wind||[])],rating=v.rating||0;
+  const v=s||{},isNew=!s;let wind=[...(v.wind||[])],rating=v.rating||0,sIcon=v.icon||null,sColor=v.color||null;
   const lat0=isNew?S.draft.lat:v.lat,lon0=isNew?S.draft.lon:v.lon;
   panel.innerHTML=`<form class="f" id="ef"><h2>${isNew?"Nytt dykkested":"Rediger "+esc(v.name)}</h2>
   <label for="fName">Navn</label><input type="text" id="fName" required value="${esc(v.name)}" placeholder="F.eks. Langholmen sørvegg">
   <div class="two"><div><label for="fAcc">Tilgang</label><select id="fAcc">${Object.entries(ACCESS).map(([k,t])=>`<option value="${k}" ${v.access===k?"selected":""}>${t}</option>`).join("")}</select></div>
   <div><label for="fDepth">Maks dybde (m)</label><input type="number" id="fDepth" step="0.5" min="0" value="${v.maxDepth??""}"></div></div>
+  <details class="geo"><summary>Symbol og farge på kartet</summary>
+  <label>Symbol</label>${iconPickerHTML("fIc",sIcon,"Flagg")}
+  <label>Farge</label>${colorPickerHTML("fCol",sColor,"Standard")}
+  <p class="small" id="fPrev"></p></details>
   <label for="fBottom">Bunn</label><input type="text" id="fBottom" value="${esc(v.bottom)}" placeholder="F.eks. tareskog, sandbunn, bratt fjellvegg">
   <label for="fTide">Tidevann og strøm</label><textarea id="fTide" placeholder="Når fungerer plassen? F.eks. bare rundt stillevann, sterk strøm ved springflo">${esc(v.tide)}</textarea>
   <label for="fTmode">Dykkevindu (tidevann)</label><select id="fTmode">${[["none","Ikke satt"],["high","Rundt flo"],["low","Rundt fjære"],["both","Rundt både flo og fjære"]].map(([k,t])=>`<option value="${k}" ${(v.tideMode||"none")===k?"selected":""}>${t}</option>`).join("")}</select>
@@ -718,6 +738,8 @@ function renderEdit(s){
   ${isNew?`<label>Hvem ser stedet</label><div class="radios"><label><input type="radio" name="vis" value="shared" checked> Alle på dykkekartet</label><label><input type="radio" name="vis" value="priv"> Bare meg</label></div>`:""}
   <div class="err" id="fErr"></div>
   <div class="formbtns"><button class="btn primary" id="fSave">${isNew?"Lagre dykkested":"Lagre endringer"}</button><button type="button" class="btn ghost" id="fCancel">Avbryt</button></div></form>`;
+  const prevSite=()=>{const el=$("#fPrev");if(el)el.innerHTML=`${siteMarkerHTML({icon:sIcon,color:sColor,_priv:!!v._priv},22)} Slik ser stedet ut på kartet`};prevSite();
+  wireIconPicker("fIc","Flagg",k=>{sIcon=k;prevSite()});wireColorPicker("fCol",c=>{sColor=c;prevSite()});
   const drawRose=()=>{$("#roseBox").innerHTML=rose(wind,true,150)};drawRose();
   const toggle=d=>{wind=wind.includes(d)?wind.filter(x=>x!==d):[...wind,d];drawRose();$(`#roseBox path[data-d="${d}"]`)?.focus()};
   $("#roseBox").onclick=e=>{const p=e.target.closest("path[data-d]");if(p)toggle(p.dataset.d)};
@@ -729,14 +751,14 @@ function renderEdit(s){
     const lat=num($("#fLat").value),lon=num($("#fLon").value),both=lat!=null&&lon!=null;
     const row={name:$("#fName").value.trim(),access:$("#fAcc").value,max_depth:num($("#fDepth").value),bottom:$("#fBottom").value.trim(),tide:$("#fTide").value.trim(),tide_mode:$("#fTmode").value,tide_offset:Math.round(num($("#fToff").value)??0),tide_width:Math.max(10,Math.round(num($("#fTwid").value)??60)),season:$("#fSeason").value.trim(),
       wind:DIRS.filter(d=>wind.includes(d)),hazards:$("#fHaz").value.trim(),rules:$("#fRules").value.trim(),species:$("#fSpecies").value.trim(),notes:$("#fNotes").value.trim(),rating:rating||null,
-      lat:both?lat:null,lon:both?lon:null,updated_at:new Date().toISOString()};
+      lat:both?lat:null,lon:both?lon:null,icon:sIcon,color:sColor,updated_at:new Date().toISOString()};
     try{
       const f=$("#fPhoto").files[0];if(f)row.photo_path=await uploadImage(f);
       if(isNew){row.private=panel.querySelector('input[name="vis"]:checked')?.value==="priv";row.created_by=S.user.id;
         row.chart_id=S.draft.live?null:S.draft.chartId;row.x=S.draft.live?null:S.draft.x;row.y=S.draft.live?null:S.draft.y;
-        const {data,error}=await tideSafe(r=>sb.from("sites").insert(r).select().single(),row);if(error)throw error;
+        const {data,error}=await tideSafe(r=>colSafe(x=>sb.from("sites").insert(x).select().single(),r,["icon","color"],"style.sql"),row);if(error)throw error;
         S.draft=null;S.sites.push(rowToSite(data));openSite(data.id);loadSites()}
-      else{const {error}=await tideSafe(r=>sb.from("sites").update(r).eq("id",s.id),row);if(error)throw error;await loadSites();S.view="site";renderSiteView()}
+      else{const {error}=await tideSafe(r=>colSafe(x=>sb.from("sites").update(x).eq("id",s.id),r,["icon","color"],"style.sql"),row);if(error)throw error;await loadSites();S.view="site";renderSiteView()}
     }catch(err){$("#fErr").textContent="Kunne ikke lagre: "+errMsg(err);btn.disabled=false}
   };
   $("#fName").focus();
@@ -815,8 +837,8 @@ function renderMenu(){
   <div class="menu-sec"><h3>App</h3>${isStandalone()?`<p class="small" style="margin:0">Du bruker app-versjonen.</p>`:installEvt?`<p class="small" style="margin:0 0 8px">Legg Dykkekart på hjemskjermen som en app.</p><button class="btn primary" id="mInstall">Installer app</button>`:isIOS()?`<p class="small" style="margin:0">iPhone: åpne siden i Safari, trykk Del-knappen (firkant med pil opp) og velg «Legg til på Hjem-skjerm».</p>`:`<p class="small" style="margin:0">Android: åpne siden i Chrome, trykk ⋮ og velg «Installer app» eller «Legg til på startsiden».</p>`}</div>
   <div class="menu-sec"><h3>Eksport</h3><p class="small" style="margin:0 0 8px">Alle steder med koordinater som GPX, for GPS, OsmAnd eller Google Earth.</p><button class="btn" id="mGpx">Last ned GPX</button></div>
   <div class="menu-sec"><h3>GeoJSON (QGIS)</h3><p class="small" style="margin:0 0 8px">Alle dykkesteder og områder du kan se, som GeoJSON.</p><button class="btn" id="mGeo">Last ned GeoJSON</button>
-  <label for="mGeoKind" style="display:block;margin:14px 0 3px" class="small">Importer polygoner og linjer (EPSG:4326). Type for objekter uten type:</label>
-  <select id="mGeoKind" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)">${AREA_ORDER.map(k=>`<optgroup label="${AREA_TYPES[k].name}">${Object.entries(AREA_TYPES[k].vals).map(([v,x])=>`<option value="${k}:${v}">${x[0]}</option>`).join("")}</optgroup>`).join("")}</select>
+  <label for="mGeoKind" style="display:block;margin:14px 0 3px" class="small">Importer områder, linjer og markører (EPSG:4326). Type for objekter uten type:</label>
+  <select id="mGeoKind" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)">${AREA_ORDER.map(k=>`<optgroup label="${AREA_TYPES[k].name}">${Object.entries(AREA_TYPES[k].vals).filter(([v,x])=>!x[3]).map(([v,x])=>`<option value="${k}:${v}">${x[0]}</option>`).join("")}</optgroup>`).join("")}</select>
   <input type="file" id="mGeoImp" accept=".geojson,.json,application/geo+json,application/json" style="margin-top:8px"><div id="mGeoMsg" class="small"></div></div>
   ${admin?`<div class="menu-sec"><h3>Importer fra Claude-versjonen</h3><p class="small" style="margin:0 0 8px">Velg filen <b>dykkekart-migrering.json</b>. Gjøres bare én gang.</p><input type="file" id="mImp" accept=".json,application/json"><div id="mImpMsg" class="small"></div></div>`:""}
   <div class="err" id="mErr"></div>
@@ -854,7 +876,7 @@ async function importFile(file){
     for(const s of d.sites||[]){say(`Legger inn «${s.name}»…`);
       const row={name:s.name,access:s.access||"land",max_depth:s.maxDepth??null,bottom:s.bottom||"",tide:s.tide||"",season:s.season||"",wind:s.wind||[],hazards:s.hazards||"",rules:s.rules||"",species:s.species||"",notes:s.notes||"",rating:s.rating||null,
         lat:s.lat??null,lon:s.lon??null,chart_id:cmap[s.chartId]||null,x:cmap[s.chartId]?s.x:null,y:cmap[s.chartId]?s.y:null,private:!!s.private,created_by:S.user.id};
-      const {data,error}=await tideSafe(r=>sb.from("sites").insert(r).select().single(),row);if(error)throw error;smap[s.oldId]=data.id;ns++}
+      const {data,error}=await tideSafe(r=>colSafe(x=>sb.from("sites").insert(x).select().single(),r,["icon","color"],"style.sql"),row);if(error)throw error;smap[s.oldId]=data.id;ns++}
     for(const l of d.logs||[]){if(!smap[l.siteId])continue;
       const {error}=await sb.from("logs").insert({site_id:smap[l.siteId],date:l.date,vis:l.vis??null,temp:l.temp??null,depth:l.depth??null,cond:l.cond||"",notes:l.notes||"",author:S.user.id,author_name:S.me.name});if(error)throw error;nl++}
     say(`Ferdig: ${nc} kartblad, ${ns} dykkesteder og ${nl} loggføringer importert.`);
@@ -862,23 +884,71 @@ async function importFile(file){
   }catch(err){say("Import stoppet: "+errMsg(err)+". Det som alt er lagt inn, er beholdt.")}
 }
 
-/* ---------- areas (polygons & lines) ---------- */
+/* Icons: Tabler Icons (MIT), https://tabler.io/icons, plus a few custom shellfish icons */
+const ICONS={"dykk":["Dykk","<path d=\"M4 7h12a1 1 0 0 1 1 1v4.5a2.5 2.5 0 0 1 -2.5 2.5h-.5a2 2 0 0 1 -2 -2a2 2 0 1 0 -4 0a2 2 0 0 1 -2 2h-.5a2.5 2.5 0 0 1 -2.5 -2.5v-4.5a1 1 0 0 1 1 -1\"/> <path d=\"M10 17a2 2 0 0 0 2 2h3.5a5.5 5.5 0 0 0 5.5 -5.5v-9.5\"/>"],"dykker":["Dykker","<path d=\"M19 12a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\"/> <path d=\"M2 2l3 3l1.5 4l3.5 2l6 2l1 4l2.5 3\"/> <path d=\"M11 8l4.5 1.5\"/>"],"bat":["Båt/anker","<path d=\"M12 9v12m-8 -8a8 8 0 0 0 16 0m1 0h-2m-14 0h-2\"/> <path d=\"M9 6a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/>"],"vrak":["Vrak","<path d=\"M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1\"/> <path d=\"M4 18l-1 -5h18l-2 4\"/> <path d=\"M5 13v-6h8l4 6\"/> <path d=\"M7 7v-4h-1\"/>"],"vegg":["Fjellvegg","<path d=\"M3 20h18l-6.921 -14.612a2.3 2.3 0 0 0 -4.158 0l-6.921 14.612\"/> <path d=\"M7.5 11l2 2.5l2.5 -2.5l2 3l2.5 -2\"/>"],"tare":["Tare","<path d=\"M2 9a10 10 0 1 0 20 0\"/> <path d=\"M12 19a10 10 0 0 1 10 -10\"/> <path d=\"M2 9a10 10 0 0 1 10 10\"/> <path d=\"M12 4a9.7 9.7 0 0 1 2.99 7.5\"/> <path d=\"M9.01 11.5a9.7 9.7 0 0 1 2.99 -7.5\"/>"],"gress":["Ålegras/planter","<path d=\"M7 15h10v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2v-4\"/> <path d=\"M12 9a6 6 0 0 0 -6 -6h-3v2a6 6 0 0 0 6 6h3\"/> <path d=\"M12 11a6 6 0 0 1 6 -6h3v1a6 6 0 0 1 -6 6h-3\"/> <path d=\"M12 15l0 -6\"/>"],"strom":["Strøm/drift","<path d=\"M17 10h4v4\"/> <path d=\"M3 12c.887 -1.284 2.48 -2.033 4 -2c1.52 -.033 3.113 .716 4 2s2.48 2.033 4 2c1.52 .033 3 -1 4 -2l2 -2\"/>"],"virvel":["Virvel/malstrøm","<path d=\"M21 4l-18 0\"/> <path d=\"M13 16l-6 0\"/> <path d=\"M11 20l4 0\"/> <path d=\"M6 8l14 0\"/> <path d=\"M4 12l12 0\"/>"],"bolger":["Bølger","<path d=\"M3 7c3 -2 6 -2 9 0s6 2 9 0\"/> <path d=\"M3 17c3 -2 6 -2 9 0s6 2 9 0\"/> <path d=\"M3 12c3 -2 6 -2 9 0s6 2 9 0\"/>"],"jakt":["Undervannsjakt","<path d=\"M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/> <path d=\"M7 12a5 5 0 1 0 10 0a5 5 0 1 0 -10 0\"/> <path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\"/>"],"krok":["Fiske","<path d=\"M16 9v6a5 5 0 0 1 -10 0v-4l3 3\"/> <path d=\"M14 7a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\"/> <path d=\"M16 5v-2\"/>"],"fisk":["Fisk","<path d=\"M16.69 7.44a6.973 6.973 0 0 0 -1.69 4.56c0 1.747 .64 3.345 1.699 4.571\"/> <path d=\"M2 9.504c7.715 8.647 14.75 10.265 20 2.498c-5.25 -7.761 -12.285 -6.142 -20 2.504\"/> <path d=\"M18 11v.01\"/> <path d=\"M11.5 10.5c-.667 1 -.667 2 0 3\"/>"],"bein":["Fiskebein","<path d=\"M16.69 7.44a6.973 6.973 0 0 0 -1.69 4.56a6.97 6.97 0 0 0 1.699 4.571c1.914 -.684 3.691 -2.183 5.301 -4.565c-1.613 -2.384 -3.394 -3.883 -5.312 -4.565\"/> <path d=\"M2 9.504a40.73 40.73 0 0 0 2.422 2.504a39.679 39.679 0 0 0 -2.422 2.498\"/> <path d=\"M18 11v.01\"/> <path d=\"M4.422 12h10.578\"/> <path d=\"M7 10v4\"/> <path d=\"M11 8v8\"/>"],"snorkel":["Snorkling/fridykk","<path d=\"M15 9a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/> <path d=\"M6 11l4 -2l3.5 3l-1.5 2\"/> <path d=\"M3 16.75a2.4 2.4 0 0 0 1 .25a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 1 -.25\"/>"],"natt":["Nattdykk","<path d=\"M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008\"/>"],"foto":["Foto","<path d=\"M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2\"/> <path d=\"M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\"/>"],"skole":["Nybegynner","<path d=\"M22 9l-10 -4l-10 4l10 4l10 -4v6\"/> <path d=\"M6 10.6v5.4a6 3 0 0 0 12 0v-5.4\"/>"],"dypt":["Dypt","<path d=\"M22 21h-5v-5h-5v-5h-5v-5h-5\"/> <path d=\"M18 3v7\"/> <path d=\"M15 7l3 3l3 -3\"/>"],"stjerne":["Favoritt","<path d=\"M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245\"/>"],"hjerte":["Hjerte","<path d=\"M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572\"/>"],"trofe":["Rekord","<path d=\"M8 21l8 0\"/> <path d=\"M12 17l0 4\"/> <path d=\"M7 4l10 0\"/> <path d=\"M17 4v8a5 5 0 0 1 -10 0v-8\"/> <path d=\"M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\"/> <path d=\"M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\"/>"],"diamant":["Funn/skatt","<path d=\"M6 5h12l3 5l-8.5 9.5a.7 .7 0 0 1 -1 0l-8.5 -9.5l3 -5\"/> <path d=\"M10 12l-2 -2.2l.6 -1\"/>"],"utsikt":["Attraksjon","<path d=\"M4 16a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/> <path d=\"M14 16a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/> <path d=\"M16.346 9.17l-.729 -1.261c-.16 -.248 -1.056 -.203 -1.117 .091l-.177 1.38\"/> <path d=\"M19.761 14.813l-2.84 -5.133c-.189 -.31 -.592 -.68 -1.421 -.68c-.828 0 -1.5 .448 -1.5 1v6\"/> <path d=\"M7.654 9.17l.729 -1.261c.16 -.249 1.056 -.203 1.117 .091l.177 1.38\"/> <path d=\"M4.239 14.813l2.84 -5.133c.189 -.31 .592 -.68 1.421 -.68c.828 0 1.5 .448 1.5 1v6\"/> <path d=\"M10 12h4v2h-4l0 -2\"/>"],"dyr":["Sel/oter","<path d=\"M14.7 13.5c-1.1 -2 -1.441 -2.5 -2.7 -2.5c-1.259 0 -1.736 .755 -2.836 2.747c-.942 1.703 -2.846 1.845 -3.321 3.291c-.097 .265 -.145 .677 -.143 .962c0 1.176 .787 2 1.8 2c1.259 0 3 -1 4.5 -1s3.241 1 4.5 1c1.013 0 1.8 -.823 1.8 -2c0 -.285 -.049 -.697 -.146 -.962c-.475 -1.451 -2.512 -1.835 -3.454 -3.538\"/> <path d=\"M20.188 8.082a1.039 1.039 0 0 0 -.406 -.082h-.015c-.735 .012 -1.56 .75 -1.993 1.866c-.519 1.335 -.28 2.7 .538 3.052c.129 .055 .267 .082 .406 .082c.739 0 1.575 -.742 2.011 -1.866c.516 -1.335 .273 -2.7 -.54 -3.052l-.001 0\"/> <path d=\"M9.474 9c.055 0 .109 0 .163 -.011c.944 -.128 1.533 -1.346 1.32 -2.722c-.203 -1.297 -1.047 -2.267 -1.932 -2.267c-.055 0 -.109 0 -.163 .011c-.944 .128 -1.533 1.346 -1.32 2.722c.204 1.293 1.048 2.267 1.933 2.267\"/> <path d=\"M16.456 6.733c.214 -1.376 -.375 -2.594 -1.32 -2.722a1.164 1.164 0 0 0 -.162 -.011c-.885 0 -1.728 .97 -1.93 2.267c-.214 1.376 .375 2.594 1.32 2.722c.054 .007 .108 .011 .162 .011c.885 0 1.73 -.974 1.93 -2.267\"/> <path d=\"M5.69 12.918c.816 -.352 1.054 -1.719 .536 -3.052c-.436 -1.124 -1.271 -1.866 -2.009 -1.866c-.14 0 -.277 .027 -.407 .082c-.816 .352 -1.054 1.719 -.536 3.052c.436 1.124 1.271 1.866 2.009 1.866c.14 0 .277 -.027 .407 -.082\"/>"],"boble":["Bobler/kilde","<path d=\"M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1 -1.195 10.6a4.26 4.26 0 0 1 -5.28 1.863l-3.831 2.298v-3.134a2.668 2.668 0 0 1 -1.795 -3.773a4.8 4.8 0 0 1 2.908 -8.933a5.33 5.33 0 0 1 4.287 -2.16\"/>"],"fare":["Fare","<path d=\"M12 9v4\"/> <path d=\"M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0\"/> <path d=\"M12 16h.01\"/>"],"hodeskalle":["Svært farlig","<path d=\"M12 4c4.418 0 8 3.358 8 7.5c0 1.901 -.755 3.637 -2 4.96l0 2.54a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1v-2.54c-1.245 -1.322 -2 -3.058 -2 -4.96c0 -4.142 3.582 -7.5 8 -7.5\"/> <path d=\"M10 17v3\"/> <path d=\"M14 17v3\"/> <path d=\"M8 11a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/> <path d=\"M14 11a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/>"],"forbud":["Forbud","<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\"/> <path d=\"M5.7 5.7l12.6 12.6\"/>"],"fiskeforbud":["Fiskeforbud","<path d=\"M16.69 7.44a6.973 6.973 0 0 0 -1.63 3.635\"/> <path d=\"M2 9.504c5.307 5.948 10.293 8.57 14.597 7.1m2.583 -1.449c.988 -.788 1.93 -1.836 2.82 -3.153c-3 -4.443 -6.596 -5.812 -10.564 -4.548m-2.764 1.266c-2.145 1.266 -4.378 3.215 -6.672 5.786\"/> <path d=\"M18 11v.01\"/> <path d=\"M11.153 11.169c-.287 .777 -.171 1.554 .347 2.331\"/> <path d=\"M3 3l18 18\"/>"],"las":["Stengt","<path d=\"M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6\"/> <path d=\"M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\"/> <path d=\"M8 11v-4a4 4 0 1 1 8 0v4\"/>"],"vern":["Vern","<path d=\"M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06\"/> <path d=\"M15 19l2 2l4 -4\"/>"],"inn":["Inngang","<path d=\"M13 12v.01\"/> <path d=\"M3 21h18\"/> <path d=\"M5 21v-16a2 2 0 0 1 2 -2h6m4 10.5v7.5\"/> <path d=\"M21 7h-7m3 -3l-3 3l3 3\"/>"],"ut":["Utgang","<path d=\"M13 12v.01\"/> <path d=\"M3 21h18\"/> <path d=\"M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5\"/> <path d=\"M14 7h7m-3 -3l3 3l-3 3\"/>"],"parkering":["Parkering","<path d=\"M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14\"/> <path d=\"M10 16v-8h2.667c.736 0 1.333 .895 1.333 2s-.597 2 -1.333 2h-2.667\"/>"],"boye":["Bøye/redning","<path d=\"M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\"/> <path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\"/> <path d=\"M15 15l3.35 3.35\"/> <path d=\"M9 15l-3.35 3.35\"/> <path d=\"M5.65 5.65l3.35 3.35\"/> <path d=\"M18.35 5.65l-3.35 3.35\"/>"],"fyr":["Fyr/merke","<path d=\"M12 3l2 3l2 15h-8l2 -15l2 -3\"/> <path d=\"M8 9l8 0\"/> <path d=\"M3 11l2 -2l-2 -2\"/> <path d=\"M21 11l-2 -2l2 -2\"/>"],"vind":["Vind","<path d=\"M5 8h8.5a2.5 2.5 0 1 0 -2.34 -3.24\"/> <path d=\"M3 12h15.5a2.5 2.5 0 1 1 -2.34 3.24\"/> <path d=\"M4 16h5.5a2.5 2.5 0 1 1 -2.34 3.24\"/>"],"ferskvann":["Ferskvann","<path d=\"M7.502 19.423c2.602 2.105 6.395 2.105 8.996 0c2.602 -2.105 3.262 -5.708 1.566 -8.546l-4.89 -7.26c-.42 -.625 -1.287 -.803 -1.936 -.397a1.376 1.376 0 0 0 -.41 .397l-4.893 7.26c-1.695 2.838 -1.035 6.441 1.567 8.546\"/>"],"kald":["Kaldt","<path d=\"M10 4l2 1l2 -1\"/> <path d=\"M12 2v6.5l3 1.72\"/> <path d=\"M17.928 6.268l.134 2.232l1.866 1.232\"/> <path d=\"M20.66 7l-5.629 3.25l.01 3.458\"/> <path d=\"M19.928 14.268l-1.866 1.232l-.134 2.232\"/> <path d=\"M20.66 17l-5.629 -3.25l-2.99 1.738\"/> <path d=\"M14 20l-2 -1l-2 1\"/> <path d=\"M12 22v-6.5l-3 -1.72\"/> <path d=\"M6.072 17.732l-.134 -2.232l-1.866 -1.232\"/> <path d=\"M3.34 17l5.629 -3.25l-.01 -3.458\"/> <path d=\"M4.072 9.732l1.866 -1.232l.134 -2.232\"/> <path d=\"M3.34 7l5.629 3.25l2.99 -1.738\"/>"],"oppdrett":["Oppdrett/anlegg","<path d=\"M4 12v4h16v-4l-16 0\"/> <path d=\"M6 16v4h4v-4m0 -4v-6l-2 -2l-2 2v6\"/> <path d=\"M14 16v4h4v-4m0 -4v-6l-2 -2l-2 2v6\"/>"],"verktoy":["Utstyr","<path d=\"M7 10h3v-3l-3.5 -3.5a6 6 0 0 1 8 8l6 6a2 2 0 0 1 -3 3l-6 -6a6 6 0 0 1 -8 -8l3.5 3.5\"/>"],"toalett":["Toalett","<path d=\"M3 10a3 7 0 1 0 6 0a3 7 0 1 0 -6 0\"/> <path d=\"M21 10c0 -3.866 -1.343 -7 -3 -7\"/> <path d=\"M6 3h12\"/> <path d=\"M21 10v10l-3 -1l-3 2l-3 -3l-3 2v-10\"/> <path d=\"M6 10h.01\"/>"],"telt":["Leir","<path d=\"M11 14l4 6h6l-9 -16l-9 16h6l4 -6\"/>"],"sol":["Solnedgang","<path d=\"M3 17h1m16 0h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7m-9.7 5.7a4 4 0 0 1 8 0\"/> <path d=\"M3 21l18 0\"/> <path d=\"M12 3v6l3 -3m-6 0l3 3\"/>"],"info":["Info","<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\"/> <path d=\"M12 9h.01\"/> <path d=\"M11 12h1v4h1\"/>"],"punkt":["Punkt","<path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\"/> <path d=\"M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0\"/>"],"skjell":["Kamskjell/skjell","<path d=\"M12 20.5l-7.6-10.2a9 9 0 0 1 15.2 0z\"/><path d=\"M12 20.5l-4.2-12.6\"/><path d=\"M12 20.5v-13.3\"/><path d=\"M12 20.5l4.2-12.6\"/><path d=\"M9.5 20.5h5\"/>"],"musling":["Blåskjell/musling","<path d=\"M7.2 19.6c-2.4-2.4 -.6-8.4 4-13s9.2-4.8 10.4-3.6s-.8 5.8-5.4 10.4s-6.6 8.6-9 6.2z\"/><path d=\"M8 18.8c2.4-4.4 6.6-9.6 11.6-14.8\"/>"],"kraakebolle":["Kråkebolle","<circle cx=\"12\" cy=\"12\" r=\"5\"/><path d=\"M17.6 12.0L21.6 12.0M17.0 14.4L20.6 16.2M15.5 16.4L18.0 19.5M13.2 17.5L14.1 21.4M10.8 17.5L9.9 21.4M8.5 16.4L6.0 19.5M7.0 14.4L3.4 16.2M6.4 12.0L2.4 12.0M7.0 9.6L3.4 7.8M8.5 7.6L6.0 4.5M10.8 6.5L9.9 2.6M13.2 6.5L14.1 2.6M15.5 7.6L18.0 4.5M17.0 9.6L20.6 7.8\"/><circle cx=\"12\" cy=\"12\" r=\".8\" fill=\"currentColor\"/>"]};
+/* ---------- symbols, colours and styles ---------- */
+const SWATCHES=["#1F4FA8","#00838F","#0E7A3A","#3FA34D","#C9B92B","#E8A020","#E0662B","#B3261E","#C0266D","#7B3FB5","#5D4037","#37474F"];
+function iconSVG(k,size=16,stroke="currentColor",sw=2){const ic=ICONS[k];if(!ic)return"";return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ic[1]}</svg>`}
+function pinSVG(color,icon,priv,size=30){const h=Math.round(size*38/30);
+  return `<svg width="${size}" height="${h}" viewBox="0 0 30 38" aria-hidden="true"><path d="M15 37C15 37 3 24.5 3 15A12 12 0 1 1 27 15C27 24.5 15 37 15 37Z" fill="${color}" stroke="${priv?"#C0266D":"#0F2A3F"}" stroke-width="${priv?2.6:1.2}"/><g transform="translate(7.2 7.2) scale(.65)" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${ICONS[icon]?ICONS[icon][1]:""}</g></svg>`}
+function siteHasPin(s){return !!(s.icon&&ICONS[s.icon])}
+function siteMarkerHTML(s,size=30){return siteHasPin(s)?pinSVG(s.color||(s._priv?"#C0266D":"#1F4FA8"),s.icon,s._priv,size):flagSVG(s._priv,size,s.color)}
+function siteAnchor(s){return siteHasPin(s)?{iconSize:[30,38],iconAnchor:[15,37]}:{iconSize:[30,36],iconAnchor:[4,34]}}
+function badgeHTML(color,icon,size=22,sel=false){
+  return `<span class="mbadge${sel?" sel":""}" style="width:${size}px;height:${size}px;background:${color}">${iconSVG(icon,Math.round(size*.62),"#fff",2.3)}</span>`}
+
+function iconPickerHTML(id,cur,noneLabel){
+  return `<div class="ipick" id="${id}" role="radiogroup">${noneLabel?`<button type="button" data-ic="" class="${cur?"":"on"}" title="${esc(noneLabel)}" aria-label="${esc(noneLabel)}">${noneLabel==="Flagg"?flagSVG(false,16):'<span class="small">–</span>'}</button>`:""}${Object.entries(ICONS).map(([k,v])=>`<button type="button" data-ic="${k}" class="${cur===k?"on":""}" title="${esc(v[0])}" aria-label="${esc(v[0])}">${iconSVG(k,18)}</button>`).join("")}</div><p class="small" id="${id}L" style="margin:2px 0 0">${cur&&ICONS[cur]?esc(ICONS[cur][0]):esc(noneLabel||"")}</p>`}
+function wireIconPicker(id,noneLabel,onPick){const el=$("#"+id);if(!el)return;
+  el.onclick=e=>{const b=e.target.closest("button[data-ic]");if(!b)return;el.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
+    const k=b.dataset.ic||null;$("#"+id+"L").textContent=k?ICONS[k][0]:(noneLabel||"");onPick(k)}}
+function colorPickerHTML(id,cur,defLabel){
+  const custom=cur&&!SWATCHES.includes(cur);
+  return `<div class="cpick" id="${id}"><button type="button" class="def ${cur?"":"on"}" data-c="">${esc(defLabel)}</button>${SWATCHES.map(c=>`<button type="button" data-c="${c}" class="${cur===c?"on":""}" style="background:${c}" aria-label="Farge ${c}"></button>`).join("")}<label class="small" style="display:flex;align-items:center;gap:4px;margin:0">Egen<input type="color" value="${custom?cur:"#1F4FA8"}" aria-label="Velg egen farge"></label></div>`}
+function wireColorPicker(id,onPick){const el=$("#"+id);if(!el)return;const inp=el.querySelector("input[type=color]");
+  const mark=c=>el.querySelectorAll("button").forEach(x=>x.classList.toggle("on",(x.dataset.c||"")===(c||"")&&!(c&&inp._custom)));
+  el.onclick=e=>{const b=e.target.closest("button[data-c]");if(!b)return;inp._custom=false;mark(b.dataset.c);onPick(b.dataset.c||null)};
+  inp.oninput=()=>{inp._custom=true;el.querySelectorAll("button").forEach(x=>x.classList.remove("on"));onPick(inp.value)}}
+async function colSafe(fn,row,cols,file){
+  let res=await fn(row);
+  if(res&&res.error){const m=errMsg(res.error);
+    if(/column|schema cache/i.test(m)&&cols.some(c=>m.includes(c))){const r={...row};cols.forEach(c=>delete r[c]);res=await fn(r);
+      if(!res.error)alert(`Lagret, men farge og symbol ble ikke lagret. Kjør ${file} i Supabase først.`)}}
+  return res;
+}
+/* ---------- areas (polygons, lines and markers) ---------- */
 const AREA_TYPES={
-  quality:{name:"Kvalitet",vals:{bra:["Bra","#2E9E44"],ok:["OK","#E0B020"],darlig:["Dårlig","#D0452F"]}},
-  depth:{name:"Dybde",vals:{d0:["0–10 m","#9FD3F5"],d10:["10–20 m","#4FA3E0"],d20:["20–30 m","#1F64B8"],d30:["30+ m","#0B2F6B"]}},
-  habitat:{name:"Bunntype",vals:{tare:["Tareskog","#7A6A1E"],alegras:["Ålegras","#3E8E3E"],sand:["Sand","#E3C27A"],stein:["Stein/grus","#9A8F86"],vegg:["Fjellvegg","#5E6672"],mudder:["Mudder","#6E4B2A"]}},
-  hazard:{name:"Fare",vals:{strom:["Sterk strøm","#D11A2A"],bat:["Båttrafikk","#E8551A"],garn:["Garn/teiner","#B0124F"],annet:["Annen fare","#C0392B"]}},
-  rules:{name:"Regler og vern",vals:{vern:["Verneområde","#7B3FB5"],fiskeforbud:["Fiskeforbud","#9C27B0"],forbud:["Ferdselsforbud","#4A148C"]}}
+  quality:{name:"Kvalitet",icon:"stjerne",pat:"fylt",vals:{topp:["Topp","#0E7A3A","stjerne"],bra:["Bra","#3FA34D"],ok:["Grei","#C9B92B"],middels:["Middels","#E8A020"],darlig:["Dårlig","#E0662B"],ubrukelig:["Ikke verdt det","#B3261E"]}},
+  depth:{name:"Dybde",icon:"dypt",pat:"fylt",vals:{z0:["0–3 m","#CDEBFA"],z3:["3–6 m","#A6D9F5"],z6:["6–10 m","#78C0EC"],z10:["10–15 m","#4FA3E0"],z15:["15–20 m","#2F84CF"],z20:["20–30 m","#1F64B8"],z30:["30–40 m","#144A92"],z40:["40+ m","#0B2F6B"],
+    d0:["0–10 m","#78C0EC",null,1],d10:["10–20 m","#3E92D8",null,1],d20:["20–30 m","#1F64B8",null,1],d30:["30+ m","#0B2F6B",null,1]}},
+  habitat:{name:"Bunntype",icon:"tare",pat:"fylt",vals:{stortare:["Stortareskog","#6B5A12","tare"],sukkertare:["Sukkertare","#A08C2E","tare"],tare:["Tareskog (annen)","#7A6A1E","tare"],alegras:["Ålegras","#3E8E3E","gress"],sand:["Sand","#E3C27A"],skjellsand:["Skjellsand","#EFD9A6"],stein:["Stein/grus","#9A8F86"],rullestein:["Rullestein/blokker","#7D756D"],vegg:["Fjellvegg","#5E6672","vegg"],mudder:["Mudder","#6E4B2A"],blaskjell:["Blåskjellbanke","#2F3E66"],kalkalger:["Kalkalger (rugl)","#C77DA8"],svamp:["Svamp/bløtkoraller","#E07A5F"],menneskeskapt:["Vrak/menneskeskapt","#8E8E8E","vrak"]}},
+  species:{name:"Arter",icon:"fisk",pat:"svak",vals:{kveite:["Kveite","#00838F"],torsk:["Torsk","#00695C"],sei:["Sei","#26A69A"],lyr:["Lyr","#2E7D6B"],steinbit:["Steinbit","#4E7D8C"],breiflabb:["Breiflabb","#546E7A"],flatfisk:["Flatfisk","#4DB6AC"],leppefisk:["Leppefisk","#43A047"],uer:["Uer","#E53935"],sel:["Sel/oter","#795548","dyr"],annet:["Annen art","#607D8B"]}},
+  harvest:{name:"Fiske og høsting",icon:"krok",pat:"skravert",vals:{jakt:["Undervannsjakt","#D81B60","jakt"],stangfiske:["Stangfiske","#1565C0","krok"],kamskjell:["Kamskjell","#F9A825","skjell"],harpeskjell:["Harpeskjell","#FF7043","skjell"],blaskjell:["Blåskjell","#3949AB","musling"],oskjell:["O-skjell/hjerteskjell","#8D6E63","musling"],krakebolle:["Kråkeboller","#6A1B9A","kraakebolle"],sjopolse:["Sjøpølse","#AD1457"],krabbe:["Krabbe","#EF6C00","dyr"],hummer:["Hummer","#C62828","dyr"],kongekrabbe:["Kongekrabbe","#B71C1C","dyr"]}},
+  activity:{name:"Aktivitet",icon:"dykker",pat:"svak",vals:{fridykk:["Fridykking","#1E88E5","snorkel"],snorkel:["Snorkling","#29B6F6","snorkel"],natt:["Nattdykk","#283593","natt"],foto:["Foto","#8E24AA","foto"],skole:["Nybegynner/opplæring","#43A047","skole"],dypt:["Dypdykk/teknisk","#0D47A1","dypt"],drift:["Driftdykk","#00ACC1","strom"]}},
+  rules:{name:"Regler og vern",icon:"vern",pat:"svak",dash:"prikket",vals:{vern:["Verneområde","#7B3FB5","vern"],fiskeforbud:["Fiskeforbud","#9C27B0","fiskeforbud"],forbud:["Ferdselsforbud","#4A148C","forbud"],hummer:["Hummerfredning","#AB47BC","fiskeforbud"],redskap:["Redskapsbegrensning","#8E24AA","fiskeforbud"],privat:["Privat/ingen adgang","#5E35B1","las"]}},
+  hazard:{name:"Fare",icon:"fare",pat:"skravert",dash:"stiplet",vals:{strom:["Sterk strøm","#D11A2A","strom"],virvel:["Virvler/malstrøm","#A0101E","virvel"],bat:["Båttrafikk","#E8551A","bat"],farled:["Farled/ferje","#F08A24","bat"],garn:["Garn/teiner","#B0124F"],oppdrett:["Oppdrett/anlegg","#C2185B","oppdrett"],bolger:["Bølger/dønning","#E64A19","bolger"],sikt:["Dårlig sikt/ferskvann","#8D6E63","ferskvann"],dypt:["Bratt fall/dypt","#6A1B9A","dypt"],annet:["Annen fare","#C0392B"]}},
+  point:{name:"Markører",icon:"punkt",pat:"fylt",vals:{inn:["Inngang","#2E7D32","inn"],ut:["Utgang","#558B2F","ut"],parkering:["Parkering","#1565C0","parkering"],boye:["Bøye/fortøyning","#F57C00","boye"],ankring:["Ankringsplass","#37474F","bat"],vrak:["Vrak","#5D4037","vrak"],skjaer:["Skjær/grunne","#D32F2F","fare"],attraksjon:["Attraksjon","#7B1FA2","utsikt"],toalett:["Toalett/garderobe","#00897B","toalett"],annet:["Annet punkt","#546E7A","punkt"]}},
+  custom:{name:"Egendefinert",icon:"punkt",pat:"fylt",vals:{egen:["Egendefinert","#607D8B"]}}
 };
-const AREA_ORDER=["depth","habitat","quality","rules","hazard"];
+const AREA_ORDER=["depth","habitat","quality","species","harvest","activity","rules","hazard","point","custom"];
+const PATTERNS={fylt:"Fylt",svak:"Svakt fylt",skravert:"Skravert",prikker:"Prikker",rutenett:"Rutenett",kant:"Bare kant"};
+const DASHES={heltrukket:"Heltrukket",stiplet:"Stiplet",prikket:"Prikket"};
 S.areas=[];S.selArea=null;S.areaLayers={};S.drawer=null;S.drawMenu=false;S.drawKind=null;S.draftArea=null;S.draftLayer=null;S.editingArea=null;S.areasErr=null;
-S.lastKind="quality";S.lastValue="bra";
+S.lastKind="quality";S.lastValue="bra";S.lastPointKind="point";S.lastPointValue="inn";
 try{S.hidden=new Set(JSON.parse(localStorage.getItem("dk-hidden")||"[]"))}catch(e){S.hidden=new Set()}
 function saveHidden(){try{localStorage.setItem("dk-hidden",JSON.stringify([...S.hidden]))}catch(e){}}
 function areaColor(k,v){return AREA_TYPES[k]?.vals[v]?.[1]||"#888888"}
 function areaLabel(a){const t=AREA_TYPES[a.kind];return t?(t.vals[a.value]?.[0]||a.value):a.kind}
-function rowToArea(r){return{id:r.id,name:r.name||"",kind:r.kind,value:r.value,notes:r.notes||"",geom:r.geom,siteId:r.site_id,_priv:r.private,createdBy:r.created_by,authorName:r.author_name||""}}
-function areaErr(e){const m=errMsg(e);return (e&&(e.code==="42P01"||e.code==="PGRST205"))||/areas/.test(m)&&/(does not exist|could not find)/i.test(m)?"Tabellen for områder finnes ikke ennå. Kjør areas.sql i Supabase.":m}
+function colorOf(a){return a.color||areaColor(a.kind,a.value)}
+function iconOf(a){return (a.icon&&ICONS[a.icon]&&a.icon)||AREA_TYPES[a.kind]?.vals[a.value]?.[2]||AREA_TYPES[a.kind]?.icon||"punkt"}
+function isPoint(g){return !!g&&/Point$/.test(g.type)}
+function patOf(a){return a.pattern||AREA_TYPES[a.kind]?.pat||"fylt"}
+function dashOf(a){return a.dash||AREA_TYPES[a.kind]?.dash||"heltrukket"}
+function rowToArea(r){return{id:r.id,name:r.name||"",kind:r.kind,value:r.value,notes:r.notes||"",geom:r.geom,siteId:r.site_id,_priv:r.private,createdBy:r.created_by,authorName:r.author_name||"",
+  color:r.color||null,icon:r.icon||null,pattern:r.pattern||null,dash:r.dash||null}}
+function areaErr(e){const m=errMsg(e);
+  if(/areas_kind_check|check constraint/i.test(m))return "Denne typen krever style.sql. Kjør den i Supabase.";
+  return (e&&(e.code==="42P01"||e.code==="PGRST205"))||/areas/.test(m)&&/(does not exist|could not find the table)/i.test(m)?"Tabellen for områder finnes ikke ennå. Kjør areas.sql i Supabase.":m}
 async function loadAreas(){
   const {data,error}=await cachedQ("areas",sb.from("areas").select("*"));
   if(error){S.areasErr=areaErr(error);if(S.view==="list")renderList();return}
@@ -886,24 +956,44 @@ async function loadAreas(){
   if(S.view==="list")renderList();
   else if(S.view==="area"){if(!S.areas.find(a=>a.id===S.selArea)){S.view="list";S.selArea=null;renderPanel()}else if(!S.editingArea)renderAreaBody()}
 }
-function areaStyle(kind,value,gtype,sel){
-  const c=areaColor(kind,value),line=/LineString/.test(gtype||"");
-  const st={color:c,weight:line?5:2,opacity:.95,fillColor:c,fillOpacity:line?0:(kind==="depth"?.35:.25)};
-  if(kind==="hazard")st.dashArray="8 5";if(kind==="rules")st.dashArray="2 6";
-  if(sel){st.weight+=2;st.color="#C0266D";st.fillOpacity=line?0:Math.min(.55,st.fillOpacity+.15)}
+const SVGNS="http://www.w3.org/2000/svg";
+function patFill(pat,color){
+  if(!["skravert","prikker","rutenett"].includes(pat))return null;
+  const svg=S.lmap&&S.lmap.options.renderer&&S.lmap.options.renderer._container;if(!svg)return null;
+  let defs=svg.querySelector("defs");if(!defs){defs=document.createElementNS(SVGNS,"defs");svg.insertBefore(defs,svg.firstChild)}
+  const id=`dkp-${pat}-${color.replace(/[^0-9a-z]/gi,"")}`;
+  if(!defs.querySelector("#"+id)){const p=document.createElementNS(SVGNS,"pattern");const set=(el,o)=>{for(const k in o)el.setAttribute(k,o[k]);return el};
+    set(p,{id,patternUnits:"userSpaceOnUse",width:pat==="prikker"?9:10,height:pat==="prikker"?9:10});
+    if(pat==="skravert"){p.setAttribute("patternTransform","rotate(45)");p.appendChild(set(document.createElementNS(SVGNS,"rect"),{x:0,y:0,width:3.2,height:10,fill:color}))}
+    else if(pat==="prikker")p.appendChild(set(document.createElementNS(SVGNS,"circle"),{cx:4.5,cy:4.5,r:1.9,fill:color}));
+    else p.appendChild(set(document.createElementNS(SVGNS,"path"),{d:"M0 0H10M0 0V10",stroke:color,"stroke-width":1.6,fill:"none"}));
+    defs.appendChild(p)}
+  return `url(#${id})`;
+}
+function areaStyle(a,gtype,sel){
+  const c=colorOf(a),line=/LineString/.test(gtype||""),pat=patOf(a),dash=dashOf(a);
+  const pf=line?null:patFill(pat,c);
+  const st={color:c,weight:line?5:2,opacity:.95,fillColor:pf||c,
+    fillOpacity:line?0:pf?.85:pat==="kant"?0:pat==="svak"?.12:(a.kind==="depth"?.4:.28)};
+  if(!line&&pat==="kant")st.weight=3;
+  if(dash==="stiplet")st.dashArray="8 5";else if(dash==="prikket")st.dashArray="2 6";
+  if(sel){st.weight+=2;st.color="#C0266D";if(!pf&&!line&&pat!=="kant")st.fillOpacity=Math.min(.6,st.fillOpacity+.15)}
   return st;
 }
+function pointIcon(a,sel){return L.divIcon({className:"apt",html:badgeHTML(colorOf(a),iconOf(a),24,sel),iconSize:[24,24],iconAnchor:[12,12]})}
 function areaVisible(a){if(S.hidden.has(a.kind))return false;const q=S.q.trim().toLowerCase();
   return !q||[a.name,a.notes,areaLabel(a),AREA_TYPES[a.kind]?.name].join(" ").toLowerCase().includes(q)}
 function renderAreas(){
   if(!S.lmap||S.editingArea)return;S.aLayer.clearLayers();S.areaLayers={};
-  const list=S.areas.filter(areaVisible).sort((a,b)=>AREA_ORDER.indexOf(a.kind)-AREA_ORDER.indexOf(b.kind));
-  for(const a of list){let gl;
-    try{gl=L.geoJSON({type:"Feature",geometry:a.geom,properties:{}},{style:()=>areaStyle(a.kind,a.value,a.geom.type,S.selArea===a.id)})}catch(e){continue}
-    gl.eachLayer(l=>{
-      l.on("click",ev=>{if(S.mode!=="view"||S.drawer||S.editingArea)return;L.DomEvent.stopPropagation(ev);openArea(a.id)});
-      l.bindTooltip(esc((a.name?a.name+" – ":"")+areaLabel(a)),{sticky:true});S.areaLayers[a.id]=l});
-    gl.addTo(S.aLayer)}
+  const rank=a=>AREA_ORDER.indexOf(a.kind)+(isPoint(a.geom)?100:0);
+  const list=S.areas.filter(areaVisible).sort((a,b)=>rank(a)-rank(b));
+  for(const a of list){let gl;const sel=S.selArea===a.id;
+    try{gl=L.geoJSON({type:"Feature",geometry:a.geom,properties:{}},{style:()=>areaStyle(a,a.geom.type,sel),pointToLayer:(f,ll)=>L.marker(ll,{icon:pointIcon(a,sel),keyboard:true,title:a.name||areaLabel(a)})})}catch(e){continue}
+    const click=ev=>{if(S.mode!=="view"||S.drawer||S.editingArea)return;if(ev&&ev.originalEvent)L.DomEvent.stopPropagation(ev);openArea(a.id)};
+    gl.eachLayer(l=>{l.on("click",click);l.bindTooltip(esc((a.name?a.name+" – ":"")+areaLabel(a)),{sticky:!isPoint(a.geom),direction:"top",offset:isPoint(a.geom)?[0,-10]:[0,0]});S.areaLayers[a.id]=l});
+    gl.addTo(S.aLayer);
+    if(a.icon&&!isPoint(a.geom)){try{L.marker(gl.getBounds().getCenter(),{icon:L.divIcon({className:"apt",html:badgeHTML(colorOf(a),iconOf(a),20,sel),iconSize:[20,20],iconAnchor:[10,10]}),keyboard:false}).on("click",click).addTo(S.aLayer)}catch(e){}}
+  }
 }
 function geomSize(g){
   const ll=c=>c.map(([lo,la])=>L.latLng(la,lo));
@@ -911,6 +1001,7 @@ function geomSize(g){
   const lineLen=c=>{const p=ll(c);let d=0;for(let i=1;i<p.length;i++)d+=p[i-1].distanceTo(p[i]);return d};
   const fa=m=>m<100000?`${fnum(Math.round(m))} m²`:`${fnum(m/1e6,2)} km²`,fl=m=>m<2000?`${fnum(Math.round(m))} m`:`${fnum(m/1000,2)} km`;
   try{
+    if(g.type==="Point")return["Posisjon",`${g.coordinates[1].toFixed(5)}, ${g.coordinates[0].toFixed(5)}`];
     if(g.type==="Polygon"){const a=polyArea(g.coordinates);return a!=null?["Areal",fa(a)]:null}
     if(g.type==="MultiPolygon"){let s=0;for(const p of g.coordinates){const a=polyArea(p);if(a==null)return null;s+=a}return["Areal",fa(s)]}
     if(g.type==="LineString")return["Lengde",fl(lineLen(g.coordinates))];
@@ -925,16 +1016,17 @@ function updateDrawUI(){
   $("#drawBtn").hidden=!live||S.drawMenu||!!S.drawer||!!S.editingArea;
   $("#drawBar").hidden=!(S.drawMenu||S.drawer);
   $("#dPick").hidden=!S.drawMenu;
-  const multi=!!S.drawer&&S.drawKind!=="rect";$("#dUndo").hidden=!multi;$("#dDone").hidden=!multi;
+  const multi=!!S.drawer&&(S.drawKind==="poly"||S.drawKind==="line");$("#dUndo").hidden=!multi;$("#dDone").hidden=!multi;
 }
 function startDraw(kind){
   S.drawMenu=false;S.drawKind=kind;const c=areaColor(S.lastKind,S.lastValue);
   const sh={color:c,weight:kind==="line"?5:2,fillColor:c,fillOpacity:.25};
   S.drawer=kind==="poly"?new L.Draw.Polygon(S.lmap,{shapeOptions:sh,allowIntersection:false,showArea:false})
     :kind==="line"?new L.Draw.Polyline(S.lmap,{shapeOptions:{...sh,fill:false},showLength:false})
+    :kind==="point"?new L.Draw.Marker(S.lmap,{icon:pointIcon({kind:S.lastPointKind,value:S.lastPointValue},false)})
     :new L.Draw.Rectangle(S.lmap,{shapeOptions:sh,showArea:false});
   S.drawer.enable();
-  $("#hint").textContent=kind==="rect"?"Klikk og dra på kartet for å tegne rektangelet.":kind==="poly"?"Klikk hjørnene. Klikk første punkt eller «Ferdig» for å avslutte.":"Klikk punktene langs linjen. Trykk «Ferdig» når du er ferdig.";
+  $("#hint").textContent=kind==="rect"?"Klikk og dra på kartet for å tegne rektangelet.":kind==="poly"?"Klikk hjørnene. Klikk første punkt eller «Ferdig» for å avslutte.":kind==="point"?"Klikk på kartet der markøren skal stå.":"Klikk punktene langs linjen. Trykk «Ferdig» når du er ferdig.";
   updateDrawUI();
 }
 function cancelDraw(){
@@ -947,6 +1039,7 @@ $("#drawBtn").onclick=()=>{if(!window.L||!L.Draw){showErr("tegneverktøyet laste
 $("#dPoly").onclick=()=>startDraw("poly");
 $("#dLine").onclick=()=>startDraw("line");
 $("#dRect").onclick=()=>startDraw("rect");
+$("#dPoint").onclick=()=>startDraw("point");
 $("#dUndo").onclick=()=>{try{S.drawer?.deleteLastVertex()}catch(e){}};
 $("#dDone").onclick=()=>{try{S.drawer?.completeShape()}catch(e){}};
 $("#dCancel").onclick=cancelDraw;
@@ -956,6 +1049,7 @@ function hookDrawEvents(){
     d.polyline.tooltip={start:"Klikk for å starte linjen.",cont:"Klikk for neste punkt.",end:"Klikk siste punkt igjen, eller trykk Ferdig."};
     d.polyline.error="<strong>Feil:</strong> kantene kan ikke krysse hverandre.";
     d.rectangle.tooltip={start:"Klikk og dra for å tegne."};d.simpleshape.tooltip={end:"Slipp for å avslutte."};
+    d.marker.tooltip={start:"Klikk for å plassere markøren."};
     L.drawLocal.edit.handlers.edit.tooltip={text:"Dra i hjørnene for å endre formen.",subtext:"Klikk et hjørne for å fjerne det."}}
   S.lmap.on(L.Draw.Event.CREATED,e=>{
     S.drawer=null;$("#hint").textContent="";updateDrawUI();
@@ -971,26 +1065,28 @@ function openArea(id){setTimeout(mobileReveal,0);
   cancelShapeEdit();clearDraft();S.selArea=id;S.sel=null;S.logsFor=null;S.view="area";
   renderAreas();renderPins();renderAreaView();
 }
-function zoomToArea(a){if(!isLive())switchChart("live");try{const b=(S.areaLayers[a.id]||L.geoJSON(a.geom)).getBounds();S.lmap.fitBounds(b,{maxZoom:16,padding:[30,30]})}catch(e){}}
+function zoomToArea(a){if(!isLive())switchChart("live");try{if(isPoint(a.geom)){S.lmap.setView([a.geom.coordinates[1],a.geom.coordinates[0]],Math.max(S.lmap.getZoom(),15));return}
+  S.lmap.fitBounds(L.geoJSON(a.geom).getBounds(),{maxZoom:16,padding:[30,30]})}catch(e){}}
 function renderAreaView(){
   panel.innerHTML=`<button class="btn ghost back" id="back">Alle steder</button><div id="areaBody"></div>`;
   $("#back").onclick=()=>{cancelShapeEdit();S.view="list";S.selArea=null;renderAreas();renderPanel()};
   renderAreaBody();
 }
+function areaBadge(a,size=16){return isPoint(a.geom)||a.icon?badgeHTML(colorOf(a),iconOf(a),size+2):`<i class="sw" style="background:${colorOf(a)}${patOf(a)==="kant"?";background:none;border:2px solid "+colorOf(a):""}"></i>`}
 function renderAreaBody(){
   const a=S.areas.find(x=>x.id===S.selArea);if(!a||!$("#areaBody"))return;
-  const t=AREA_TYPES[a.kind],site=a.siteId&&getSite(a.siteId),size=geomSize(a.geom);
+  const t=AREA_TYPES[a.kind],site=a.siteId&&getSite(a.siteId),size=geomSize(a.geom),pt=isPoint(a.geom);
   const mine=a.createdBy===S.user.id,canDel=mine||(S.me.role==="admin"&&!a._priv);
   const lay=S.areaLayers[a.id],canShape=!!(lay&&lay.editing);
-  const editing=S.editingArea===a.id;
+  const editing=S.editingArea===a.id,noun=pt?"markøren":"området";
   $("#areaBody").innerHTML=`<h2>${esc(a.name||areaLabel(a))}</h2>
-    <div class="tags"><span class="tag"><i class="sw" style="background:${areaColor(a.kind,a.value)}"></i> ${esc(t?t.name:a.kind)}: ${esc(areaLabel(a))}</span>${a._priv?'<span class="tag p">Bare for deg</span>':""}</div>
-    ${size?`<dl class="facts"><div><dt>${size[0]}</dt><dd>${size[1]}</dd></div>${site?`<div><dt>Dykkested</dt><dd><button class="linkbtn" style="margin:0" id="goSite">${esc(site.name)}</button></dd></div>`:""}</dl>`:""}
+    <div class="tags"><span class="tag">${areaBadge(a)} ${esc(t?t.name:a.kind)}: ${esc(areaLabel(a))}</span>${a._priv?'<span class="tag p">Bare for deg</span>':""}</div>
+    ${size||site?`<dl class="facts">${size?`<div><dt>${size[0]}</dt><dd>${size[1]}</dd></div>`:""}${site?`<div><dt>Dykkested</dt><dd><button class="linkbtn" style="margin:0" id="goSite">${esc(site.name)}</button></dd></div>`:""}</dl>`:""}
     ${a.notes?`<div class="sec"><h3>Notater</h3><p>${esc(a.notes)}</p></div>`:""}
-    <p class="small">Tegnet av ${mine?"deg":esc(a.authorName||"et medlem")}.</p>
+    <p class="small">${pt?"Plassert":"Tegnet"} av ${mine?"deg":esc(a.authorName||"et medlem")}.</p>
     <div class="actions">${editing
-      ?`<button class="btn primary" id="shSave">Lagre form</button><button class="btn ghost" id="shCancel">Avbryt</button>`
-      :`<button class="btn" id="arEdit">Rediger</button>${canShape?'<button class="btn" id="arShape">Endre form</button>':""}<button class="btn" id="arZoom">Zoom til</button>${canDel?'<button class="btn ghost danger" id="arDel">Slett området</button>':""}`}</div>`;
+      ?`<button class="btn primary" id="shSave">Lagre ${pt?"plassering":"form"}</button><button class="btn ghost" id="shCancel">Avbryt</button>`
+      :`<button class="btn" id="arEdit">Rediger</button>${canShape?`<button class="btn" id="arShape">${pt?"Flytt":"Endre form"}</button>`:""}<button class="btn" id="arZoom">Zoom til</button>${canDel?`<button class="btn ghost danger" id="arDel">Slett ${noun}</button>`:""}`}</div>`;
   const gs=$("#goSite");if(gs)gs.onclick=()=>openSite(site.id);
   if(editing){$("#shSave").onclick=()=>saveShape(a);$("#shCancel").onclick=()=>{cancelShapeEdit();renderAreaBody()};return}
   $("#arEdit").onclick=()=>{S.view="areaedit";renderAreaEdit(a)};
@@ -1002,14 +1098,14 @@ function startShapeEdit(a){
   if(!isLive())switchChart("live");
   const l=S.areaLayers[a.id];if(!l||!l.editing){alert("Denne formen kan ikke endres her.");return}
   cancelDraw();setMode("view");S.editingArea=a.id;l.editing.enable();
-  $("#hint").textContent="Dra i hjørnene for å endre formen. Klikk et hjørne for å fjerne det.";
+  $("#hint").textContent=isPoint(a.geom)?"Dra markøren til ny plassering.":"Dra i hjørnene for å endre formen. Klikk et hjørne for å fjerne det.";
   updateDrawUI();renderAreaBody();
 }
 async function saveShape(a){
   const l=S.areaLayers[a.id];if(!l)return;const g=l.toGeoJSON().geometry;
   try{l.editing.disable()}catch(e){}S.editingArea=null;$("#hint").textContent="";updateDrawUI();
   const {error}=await sb.from("areas").update({geom:g,updated_at:new Date().toISOString()}).eq("id",a.id);
-  if(error)alert("Kunne ikke lagre formen: "+areaErr(error));
+  if(error)alert("Kunne ikke lagre: "+areaErr(error));
   await loadAreas();renderAreaBody();
 }
 function cancelShapeEdit(){
@@ -1017,45 +1113,60 @@ function cancelShapeEdit(){
   S.editingArea=null;if(S.mode==="view")$("#hint").textContent="";updateDrawUI();renderAreas();
 }
 async function deleteArea(a){
-  if(!confirm(`Slette området «${a.name||areaLabel(a)}»?`))return;
+  if(!confirm(`Slette «${a.name||areaLabel(a)}»?`))return;
   const {error}=await sb.from("areas").delete().eq("id",a.id);
   if(error){alert("Kunne ikke slette: "+areaErr(error));return}
   S.selArea=null;S.view="list";await loadAreas();renderPanel();
 }
 function renderAreaEdit(a){
-  const isNew=!a;let kind=a?a.kind:S.lastKind,value=a?a.value:S.lastValue;
+  const isNew=!a,geom=isNew?S.draftArea:a.geom,pt=isPoint(geom),line=/LineString/.test(geom?.type||"");
+  let kind=a?a.kind:(pt?S.lastPointKind:S.lastKind),value=a?a.value:(pt?S.lastPointValue:S.lastValue);
+  if(!AREA_TYPES[kind]){kind=pt?"point":"quality";value=null}
+  let color=a?.color||null,icon=a?.icon||null,pattern=a?.pattern||null,dash=a?.dash||null;
   const sites=S.sites.slice().sort((x,y)=>(x.name||"").localeCompare(y.name||"","nb"));
-  panel.innerHTML=`<form class="f" id="arForm"><h2>${isNew?"Nytt område":"Rediger område"}</h2>
-    <label for="arKind">Type</label><select id="arKind">${AREA_ORDER.map(k=>`<option value="${k}" ${k===kind?"selected":""}>${AREA_TYPES[k].name}</option>`).join("")}</select>
-    <label for="arVal">Verdi</label><select id="arVal"></select>
+  const noun=pt?"markør":"område";
+  panel.innerHTML=`<form class="f" id="arForm"><h2>${isNew?(pt?"Ny markør":"Nytt område"):"Rediger "+noun}</h2>
+    <div class="two"><div><label for="arKind">Type</label><select id="arKind">${AREA_ORDER.map(k=>`<option value="${k}" ${k===kind?"selected":""}>${AREA_TYPES[k].name}</option>`).join("")}</select></div>
+    <div><label for="arVal">Verdi</label><select id="arVal"></select></div></div>
     <p class="small" id="arSw"></p>
-    <label for="arNm">Navn (valgfritt)</label><input type="text" id="arNm" value="${esc(a?.name)}" placeholder="F.eks. Tareskogen sør for Vågøya">
-    <label for="arNotes">Notater</label><textarea id="arNotes" placeholder="Hva er spesielt med området">${esc(a?.notes)}</textarea>
+    <label for="arNm">Navn${kind==="custom"?"":" (valgfritt)"}</label><input type="text" id="arNm" value="${esc(a?.name)}" placeholder="${pt?"F.eks. Inngang ved naustet":"F.eks. Tareskogen sør for Vågøya"}">
+    <label>Farge</label>${colorPickerHTML("arCol",color,"Standard for typen")}
+    ${!pt&&!line?`<div class="two"><div><label for="arPat">Fyll</label><select id="arPat">${Object.entries(PATTERNS).map(([k,t])=>`<option value="${k}">${t}</option>`).join("")}</select></div><div><label for="arDash">Kant</label><select id="arDash">${Object.entries(DASHES).map(([k,t])=>`<option value="${k}">${t}</option>`).join("")}</select></div></div>`
+      :line?`<label for="arDash">Linje</label><select id="arDash">${Object.entries(DASHES).map(([k,t])=>`<option value="${k}">${t}</option>`).join("")}</select>`:""}
+    <details class="geo" ${pt||icon?"open":""}><summary>Symbol${pt?"":" (vises midt i området)"}</summary>${iconPickerHTML("arIc",icon,pt?"Standard for typen":"Ingen")}</details>
+    <label for="arNotes">Notater</label><textarea id="arNotes" placeholder="Hva er spesielt her">${esc(a?.notes)}</textarea>
     <label for="arSite">Hører til dykkested (valgfritt)</label><select id="arSite"><option value="">Ingen</option>${sites.map(s=>`<option value="${esc(s.id)}" ${a&&a.siteId===s.id?"selected":""}>${esc(s.name)}</option>`).join("")}</select>
-    ${isNew?`<label>Hvem ser området</label><div class="radios"><label><input type="radio" name="arVis" value="shared" checked> Alle på dykkekartet</label><label><input type="radio" name="arVis" value="priv"> Bare meg</label></div>`:""}
+    ${isNew?`<label>Hvem ser ${pt?"markøren":"området"}</label><div class="radios"><label><input type="radio" name="arVis" value="shared" checked> Alle på dykkekartet</label><label><input type="radio" name="arVis" value="priv"> Bare meg</label></div>`:""}
     <div class="err" id="arErr"></div>
-    <div class="formbtns"><button class="btn primary" id="arSave">${isNew?"Lagre området":"Lagre endringer"}</button><button type="button" class="btn ghost" id="arCancel">Avbryt</button></div></form>`;
-  const restyle=()=>{
-    $("#arSw").innerHTML=`<i class="sw" style="background:${areaColor(kind,value)}"></i> Slik vises det på kartet`;
-    if(isNew&&S.draftLayer&&S.draftLayer.setStyle)S.draftLayer.setStyle(areaStyle(kind,value,S.draftArea.type));
-  };
-  const fillVals=()=>{const vs=AREA_TYPES[kind].vals;if(!vs[value])value=Object.keys(vs)[0];
-    $("#arVal").innerHTML=Object.entries(vs).map(([k,v])=>`<option value="${k}" ${k===value?"selected":""}>${v[0]}</option>`).join("");restyle()};
+    <div class="formbtns"><button class="btn primary" id="arSave">${isNew?"Lagre":"Lagre endringer"}</button><button type="button" class="btn ghost" id="arCancel">Avbryt</button></div></form>`;
+  const cur=()=>({kind,value,color,icon,pattern,dash});
+  const restyle=()=>{const o=cur();
+    $("#arSw").innerHTML=`${areaBadge({...o,geom},16)} Slik vises ${pt?"markøren":"det"} på kartet`;
+    const ps=$("#arPat");if(ps)ps.value=patOf(o);const ds=$("#arDash");if(ds)ds.value=dashOf(o);
+    if(isNew&&S.draftLayer){if(S.draftLayer.setStyle)S.draftLayer.setStyle(areaStyle(o,geom.type));else if(S.draftLayer.setIcon)S.draftLayer.setIcon(pointIcon(o,false))}};
+  const fillVals=()=>{const vs=AREA_TYPES[kind].vals;if(!vs[value]||(vs[value][3]&&!(a&&a.kind===kind&&a.value===value)))value=Object.keys(vs).find(k=>!vs[k][3]);
+    $("#arVal").innerHTML=Object.entries(vs).filter(([k,v])=>!v[3]||k===value).map(([k,v])=>`<option value="${k}" ${k===value?"selected":""}>${v[0]}</option>`).join("");restyle()};
   fillVals();
-  $("#arKind").onchange=e=>{kind=e.target.value;fillVals()};
+  $("#arKind").onchange=e=>{kind=e.target.value;pattern=null;dash=null;fillVals()};
   $("#arVal").onchange=e=>{value=e.target.value;restyle()};
+  const ps=$("#arPat");if(ps)ps.onchange=e=>{pattern=e.target.value===AREA_TYPES[kind].pat?null:e.target.value;restyle()};
+  const ds=$("#arDash");if(ds)ds.onchange=e=>{dash=e.target.value===(AREA_TYPES[kind].dash||"heltrukket")?null:e.target.value;restyle()};
+  wireColorPicker("arCol",c=>{color=c;restyle()});
+  wireIconPicker("arIc",pt?"Standard for typen":"Ingen",k=>{icon=k;restyle()});
   $("#arCancel").onclick=()=>{if(isNew){clearDraft();S.view="list";renderPanel()}else{S.view="area";renderAreaView()}};
   $("#arForm").onsubmit=async e=>{
     e.preventDefault();const btn=$("#arSave");btn.disabled=true;$("#arErr").textContent="";
-    const row={name:$("#arNm").value.trim(),kind,value,notes:$("#arNotes").value.trim(),site_id:$("#arSite").value||null,updated_at:new Date().toISOString()};
+    const row={name:$("#arNm").value.trim(),kind,value,notes:$("#arNotes").value.trim(),site_id:$("#arSite").value||null,color,icon,pattern,dash,updated_at:new Date().toISOString()};
     try{
+      if(kind==="custom"&&!row.name)throw{message:"Gi egendefinerte områder et navn, så det er lett å se hva de betyr."};
       if(isNew){
-        if(!S.draftArea)throw{message:"Ingen form å lagre. Tegn området på nytt."};
+        if(!S.draftArea)throw{message:"Ingen form å lagre. Tegn på nytt."};
         Object.assign(row,{geom:S.draftArea,private:panel.querySelector('input[name="arVis"]:checked')?.value==="priv",created_by:S.user.id,author_name:S.me.name});
-        const {data,error}=await sb.from("areas").insert(row).select().single();if(error)throw error;
-        S.lastKind=kind;S.lastValue=value;clearDraft();S.areas.push(rowToArea(data));openArea(data.id);loadAreas();
+        const {data,error}=await colSafe(r=>sb.from("areas").insert(r).select().single(),row,["color","icon","pattern","dash"],"style.sql");if(error)throw error;
+        if(pt){S.lastPointKind=kind;S.lastPointValue=value}else{S.lastKind=kind;S.lastValue=value}
+        clearDraft();S.areas.push(rowToArea(data));openArea(data.id);loadAreas();
       }else{
-        const {error}=await sb.from("areas").update(row).eq("id",a.id);if(error)throw error;
+        const {error}=await colSafe(r=>sb.from("areas").update(r).eq("id",a.id),row,["color","icon","pattern","dash"],"style.sql");if(error)throw error;
         await loadAreas();S.view="area";renderAreaView();
       }
     }catch(err){$("#arErr").textContent="Kunne ikke lagre: "+areaErr(err);btn.disabled=false}
@@ -1063,24 +1174,34 @@ function renderAreaEdit(a){
   $("#arNm").focus();
 }
 function areaRow(a){
-  return `<button class="row" data-area="${esc(a.id)}"><span class="flagdot"><i class="sw" style="background:${areaColor(a.kind,a.value)}"></i></span><span><span class="nm">${esc(a.name||areaLabel(a))}</span><br><span class="mt">${esc(AREA_TYPES[a.kind]?.name||a.kind)}: ${esc(areaLabel(a))}</span></span>${a._priv?'<span class="rt"><span class="tag p">Bare deg</span></span>':""}</button>`;
+  return `<button class="row" data-area="${esc(a.id)}"><span class="flagdot">${areaBadge(a)}</span><span><span class="nm">${esc(a.name||areaLabel(a))}</span><br><span class="mt">${esc(AREA_TYPES[a.kind]?.name||a.kind)}: ${esc(areaLabel(a))}</span></span>${a._priv?'<span class="rt"><span class="tag p">Bare deg</span></span>':""}</button>`;
+}
+function legendHTML(){
+  const used={};for(const a of S.areas){if(S.hidden.has(a.kind))continue;const k=a.kind+":"+a.value+":"+(a.color||"")+":"+(isPoint(a.geom)||a.icon?iconOf(a):"");if(!used[k])used[k]=a}
+  const items=Object.values(used).sort((a,b)=>AREA_ORDER.indexOf(a.kind)-AREA_ORDER.indexOf(b.kind)||areaLabel(a).localeCompare(areaLabel(b),"nb"));
+  if(!items.length)return"";let last=null,h="";
+  for(const a of items){if(a.kind!==last){h+=`<div class="lgh">${esc(AREA_TYPES[a.kind]?.name||a.kind)}</div>`;last=a.kind}
+    h+=`<span class="lgi">${areaBadge(a,12)} ${esc(a.kind==="custom"&&a.name?a.name:areaLabel(a))}</span>`}
+  return `<details class="geo lgd"><summary>Tegnforklaring</summary>${h}</details>`;
 }
 function renderAreaList(){
   const el=$("#areaList");if(!el)return;
-  if(!isLive()){el.innerHTML=`<p class="small" style="margin-top:18px">Områder vises og tegnes på Sjøkart-fanen.</p>`;return}
+  if(!isLive()){el.innerHTML=`<p class="small" style="margin-top:18px">Områder og markører vises og tegnes på Sjøkart-fanen.</p>`;return}
   const counts={};S.areas.forEach(a=>counts[a.kind]=(counts[a.kind]||0)+1);
   const vis=S.areas.filter(areaVisible).sort((a,b)=>AREA_ORDER.indexOf(a.kind)-AREA_ORDER.indexOf(b.kind)||(a.name||areaLabel(a)).localeCompare(b.name||areaLabel(b),"nb"));
-  el.innerHTML=`<div class="unpos"><h3>Områder</h3>
+  const kinds=AREA_ORDER.filter(k=>counts[k]||!["custom"].includes(k));
+  el.innerHTML=`<div class="unpos"><h3>Områder og markører</h3>
     ${S.areasErr?`<p class="err">${esc(S.areasErr)}</p>`:""}
-    <div class="chips" id="kindChips">${AREA_ORDER.map(k=>`<button class="chip ${S.hidden.has(k)?"":"on"}" data-k="${k}" aria-pressed="${!S.hidden.has(k)}">${AREA_TYPES[k].name}${counts[k]?` ${counts[k]}`:""}</button>`).join("")}</div>
+    <div class="chips" id="kindChips">${kinds.map(k=>`<button class="chip ${S.hidden.has(k)?"":"on"}" data-k="${k}" aria-pressed="${!S.hidden.has(k)}">${AREA_TYPES[k].name}${counts[k]?` ${counts[k]}`:""}</button>`).join("")}</div>
     <p class="small" style="margin:-4px 0 6px">Trykk på en type for å vise eller skjule den.</p>
-    ${vis.length?vis.map(areaRow).join(""):`<p class="emptytxt">${S.areas.length?"Ingen synlige områder.":"Ingen områder ennå. Trykk «Tegn område» under kartet."}</p>`}</div>`;
+    ${legendHTML()}
+    ${vis.length?vis.map(areaRow).join(""):`<p class="emptytxt">${S.areas.length?"Ingen synlige områder.":"Ingen områder ennå. Trykk «Tegn» under kartet."}</p>`}</div>`;
   $("#kindChips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;const k=b.dataset.k;S.hidden.has(k)?S.hidden.delete(k):S.hidden.add(k);saveHidden();renderAreas();renderAreaList()};
   el.querySelectorAll("[data-area]").forEach(r=>r.onclick=()=>{const a=S.areas.find(x=>x.id===r.dataset.area);if(!a)return;openArea(a.id);zoomToArea(a)});
 }
 function linkedAreasHTML(s){
   const L2=S.areas.filter(a=>a.siteId===s.id);if(!L2.length)return"";
-  return `<div class="sec"><h3>Områder</h3>${L2.map(a=>`<button class="btn ghost" style="padding:2px 6px;margin:0 4px 4px 0" data-goarea="${esc(a.id)}"><i class="sw" style="background:${areaColor(a.kind,a.value)}"></i> ${esc(a.name||areaLabel(a))}</button>`).join("")}</div>`;
+  return `<div class="sec"><h3>Områder og markører</h3>${L2.map(a=>`<button class="btn ghost" style="padding:2px 6px;margin:0 4px 4px 0" data-goarea="${esc(a.id)}">${areaBadge(a,12)} ${esc(a.name||areaLabel(a))}</button>`).join("")}</div>`;
 }
 panel.addEventListener("click",e=>{const b=e.target.closest("[data-goarea]");if(!b)return;const a=S.areas.find(x=>x.id===b.dataset.goarea);if(!a)return;if(!isLive())switchChart("live");openArea(a.id);zoomToArea(a)});
 
@@ -1089,8 +1210,8 @@ function download(name,text,type){const a=document.createElement("a");a.href=URL
 function downloadGeoJSON(){
   const feats=[];
   for(const s of S.sites)if(s.lat!=null&&s.lon!=null)feats.push({type:"Feature",geometry:{type:"Point",coordinates:[s.lon,s.lat]},
-    properties:{layer:"dykkested",name:s.name,access:ACCESS[s.access]||s.access,max_depth:s.maxDepth,bottom:s.bottom,tide:s.tide,season:s.season,wind:(s.wind||[]).join(","),hazards:s.hazards,rules:s.rules,species:s.species,notes:s.notes,rating:s.rating,log_count:s.logCount,last_dive:s.lastDive,private:s._priv}});
-  for(const a of S.areas)feats.push({type:"Feature",geometry:a.geom,properties:{layer:"omrade",name:a.name,kind:a.kind,kind_name:AREA_TYPES[a.kind]?.name,value:a.value,value_name:areaLabel(a),notes:a.notes,site:a.siteId?(getSite(a.siteId)?.name||""):"",private:a._priv}});
+    properties:{layer:"dykkested",name:s.name,access:ACCESS[s.access]||s.access,max_depth:s.maxDepth,bottom:s.bottom,tide:s.tide,season:s.season,wind:(s.wind||[]).join(","),hazards:s.hazards,rules:s.rules,species:s.species,notes:s.notes,rating:s.rating,log_count:s.logCount,last_dive:s.lastDive,icon:s.icon,color:s.color,private:s._priv}});
+  for(const a of S.areas)feats.push({type:"Feature",geometry:a.geom,properties:{layer:isPoint(a.geom)?"markor":"omrade",name:a.name,kind:a.kind,kind_name:AREA_TYPES[a.kind]?.name,value:a.value,value_name:areaLabel(a),color:colorOf(a),icon:a.icon,pattern:a.pattern,dash:a.dash,notes:a.notes,site:a.siteId?(getSite(a.siteId)?.name||""):"",private:a._priv}});
   download("dykkekart.geojson",JSON.stringify({type:"FeatureCollection",features:feats},null,1),"application/geo+json");
 }
 async function importGeoJSON(file,fallback){
@@ -1100,15 +1221,18 @@ async function importGeoJSON(file,fallback){
     const feats=d.type==="FeatureCollection"?d.features:d.type==="Feature"?[d]:d.type?[{type:"Feature",geometry:d,properties:{}}]:[];
     const [fk,fv]=fallback.split(":");const rows=[];let skipped=0;
     const firstCoord=g=>{let c=g.coordinates;while(Array.isArray(c)&&Array.isArray(c[0]))c=c[0];return c};
-    for(const f of feats){const g=f&&f.geometry;
-      if(!g||!/^(Multi)?(Polygon|LineString)$/.test(g.type)){skipped++;continue}
+    const hex=v=>/^#[0-9a-f]{6}$/i.test(String(v||""))?v:null;
+    for(const f of feats){const g=f&&f.geometry;const p=f&&f.properties||{};
+      if(!g||!/^(Multi)?(Polygon|LineString|Point)$/.test(g.type)||p.layer==="dykkested"){skipped++;continue}
       const c=firstCoord(g);if(!c||Math.abs(c[0])>180||Math.abs(c[1])>90)throw{message:"Koordinatene ser ikke ut som grader. Eksporter fra QGIS med koordinatsystem EPSG:4326 (WGS 84)."};
-      const p=f.properties||{};const k=AREA_TYPES[p.kind]&&AREA_TYPES[p.kind].vals[p.value]?p.kind:fk,v=k===p.kind?p.value:fv;
-      rows.push({name:String(p.name||p.navn||p.Name||"").slice(0,200),kind:k,value:v,notes:String(p.notes||p.notater||""),geom:g,private:false,created_by:S.user.id,author_name:S.me.name})}
-    if(!rows.length){say(`Fant ingen polygoner eller linjer${skipped?` (${skipped} andre objekter hoppet over)`:""}.`);return}
-    say(`Legger inn ${rows.length} områder…`);
-    for(let i=0;i<rows.length;i+=200){const {error}=await sb.from("areas").insert(rows.slice(i,i+200));if(error)throw error}
-    say(`Ferdig: ${rows.length} ${rows.length===1?"område":"områder"} importert${skipped?`, ${skipped} punkter eller andre objekter hoppet over`:""}.`);
+      const ok=AREA_TYPES[p.kind]&&AREA_TYPES[p.kind].vals[p.value];const k=ok?p.kind:fk,v=ok?p.value:fv;
+      const col=hex(p.color);
+      rows.push({name:String(p.name||p.navn||p.Name||"").slice(0,200),kind:k,value:v,notes:String(p.notes||p.notater||""),geom:g,private:false,created_by:S.user.id,author_name:S.me.name,
+        color:col&&col.toLowerCase()!==areaColor(k,v).toLowerCase()?col:null,icon:ICONS[p.icon]?p.icon:null,pattern:PATTERNS[p.pattern]?p.pattern:null,dash:DASHES[p.dash]?p.dash:null})}
+    if(!rows.length){say(`Fant ingen områder, linjer eller markører${skipped?` (${skipped} objekter hoppet over)`:""}.`);return}
+    say(`Legger inn ${rows.length} objekter…`);
+    for(let i=0;i<rows.length;i+=200){const {error}=await colSafe(r=>sb.from("areas").insert(r),rows.slice(i,i+200),["color","icon","pattern","dash"],"style.sql");if(error)throw error}
+    say(`Ferdig: ${rows.length} ${rows.length===1?"objekt":"objekter"} importert${skipped?`, ${skipped} hoppet over (dykkesteder eller ukjente objekter)`:""}.`);
     await loadAreas();
   }catch(err){say("Import stoppet: "+areaErr(err))}
 }
