@@ -388,6 +388,9 @@ body.mapmax .recbar{display:inline-flex}
 .htx{display:flex;flex-direction:column;gap:1px;padding:7px 9px 9px;min-width:0}
 .htx b{font-size:15px}
 .htx .small{margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acl{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(84,110,122,.25)}
+.acl span{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#546E7A;color:#fff;font:700 12px/1 Barlow,system-ui,sans-serif;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.zoomnote{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:900;background:rgba(15,42,63,.82);color:#fff;font-size:12.5px;font-weight:600;padding:4px 12px;border-radius:999px;pointer-events:none;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -396,7 +399,7 @@ body.mapmax .recbar{display:inline-flex}
 <header class="top">
   <div class="brand">
     <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver">v14</span>
+    <h1>Dykkekart</h1><span class="ver">v15</span>
   </div>
   <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
@@ -407,6 +410,7 @@ body.mapmax .recbar{display:inline-flex}
 <main class="layout">
   <section class="mapcol">
     <div id="lmap"></div>
+    <div id="zoomNote" class="zoomnote" hidden>Zoom inn for parkering og innganger</div>
     <div id="gWrap" class="gwrap"><input id="gSearch" type="search" placeholder="Søk sted eller dykkested" aria-label="Søk etter sted eller dykkested" autocomplete="off"><div id="gResults" class="gres" hidden></div></div>
     <button id="maxBtn" type="button" aria-label="Maksimer kartet" title="Maksimer kartet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path id="maxIco" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/></svg></button>
     <div id="wrap" class="wrap" hidden>
@@ -468,7 +472,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v14 (siste store fangster)";
+const APP_VERSION="v15 (ryddigere kart: markører samles og vises ved zoom)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -613,7 +617,7 @@ function initLeaflet(){
   sea.addTo(S.lmap);
   L.control.layers({"Sjøkart":sea,"Topografisk":topo,"Gråtone":grey},null,{position:"topright"}).addTo(S.lmap);
   L.control.scale({imperial:false}).addTo(S.lmap);
-  S.fLayer=L.layerGroup().addTo(S.lmap);S.aLayer=L.layerGroup().addTo(S.lmap);S.dLayer=L.layerGroup().addTo(S.lmap);S.lLayer=makeSiteLayer().addTo(S.lmap);S.sdLayer=L.layerGroup().addTo(S.lmap);if(L.Draw)hookDrawEvents();else showErr("tegneverktøyet lastet ikke");
+  S.fLayer=L.layerGroup().addTo(S.lmap);S.aLayer=L.layerGroup().addTo(S.lmap);S.apLayer=makeAreaPointLayer().addTo(S.lmap);S.prLayer=L.layerGroup();S.bdLayer=L.layerGroup();S.lmap.on("zoomend",applyZoomLayers);{const zn=$("#zoomNote");if(zn)lmapEl.appendChild(zn)}S.dLayer=L.layerGroup().addTo(S.lmap);S.lLayer=makeSiteLayer().addTo(S.lmap);S.sdLayer=L.layerGroup().addTo(S.lmap);if(L.Draw)hookDrawEvents();else showErr("tegneverktøyet lastet ikke");
   S.lmap.on("click",e=>liveClick(e.latlng));
   S.lmap.on("mousemove",e=>{if(isLive())$("#coord").textContent=`${e.latlng.lat.toFixed(4)}° N, ${e.latlng.lng.toFixed(4)}° Ø`});
   S.lmap.on("mouseout",()=>{$("#coord").textContent=""});
@@ -643,7 +647,7 @@ function renderTabs(){
 function switchChart(id){cancelDraw();cancelShapeEdit();clearDraft();if(S.view==="area"||S.view==="areaedit"){S.view="list";S.selArea=null}S.active=id;S.draft=null;setMode("view");if(S.view!=="site"){S.view="list";S.sel=null}renderTabs();renderChart();renderPanel()}
 $("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b)switchChart(b.dataset.id)});
 function renderChart(){
-  const live=isLive();updateDrawUI();lmapEl.hidden=!live;lmapEl.parentNode.classList.toggle("img",!live);wrap.hidden=live;$("#imgZoom").hidden=live;
+  const live=isLive();updateDrawUI();lmapEl.hidden=!live;{const zn=$("#zoomNote");if(zn&&!live)zn.hidden=true}lmapEl.parentNode.classList.toggle("img",!live);wrap.hidden=live;$("#imgZoom").hidden=live;
   if(live){S.lmap.invalidateSize();renderLive();renderAreas();return}
   const c=activeChart();if(!c)return;
   if(S.imgFor!==c.id){S.imgFor=c.id;img.onload=fit;img.src=imgUrl(c.imagePath);img.alt="Kart: "+c.name}
@@ -1145,17 +1149,36 @@ function areaStyle(a,gtype,sel){
 function pointIcon(a,sel){return L.divIcon({className:"apt",html:badgeHTML(colorOf(a),iconOf(a),24,sel),iconSize:[24,24],iconAnchor:[12,12]})}
 function areaVisible(a){if(S.hidden.has(a.kind))return false;const q=S.q.trim().toLowerCase();
   return !q||[a.name,a.notes,areaLabel(a),AREA_TYPES[a.kind]?.name].join(" ").toLowerCase().includes(q)}
+const PRACT_Z=14,BADGE_Z=13,PRACTICAL=new Set(["inn","ut","parkering","boye","ankring","toalett"]);
+function isPractical(a){return a.kind==="point"&&PRACTICAL.has(a.value)}
+function makeAreaPointLayer(){
+  if(L.markerClusterGroup)return L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:40,spiderfyOnMaxZoom:true,disableClusteringAtZoom:15,
+    iconCreateFunction:cl=>{const n=cl.getChildCount();return L.divIcon({className:"apt",html:`<span class="acl"><span>${n}</span></span>`,iconSize:[28,28],iconAnchor:[14,14]})}});
+  return L.layerGroup();
+}
+function applyZoomLayers(){if(!S.lmap||!S.prLayer)return;const z=S.lmap.getZoom();
+  const tog=(lay,on)=>{const has=S.lmap.hasLayer(lay);if(on&&!has)S.lmap.addLayer(lay);else if(!on&&has)S.lmap.removeLayer(lay)};
+  tog(S.prLayer,z>=PRACT_Z);tog(S.bdLayer,z>=BADGE_Z);
+  const n=$("#zoomNote");if(n)n.hidden=!isLive()||z>=PRACT_Z||!S.areas.some(a=>isPractical(a)&&areaVisible(a))}
 function renderAreas(){
-  if(!S.lmap||S.editingArea)return;S.aLayer.clearLayers();S.areaLayers={};
-  const rank=a=>AREA_ORDER.indexOf(a.kind)+(isPoint(a.geom)?100:0);
-  const list=S.areas.filter(areaVisible).sort((a,b)=>rank(a)-rank(b));
-  for(const a of list){let gl;const sel=S.selArea===a.id;
-    try{gl=L.geoJSON({type:"Feature",geometry:a.geom,properties:{}},{style:()=>areaStyle(a,a.geom.type,sel),pointToLayer:(f,ll)=>L.marker(ll,{icon:pointIcon(a,sel),keyboard:true,title:a.name||areaLabel(a)})})}catch(e){continue}
+  if(!S.lmap||S.editingArea)return;S.aLayer.clearLayers();S.apLayer.clearLayers();S.prLayer.clearLayers();S.bdLayer.clearLayers();S.areaLayers={};
+  const rank=a=>AREA_ORDER.indexOf(a.kind);
+  const list=S.areas.filter(areaVisible).sort((a,b)=>rank(a)-rank(b));const cluster=[];
+  for(const a of list){const sel=S.selArea===a.id;
     const click=ev=>{if(S.mode!=="view"||S.drawer||S.editingArea)return;if(ev&&ev.originalEvent)L.DomEvent.stopPropagation(ev);openArea(a.id)};
-    gl.eachLayer(l=>{l.on("click",click);l.bindTooltip(esc((a.name?a.name+" – ":"")+areaLabel(a)),{sticky:!isPoint(a.geom),direction:"top",offset:isPoint(a.geom)?[0,-10]:[0,0]});S.areaLayers[a.id]=l});
+    const tip=esc((a.name?a.name+" – ":"")+areaLabel(a));
+    if(a.geom&&a.geom.type==="Point"){
+      const c=a.geom.coordinates,m=L.marker([c[1],c[0]],{icon:pointIcon(a,sel),keyboard:true,title:a.name||areaLabel(a)}).on("click",click).bindTooltip(tip,{direction:"top",offset:[0,-10]});
+      S.areaLayers[a.id]=m;
+      if(sel)m.addTo(S.aLayer);else if(isPractical(a))m.addTo(S.prLayer);else cluster.push(m);
+      continue}
+    let gl;try{gl=L.geoJSON({type:"Feature",geometry:a.geom,properties:{}},{style:()=>areaStyle(a,a.geom.type,sel),pointToLayer:(f,ll)=>L.marker(ll,{icon:pointIcon(a,sel)})})}catch(e){continue}
+    gl.eachLayer(l=>{l.on("click",click);l.bindTooltip(tip,{sticky:true});S.areaLayers[a.id]=l});
     gl.addTo(S.aLayer);
-    if(a.icon&&!isPoint(a.geom)){try{L.marker(gl.getBounds().getCenter(),{icon:L.divIcon({className:"apt",html:badgeHTML(colorOf(a),iconOf(a),20,sel),iconSize:[20,20],iconAnchor:[10,10]}),keyboard:false}).on("click",click).addTo(S.aLayer)}catch(e){}}
+    if(a.icon&&!isPoint(a.geom)){try{L.marker(gl.getBounds().getCenter(),{icon:L.divIcon({className:"apt",html:badgeHTML(colorOf(a),iconOf(a),20,sel),iconSize:[20,20],iconAnchor:[10,10]}),keyboard:false}).on("click",click).addTo(sel?S.aLayer:S.bdLayer)}catch(e){}}
   }
+  if(S.apLayer.addLayers)S.apLayer.addLayers(cluster);else cluster.forEach(m=>m.addTo(S.apLayer));
+  applyZoomLayers();
 }
 function geomSize(g){
   const ll=c=>c.map(([lo,la])=>L.latLng(la,lo));
@@ -1262,6 +1285,7 @@ function renderAreaBody(){
 function startShapeEdit(a){
   if(!isLive())switchChart("live");
   const l=S.areaLayers[a.id];if(!l||!l.editing){alert("Denne formen kan ikke endres her.");return}
+  if(isPoint(a.geom)&&S.lmap.getZoom()<15)S.lmap.setView(l.getLatLng(),15,{animate:false});
   cancelDraw();setMode("view");S.editingArea=a.id;l.editing.enable();
   $("#hint").textContent=isPoint(a.geom)?"Dra markøren til ny plassering.":"Dra i hjørnene for å endre formen. Klikk et hjørne for å fjerne det.";
   updateDrawUI();renderAreaBody();
