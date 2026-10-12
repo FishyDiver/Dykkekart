@@ -217,6 +217,9 @@ dialog p{color:var(--muted);margin:6px 0 0}
 .cnow strong{display:block;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:19px}
 .ctide{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:8px;font-size:14px}.ctide small{color:var(--muted)}
 .cwin{margin:2px 0 0}
+.csun{display:flex;flex-wrap:wrap;align-items:center;gap:2px 12px;margin-top:8px;font-size:14px}.csun svg{flex:none}.csun small{color:var(--muted)}
+.buddies{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:2px}.buddies .chip{padding:3px 10px}
+.buddies input{flex:1 1 140px;min-width:120px;width:auto}
 #condSel{padding:6px 10px}
 #errBar{position:fixed;left:12px;right:12px;bottom:12px;z-index:3000;background:#B3261E;color:#fff;padding:10px 14px;border-radius:10px;font-size:14px;box-shadow:0 4px 18px rgba(0,0,0,.3)}
 #errBar button{float:right;background:none;border:0;color:#fff;font-weight:700}
@@ -485,7 +488,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v17 (bilder på dykkestedene)";
+const APP_VERSION="v18 (sol og dykkepartnere)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -794,7 +797,7 @@ function renderSiteView(){
   <div id="stats"></div><div id="visStats"></div><div id="speciesBox"></div>
   <div class="logs"><h3>Dykkelogg</h3>${logFormHTML()}<div id="logList"></div></div><div id="siteActions"></div>`;
   $("#back").onclick=()=>{if(S.editLog)cancelEditLog();if(S.siteFrom==="records"){S.siteFrom=null;openRecords();return}S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel()};
-  $("#logForm").onsubmit=saveLog;wireCatchEditor();$("#lCancel").onclick=cancelEditLog;S.editLog=null;
+  $("#logForm").onsubmit=saveLog;wireCatchEditor();S.buddySel=[];renderBuddyPicker();$("#lCancel").onclick=cancelEditLog;S.editLog=null;
   renderSiteBody();renderStats();renderLogs();renderSpecies();renderVisStats();
 }
 function renderSiteBody(){
@@ -839,15 +842,16 @@ function spark(L){
 function logFormHTML(){return `<form class="f logform" id="logForm"><p class="editban" id="lEditBan" hidden></p><div class="three"><div><label for="lDate">Dato</label><input type="date" id="lDate" value="${today()}" required></div><div><label for="lTime">Klokkeslett</label><input type="time" id="lTime" value="${new Date().toTimeString().slice(0,5)}"></div><div><label for="lVis">Sikt (m)</label><input type="number" id="lVis" step="0.5" min="0"></div></div>
   <div class="two"><div><label for="lTemp">Vanntemp (°C)</label><input type="number" id="lTemp" step="0.5"></div><div><label for="lDepth">Maks dybde (m)</label><input type="number" id="lDepth" step="0.5" min="0"></div></div>
   <label for="lCond">Forhold (strøm, vind, tidevann)</label><input type="text" id="lCond" placeholder="F.eks. stille, 1 t etter fjære">
+  <label for="lBuddyNew">Dykket med</label><div class="buddies" id="lBuddies"></div>
   <label for="lNotes">Notat</label><textarea id="lNotes" placeholder="Hva du så, hva som fungerte"></textarea>
   ${catchEditorHTML()}<div class="err" id="lErr"></div><div style="margin-top:10px;display:flex;gap:8px"><button class="btn primary" id="lSave">Logg dykket</button><button type="button" class="btn ghost" id="lCancel" hidden>Avbryt</button></div></form>`}
 function renderLogs(){
   const el=$("#logList");if(!el)return;
   if(!S.logs.length){el.innerHTML=`<p class="emptytxt">Ingen dykk logget her ennå.</p>`;return}
   el.innerHTML=S.logs.map(l=>{const m=[l.vis!=null?`sikt ${fnum(l.vis,1)} m`:"",l.temp!=null?`${fnum(l.temp,1)} °C`:"",l.depth!=null?`${fnum(l.depth,1)} m dypt`:""].filter(Boolean).join(", ");
-    const mine=l.author===S.user.id,who=mine?"deg":(l.author_name||"");
+    const mine=l.author===S.user.id,who=mine?"deg":(l.author_name||""),bud=(l.buddies||[]).filter(b=>b&&b!==l.author_name).map(b=>b===S.me.name&&!mine?"deg":b);
     const canDel=mine||S.me.role==="admin";
-    return `<div class="log${S.editLog===l.id?" editing":""}">${canDel?`<span class="lacts"><button class="btn ghost x" data-edit="${esc(l.id)}">Rediger</button><button class="btn ghost x" data-del="${esc(l.id)}">Slett</button></span>`:""}<div class="d">${esc(fdate(l.date))}${who?` <span class="m">av ${esc(who)}</span>`:""}</div>${m?`<div class="m">${esc(m)}</div>`:""}${l.cond?`<div class="m">${esc(l.cond)}</div>`:""}${l.notes?`<p>${esc(l.notes)}</p>`:""}${catchesHTML(l.id)}</div>`}).join("");
+    return `<div class="log${S.editLog===l.id?" editing":""}">${canDel?`<span class="lacts"><button class="btn ghost x" data-edit="${esc(l.id)}">Rediger</button><button class="btn ghost x" data-del="${esc(l.id)}">Slett</button></span>`:""}<div class="d">${esc(fdate(l.date))}${who?` <span class="m">av ${esc(who)}${bud.length?" med "+esc(joinNames(bud)):""}</span>`:""}</div>${m?`<div class="m">${esc(m)}</div>`:""}${l.cond?`<div class="m">${esc(l.cond)}</div>`:""}${l.notes?`<p>${esc(l.notes)}</p>`:""}${catchesHTML(l.id)}</div>`}).join("");
   el.onclick=async e=>{const ed=e.target.closest("[data-edit]");if(ed){startEditLog(ed.dataset.edit);return}
     const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("Slette denne loggføringen?"))return;if(S.editLog===b.dataset.del)cancelEditLog();
     const {error}=await sb.from("logs").delete().eq("id",b.dataset.del);if(error)alert("Kunne ikke slette: "+errMsg(error));else{loadLogs(S.sel);loadSites()}};
@@ -855,12 +859,13 @@ function renderLogs(){
 async function saveLog(e){
   e.preventDefault();const s=getSite(S.sel);if(!s)return;if(S.editLog)return saveLogEdit(s);const btn=$("#lSave");btn.disabled=true;$("#lErr").textContent="";
   const row={site_id:s.id,date:$("#lDate").value,vis:num($("#lVis").value),temp:num($("#lTemp").value),depth:num($("#lDepth").value),cond:$("#lCond").value.trim(),notes:$("#lNotes").value.trim(),author:S.user.id,author_name:S.me.name};
+  addBuddyFromInput();if(S.buddySel.length)row.buddies=[...S.buddySel];
   const catches=readCatchRows();
   const tm=$("#lTime")?.value||"";if(tm){row.time_of_day=tm;$("#lSave").textContent="Lagrer…";const snap=await condSnapshot(s.lat,s.lon,new Date(`${row.date}T${tm}`).getTime());Object.assign(row,snap)}
   const snapV={};["wind_dir","wind_speed","tide_phase"].forEach(k=>{if(row[k]!=null)snapV[k]=row[k]});
-  const {data:log,error}=await colSafe(r=>sb.from("logs").insert(r).select().single(),row,["time_of_day","wind_dir","wind_speed","tide_phase"],"stats.sql","klokkeslett og forhold");$("#lSave").textContent="Logg dykket";
+  const {data:log,error}=await colSafe(r=>sb.from("logs").insert(r).select().single(),row,["time_of_day","wind_dir","wind_speed","tide_phase","buddies"],"stats.sql","klokkeslett og forhold");$("#lSave").textContent="Logg dykket";
   if(error)$("#lErr").textContent="Kunne ikke lagre: "+errMsg(error);
-  else{const warn=await afterLogSaved(s,log,catches,snapV);if(warn.length)$("#lErr").textContent=warn.join(" ");["lVis","lTemp","lDepth","lCond","lNotes"].forEach(id=>$("#"+id).value="");$("#cRows").innerHTML="";loadLogs(s.id);loadSites();loadCatches();loadReports()}
+  else{const warn=await afterLogSaved(s,log,catches,snapV);if(warn.length)$("#lErr").textContent=warn.join(" ");["lVis","lTemp","lDepth","lCond","lNotes"].forEach(id=>$("#"+id).value="");$("#cRows").innerHTML="";S.buddySel=[];renderBuddyPicker();loadLogs(s.id);loadSites();loadCatches();loadReports()}
   btn.disabled=false;
 }
 
@@ -1078,7 +1083,7 @@ function wireColorPicker(id,onPick){const el=$("#"+id);if(!el)return;const inp=e
   const mark=c=>el.querySelectorAll("button").forEach(x=>x.classList.toggle("on",(x.dataset.c||"")===(c||"")&&!(c&&inp._custom)));
   el.onclick=e=>{const b=e.target.closest("button[data-c]");if(!b)return;inp._custom=false;mark(b.dataset.c);onPick(b.dataset.c||null)};
   inp.oninput=()=>{inp._custom=true;el.querySelectorAll("button").forEach(x=>x.classList.remove("on"));onPick(inp.value)}}
-const COLFILE={photo_path:["stats.sql","bilde og vekt"],weight_kg:["stats.sql","bilde og vekt"],time_of_day:["stats.sql","klokkeslett og forhold"],wind_dir:["stats.sql","vind og tidevann"],wind_speed:["stats.sql","vind og tidevann"],tide_phase:["stats.sql","vind og tidevann"],
+const COLFILE={photo_path:["stats.sql","bilde og vekt"],weight_kg:["stats.sql","bilde og vekt"],time_of_day:["stats.sql","klokkeslett og forhold"],wind_dir:["stats.sql","vind og tidevann"],wind_speed:["stats.sql","vind og tidevann"],tide_phase:["stats.sql","vind og tidevann"],buddies:["buddy.sql","hvem du dykket med"],
   caught_by:["assign.sql","hvem som fikk fangsten"],color:["style.sql","farge og symbol"],icon:["style.sql","farge og symbol"],pattern:["style.sql","farge og symbol"],dash:["style.sql","farge og symbol"]};
 async function colSafe(fn,row,cols,file,what="farge og symbol"){
   let res=await fn(row);const stripped=[];
@@ -1557,13 +1562,14 @@ async function renderCond(s){
       h+=windStrip(s,fc,now)+waveStrip(s,oc,now);
     }
   }else{h+=`<p class="small err" style="margin:0 0 8px">Vær: ${esc(fr.reason?.message||"kunne ikke hentes")}</p>`;if(vNow)h+=`<p style="margin:0 0 4px">Hav: ${esc(oceanLine(vNow))}</p>`+waveStrip(s,oc,now)}
+  h+=sunLine(s.lat,s.lon,now);
   if(tr.status==="fulfilled"){
     const td=tr.value,next=td.ext.filter(e=>e[0]>now).slice(0,4);
     h+=`<div class="ctide"><strong>Tidevann</strong> ${next.map(e=>`<span>${e[2]==="high"?"Flo":"Fjære"} ${esc(dayLbl(e[0])==="i dag"?"":dayLbl(e[0])+" ")}${hm(e[0])} <small>${Math.round(e[1])} cm</small></span>`).join("")}</div>`;
     const wins=tideWindows(s,td),nw=wins.find(x=>x[1]>now);
     let winTxt="";
     if(nw){const mid=(nw[0]+nw[1])/2,fc=fr.status==="fulfilled"?fr.value:null,ws=combinedStatus(s,fc,oc,mid);
-      winTxt=`<p class="cwin"><strong>${nw[0]<=now?`Dykkevindu nå, til ${hm(nw[1])}`:`Neste dykkevindu: ${dayLbl(nw[0])} ${hm(nw[0])}–${hm(nw[1])}`}</strong>${ws?` <span style="color:${LV[ws.lvl][1]};font-weight:600">· ${LV[ws.lvl][0].toLowerCase()}</span>`:""}</p>`}
+      winTxt=`<p class="cwin"><strong>${nw[0]<=now?`Dykkevindu nå, til ${hm(nw[1])}`:`Neste dykkevindu: ${dayLbl(nw[0])} ${hm(nw[0])}–${hm(nw[1])}`}</strong>${ws?` <span style="color:${LV[ws.lvl][1]};font-weight:600">· ${LV[ws.lvl][0].toLowerCase()}</span>`:""}${(lt=>lt==="lyst"?"":` <span class="small">· ${lt}</span>`)(lightAt(mid,s.lat,s.lon))}</p>`}
     else if((s.tideMode||"none")==="none")winTxt=`<p class="small" style="margin:4px 0 0">Sett dykkevindu under Rediger for å få «neste gode tidspunkt».</p>`;
     h+=tideCurve(td,wins,now)+winTxt;
   }else h+=`<p class="small" style="margin:6px 0 0">Tidevann: ${esc(tr.reason?.message||"kunne ikke hentes")}. <a href="https://kartverket.no/til-sjos/se-havniva" target="_blank" rel="noopener">Se havnivå hos Kartverket</a></p>`;
@@ -1613,8 +1619,57 @@ function spSiteSet(){return new Set(S.catches.filter(c=>c.species===S.sp).map(c=
 /* catch editor in log form */
 function catchEditorHTML(){return `<div class="catchEd"><label style="margin-top:12px">Fangst og arter sett</label><div id="cRows"></div><button type="button" class="btn ghost" id="cAdd" style="padding:3px 8px;margin-top:4px">+ Legg til art</button>
   <datalist id="spList">${[...new Set([...S.catches.map(c=>c.species),...SPECIES])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist>
-  <datalist id="whoList">${[...new Set([...(S.members||[]).map(m=>m.name).filter(n=>n&&n!==S.me.name),...S.catches.map(c=>c.caught_by).filter(Boolean)])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>`}
+  <datalist id="whoList">${[...new Set([...(S.members||[]).map(m=>m.name).filter(n=>n&&n!==S.me.name),...S.catches.map(c=>c.caught_by).filter(Boolean),...(S.buddySel||[])])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>`}
 function wireCatchEditor(){const b=$("#cAdd");if(b)b.onclick=addCatchRow}
+/* ---------- dive buddies ---------- */
+S.buddySel=[];
+function joinNames(a){a=a.filter(Boolean);return a.length<2?(a[0]||""):a.slice(0,-1).join(", ")+" og "+a[a.length-1]}
+function buddyNames(){const me=S.me&&S.me.name,seen=new Map();
+  for(const l of [...(S.logs||[]),...(S.feedLogs||[])])for(const b of l.buddies||[])if(b)seen.set(b,(seen.get(b)||0)+1);
+  for(const m of S.members||[])if(m.name&&!seen.has(m.name))seen.set(m.name,0);
+  for(const b of S.buddySel)if(!seen.has(b))seen.set(b,0);
+  if(me)seen.delete(me);
+  return [...seen.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],"nb")).map(x=>x[0])}
+function renderBuddyPicker(){
+  const el=$("#lBuddies");if(!el)return;const sel=new Set(S.buddySel);
+  el.innerHTML=buddyNames().map(n=>`<button type="button" class="chip${sel.has(n)?" on":""}" data-b="${esc(n)}" aria-pressed="${sel.has(n)}">${esc(n)}</button>`).join("")+`<input type="text" id="lBuddyNew" placeholder="+ annen person" autocomplete="off" aria-label="Legg til dykkepartner">`;
+  el.onclick=e=>{const b=e.target.closest("[data-b]");if(!b)return;const n=b.dataset.b;S.buddySel=sel.has(n)?S.buddySel.filter(x=>x!==n):[...S.buddySel,n];renderBuddyPicker()};
+  const inp=$("#lBuddyNew");inp.onkeydown=e=>{if(e.key==="Enter"||e.key===","){e.preventDefault();if(addBuddyFromInput()){renderBuddyPicker();$("#lBuddyNew").focus()}}};
+  inp.onblur=()=>{if(addBuddyFromInput())renderBuddyPicker()};
+}
+function addBuddyFromInput(){const inp=$("#lBuddyNew");if(!inp)return false;let added=false;
+  for(let n of inp.value.split(",")){n=n.trim().replace(/\s+/g," ");if(!n||n===(S.me&&S.me.name))continue;n=n.split(" ").map(x=>x[0].toLocaleUpperCase("nb")+x.slice(1)).join(" ");if(!S.buddySel.includes(n)){S.buddySel.push(n);added=true}}
+  inp.value="";return added}
+/* ---------- sunrise / sunset (computed locally, suncalc method) ---------- */
+function sunTimes(date,lat,lon){
+  const rad=Math.PI/180,J2000=2451545,e=rad*23.4397,J0=0.0009;
+  const d=date.getTime()/864e5-0.5+2440588-J2000,lw=-lon*rad,phi=lat*rad;
+  const n=Math.round(d-J0-lw/(2*Math.PI)),ds=J0+lw/(2*Math.PI)+n;
+  const M=rad*(357.5291+0.98560028*ds),L=M+rad*(1.9148*Math.sin(M)+0.02*Math.sin(2*M)+0.0003*Math.sin(3*M))+rad*102.9372+Math.PI;
+  const dec=Math.asin(Math.sin(e)*Math.sin(L)),Jnoon=J2000+ds+0.0053*Math.sin(M)-0.0069*Math.sin(2*L);
+  const ms=j=>(j+0.5-2440588)*864e5;
+  const at=h=>{const x=(Math.sin(h*rad)-Math.sin(phi)*Math.sin(dec))/(Math.cos(phi)*Math.cos(dec));
+    if(x>1)return{never:"up"};if(x<-1)return{never:"down"};
+    const w=Math.acos(x),Jset=J2000+(J0+(w+lw)/(2*Math.PI)+n)+0.0053*Math.sin(M)-0.0069*Math.sin(2*L);return{rise:ms(Jnoon-(Jset-Jnoon)),set:ms(Jset)}};
+  return{noon:ms(Jnoon),sun:at(-0.833),civil:at(-6)};
+}
+function sunDay(t,lat,lon){const d=new Date(t);d.setHours(12,0,0,0);return sunTimes(d,lat,lon)}
+function lightAt(t,lat,lon){const st=sunDay(t,lat,lon),s=st.sun,c=st.civil;
+  if(s.never==="down")return"lyst";
+  if(s.rise!=null&&t>=s.rise&&t<=s.set)return"lyst";
+  if(c.never==="down"||(c.rise!=null&&t>=c.rise&&t<=c.set))return"skumring";
+  return"mørkt"}
+function durTxt(ms){const m=Math.round(ms/60e3);return `${Math.floor(m/60)} t ${m%60} min`}
+function sunLine(lat,lon,now){
+  const st=sunDay(now,lat,lon),s=st.sun,c=st.civil,ic=`<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="#E8A020"/><g stroke="#E8A020" stroke-width="2" stroke-linecap="round">${[0,45,90,135,180,225,270,315].map(a=>{const r=a*Math.PI/180;return `<line x1="${(12+7.5*Math.sin(r)).toFixed(1)}" y1="${(12-7.5*Math.cos(r)).toFixed(1)}" x2="${(12+10*Math.sin(r)).toFixed(1)}" y2="${(12-10*Math.cos(r)).toFixed(1)}"/>`}).join("")}</g></svg>`;
+  let parts;
+  if(s.never==="down")parts=[`<strong>Midnattssol</strong>`,`<span>sola går ikke ned i dag</span>`];
+  else if(s.never==="up"){parts=[`<strong>Mørketid</strong>`,`<span>sola står ikke opp i dag</span>`];
+    if(c.rise!=null)parts.push(`<span>skumringslys ${hm(c.rise)}–${hm(c.set)} <small>(${durTxt(c.set-c.rise)})</small></span>`)}
+  else{parts=[`<span><strong>Sol opp</strong> ${hm(s.rise)}</span>`,`<span><strong>ned</strong> ${hm(s.set)}</span>`,`<small>${durTxt(s.set-s.rise)} dagslys</small>`];
+    if(now>s.set){const tm=sunDay(now+864e5,lat,lon).sun;if(tm.rise!=null)parts.push(`<small>i morgen opp ${hm(tm.rise)}</small>`)}}
+  return `<div class="csun">${ic}${parts.join("")}</div>`;
+}
 /* visibility reports in site panel */
 function renderVis(s){
   const el=$("#visBox");if(!el)return;
@@ -1878,7 +1933,7 @@ S.editLog=null;
 function startEditLog(id){
   const l=S.logs.find(x=>x.id===id);if(!l)return;S.editLog=id;
   const v=(k,val)=>{const el=$("#"+k);if(el)el.value=val??""};
-  v("lDate",l.date);v("lTime",l.time_of_day||"");v("lVis",l.vis);v("lTemp",l.temp);v("lDepth",l.depth);v("lCond",l.cond);v("lNotes",l.notes);
+  v("lDate",l.date);v("lTime",l.time_of_day||"");v("lVis",l.vis);v("lTemp",l.temp);v("lDepth",l.depth);v("lCond",l.cond);v("lNotes",l.notes);S.buddySel=[...(l.buddies||[])];renderBuddyPicker();
   $("#cRows").innerHTML="";for(const c of S.catches.filter(c=>c.log_id===id))addCatchRow(c);
   const ban=$("#lEditBan");ban.hidden=false;ban.textContent=`Redigerer dykket ${fdate(l.date)}${l.author!==S.user.id&&l.author_name?" (logget av "+l.author_name+")":""}. Fjerner du en art fra listen, slettes den fra dykket.`;
   $("#lSave").textContent="Lagre endringer";$("#lCancel").hidden=false;$("#lErr").textContent="";
@@ -1886,7 +1941,7 @@ function startEditLog(id){
 }
 function cancelEditLog(){
   S.editLog=null;const f=$("#logForm");if(!f)return;
-  ["lVis","lTemp","lDepth","lCond","lNotes"].forEach(k=>$("#"+k).value="");$("#lDate").value=today();$("#lTime").value=new Date().toTimeString().slice(0,5);
+  ["lVis","lTemp","lDepth","lCond","lNotes"].forEach(k=>$("#"+k).value="");S.buddySel=[];renderBuddyPicker();$("#lDate").value=today();$("#lTime").value=new Date().toTimeString().slice(0,5);
   $("#cRows").innerHTML="";$("#lEditBan").hidden=true;$("#lCancel").hidden=true;$("#lSave").textContent="Logg dykket";f.classList.remove("editing");
 }
 const EDIT_SQL_MSG="Endringen ble ikke lagret i databasen. Kjør edit.sql i Supabase først.";
@@ -1895,10 +1950,11 @@ async function saveLogEdit(s){
   const btn=$("#lSave");btn.disabled=true;btn.textContent="Lagrer…";$("#lErr").textContent="";const warn=[];
   try{
     const row={date:$("#lDate").value,vis:num($("#lVis").value),temp:num($("#lTemp").value),depth:num($("#lDepth").value),cond:$("#lCond").value.trim(),notes:$("#lNotes").value.trim()};
+    addBuddyFromInput();const nb=[...S.buddySel],ob=l.buddies||[];if(nb.join("|")!==ob.join("|"))row.buddies=nb;
     const tm=$("#lTime").value||"";
     if(tm!==(l.time_of_day||"")||row.date!==l.date){row.time_of_day=tm||null;row.tide_phase=null;
       if(tm){const snap=await condSnapshot(s.lat,s.lon,new Date(`${row.date}T${tm}`).getTime());if(snap.tide_phase!=null)row.tide_phase=snap.tide_phase;if(snap.wind_dir!=null){row.wind_dir=snap.wind_dir;row.wind_speed=snap.wind_speed}}}
-    const {data,error}=await colSafe(r=>sb.from("logs").update(r).eq("id",l.id).select(),row,["time_of_day","wind_dir","wind_speed","tide_phase"],"stats.sql","klokkeslett og forhold");
+    const {data,error}=await colSafe(r=>sb.from("logs").update(r).eq("id",l.id).select(),row,["time_of_day","wind_dir","wind_speed","tide_phase","buddies"],"stats.sql","klokkeslett og forhold");
     if(error)throw error;if(Array.isArray(data)&&!data.length)throw{message:EDIT_SQL_MSG};
     const rows=readCatchRows(),existing=S.catches.filter(c=>c.log_id===l.id),keep=new Set(rows.filter(r=>r.id).map(r=>r.id));
     for(const c of existing)if(!keep.has(c.id)){const {error:e2}=await sb.from("catches").delete().eq("id",c.id);if(e2)warn.push(`Kunne ikke fjerne ${c.species}: ${errMsg(e2)}`)}
@@ -2005,7 +2061,7 @@ function feedItems(){
     const cap=caught.slice(0,3).map(c=>{const extra=[measureTxt(c),c.caught_by&&c.caught_by!==l.author_name?c.caught_by:""].filter(Boolean).join(", ");return `${c.count>1?c.count+" ":""}${c.species.toLocaleLowerCase("nb")}${extra?" ("+extra+")":""}`}).join(", ")+(caught.length>3?` og ${caught.length-3} til`:"");
     const parts=[cap?"Fanget "+cap:"",seen.length?`så ${seen.length} ${seen.length===1?"art":"arter"}`:"",l.vis!=null?`sikt ${fnum(l.vis,1)} m`:""].filter(Boolean);
     const dt=Date.parse(`${l.date}T${l.time_of_day||"12:00"}`);
-    items.push({t:isFinite(dt)?dt:Date.parse(l.created_at||0),when:diveWhen(l),site:s,who:l.author===S.user.id?"Du":(l.author_name||"Noen"),verb:"dykket på",text:parts.join(" · "),photo:C.find(c=>c.photo_path)})}
+    items.push({t:isFinite(dt)?dt:Date.parse(l.created_at||0),when:diveWhen(l),site:s,who:joinNames([l.author===S.user.id?"Du":(l.author_name||"Noen"),...(l.buddies||[]).filter(b=>b&&b!==l.author_name).map(b=>b===S.me.name?"deg":b)]),verb:"dykket på",text:parts.join(" · "),photo:C.find(c=>c.photo_path)})}
   const cutoff=Date.now()-45*864e5;
   for(const s of S.sites)if(s.createdAt&&Date.parse(s.createdAt)>cutoff)items.push({t:Date.parse(s.createdAt),when:ago(s.createdAt),site:s,who:s.createdBy===S.user.id?"Du":"",verb:s.createdBy===S.user.id?"la til":"Nytt dykkested:",text:"",isNew:true});
   return items.filter(it=>isFinite(it.t)).sort((a,b)=>b.t-a.t);
