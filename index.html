@@ -357,6 +357,15 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 .aico{width:36px;height:36px;border-radius:8px;background:var(--soft);display:inline-flex;align-items:center;justify-content:center;color:var(--alpha);flex:none}
 .thumb.sm{width:36px;height:36px;border-radius:8px}
 @media (max-width:480px){.gwrap{right:56px}}
+.hdrbtn{display:inline-flex;align-items:center;gap:6px;flex:none;border:1px solid #E3B341;background:#FFF6DC;color:#7A5300;border-radius:999px;padding:6px 14px;font-weight:600}
+.hdrbtn:hover{background:#FCEBB6}
+.hdrbtn.on{background:#E3B341;color:#2B1D00;border-color:#E3B341}
+.recbar{display:none;align-items:center;gap:6px;border-color:#E3B341;background:#FFF6DC;color:#7A5300}
+body.mapmax .recbar{display:inline-flex}
+.recbar.on{background:#E3B341;color:#2B1D00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hdrbtn,:root:not([data-theme="light"]) .recbar{background:#3A2E0E;color:#F5D27A;border-color:#8A6A1E}:root:not([data-theme="light"]) .hdrbtn.on,:root:not([data-theme="light"]) .recbar.on{background:#E3B341;color:#2B1D00}}
+@media (max-width:860px){#addChartBtn{display:none}.hdrbtn{padding:6px 10px}.top .ver{display:none}.top{gap:8px;padding:10px 12px}#menuBtn{padding:6px 8px}.brand{gap:7px}}
+@media (max-width:420px){.hdrbtn span{display:none}.hdrbtn{padding:7px 9px}}
 </style>
 </head>
 <body>
@@ -365,8 +374,9 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 <header class="top">
   <div class="brand">
     <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver">v10</span>
+    <h1>Dykkekart</h1><span class="ver">v11</span>
   </div>
+  <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
   <button id="menuBtn" class="btn ghost">Meny</button>
@@ -383,6 +393,7 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
     </div>
     <div class="maptools">
       <button id="listBtn" class="btn maxonly" type="button">Liste</button>
+      <button id="recBar" class="btn maxonly recbar" type="button" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
       <button id="placeBtn" class="btn primary">Nytt dykkested</button>
       <button id="drawBtn" class="btn">Tegn</button>
       <select id="condSel" class="btn" aria-label="Vis vindforhold på kartet"><option value="off">Forhold: av</option><option value="now">Forhold nå</option><option value="+3">Om 3 timer</option><option value="+6">Om 6 timer</option><option value="d1h10">I morgen kl 10</option><option value="d1h15">I morgen kl 15</option><option value="d2h10">Overmorgen kl 10</option></select>
@@ -435,7 +446,7 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v10 (havvarsel, aktivitet, søk og delbare lenker)";
+const APP_VERSION="v11 (rekorder i toppen)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -694,12 +705,10 @@ function renderFrames(){
 /* ---------- panel ---------- */
 function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="site")renderSiteView();else if(S.view==="area")renderAreaView();else if(S.view==="records")renderRecords()}
 function renderListView(){
-  panel.innerHTML=`<button class="recbtn" id="recBtn" type="button">${iconSVG("trofe",20)}<span><b>Rekorder og statistikk</b><br><span class="small">Største fangster, arter og beste sikt</span></span><span aria-hidden="true">›</span></button>
-    <h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="small" id="condNote" style="margin:4px 0 0"></p>
+  panel.innerHTML=`    <h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="small" id="condNote" style="margin:4px 0 0"></p>
     <input class="search" id="q" type="search" placeholder="Søk i navn, arter, bunn, notater" value="${esc(S.q)}" aria-label="Søk">
     <div class="chips">${["alle","land","bat"].map(a=>`<button class="chip ${S.acc===a?"on":""}" data-a="${a}">${a==="alle"?"Alle":ACCESS[a]}</button>`).join("")}</div>
     <div id="spWrap"></div><div id="visFeed"></div><div id="feed"></div><div id="siteList"></div><div id="unpos"></div><div id="areaList"></div><div id="chartActions"></div>`;
-  $("#recBtn").onclick=openRecords;
   $("#q").oninput=e=>{S.q=e.target.value;renderList();renderPins();renderAreas()};
   panel.querySelector(".chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;S.acc=b.dataset.a;panel.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));renderList();renderPins()};
   renderList();
@@ -953,6 +962,7 @@ function renderMenu(){
   <div class="menu-sec"><h3>Medlemmer</h3>${S.members.map(m=>`<div class="mrow"><span>${esc(m.name||"(uten navn)")}<br><small>${esc(m.email)}${m.role==="admin"?", administrator":""}</small></span>${admin&&m.email.toLowerCase()!==S.user.email.toLowerCase()?`<button class="btn ghost danger" data-rm="${esc(m.email)}">Fjern</button>`:""}</div>`).join("")}
   ${admin?`<form class="f" id="mAdd"><label for="mEmail">Inviter en dykkekompis (e-post)</label><div style="display:flex;gap:8px"><input type="text" id="mEmail" inputmode="email" required placeholder="kompis@epost.no"><button class="btn primary">Legg til</button></div></form>
   <p class="small">Send dem deretter lenken til denne siden: <b>${esc(location.origin+location.pathname)}</b>. De trykker «Første gang? Lag konto» og bruker e-posten du la inn.</p>`:""}</div>
+  <div class="menu-sec"><h3>Kart</h3><p class="small" style="margin:0 0 8px">Legg til et eget kartbilde (skjermbilde eller QGIS-eksport) som ekstra fane.</p><button class="btn" id="mChart">Nytt kartblad</button></div>
   <div class="menu-sec"><h3>App</h3>${isStandalone()?`<p class="small" style="margin:0">Du bruker app-versjonen.</p>`:installEvt?`<p class="small" style="margin:0 0 8px">Legg Dykkekart på hjemskjermen som en app.</p><button class="btn primary" id="mInstall">Installer app</button>`:isIOS()?`<p class="small" style="margin:0">iPhone: åpne siden i Safari, trykk Del-knappen (firkant med pil opp) og velg «Legg til på Hjem-skjerm».</p>`:`<p class="small" style="margin:0">Android: åpne siden i Chrome, trykk ⋮ og velg «Installer app» eller «Legg til på startsiden».</p>`}</div>
   <div class="menu-sec"><h3>Eksport</h3><p class="small" style="margin:0 0 8px">Alle steder med koordinater som GPX, for GPS, OsmAnd eller Google Earth.</p><button class="btn" id="mGpx">Last ned GPX</button></div>
   <div class="menu-sec"><h3>GeoJSON (QGIS)</h3><p class="small" style="margin:0 0 8px">Alle dykkesteder og områder du kan se, som GeoJSON.</p><button class="btn" id="mGeo">Last ned GeoJSON</button>
@@ -966,6 +976,7 @@ function renderMenu(){
   $("#mOut").onclick=async()=>{mdlg.close();await sb.auth.signOut();location.reload()};
   $("#mName").onsubmit=async e=>{e.preventDefault();const n=$("#mNameIn").value.trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error)$("#mErr").textContent=errMsg(error);else{S.me.name=n;await loadMembers();renderMenu()}};
   $("#mGpx").onclick=downloadGpx;
+  $("#mChart").onclick=()=>{mdlg.close();openChartDlg(null)};
   const mi=$("#mInstall");if(mi)mi.onclick=async()=>{const ev=installEvt;installEvt=null;if(!ev)return;ev.prompt();try{await ev.userChoice}catch(e){}renderMenu()};
   $("#mGeo").onclick=downloadGeoJSON;
   $("#mGeoImp").onchange=e=>{const f=e.target.files[0];if(f)importGeoJSON(f,$("#mGeoKind").value)};
@@ -1967,6 +1978,11 @@ function pickResult(r){
     setTimeout(()=>{if(S.searchPin){S.lmap.removeLayer(S.searchPin);S.searchPin=null}},15000)}
 }
 
+/* ---------- records button in header / bottom bar ---------- */
+function syncRecBtn(){const on=S.view==="records";for(const id of ["recHdr","recBar"]){const b=$("#"+id);if(b){b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)}}}
+function toggleRecords(){if(S.view==="records"){S.view="list";renderPanel()}else{openRecords();if(S.max){S.sheetList=false;updateSheet()}}}
+$("#recHdr").onclick=toggleRecords;$("#recBar").onclick=toggleRecords;
+
 /* ---------- maximised map ---------- */
 S.max=false;S.maxFs=false;S.sheetList=false;
 const MAXD="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4",MIND="M8 4v4H4M16 4v4h4M8 20v-4H4M16 20v-4h4";
@@ -1998,7 +2014,7 @@ document.addEventListener("keydown",e=>{if(e.key!=="Escape"||!S.max||S.mode!=="v
   if(document.querySelector("dialog[open]"))return;if(document.body.classList.contains("sheet"))closeSheet();else exitMax()});
 for(const fn of ["renderPanel","renderListView","renderSiteView","renderAreaView","renderEdit","renderAreaEdit","renderRecords"]){
   const orig=window[fn];if(typeof orig!=="function")continue;
-  window[fn]=function(...a){const r=orig.apply(this,a);updateSheet();syncHash();return r}}
+  window[fn]=function(...a){const r=orig.apply(this,a);updateSheet();syncHash();syncRecBtn();return r}}
 
 /* ---------- boot ---------- */
 (function boot(){
