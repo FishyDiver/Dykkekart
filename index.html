@@ -371,6 +371,23 @@ body.mapmax .recbar{display:inline-flex}
 .unit.pre span{right:auto;left:10px}
 .unit.pre input{padding-left:34px!important;padding-right:10px!important}
 .by{color:var(--alpha);font-weight:600}
+.hl{margin:2px 0 12px}
+.hl h3{font-size:18px;margin:0 0 6px}
+.hlrow{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.hcard{flex:0 0 156px;scroll-snap-align:start;display:flex;flex-direction:column;text-align:left;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);color:var(--ink)}
+.hcard:hover{border-color:var(--alpha)}
+.hpic{position:relative;height:100px;background:#1F4FA8;display:block}
+.hpic img{width:100%;height:100%;object-fit:cover;display:block}
+.hico{display:flex;align-items:center;justify-content:center;height:100%;background:linear-gradient(135deg,#1F4FA8,#0F2A3F)}
+.htags{position:absolute;left:6px;top:6px;right:6px;display:flex;flex-wrap:wrap;gap:4px}
+.htag{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:rgba(15,42,63,.85);color:#fff;line-height:18px}
+.htag.rek{background:#E3B341;color:#2B1D00}
+.htag.yr{background:#F5D27A;color:#2B1D00}
+.htag.new{background:#2E9E44;color:#fff}
+.htag.big{background:#fff;color:#0F2A3F}
+.htx{display:flex;flex-direction:column;gap:1px;padding:7px 9px 9px;min-width:0}
+.htx b{font-size:15px}
+.htx .small{margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -379,7 +396,7 @@ body.mapmax .recbar{display:inline-flex}
 <header class="top">
   <div class="brand">
     <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver">v12</span>
+    <h1>Dykkekart</h1><span class="ver">v14</span>
   </div>
   <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
@@ -451,7 +468,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v12 (fangst på andre, aktivitet etter dykkedato)";
+const APP_VERSION="v14 (siste store fangster)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -710,7 +727,7 @@ function renderFrames(){
 /* ---------- panel ---------- */
 function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="site")renderSiteView();else if(S.view==="area")renderAreaView();else if(S.view==="records")renderRecords()}
 function renderListView(){
-  panel.innerHTML=`    <h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="small" id="condNote" style="margin:4px 0 0"></p>
+  panel.innerHTML=`<div id="highlights"></div><h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="small" id="condNote" style="margin:4px 0 0"></p>
     <input class="search" id="q" type="search" placeholder="Søk i navn, arter, bunn, notater" value="${esc(S.q)}" aria-label="Søk">
     <div class="chips">${["alle","land","bat"].map(a=>`<button class="chip ${S.acc===a?"on":""}" data-a="${a}">${a==="alle"?"Alle":ACCESS[a]}</button>`).join("")}</div>
     <div id="spWrap"></div><div id="visFeed"></div><div id="feed"></div><div id="siteList"></div><div id="unpos"></div><div id="areaList"></div><div id="chartActions"></div>`;
@@ -742,7 +759,7 @@ function renderList(){
   clickRow($("#unpos"));
   renderAreaList();
   const cn=$("#condNote");if(cn)cn.innerHTML=condNoteHTML();
-  renderSpWrap();renderVisFeed();renderFeed();
+  renderHighlights();renderSpWrap();renderVisFeed();renderFeed();
   let a="";
   if(!isLive()){const mine=c.createdBy===S.user.id||S.me.role==="admin";
     a=`<div class="actions"><button class="btn" id="setChart">Kartinnstillinger</button>${mine&&!allSites().some(s=>s.chartId===c.id)?'<button class="btn ghost danger" id="delChart">Slett kartbladet</button>':""}</div>`}
@@ -752,14 +769,14 @@ function renderList(){
 }
 function dots(r){if(!r)return"";let h='<span aria-label="Vurdering '+r+' av 5">';for(let i=1;i<=5;i++)h+=`<svg width="9" height="9" style="margin-left:2px"><circle cx="4.5" cy="4.5" r="3.7" fill="${i<=r?"var(--kelp)":"none"}" stroke="var(--kelp)"/></svg>`;return h+"</span>"}
 
-function openSite(id){setTimeout(mobileReveal,0);cancelShapeEdit();clearDraft();if(S.selArea){S.selArea=null;renderAreas()}S.sel=id;S.view="site";S.draft=null;renderPins();S.logs=[];S.logsFor=id;S.siteReports=[];renderSiteView();loadLogs(id);loadSiteReports(id)}
+function openSite(id){S.siteFrom=S.siteFromNext||null;S.siteFromNext=null;setTimeout(mobileReveal,0);cancelShapeEdit();clearDraft();if(S.selArea){S.selArea=null;renderAreas()}S.sel=id;S.view="site";S.draft=null;renderPins();S.logs=[];S.logsFor=id;S.siteReports=[];renderSiteView();loadLogs(id);loadSiteReports(id)}
 async function loadLogs(id){const {data,error}=await cachedQ("logs:"+id,sb.from("logs").select("*").eq("site_id",id));if(error||S.logsFor!==id)return;
   S.logs=data.sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.created_at||"").localeCompare(a.created_at||""));renderLogs();renderStats();renderSpecies();renderVisStats()}
 function renderSiteView(){
-  panel.innerHTML=`<button class="btn ghost back" id="back">Alle steder</button><div id="siteBody"></div>
+  panel.innerHTML=`<button class="btn ghost back" id="back">${S.siteFrom==="records"?"‹ Tilbake til rekorder":"Alle steder"}</button><div id="siteBody"></div>
   <div id="stats"></div><div id="visStats"></div><div id="speciesBox"></div>
   <div class="logs"><h3>Dykkelogg</h3>${logFormHTML()}<div id="logList"></div></div><div id="siteActions"></div>`;
-  $("#back").onclick=()=>{S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel()};
+  $("#back").onclick=()=>{if(S.editLog)cancelEditLog();if(S.siteFrom==="records"){S.siteFrom=null;openRecords();return}S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel()};
   $("#logForm").onsubmit=saveLog;wireCatchEditor();$("#lCancel").onclick=cancelEditLog;S.editLog=null;
   renderSiteBody();renderStats();renderLogs();renderSpecies();renderVisStats();
 }
@@ -1206,15 +1223,16 @@ function hookDrawEvents(){
 function clearDraft(){S.draftArea=null;S.draftLayer=null;if(S.dLayer)S.dLayer.clearLayers()}
 
 /* area panel */
-function openArea(id){setTimeout(mobileReveal,0);
-  cancelShapeEdit();clearDraft();S.selArea=id;S.sel=null;S.logsFor=null;S.view="area";
+function openArea(id,fromSite){setTimeout(mobileReveal,0);
+  S.areaFrom=fromSite||null;cancelShapeEdit();clearDraft();S.selArea=id;S.sel=null;S.logsFor=null;S.view="area";
   renderAreas();renderPins();renderAreaView();
 }
 function zoomToArea(a){if(!isLive())switchChart("live");try{if(isPoint(a.geom)){S.lmap.setView([a.geom.coordinates[1],a.geom.coordinates[0]],Math.max(S.lmap.getZoom(),15));return}
   S.lmap.fitBounds(L.geoJSON(a.geom).getBounds(),{maxZoom:16,padding:[30,30]})}catch(e){}}
 function renderAreaView(){
-  panel.innerHTML=`<button class="btn ghost back" id="back">Alle steder</button><div id="areaBody"></div>`;
-  $("#back").onclick=()=>{cancelShapeEdit();S.view="list";S.selArea=null;renderAreas();renderPanel()};
+  const a0=S.areas.find(x=>x.id===S.selArea),bs=(S.areaFrom&&getSite(S.areaFrom))||(a0&&a0.siteId&&getSite(a0.siteId))||null;
+  panel.innerHTML=`<button class="btn ghost back" id="back">${bs?"‹ Tilbake til "+esc(bs.name):"Alle steder"}</button><div id="areaBody"></div>`;
+  $("#back").onclick=()=>{cancelShapeEdit();if(bs){openSite(bs.id)}else{S.view="list";S.selArea=null;renderAreas();renderPanel()}};
   renderAreaBody();
 }
 function areaBadge(a,size=16){return isPoint(a.geom)||a.icon?badgeHTML(colorOf(a),iconOf(a),size+2):`<i class="sw" style="background:${colorOf(a)}${patOf(a)==="kant"?";background:none;border:2px solid "+colorOf(a):""}"></i>`}
@@ -1229,6 +1247,8 @@ function renderAreaBody(){
     ${size||site?`<dl class="facts">${size?`<div><dt>${size[0]}</dt><dd>${size[1]}</dd></div>`:""}${site?`<div><dt>Dykkested</dt><dd><button class="linkbtn" style="margin:0" id="goSite">${esc(site.name)}</button></dd></div>`:""}</dl>`:""}
     ${a.notes?`<div class="sec"><h3>Notater</h3><p>${esc(a.notes)}</p></div>`:""}
     <p class="small">${pt?"Plassert":"Tegnet"} av ${mine?"deg":esc(a.authorName||"et medlem")}.</p>
+    ${(()=>{const sib=a.siteId?S.areas.filter(x=>x.siteId===a.siteId&&x.id!==a.id).sort((x,y)=>(x.name||areaLabel(x)).localeCompare(y.name||areaLabel(y),"nb")):[];
+      return sib.length?`<div class="sec sibs"><h3>Flere på ${esc(site?site.name:"stedet")}</h3>${sib.map(x=>`<button class="btn ghost" style="padding:2px 6px;margin:0 4px 4px 0" data-goarea="${esc(x.id)}">${areaBadge(x,12)} ${esc(x.name||areaLabel(x))}</button>`).join("")}</div>`:""})()}
     <div class="actions">${editing
       ?`<button class="btn primary" id="shSave">Lagre ${pt?"plassering":"form"}</button><button class="btn ghost" id="shCancel">Avbryt</button>`
       :`<button class="btn" id="arEdit">Rediger</button>${canShape?`<button class="btn" id="arShape">${pt?"Flytt":"Endre form"}</button>`:""}<button class="btn" id="arZoom">Zoom til</button>${a._priv?"":'<button class="btn" id="arShare">Del lenke</button>'}${canDel?`<button class="btn ghost danger" id="arDel">Slett ${noun}</button>`:""}`}</div>`;
@@ -1348,7 +1368,7 @@ function linkedAreasHTML(s){
   const L2=S.areas.filter(a=>a.siteId===s.id);if(!L2.length)return"";
   return `<div class="sec"><h3>Områder og markører</h3>${L2.map(a=>`<button class="btn ghost" style="padding:2px 6px;margin:0 4px 4px 0" data-goarea="${esc(a.id)}">${areaBadge(a,12)} ${esc(a.name||areaLabel(a))}</button>`).join("")}</div>`;
 }
-panel.addEventListener("click",e=>{const b=e.target.closest("[data-goarea]");if(!b)return;const a=S.areas.find(x=>x.id===b.dataset.goarea);if(!a)return;if(!isLive())switchChart("live");openArea(a.id);zoomToArea(a)});
+panel.addEventListener("click",e=>{const b=e.target.closest("[data-goarea]");if(!b)return;const a=S.areas.find(x=>x.id===b.dataset.goarea);if(!a)return;if(!isLive())switchChart("live");openArea(a.id,S.view==="site"?S.sel:(S.view==="area"?S.areaFrom:null));zoomToArea(a)});
 
 /* GeoJSON */
 function download(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000)}
@@ -1806,7 +1826,7 @@ function renderRecords(){
   $("#back").onclick=()=>{S.view="list";renderPanel()};
   $("#yrChips").onclick=e=>{const b=e.target.closest("[data-y]");if(!b)return;S.recYear=b.dataset.y;renderRecords()};
   $("#sortChips").onclick=e=>{const b=e.target.closest("[data-s]");if(!b)return;S.recSort=b.dataset.s;renderRecords()};
-  panel.querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{openSite(b.dataset.site);focusSite(b.dataset.site)});
+  panel.querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{S.siteFromNext="records";openSite(b.dataset.site);focusSite(b.dataset.site)});
 }
 
 
@@ -1950,7 +1970,7 @@ function feedItems(){
 function diveWhen(l){
   const d=new Date(l.date+"T12:00:00"),n=new Date(),day=x=>new Date(x.getFullYear(),x.getMonth(),x.getDate()).getTime();
   const diff=Math.round((day(n)-day(d))/864e5),tm=l.time_of_day?" kl "+l.time_of_day:"";
-  if(diff<=0)return "i dag"+tm;if(diff===1)return "i går"+tm;if(diff<7)return diff+" dager siden";
+  if(diff<0)return d.toLocaleDateString("nb-NO",{day:"numeric",month:"short"});if(diff===0)return "i dag"+tm;if(diff===1)return "i går"+tm;if(diff<7)return diff+" dager siden";
   return d.toLocaleDateString("nb-NO",{day:"numeric",month:"short"});
 }
 function renderFeed(){
@@ -2000,6 +2020,44 @@ function pickResult(r){
     if(S.searchPin)S.lmap.removeLayer(S.searchPin);
     S.searchPin=L.circleMarker([r.lat,r.lon],{radius:7,color:"#C0266D",weight:3,fillColor:"#fff",fillOpacity:1}).bindTooltip(r.name,{permanent:true,direction:"top",offset:[0,-8]}).addTo(S.lmap);
     setTimeout(()=>{if(S.searchPin){S.lmap.removeLayer(S.searchPin);S.searchPin=null}},15000)}
+}
+
+
+/* ---------- highlights: recent notable catches ---------- */
+function catchKey(c){return [c.weight_kg??-1,c.size_cm??-1]}
+function bigger(a,b){const x=catchKey(a),y=catchKey(b);return x[0]!==y[0]?x[0]>y[0]:x[1]>y[1]}
+function highlightItems(){
+  const caught=S.catches.filter(c=>c.kind==="fanget"&&c.date&&getSite(c.site_id));
+  const best={},yBest={},bySp={};const yr=String(new Date().getFullYear());
+  for(const c of caught){if(c.weight_kg==null&&c.size_cm==null)continue;
+    if(!best[c.species]||bigger(c,best[c.species]))best[c.species]=c;
+    if(c.date.startsWith(yr)&&(!yBest[c.species]||bigger(c,yBest[c.species])))yBest[c.species]=c;
+    (bySp[c.species]||(bySp[c.species]=[])).push(c)}
+  const firstAt={};for(const c of S.catches.filter(c=>c.date).sort((a,b)=>a.date.localeCompare(b.date)||String(a.created_at||"").localeCompare(String(b.created_at||"")))){const k=c.site_id+"|"+c.species;if(!firstAt[k])firstAt[k]=c.id}
+  const pick=days=>{const cut=new Date(Date.now()-days*864e5).toISOString().slice(0,10),out=[];
+    for(const c of S.catches){if(!c.date||c.date<cut||!getSite(c.site_id))continue;
+      const tags=[];let sc=0;const meas=c.weight_kg!=null||c.size_cm!=null;
+      if(c.kind==="fanget"&&meas){
+        if(best[c.species]===c&&(bySp[c.species]||[]).length>1){tags.push(["rek","Rekord"]);sc+=100}
+        else if(yBest[c.species]===c){tags.push(["yr","Årets største"]);sc+=60}
+        const L=bySp[c.species]||[];if(L.length>=5&&!tags.length){const smaller=L.filter(x=>bigger(c,x)).length;if(smaller/(L.length-1)>=.8){tags.push(["big","Stor"]);sc+=25}}}
+      if(firstAt[c.site_id+"|"+c.species]===c.id&&S.catches.some(x=>x.site_id===c.site_id&&x.id!==c.id)){tags.push(["new","Ny art på stedet"]);sc+=30}
+      if(!tags.length)continue;
+      if(c.photo_path)sc+=15;sc+=Math.min(20,(c.weight_kg||0));
+      out.push({c,tags,sc})}
+    return out};
+  let items=pick(60);if(items.length<2)items=pick(180);
+  return items.sort((a,b)=>b.sc-a.sc||String(b.c.date).localeCompare(String(a.c.date))).slice(0,8);
+}
+function renderHighlights(){
+  const el=$("#highlights");if(!el)return;const items=highlightItems();
+  if(!items.length){el.innerHTML="";return}
+  el.innerHTML=`<div class="hl"><h3>Siste store fangster</h3><div class="hlrow">${items.map(({c,tags})=>{const s=getSite(c.site_id),who=catcherName(c);
+    return `<button class="hcard" data-site="${esc(s.id)}" title="${esc(c.species+" · "+s.name)}">
+      <span class="hpic">${c.photo_path?`<img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy">`:`<span class="hico">${iconSVG(SPICON(c.species),34,"#fff",1.8)}</span>`}
+        <span class="htags">${tags.map(([k,t])=>`<span class="htag ${k}">${esc(t)}</span>`).join("")}</span></span>
+      <span class="htx"><b>${esc(c.species)}</b>${measureTxt(c)?` <span class="rm">${esc(measureTxt(c))}</span>`:""}<span class="small">${esc(who===S.me.name?"Du":who)}${who?" · ":""}${esc(s.name)}</span><span class="small">${esc(diveWhen({date:c.date}))}</span></span></button>`}).join("")}</div></div>`;
+  el.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>{openSite(b.dataset.site);focusSite(b.dataset.site)});
 }
 
 /* ---------- records button in header / bottom bar ---------- */
