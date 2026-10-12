@@ -366,6 +366,11 @@ body.mapmax .recbar{display:inline-flex}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hdrbtn,:root:not([data-theme="light"]) .recbar{background:#3A2E0E;color:#F5D27A;border-color:#8A6A1E}:root:not([data-theme="light"]) .hdrbtn.on,:root:not([data-theme="light"]) .recbar.on{background:#E3B341;color:#2B1D00}}
 @media (max-width:860px){#addChartBtn{display:none}.hdrbtn{padding:6px 10px}.top .ver{display:none}.top{gap:8px;padding:10px 12px}#menuBtn{padding:6px 8px}.brand{gap:7px}}
 @media (max-width:420px){.hdrbtn span{display:none}.hdrbtn{padding:7px 9px}}
+.crow .cWhoW{grid-column:span 12}
+.crow .cWho{font-size:13.5px}
+.unit.pre span{right:auto;left:10px}
+.unit.pre input{padding-left:34px!important;padding-right:10px!important}
+.by{color:var(--alpha);font-weight:600}
 </style>
 </head>
 <body>
@@ -374,7 +379,7 @@ body.mapmax .recbar{display:inline-flex}
 <header class="top">
   <div class="brand">
     <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver">v11</span>
+    <h1>Dykkekart</h1><span class="ver">v12</span>
   </div>
   <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
@@ -446,7 +451,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v11 (rekorder i toppen)";
+const APP_VERSION="v12 (fangst på andre, aktivitet etter dykkedato)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1039,13 +1044,23 @@ function wireColorPicker(id,onPick){const el=$("#"+id);if(!el)return;const inp=e
   const mark=c=>el.querySelectorAll("button").forEach(x=>x.classList.toggle("on",(x.dataset.c||"")===(c||"")&&!(c&&inp._custom)));
   el.onclick=e=>{const b=e.target.closest("button[data-c]");if(!b)return;inp._custom=false;mark(b.dataset.c);onPick(b.dataset.c||null)};
   inp.oninput=()=>{inp._custom=true;el.querySelectorAll("button").forEach(x=>x.classList.remove("on"));onPick(inp.value)}}
+const COLFILE={photo_path:["stats.sql","bilde og vekt"],weight_kg:["stats.sql","bilde og vekt"],time_of_day:["stats.sql","klokkeslett og forhold"],wind_dir:["stats.sql","vind og tidevann"],wind_speed:["stats.sql","vind og tidevann"],tide_phase:["stats.sql","vind og tidevann"],
+  caught_by:["assign.sql","hvem som fikk fangsten"],color:["style.sql","farge og symbol"],icon:["style.sql","farge og symbol"],pattern:["style.sql","farge og symbol"],dash:["style.sql","farge og symbol"]};
 async function colSafe(fn,row,cols,file,what="farge og symbol"){
-  let res=await fn(row);
-  if(res&&res.error){const m=errMsg(res.error);
-    if(/column|schema cache/i.test(m)&&cols.some(c=>m.includes(c))){const strip=o=>{const r={...o};cols.forEach(c=>delete r[c]);return r};res=await fn(Array.isArray(row)?row.map(strip):strip(row));
-      if(!res.error){S._warned=S._warned||new Set();if(!S._warned.has(file)){S._warned.add(file);alert(`Lagret, men ${what} ble ikke lagret. Kjør ${file} i Supabase først.`)}}}}
+  let res=await fn(row);const stripped=[];
+  for(let n=0;n<=cols.length&&res&&res.error;n++){
+    const m=" "+errMsg(res.error)+" ";if(!/column|schema cache/i.test(m))break;
+    let hit=cols.filter(c=>!stripped.includes(c)&&new RegExp(`['"\\s]${c}['"\\s]`).test(m));
+    if(!hit.length)break;stripped.push(...hit);
+    const strip=o=>{const r={...o};stripped.forEach(c=>delete r[c]);return r};
+    res=await fn(Array.isArray(row)?row.map(strip):strip(row));
+  }
+  if(stripped.length&&res&&!res.error){S._warned=S._warned||new Set();
+    const groups={};for(const c of stripped){const [f,w]=COLFILE[c]||[file,what];(groups[f]||(groups[f]=new Set())).add(w)}
+    for(const [f,ws] of Object.entries(groups))if(!S._warned.has(f)){S._warned.add(f);alert(`Lagret, men ${[...ws].join(" og ")} ble ikke lagret. Kjør ${f} i Supabase først.`)}}
   return res;
 }
+function catcherName(c){return (c&&(c.caught_by||c.author_name))||""}
 /* ---------- areas (polygons, lines and markers) ---------- */
 const AREA_TYPES={
   quality:{name:"Kvalitet",icon:"stjerne",pat:"fylt",vals:{topp:["Topp","#0E7A3A","stjerne"],bra:["Bra","#3FA34D"],ok:["Grei","#C9B92B"],middels:["Middels","#E8A020"],darlig:["Dårlig","#E0662B"],ubrukelig:["Ikke verdt det","#B3261E"]}},
@@ -1534,7 +1549,8 @@ function spSiteSet(){return new Set(S.catches.filter(c=>c.species===S.sp).map(c=
 
 /* catch editor in log form */
 function catchEditorHTML(){return `<div class="catchEd"><label style="margin-top:12px">Fangst og arter sett</label><div id="cRows"></div><button type="button" class="btn ghost" id="cAdd" style="padding:3px 8px;margin-top:4px">+ Legg til art</button>
-  <datalist id="spList">${[...new Set([...S.catches.map(c=>c.species),...SPECIES])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>`}
+  <datalist id="spList">${[...new Set([...S.catches.map(c=>c.species),...SPECIES])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist>
+  <datalist id="whoList">${[...new Set([...(S.members||[]).map(m=>m.name).filter(n=>n&&n!==S.me.name),...S.catches.map(c=>c.caught_by).filter(Boolean)])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>`}
 function wireCatchEditor(){const b=$("#cAdd");if(b)b.onclick=addCatchRow}
 /* visibility reports in site panel */
 function renderVis(s){
@@ -1714,28 +1730,29 @@ const CAMSVG=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke
 function addCatchRow(c){c=c&&c.species!==undefined?c:null;const d=document.createElement("div");d.className="crow";if(c&&c.id)d.dataset.id=c.id;
   d.innerHTML=`<input type="text" list="spList" class="cSp" placeholder="Art" aria-label="Art"><select class="cKind" aria-label="Fanget eller sett"><option value="sett">Sett</option><option value="fanget">Fanget</option></select><label class="unit cCntW"><input type="number" class="cCnt" min="1" value="1" aria-label="Antall" title="Antall"><span>stk</span></label>
     <label class="unit cSizeW"><input type="number" class="cSize" min="0" step="1" aria-label="Største lengde i cm" title="Største lengde, cm"><span>cm</span></label><label class="unit cKgW"><input type="number" class="cKg" min="0" step="0.01" aria-label="Vekt i kg" title="Vekt, kg"><span>kg</span></label>
-    <label class="btn ghost cPh" title="Legg ved bilde">${CAMSVG}<span>Bilde</span><input type="file" accept="image/*" hidden></label><button type="button" class="btn ghost cRm" aria-label="Fjern">×</button>`;
-  if(c){d.querySelector(".cSp").value=c.species||"";d.querySelector(".cKind").value=c.kind||"sett";d.querySelector(".cCnt").value=c.count||1;d.querySelector(".cSize").value=c.size_cm??"";d.querySelector(".cKg").value=c.weight_kg??"";
+    <label class="btn ghost cPh" title="Legg ved bilde">${CAMSVG}<span>Bilde</span><input type="file" accept="image/*" hidden></label><button type="button" class="btn ghost cRm" aria-label="Fjern">×</button>
+    <label class="unit pre cWhoW"><span>Av</span><input type="text" class="cWho" list="whoList" placeholder="meg, eller velg/skriv navn" aria-label="Hvem fikk eller så den" autocomplete="off"></label>`;
+  if(c){d.querySelector(".cSp").value=c.species||"";d.querySelector(".cKind").value=c.kind||"sett";d.querySelector(".cCnt").value=c.count||1;d.querySelector(".cSize").value=c.size_cm??"";d.querySelector(".cKg").value=c.weight_kg??"";d.querySelector(".cWho").value=c.caught_by||"";
     if(c.photo_path){const lb=d.querySelector(".cPh"),fi0=lb.querySelector("input");lb.innerHTML=`<img src="${esc(photoURL(c.photo_path))}" alt="" class="cprev"><span>Bytt</span>`;lb.appendChild(fi0)}}
   d.querySelector(".cRm").onclick=()=>d.remove();
   const fi=d.querySelector("input[type=file]");fi.onchange=()=>{const f=fi.files[0];const sp=d.querySelector(".cPh span");if(!f){sp.textContent="Bilde";return}
     try{const u=URL.createObjectURL(f);d.querySelector(".cPh").innerHTML=`<img src="${u}" alt="" class="cprev"><span>Bytt</span>`;d.querySelector(".cPh").appendChild(fi)}catch(e){sp.textContent="1 bilde"}};
   $("#cRows").appendChild(d);if(!c)d.querySelector(".cSp").focus()}
-function readCatchRows(){return [...document.querySelectorAll("#cRows .crow")].map(r=>({id:r.dataset.id||null,species:normSp(r.querySelector(".cSp").value),kind:r.querySelector(".cKind").value,count:Math.max(1,Math.round(num(r.querySelector(".cCnt").value)??1)),size_cm:num(r.querySelector(".cSize").value),weight_kg:num(r.querySelector(".cKg")?.value),_file:r.querySelector("input[type=file]")?.files?.[0]||null})).filter(c=>c.species)}
+function readCatchRows(){return [...document.querySelectorAll("#cRows .crow")].map(r=>({id:r.dataset.id||null,species:normSp(r.querySelector(".cSp").value),kind:r.querySelector(".cKind").value,count:Math.max(1,Math.round(num(r.querySelector(".cCnt").value)??1)),size_cm:num(r.querySelector(".cSize").value),weight_kg:num(r.querySelector(".cKg")?.value),caught_by:(v=>v&&v!==S.me.name?v:null)((r.querySelector(".cWho")?.value||"").trim()),_file:r.querySelector("input[type=file]")?.files?.[0]||null})).filter(c=>c.species)}
 async function afterLogSaved(s,log,catches,snap){
   const warn=[];
   if(catches.length){
     const rows=[];for(const c of catches){const {_file,id,...row}=c;
       if(_file){try{row.photo_path=await uploadImage(await shrinkImage(_file))}catch(e){warn.push("Et bilde ble ikke lastet opp: "+errMsg(e))}}
       rows.push({...row,log_id:log.id,site_id:s.id,date:log.date,author:S.user.id,author_name:S.me.name})}
-    const {error}=await colSafe(r=>sb.from("catches").insert(r),rows,["photo_path","weight_kg"],"stats.sql","bilde og vekt");if(error)warn.push("Fangst ble ikke lagret: "+tableErr(error,"catch.sql"))}
+    const {error}=await colSafe(r=>sb.from("catches").insert(r),rows,["photo_path","weight_kg","caught_by"],"stats.sql","bilde og vekt");if(error)warn.push("Fangst ble ikke lagret: "+tableErr(error,"catch.sql"))}
   if(log.vis!=null&&log.date===today()){const {error}=await colSafe(r=>sb.from("vis_reports").insert(r),{site_id:s.id,vis:log.vis,note:"Fra dykkelogg",author:S.user.id,author_name:S.me.name,...(snap||{})},["wind_dir","wind_speed","tide_phase"],"stats.sql","vind og tidevann");if(error&&!/finnes ikke/.test(tableErr(error,"")))warn.push("Siktrapport: "+errMsg(error))}
   return warn;
 }
 function catchesHTML(logId){const L=S.catches.filter(c=>c.log_id===logId);if(!L.length)return"";
-  const f=k=>L.filter(c=>c.kind===k).map(c=>`${c.count>1?c.count+" ":""}${esc(c.species.toLocaleLowerCase("nb"))}${measureTxt(c)?` (${esc(measureTxt(c))})`:""}`).join(", ");
+  const f=k=>L.filter(c=>c.kind===k).map(c=>`${c.count>1?c.count+" ":""}${esc(c.species.toLocaleLowerCase("nb"))}${measureTxt(c)?` (${esc(measureTxt(c))})`:""}${c.caught_by?` <span class="by">av ${esc(c.caught_by)}</span>`:""}`).join(", ");
   const a=f("fanget"),b=f("sett"),ph=L.filter(c=>c.photo_path);
-  return `<div class="m">${a?`Fanget: ${a}`:""}${a&&b?"<br>":""}${b?`Sett: ${b}`:""}</div>${ph.length?`<div class="thumbs">${ph.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+(measureTxt(c)?" · "+measureTxt(c):""))}" aria-label="Vis bilde av ${esc(c.species)}"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}`}
+  return `<div class="m">${a?`Fanget: ${a}`:""}${a&&b?"<br>":""}${b?`Sett: ${b}`:""}</div>${ph.length?`<div class="thumbs">${ph.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+(measureTxt(c)?" · "+measureTxt(c):"")+(c.caught_by?" · "+c.caught_by:""))}" aria-label="Vis bilde av ${esc(c.species)}"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}`}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.preventDefault();
   $("#imgBig").src=photoURL(b.dataset.img);$("#imgCap").textContent=b.dataset.cap||"";$("#imgDlg").showModal()});
 
@@ -1744,8 +1761,8 @@ S.recYear=null;S.recSort="kg";S.allLogs=null;S.allReports=null;
 function openRecords(){cancelShapeEdit();clearDraft();S.sel=null;S.selArea=null;S.logsFor=null;S.view="records";S.sheetList=false;renderPins();renderAreas();renderRecords();setTimeout(mobileReveal,0);
   Promise.all([cachedQ("alllogs",sb.from("logs").select("*")),cachedQ("allreports",sb.from("vis_reports").select("*"))]).then(([a,b])=>{if(!a.error)S.allLogs=a.data;if(!b.error)S.allReports=b.data;if(S.view==="records")renderRecords()})}
 function recRow(c,i,medal){const s=getSite(c.site_id);
-  return `<div class="rec">${i!=null?`<span class="rk">${i+1}</span>`:""}${c.photo_path?`<button class="thumb big" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+" · "+measureTxt(c)+(s?" · "+s.name:""))}" aria-label="Vis bilde"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`:`<span class="thumb big ph">${iconSVG(SPICON(c.species),22)}</span>`}
-    <span class="rb"><b>${medal?"🥇 ":""}${esc(c.species)}</b> <span class="rm">${esc(measureTxt(c)||"–")}</span><br><span class="small">${s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button> · `:""}${esc(c.author_name||"")}${c.date?" · "+esc(fdate(c.date)):""}</span></span></div>`}
+  return `<div class="rec">${i!=null?`<span class="rk">${i+1}</span>`:""}${c.photo_path?`<button class="thumb big" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+" · "+measureTxt(c)+(s?" · "+s.name:"")+(catcherName(c)?" · "+catcherName(c):""))}" aria-label="Vis bilde"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`:`<span class="thumb big ph">${iconSVG(SPICON(c.species),22)}</span>`}
+    <span class="rb"><b>${medal?"🥇 ":""}${esc(c.species)}</b> <span class="rm">${esc(measureTxt(c)||"–")}</span><br><span class="small">${s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button> · `:""}${esc(catcherName(c))}${c.date?" · "+esc(fdate(c.date)):""}</span></span></div>`}
 function SPICON(sp){const k=sp.toLowerCase();return /skjell|musling/.test(k)?(/blå|o-|hjerte/.test(k)?"musling":"skjell"):/krabbe|hummer|kreps/.test(k)?"dyr":/kråkebolle/.test(k)?"kraakebolle":/sel|oter/.test(k)?"dyr":"fisk"}
 function renderRecords(){
   const years=[...new Set(S.catches.map(c=>(c.date||"").slice(0,4)).filter(Boolean))].sort().reverse();
@@ -1769,7 +1786,7 @@ function renderRecords(){
   const vSite={};for(const p of vp)(vSite[p.site]||(vSite[p.site]=[])).push(p.vis);
   const vRank=Object.entries(vSite).filter(([,a])=>a.length>=3).map(([id,a])=>({s:getSite(id),avg:a.reduce((x,y)=>x+y,0)/a.length,n:a.length})).filter(x=>x.s).sort((a,b)=>b.avg-a.avg).slice(0,5);
   const divers={};for(const l of logs){const k=l.author_name||"Ukjent";(divers[k]||(divers[k]={dives:0,sp:new Set()})).dives++}
-  for(const c of allIn){const k=c.author_name||"Ukjent";(divers[k]||(divers[k]={dives:0,sp:new Set()})).sp.add(c.species)}
+  for(const c of allIn){const k=catcherName(c)||"Ukjent";(divers[k]||(divers[k]={dives:0,sp:new Set()})).sp.add(c.species)}
   const dRows=Object.entries(divers).sort((a,b)=>b[1].dives-a[1].dives||b[1].sp.size-a[1].sp.size).slice(0,8);
   const yl=S.recYear==="alle"?"alle år":S.recYear;
   panel.innerHTML=`<button class="btn ghost back" id="back">Alle steder</button>
@@ -1781,11 +1798,11 @@ function renderRecords(){
     <section class="rsec"><h3>Topp 10 ${S.recSort==="kg"?"tyngste":"lengste"} fangster</h3>
       <div class="chips" id="sortChips"><button class="chip ${S.recSort==="kg"?"on":""}" data-s="kg">Vekt</button><button class="chip ${S.recSort==="cm"?"on":""}" data-s="cm">Lengde</button></div>
       ${top.length?top.map((c,i)=>recRow(c,i)).join(""):`<p class="emptytxt">Ingen fangster med ${S.recSort==="kg"?"vekt":"lengde"} ${S.recYear==="alle"?"ennå":"i "+yl}.</p>`}</section>
-    ${photos.length?`<section class="rsec"><h3>Siste bilder</h3><div class="gallery">${photos.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+(measureTxt(c)?" · "+measureTxt(c):"")+(getSite(c.site_id)?" · "+getSite(c.site_id).name:"")+(c.author_name?" · "+c.author_name:""))}"><img src="${esc(photoURL(c.photo_path))}" alt="${esc(c.species)}" loading="lazy"></button>`).join("")}</div></section>`:""}
+    ${photos.length?`<section class="rsec"><h3>Siste bilder</h3><div class="gallery">${photos.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+(measureTxt(c)?" · "+measureTxt(c):"")+(getSite(c.site_id)?" · "+getSite(c.site_id).name:"")+(catcherName(c)?" · "+catcherName(c):""))}"><img src="${esc(photoURL(c.photo_path))}" alt="${esc(c.species)}" loading="lazy"></button>`).join("")}</div></section>`:""}
     <section class="rsec"><h3>Arter</h3>${spRows.length?`<p class="small" style="margin:0 0 6px">${dv.S} arter registrert ${S.recYear==="alle"?"totalt":"i "+yl}. Shannon H′ ${fnum(dv.H,2)}.</p>${hbars(spRows)}`:`<p class="emptytxt">Ingen arter registrert ${S.recYear==="alle"?"ennå":"i "+yl}.</p>`}
       ${rich.length?`<h4 class="h4">Mest artsrike steder</h4>${hbars(rich.map(x=>({label:x.s.name,value:x.d.S,text:`${x.d.S} arter`,tip:`${x.s.name}: ${x.d.S} arter, H′ ${fnum(x.d.H,2)}`})))}`:""}</section>
     <section class="rsec">${S.allLogs==null?`<p class="small">Henter dykk og siktdata…</p>`:vp.length>=2?visStatsHTML(vp,{site:false}).replace("<h3>Sikt over tid</h3>","<h3>Sikt</h3>")+(vRank.length?`<h4 class="h4">Best snittsikt (minst 3 målinger)</h4>${hbars(vRank.map(x=>({label:x.s.name,value:x.avg,text:`${fnum(x.avg,1)} m`,tip:`${x.s.name}: ${fnum(x.avg,1)} m snitt over ${x.n} målinger`})))}`:""):`<h3>Sikt</h3><p class="emptytxt">For få siktmålinger ${S.recYear==="alle"?"ennå":"i "+yl}.</p>`}</section>
-    ${dRows.length?`<section class="rsec"><h3>Mest aktive dykkere</h3>${hbars(dRows.map(([k,v])=>({label:k,value:v.dives,text:`${v.dives} dykk · ${v.sp.size} arter`})))}</section>`:""}`;
+    ${dRows.length?`<section class="rsec"><h3>Mest aktive dykkere</h3>${hbars(dRows.map(([k,v])=>({label:k,value:v.dives,text:`${v.dives} dykk · ${v.sp.size} ${v.sp.size===1?"art":"arter"}`})))}</section>`:""}`;
   $("#back").onclick=()=>{S.view="list";renderPanel()};
   $("#yrChips").onclick=e=>{const b=e.target.closest("[data-y]");if(!b)return;S.recYear=b.dataset.y;renderRecords()};
   $("#sortChips").onclick=e=>{const b=e.target.closest("[data-s]");if(!b)return;S.recSort=b.dataset.s;renderRecords()};
@@ -1827,10 +1844,10 @@ async function saveLogEdit(s){
       if(_file){try{body.photo_path=await uploadImage(await shrinkImage(_file))}catch(e){warn.push("Et bilde ble ikke lastet opp: "+errMsg(e))}}
       if(id){const old=existing.find(x=>x.id===id);
         const changed=Object.keys(body).some(k=>(body[k]??null)!==(old?.[k]??null));if(!changed)continue;
-        const {data:d2,error:e3}=await colSafe(x=>sb.from("catches").update(x).eq("id",id).select(),body,["photo_path","weight_kg"],"stats.sql","bilde og vekt");
+        const {data:d2,error:e3}=await colSafe(x=>sb.from("catches").update(x).eq("id",id).select(),body,["photo_path","weight_kg","caught_by"],"stats.sql","bilde og vekt");
         if(e3)warn.push(`Kunne ikke endre ${c.species}: ${errMsg(e3)}`);else if(Array.isArray(d2)&&!d2.length)warn.push(EDIT_SQL_MSG)}
       else ins.push({...body,log_id:l.id,site_id:s.id,author:S.user.id,author_name:S.me.name})}
-    if(ins.length){const {error:e4}=await colSafe(x=>sb.from("catches").insert(x),ins,["photo_path","weight_kg"],"stats.sql","bilde og vekt");if(e4)warn.push("Nye arter ble ikke lagret: "+tableErr(e4,"catch.sql"))}
+    if(ins.length){const {error:e4}=await colSafe(x=>sb.from("catches").insert(x),ins,["photo_path","weight_kg","caught_by"],"stats.sql","bilde og vekt");if(e4)warn.push("Nye arter ble ikke lagret: "+tableErr(e4,"catch.sql"))}
     cancelEditLog();if(warn.length)$("#lErr").textContent=[...new Set(warn)].join(" ");
     loadLogs(s.id);loadSites();loadCatches();loadSiteReports(s.id);
   }catch(err){$("#lErr").textContent="Kunne ikke lagre: "+errMsg(err);btn.textContent="Lagre endringer"}
@@ -1914,20 +1931,27 @@ window.addEventListener("hashchange",()=>{if(S.started)handleHash()});
 /* ---------- activity feed ---------- */
 S.feedLogs=[];S.feedMore=false;
 async function loadFeed(){
-  const since=new Date(Date.now()-45*864e5).toISOString();
-  const {data,error}=await cachedQ("feed",sb.from("logs").select("*").gte("created_at",since).order("created_at",{ascending:false}).limit(40));
+  const d=new Date(Date.now()-45*864e5),since=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  const {data,error}=await cachedQ("feed",sb.from("logs").select("*").gte("date",since).order("date",{ascending:false}).limit(60));
   if(error)return;S.feedLogs=data;if(S.view==="list")renderFeed();
 }
 function feedItems(){
   const items=[];
   for(const l of S.feedLogs){const s=getSite(l.site_id);if(!s)continue;
     const C=S.catches.filter(c=>c.log_id===l.id),caught=C.filter(c=>c.kind==="fanget"),seen=C.filter(c=>c.kind!=="fanget");
-    const cap=caught.slice(0,3).map(c=>`${c.count>1?c.count+" ":""}${c.species.toLocaleLowerCase("nb")}${measureTxt(c)?" ("+measureTxt(c)+")":""}`).join(", ")+(caught.length>3?` og ${caught.length-3} til`:"");
+    const cap=caught.slice(0,3).map(c=>{const extra=[measureTxt(c),c.caught_by&&c.caught_by!==l.author_name?c.caught_by:""].filter(Boolean).join(", ");return `${c.count>1?c.count+" ":""}${c.species.toLocaleLowerCase("nb")}${extra?" ("+extra+")":""}`}).join(", ")+(caught.length>3?` og ${caught.length-3} til`:"");
     const parts=[cap?"Fanget "+cap:"",seen.length?`så ${seen.length} ${seen.length===1?"art":"arter"}`:"",l.vis!=null?`sikt ${fnum(l.vis,1)} m`:""].filter(Boolean);
-    items.push({t:l.created_at||l.date,site:s,who:l.author===S.user.id?"Du":(l.author_name||"Noen"),verb:"dykket på",text:parts.join(" · "),photo:C.find(c=>c.photo_path)})}
+    const dt=Date.parse(`${l.date}T${l.time_of_day||"12:00"}`);
+    items.push({t:isFinite(dt)?dt:Date.parse(l.created_at||0),when:diveWhen(l),site:s,who:l.author===S.user.id?"Du":(l.author_name||"Noen"),verb:"dykket på",text:parts.join(" · "),photo:C.find(c=>c.photo_path)})}
   const cutoff=Date.now()-45*864e5;
-  for(const s of S.sites)if(s.createdAt&&Date.parse(s.createdAt)>cutoff)items.push({t:s.createdAt,site:s,who:s.createdBy===S.user.id?"Du":"",verb:s.createdBy===S.user.id?"la til":"Nytt dykkested:",text:"",isNew:true});
-  return items.sort((a,b)=>String(b.t).localeCompare(String(a.t)));
+  for(const s of S.sites)if(s.createdAt&&Date.parse(s.createdAt)>cutoff)items.push({t:Date.parse(s.createdAt),when:ago(s.createdAt),site:s,who:s.createdBy===S.user.id?"Du":"",verb:s.createdBy===S.user.id?"la til":"Nytt dykkested:",text:"",isNew:true});
+  return items.filter(it=>isFinite(it.t)).sort((a,b)=>b.t-a.t);
+}
+function diveWhen(l){
+  const d=new Date(l.date+"T12:00:00"),n=new Date(),day=x=>new Date(x.getFullYear(),x.getMonth(),x.getDate()).getTime();
+  const diff=Math.round((day(n)-day(d))/864e5),tm=l.time_of_day?" kl "+l.time_of_day:"";
+  if(diff<=0)return "i dag"+tm;if(diff===1)return "i går"+tm;if(diff<7)return diff+" dager siden";
+  return d.toLocaleDateString("nb-NO",{day:"numeric",month:"short"});
 }
 function renderFeed(){
   const el=$("#feed");if(!el)return;const items=feedItems();
@@ -1935,7 +1959,7 @@ function renderFeed(){
   const show=items.slice(0,S.feedMore?25:5);
   el.innerHTML=`<div class="feed act"><h3>Siste aktivitet</h3>${show.map(it=>`<button class="arow" data-site="${esc(it.site.id)}">
     ${it.photo?`<span class="thumb sm"><img src="${esc(photoURL(it.photo.photo_path))}" alt="" loading="lazy"></span>`:`<span class="aico">${it.isNew?flagSVG(false,16):iconSVG("dykker",18)}</span>`}
-    <span class="atx"><span><b>${esc(it.who)}</b>${it.who?" ":""}${esc(it.verb)} <b>${esc(it.site.name)}</b></span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(ago(it.t))}</span></button>`).join("")}
+    <span class="atx"><span><b>${esc(it.who)}</b>${it.who?" ":""}${esc(it.verb)} <b>${esc(it.site.name)}</b></span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`).join("")}
     ${items.length>5?`<button class="linkbtn" id="feedMore">${S.feedMore?"Vis færre":`Vis flere (${Math.min(items.length,25)-5})`}</button>`:""}</div>`;
   el.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>{openSite(b.dataset.site);focusSite(b.dataset.site)});
   const fm=$("#feedMore");if(fm)fm.onclick=()=>{S.feedMore=!S.feedMore;renderFeed()};
