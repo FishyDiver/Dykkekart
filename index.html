@@ -214,6 +214,9 @@ dialog p{color:var(--muted);margin:6px 0 0}
 .flagdot{position:relative}.flagdot .cdot{left:8px;top:-4px;width:9px;height:9px;border-width:1.5px}
 .cond{background:var(--soft);border-radius:10px;padding:10px 12px;margin:0 0 16px}
 .cnow{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.ctimes{display:flex;gap:5px;overflow-x:auto;margin:0 -2px 8px;padding:0 2px 2px;scrollbar-width:none}.ctimes::-webkit-scrollbar{display:none}
+.ctimes .chip{flex:none;padding:2px 10px;font-size:13px}
+.ctphase{font-size:14px;margin-top:2px}
 .cnow strong{display:block;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:19px}
 .ctide{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:8px;font-size:14px}.ctide small{color:var(--muted)}
 .cwin{margin:2px 0 0}
@@ -488,7 +491,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v18 (sol og dykkepartnere)";
+const APP_VERSION="v19 (forhold for valgt tidspunkt)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1490,10 +1493,10 @@ function windStatus(s,w){
 
 async function getTide(lat,lon){
   const k=lat.toFixed(3)+","+lon.toFixed(3);let c=TD[k]||lsGet("td:"+k);
-  if(c&&c.exp>Date.now()&&c.until>Date.now()+30*3600e3)return TD[k]=c;
+  if(c&&c.exp>Date.now()&&c.until>Date.now()+62*3600e3)return TD[k]=c;
   if(TDP[k])return TDP[k];
   TDP[k]=(async()=>{
-    const from=new Date(Date.now()-6*3600e3),to=new Date(Date.now()+54*3600e3),f=d=>d.toISOString().slice(0,16);
+    const from=new Date(Date.now()-6*3600e3),to=new Date(Date.now()+80*3600e3),f=d=>d.toISOString().slice(0,16);
     const url=`https://vannstand.kartverket.no/tideapi.php?tide_request=locationdata&lat=${lat.toFixed(3)}&lon=${lon.toFixed(3)}&datatype=pre&refcode=cd&fromtime=${f(from)}&totime=${f(to)}&interval=10&tzone=0&lang=nb`;
     let r;try{r=await fetch(url)}catch(e){throw new Error("Kartverket kunne ikke nås fra nettleseren")}
     if(!r.ok)throw new Error("Kartverket svarte med feil "+r.status);
@@ -1537,62 +1540,80 @@ function condNoteHTML(){
 }
 function initCond(){
   const sel=$("#condSel");const saved=lsGet("dk-cond");if(saved&&[...sel.options].some(o=>o.value===saved))sel.value=saved;
-  S.condSel=sel.value;sel.onchange=()=>{S.condSel=sel.value;lsSet("dk-cond",S.condSel);refreshCond()};
+  S.condSel=sel.value;if(S.condSel!=="off")S.siteT=S.condSel;sel.onchange=()=>{S.condSel=sel.value;lsSet("dk-cond",S.condSel);refreshCond();if(S.condSel!=="off"){S.siteT=S.condSel;const s=S.view==="site"&&getSite(S.sel);if(s)renderCond(s)}};
   if(S.condSel!=="off")refreshCond();
   setInterval(()=>{if(S.condSel!=="off")refreshCond()},30*60e3);
 }
 
 /* site panel box */
 function arrowSVG(dir,size=34){return `<svg width="${size}" height="${size}" viewBox="-10 -10 20 20" aria-hidden="true"><circle r="9.3" fill="none" stroke="var(--line)"/><g transform="rotate(${dir+180})"><path d="M0 -7 L4 3 L0 1 L-4 3 Z" fill="var(--ink)"/></g></svg>`}
+S.siteT="now";
+const CTIMES=[["now","Nå"],["+3","Om 3 t"],["+6","Om 6 t"],["d1h10","I morgen 10"],["d1h15","I morgen 15"],["d2h10","Overmorgen 10"]];
+function whenTxt(T){return Math.abs(T-Date.now())<20*60e3?"nå":`${dayLbl(T)} kl ${hm(T)}`}
+function tidePhaseTxt(td,T){
+  const prev=td.ext.filter(e=>e[0]<=T).pop(),next=td.ext.find(e=>e[0]>T);if(!prev||!next)return"";
+  const dur=ms=>{const m=Math.round(ms/60e3),h=Math.floor(m/60),mm=m%60;return h?`${h} t${mm?" "+mm+" min":""}`:`${mm} min`};
+  const nm=e=>e[2]==="high"?"flo":"fjære",a=T-prev[0],b=next[0]-T;
+  const rel=a<=b?`${dur(a)} etter ${nm(prev)}`:`${dur(b)} før ${nm(next)}`;
+  return `${rel}, ${next[2]==="high"?"stigende":"synkende"}`}
 async function renderCond(s){
   const el=$("#condBox");if(!el)return;
   if(s.lat==null||s.lon==null){el.innerHTML=`<div class="cond"><p class="small" style="margin:0">Legg inn posisjon (eller plasser stedet på sjøkartet) for å få vær og tidevann.</p></div>`;return}
-  el.innerHTML=`<div class="cond"><p class="small" style="margin:0">Henter vær og tidevann…</p></div>`;
+  const now=Date.now(),T=condTarget(S.siteT)||now,fut=T-now>20*60e3,when=whenTxt(T);
+  const chips=`<div class="ctimes" role="group" aria-label="Vis forhold for">${CTIMES.map(([v,l])=>`<button type="button" class="chip${S.siteT===v?" on":""}" data-t="${v}" aria-pressed="${S.siteT===v}">${l}</button>`).join("")}</div>`;
+  const wire=()=>{const c=el.querySelector(".ctimes");if(c)c.onclick=e=>{const b=e.target.closest("[data-t]");if(!b||b.dataset.t===S.siteT)return;S.siteT=b.dataset.t;
+    if(S.condSel!=="off"){const sel=$("#condSel");if(sel){sel.value=S.siteT;S.condSel=S.siteT;lsSet("dk-cond",S.condSel);refreshCond()}}renderCond(s)}};
+  if(!el.querySelector(".ctimes")){el.innerHTML=`<div class="cond">${chips}<p class="small" style="margin:0">Henter vær og tidevann…</p></div>`;wire()}
+  else el.querySelectorAll(".ctimes .chip").forEach(c=>{const on=c.dataset.t===S.siteT;c.classList.toggle("on",on);c.setAttribute("aria-pressed",on)});
   const [fr,tr,orr]=await Promise.allSettled([getForecast(s.lat,s.lon),getTide(s.lat,s.lon),getOcean(s.lat,s.lon)]);
-  const oc=orr.status==="fulfilled"?orr.value:null,vNow=oc?waveStatus(s,oceanAt(oc,Date.now())):null;
-  if(S.sel!==s.id||!$("#condBox"))return;
-  const now=Date.now();let h="";
+  if(S.sel!==s.id||!$("#condBox")||(condTarget(S.siteT)||Date.now())-T>60e3||T-(condTarget(S.siteT)||Date.now())>60e3)return;
+  const oc=orr.status==="fulfilled"?orr.value:null,vT=oc?waveStatus(s,oceanAt(oc,T)):null;
+  const hz=Math.max(48*3600e3,T-now+8*3600e3);let h="";
   if(fr.status==="fulfilled"){
-    const fc=fr.value,w=windAt(fc,now),st=windStatus(s,w);
+    const fc=fr.value,w=windAt(fc,T),st=w?windStatus(s,w):null;
     if(st){
-      const lvl=Math.max(st.lvl,vNow?vNow.lvl:0);
+      const lvl=Math.max(st.lvl,vT?vT.lvl:0);
       let why=!st.has?"Vindrose mangler, vurdert bare etter styrke.":st.lee?`Plassen tåler vind fra ${st.sec}.`:`Plassen er ikke registrert som skjermet for ${st.sec}.`;
-      if(vNow&&vNow.lvl>st.lvl)why=`Bølgene avgjør: ${fnum(vNow.wh,1)} m${vNow.sec?" fra "+vNow.sec:""}${vNow.lee?" (plassen er skjermet for den retningen)":""}.`;
-      h+=`<div class="cnow">${arrowSVG(st.dir)}<div><strong style="color:${LV[lvl][1]}">${LV[lvl][0]} nå</strong><span>Vind ${fnum(st.sp,0)} m/s${w[3]!=null?` (kast ${fnum(st.g,0)})`:""} fra ${st.sec}${w[4]!=null?`, luft ${fnum(w[4],0)} °C`:""}</span>${vNow?`<span style="display:block">Hav: ${esc(oceanLine(vNow))}</span>`:""}<span class="small" style="display:block;margin:0">${esc(why)}</span></div></div>`;
-      h+=windStrip(s,fc,now)+waveStrip(s,oc,now);
-    }
-  }else{h+=`<p class="small err" style="margin:0 0 8px">Vær: ${esc(fr.reason?.message||"kunne ikke hentes")}</p>`;if(vNow)h+=`<p style="margin:0 0 4px">Hav: ${esc(oceanLine(vNow))}</p>`+waveStrip(s,oc,now)}
-  h+=sunLine(s.lat,s.lon,now);
+      if(vT&&vT.lvl>st.lvl)why=`Bølgene avgjør: ${fnum(vT.wh,1)} m${vT.sec?" fra "+vT.sec:""}${vT.lee?" (plassen er skjermet for den retningen)":""}.`;
+      h+=`<div class="cnow">${arrowSVG(st.dir)}<div><strong style="color:${LV[lvl][1]}">${LV[lvl][0]} ${esc(when)}</strong><span>Vind ${fnum(st.sp,0)} m/s${w[3]!=null?` (kast ${fnum(st.g,0)})`:""} fra ${st.sec}${w[4]!=null?`, luft ${fnum(w[4],0)} °C`:""}</span>${vT?`<span style="display:block">Hav: ${esc(oceanLine(vT))}</span>`:""}<span class="small" style="display:block;margin:0">${esc(why)}</span></div></div>`;
+    }else if(fut)h+=`<p class="small" style="margin:0 0 6px">Vindvarselet rekker ikke til ${esc(when)}.</p>`;
+    h+=windStrip(s,fc,now,T,hz)+waveStrip(s,oc,now,T,hz);
+  }else{h+=`<p class="small err" style="margin:0 0 8px">Vær: ${esc(fr.reason?.message||"kunne ikke hentes")}</p>`;if(vT)h+=`<p style="margin:0 0 4px">Hav ${esc(when)}: ${esc(oceanLine(vT))}</p>`+waveStrip(s,oc,now,T,hz)}
+  h+=sunLine(s.lat,s.lon,T,fut);
   if(tr.status==="fulfilled"){
-    const td=tr.value,next=td.ext.filter(e=>e[0]>now).slice(0,4);
+    const td=tr.value,from=fut?T-6.5*3600e3:now,next=td.ext.filter(e=>e[0]>from).slice(0,4);
+    const ph=tidePhaseTxt(td,T);
     h+=`<div class="ctide"><strong>Tidevann</strong> ${next.map(e=>`<span>${e[2]==="high"?"Flo":"Fjære"} ${esc(dayLbl(e[0])==="i dag"?"":dayLbl(e[0])+" ")}${hm(e[0])} <small>${Math.round(e[1])} cm</small></span>`).join("")}</div>`;
-    const wins=tideWindows(s,td),nw=wins.find(x=>x[1]>now);
+    if(ph)h+=`<div class="ctphase">${fut?esc(when[0].toUpperCase()+when.slice(1)):"Nå"}: ${esc(ph)}</div>`;
+    const wins=tideWindows(s,td),nw=wins.find(x=>x[1]>T);
     let winTxt="";
     if(nw){const mid=(nw[0]+nw[1])/2,fc=fr.status==="fulfilled"?fr.value:null,ws=combinedStatus(s,fc,oc,mid);
-      winTxt=`<p class="cwin"><strong>${nw[0]<=now?`Dykkevindu nå, til ${hm(nw[1])}`:`Neste dykkevindu: ${dayLbl(nw[0])} ${hm(nw[0])}–${hm(nw[1])}`}</strong>${ws?` <span style="color:${LV[ws.lvl][1]};font-weight:600">· ${LV[ws.lvl][0].toLowerCase()}</span>`:""}${(lt=>lt==="lyst"?"":` <span class="small">· ${lt}</span>`)(lightAt(mid,s.lat,s.lon))}</p>`}
+      const inW=nw[0]<=T;
+      winTxt=`<p class="cwin"><strong>${inW?(fut?`I dykkevinduet (${hm(nw[0])}–${hm(nw[1])})`:`Dykkevindu nå, til ${hm(nw[1])}`):`${fut?"Første dykkevindu etter det":"Neste dykkevindu"}: ${dayLbl(nw[0])} ${hm(nw[0])}–${hm(nw[1])}`}</strong>${ws?` <span style="color:${LV[ws.lvl][1]};font-weight:600">· ${LV[ws.lvl][0].toLowerCase()}</span>`:""}${(lt=>lt==="lyst"?"":` <span class="small">· ${lt}</span>`)(lightAt(mid,s.lat,s.lon))}</p>`}
     else if((s.tideMode||"none")==="none")winTxt=`<p class="small" style="margin:4px 0 0">Sett dykkevindu under Rediger for å få «neste gode tidspunkt».</p>`;
-    h+=tideCurve(td,wins,now)+winTxt;
+    h+=tideCurve(td,wins,now,T,Math.max(36*3600e3,T-now+8*3600e3))+winTxt;
   }else h+=`<p class="small" style="margin:6px 0 0">Tidevann: ${esc(tr.reason?.message||"kunne ikke hentes")}. <a href="https://kartverket.no/til-sjos/se-havniva" target="_blank" rel="noopener">Se havnivå hos Kartverket</a></p>`;
   h+=`<p class="small" style="margin:8px 0 0">Vær og havvarsel fra MET Norway, tidevann fra Kartverket (CC BY 4.0). Varsel, ikke garanti: sjekk forholdene selv.</p>`;
-  el.innerHTML=`<div class="cond">${h}</div>`;
+  el.innerHTML=`<div class="cond">${chips}${h}</div>`;wire();
 }
-function windStrip(s,fc,now){
-  const pts=fc.series.filter(e=>e[0]>=now-1800e3&&e[0]<=now+48*3600e3);if(pts.length<3)return"";
+function tMark(x,T,now,t0,t1,H){return T-now>20*60e3&&T>=t0&&T<=t1?`<line x1="${x(T).toFixed(1)}" x2="${x(T).toFixed(1)}" y1="-2" y2="${H+2}" stroke="var(--magenta)" stroke-width="2"/>`:""}
+function windStrip(s,fc,now,T=now,hz=48*3600e3){
+  const pts=fc.series.filter(e=>e[0]>=now-1800e3&&e[0]<=now+hz);if(pts.length<3)return"";
   const W=360,H=34,t0=pts[0][0],t1=pts[pts.length-1][0],x=t=>(t-t0)/(t1-t0)*W,maxS=Math.max(12,...pts.map(p=>p[3]??p[2]));
   let bars="",lbl="";
   pts.forEach((p,i)=>{const st=windStatus(s,p),x0=x(p[0]),x1=i<pts.length-1?x(pts[i+1][0]):W,h=Math.max(3,p[2]/maxS*H);
     bars+=`<rect x="${x0.toFixed(1)}" y="${(H-h).toFixed(1)}" width="${Math.max(1,x1-x0-1).toFixed(1)}" height="${h.toFixed(1)}" fill="${LV[st.lvl][1]}"><title>${esc(dayLbl(p[0]))} ${hm(p[0])}: ${fnum(p[2],0)} m/s fra ${st.sec}</title></rect>`;
     const d=new Date(p[0]);if(d.getMinutes()===0&&d.getHours()%6===0)lbl+=`<line x1="${x0}" x2="${x0}" y1="0" y2="${H}" stroke="var(--line)"/><text x="${x0+2}" y="${H+11}">${d.getHours()===0?esc(d.toLocaleDateString("nb-NO",{weekday:"short"})):String(d.getHours()).padStart(2,"0")}</text>`});
-  return `<svg class="spark" viewBox="0 0 ${W} ${H+14}" width="100%" role="img" aria-label="Vind de neste 48 timene">${lbl}${bars}</svg>`;
+  return `<svg class="spark" viewBox="0 -2 ${W} ${H+16}" width="100%" role="img" aria-label="Vind fremover">${lbl}${bars}${tMark(x,T,now,t0,t1,H)}</svg>`;
 }
-function tideCurve(td,wins,now){
-  const pts=td.pts.filter(p=>p[0]>=now-2*3600e3&&p[0]<=now+36*3600e3);if(pts.length<4)return"";
+function tideCurve(td,wins,now,T=now,hz=36*3600e3){
+  const pts=td.pts.filter(p=>p[0]>=now-2*3600e3&&p[0]<=now+hz);if(pts.length<4)return"";
   const W=360,H=48,t0=pts[0][0],t1=pts[pts.length-1][0],vs=pts.map(p=>p[1]),lo=Math.min(...vs),hi=Math.max(...vs);
   const x=t=>(t-t0)/(t1-t0)*W,y=v=>H-4-(v-lo)/((hi-lo)||1)*(H-10);
   const path=pts.map((p,i)=>(i?"L":"M")+x(p[0]).toFixed(1)+" "+y(p[1]).toFixed(1)).join("");
   const win=wins.filter(w=>w[1]>t0&&w[0]<t1).map(w=>`<rect x="${Math.max(0,x(w[0])).toFixed(1)}" y="0" width="${(Math.min(W,x(w[1]))-Math.max(0,x(w[0]))).toFixed(1)}" height="${H}" fill="var(--kelp)" opacity=".18"/>`).join("");
   const ex=td.ext.filter(e=>e[0]>=t0&&e[0]<=t1).map(e=>`<circle cx="${x(e[0]).toFixed(1)}" cy="${y(e[1]).toFixed(1)}" r="2.5" fill="var(--alpha)"/><text x="${x(e[0]).toFixed(1)}" y="${e[2]==="high"?y(e[1])-5:Math.min(H+11,y(e[1])+12)}" text-anchor="middle">${hm(e[0])}</text>`).join("");
-  return `<svg class="spark" viewBox="0 -12 ${W} ${H+24}" width="100%" role="img" aria-label="Tidevann de neste 36 timene">${win}<path d="${path}" fill="none" stroke="var(--alpha)" stroke-width="2"/><line x1="${x(now)}" x2="${x(now)}" y1="-10" y2="${H}" stroke="var(--magenta)" stroke-dasharray="3 3"/>${ex}</svg>`;
+  return `<svg class="spark" viewBox="0 -12 ${W} ${H+24}" width="100%" role="img" aria-label="Tidevann fremover">${win}<path d="${path}" fill="none" stroke="var(--alpha)" stroke-width="2"/><line x1="${x(now)}" x2="${x(now)}" y1="-10" y2="${H}" stroke="var(--magenta)" stroke-dasharray="3 3"/>${tMark(x,T,now,t0,t1,H)}${ex}</svg>`;
 }
 async function tideSafe(fn,row){
   let res=await fn(row);
@@ -1660,14 +1681,14 @@ function lightAt(t,lat,lon){const st=sunDay(t,lat,lon),s=st.sun,c=st.civil;
   if(c.never==="down"||(c.rise!=null&&t>=c.rise&&t<=c.set))return"skumring";
   return"mørkt"}
 function durTxt(ms){const m=Math.round(ms/60e3);return `${Math.floor(m/60)} t ${m%60} min`}
-function sunLine(lat,lon,now){
-  const st=sunDay(now,lat,lon),s=st.sun,c=st.civil,ic=`<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="#E8A020"/><g stroke="#E8A020" stroke-width="2" stroke-linecap="round">${[0,45,90,135,180,225,270,315].map(a=>{const r=a*Math.PI/180;return `<line x1="${(12+7.5*Math.sin(r)).toFixed(1)}" y1="${(12-7.5*Math.cos(r)).toFixed(1)}" x2="${(12+10*Math.sin(r)).toFixed(1)}" y2="${(12-10*Math.cos(r)).toFixed(1)}"/>`}).join("")}</g></svg>`;
+function sunLine(lat,lon,now,fut=false){
+  const st=sunDay(now,lat,lon),s=st.sun,c=st.civil,dl=fut&&dayLbl(now)!=="i dag"?dayLbl(now)[0].toUpperCase()+dayLbl(now).slice(1)+": ":"",ic=`<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="#E8A020"/><g stroke="#E8A020" stroke-width="2" stroke-linecap="round">${[0,45,90,135,180,225,270,315].map(a=>{const r=a*Math.PI/180;return `<line x1="${(12+7.5*Math.sin(r)).toFixed(1)}" y1="${(12-7.5*Math.cos(r)).toFixed(1)}" x2="${(12+10*Math.sin(r)).toFixed(1)}" y2="${(12-10*Math.cos(r)).toFixed(1)}"/>`}).join("")}</g></svg>`;
   let parts;
-  if(s.never==="down")parts=[`<strong>Midnattssol</strong>`,`<span>sola går ikke ned i dag</span>`];
-  else if(s.never==="up"){parts=[`<strong>Mørketid</strong>`,`<span>sola står ikke opp i dag</span>`];
+  if(s.never==="down")parts=[`<strong>${dl}Midnattssol</strong>`,`<span>sola går ikke ned${dl?"":" i dag"}</span>`];
+  else if(s.never==="up"){parts=[`<strong>${dl}Mørketid</strong>`,`<span>sola står ikke opp${dl?"":" i dag"}</span>`];
     if(c.rise!=null)parts.push(`<span>skumringslys ${hm(c.rise)}–${hm(c.set)} <small>(${durTxt(c.set-c.rise)})</small></span>`)}
-  else{parts=[`<span><strong>Sol opp</strong> ${hm(s.rise)}</span>`,`<span><strong>ned</strong> ${hm(s.set)}</span>`,`<small>${durTxt(s.set-s.rise)} dagslys</small>`];
-    if(now>s.set){const tm=sunDay(now+864e5,lat,lon).sun;if(tm.rise!=null)parts.push(`<small>i morgen opp ${hm(tm.rise)}</small>`)}}
+  else{parts=[`<span><strong>${dl}Sol opp</strong> ${hm(s.rise)}</span>`,`<span><strong>ned</strong> ${hm(s.set)}</span>`,`<small>${durTxt(s.set-s.rise)} dagslys</small>`];
+    if(!fut&&now>s.set){const tm=sunDay(now+864e5,lat,lon).sun;if(tm.rise!=null)parts.push(`<small>i morgen opp ${hm(tm.rise)}</small>`)}}
   return `<div class="csun">${ic}${parts.join("")}</div>`;
 }
 /* visibility reports in site panel */
@@ -2014,12 +2035,12 @@ function oceanLine(v){
   if(v.cur!=null)bits.push(`strøm ${fnum(v.cur,1)} m/s${v.curTo!=null?" mot "+DIRS[Math.round(v.curTo/45)%8]:""}`);
   return bits.join(", ");
 }
-function waveStrip(s,oc,now){
-  if(!oc||!oc.series)return"";const pts=oc.series.filter(e=>e[0]>=now-1800e3&&e[0]<=now+48*3600e3&&e[1]!=null);if(pts.length<3)return"";
+function waveStrip(s,oc,now,T=now,hz=48*3600e3){
+  if(!oc||!oc.series)return"";const pts=oc.series.filter(e=>e[0]>=now-1800e3&&e[0]<=now+hz&&e[1]!=null);if(pts.length<3)return"";
   const W=360,H=28,t0=pts[0][0],t1=pts[pts.length-1][0],x=t=>(t-t0)/(t1-t0)*W,mx=Math.max(1.5,...pts.map(p=>p[1]));
   let bars="";pts.forEach((p,i)=>{const st=waveStatus(s,p),x0=x(p[0]),x1=i<pts.length-1?x(pts[i+1][0]):W,h=Math.max(3,p[1]/mx*H);
     bars+=`<rect x="${x0.toFixed(1)}" y="${(H-h).toFixed(1)}" width="${Math.max(1,x1-x0-1).toFixed(1)}" height="${h.toFixed(1)}" fill="${LV[st.lvl][1]}"><title>${esc(dayLbl(p[0]))} ${hm(p[0])}: bølger ${fnum(p[1],1)} m${st.sec?" fra "+st.sec:""}</title></rect>`});
-  return `<p class="small" style="margin:6px 0 2px">Bølger neste 48 timer</p><svg class="spark" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Bølgehøyde de neste 48 timene">${bars}</svg>`;
+  return `<p class="small" style="margin:6px 0 2px">Bølger fremover</p><svg class="spark" viewBox="0 -2 ${W} ${H+4}" width="100%" role="img" aria-label="Bølgehøyde fremover">${bars}${tMark(x,T,now,t0,t1,H)}</svg>`;
 }
 
 /* ---------- toast ---------- */
