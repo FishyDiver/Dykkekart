@@ -328,6 +328,18 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 .thumb.ph{border-style:dashed}
 .linkbtn.rsite{margin:0;font-size:inherit}
 @media (max-width:860px){body:not(.mapmax) .layout{grid-template-rows:max(300px,55%) auto}body:not(.mapmax) .side{min-height:auto}body:not(.mapmax) .side .panel{flex:none}}
+.editban{background:var(--soft);border-left:3px solid var(--magenta);padding:6px 10px;border-radius:6px;font-size:13.5px;margin:6px 0 4px}
+.logform.editing{box-shadow:0 0 0 2px var(--magenta)}
+.log.editing{border-left-color:var(--magenta);background:var(--soft)}
+.lacts{float:right;display:flex;gap:2px}
+.lacts .x{float:none}
+.crow{grid-template-columns:repeat(12,1fr)!important}
+.crow .cSp{grid-column:span 5}.crow .cKind{grid-column:span 4}.crow .cCntW{grid-column:span 3}
+.crow .cSizeW,.crow .cKgW{grid-column:span 3}.crow .cPh{grid-column:span 4}.crow .cRm{grid-column:span 2}
+.unit{position:relative;display:block;margin:0}
+.unit input{padding-right:28px!important;padding-left:8px!important}
+.unit span{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);pointer-events:none}
+@media (max-width:480px){.crow .cSp{grid-column:span 12}.crow .cKind{grid-column:span 7}.crow .cCntW{grid-column:span 5}.crow .cSizeW,.crow .cKgW{grid-column:span 4}.crow .cPh{grid-column:span 3}.crow .cRm{grid-column:span 1}}
 </style>
 </head>
 <body>
@@ -336,7 +348,7 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 <header class="top">
   <div class="brand">
     <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver">v8</span>
+    <h1>Dykkekart</h1><span class="ver">v9</span>
   </div>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
@@ -405,7 +417,7 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v8 (klynger, statistikk og rekorder)";
+const APP_VERSION="v9 (redigere dykkelogg)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -714,7 +726,7 @@ function renderSiteView(){
   <div id="stats"></div><div id="visStats"></div><div id="speciesBox"></div>
   <div class="logs"><h3>Dykkelogg</h3>${logFormHTML()}<div id="logList"></div></div><div id="siteActions"></div>`;
   $("#back").onclick=()=>{S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel()};
-  $("#logForm").onsubmit=saveLog;wireCatchEditor();
+  $("#logForm").onsubmit=saveLog;wireCatchEditor();$("#lCancel").onclick=cancelEditLog;S.editLog=null;
   renderSiteBody();renderStats();renderLogs();renderSpecies();renderVisStats();
 }
 function renderSiteBody(){
@@ -756,23 +768,24 @@ function spark(L){
   return `<svg class="spark" viewBox="0 0 ${W} ${H+14}" width="100%" role="img" aria-label="Sikt per dykk">${pts.map((p,i)=>{const h=Math.max(2,p.vis/max*H);return `<rect x="${i*bw+2}" y="${H-h}" width="${Math.max(2,bw-4)}" height="${h}" rx="2" fill="var(--alpha)"><title>${esc(fdate(p.date))}: ${fnum(p.vis)} m</title></rect>`}).join("")}
   <text x="0" y="${H+11}">${esc(fdate(pts[0].date,true))}</text><text x="${W}" y="${H+11}" text-anchor="end">${esc(fdate(pts[pts.length-1].date,true))}</text><text x="${W}" y="9" text-anchor="end">sikt, maks ${fnum(max)} m</text></svg>`;
 }
-function logFormHTML(){return `<form class="f logform" id="logForm"><div class="three"><div><label for="lDate">Dato</label><input type="date" id="lDate" value="${today()}" required></div><div><label for="lTime">Klokkeslett</label><input type="time" id="lTime" value="${new Date().toTimeString().slice(0,5)}"></div><div><label for="lVis">Sikt (m)</label><input type="number" id="lVis" step="0.5" min="0"></div></div>
+function logFormHTML(){return `<form class="f logform" id="logForm"><p class="editban" id="lEditBan" hidden></p><div class="three"><div><label for="lDate">Dato</label><input type="date" id="lDate" value="${today()}" required></div><div><label for="lTime">Klokkeslett</label><input type="time" id="lTime" value="${new Date().toTimeString().slice(0,5)}"></div><div><label for="lVis">Sikt (m)</label><input type="number" id="lVis" step="0.5" min="0"></div></div>
   <div class="two"><div><label for="lTemp">Vanntemp (°C)</label><input type="number" id="lTemp" step="0.5"></div><div><label for="lDepth">Maks dybde (m)</label><input type="number" id="lDepth" step="0.5" min="0"></div></div>
   <label for="lCond">Forhold (strøm, vind, tidevann)</label><input type="text" id="lCond" placeholder="F.eks. stille, 1 t etter fjære">
   <label for="lNotes">Notat</label><textarea id="lNotes" placeholder="Hva du så, hva som fungerte"></textarea>
-  ${catchEditorHTML()}<div class="err" id="lErr"></div><div style="margin-top:10px"><button class="btn primary" id="lSave">Logg dykket</button></div></form>`}
+  ${catchEditorHTML()}<div class="err" id="lErr"></div><div style="margin-top:10px;display:flex;gap:8px"><button class="btn primary" id="lSave">Logg dykket</button><button type="button" class="btn ghost" id="lCancel" hidden>Avbryt</button></div></form>`}
 function renderLogs(){
   const el=$("#logList");if(!el)return;
   if(!S.logs.length){el.innerHTML=`<p class="emptytxt">Ingen dykk logget her ennå.</p>`;return}
   el.innerHTML=S.logs.map(l=>{const m=[l.vis!=null?`sikt ${fnum(l.vis,1)} m`:"",l.temp!=null?`${fnum(l.temp,1)} °C`:"",l.depth!=null?`${fnum(l.depth,1)} m dypt`:""].filter(Boolean).join(", ");
     const mine=l.author===S.user.id,who=mine?"deg":(l.author_name||"");
     const canDel=mine||S.me.role==="admin";
-    return `<div class="log">${canDel?`<button class="btn ghost x" data-del="${esc(l.id)}">Slett</button>`:""}<div class="d">${esc(fdate(l.date))}${who?` <span class="m">av ${esc(who)}</span>`:""}</div>${m?`<div class="m">${esc(m)}</div>`:""}${l.cond?`<div class="m">${esc(l.cond)}</div>`:""}${l.notes?`<p>${esc(l.notes)}</p>`:""}${catchesHTML(l.id)}</div>`}).join("");
-  el.onclick=async e=>{const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("Slette denne loggføringen?"))return;
+    return `<div class="log${S.editLog===l.id?" editing":""}">${canDel?`<span class="lacts"><button class="btn ghost x" data-edit="${esc(l.id)}">Rediger</button><button class="btn ghost x" data-del="${esc(l.id)}">Slett</button></span>`:""}<div class="d">${esc(fdate(l.date))}${who?` <span class="m">av ${esc(who)}</span>`:""}</div>${m?`<div class="m">${esc(m)}</div>`:""}${l.cond?`<div class="m">${esc(l.cond)}</div>`:""}${l.notes?`<p>${esc(l.notes)}</p>`:""}${catchesHTML(l.id)}</div>`}).join("");
+  el.onclick=async e=>{const ed=e.target.closest("[data-edit]");if(ed){startEditLog(ed.dataset.edit);return}
+    const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("Slette denne loggføringen?"))return;if(S.editLog===b.dataset.del)cancelEditLog();
     const {error}=await sb.from("logs").delete().eq("id",b.dataset.del);if(error)alert("Kunne ikke slette: "+errMsg(error));else{loadLogs(S.sel);loadSites()}};
 }
 async function saveLog(e){
-  e.preventDefault();const s=getSite(S.sel);if(!s)return;const btn=$("#lSave");btn.disabled=true;$("#lErr").textContent="";
+  e.preventDefault();const s=getSite(S.sel);if(!s)return;if(S.editLog)return saveLogEdit(s);const btn=$("#lSave");btn.disabled=true;$("#lErr").textContent="";
   const row={site_id:s.id,date:$("#lDate").value,vis:num($("#lVis").value),temp:num($("#lTemp").value),depth:num($("#lDepth").value),cond:$("#lCond").value.trim(),notes:$("#lNotes").value.trim(),author:S.user.id,author_name:S.me.name};
   const catches=readCatchRows();
   const tm=$("#lTime")?.value||"";if(tm){row.time_of_day=tm;$("#lSave").textContent="Lagrer…";const snap=await condSnapshot(s.lat,s.lon,new Date(`${row.date}T${tm}`).getTime());Object.assign(row,snap)}
@@ -1665,19 +1678,21 @@ function renderSpecies(){
 
 /* ---------- catch editor with weight + photo ---------- */
 const CAMSVG=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS.foto[1]}</svg>`;
-function addCatchRow(){const d=document.createElement("div");d.className="crow";
-  d.innerHTML=`<input type="text" list="spList" class="cSp" placeholder="Art" aria-label="Art"><select class="cKind" aria-label="Fanget eller sett"><option value="sett">Sett</option><option value="fanget">Fanget</option></select><input type="number" class="cCnt" min="1" value="1" aria-label="Antall" title="Antall">
-    <input type="number" class="cSize" min="0" step="1" placeholder="cm" aria-label="Største lengde i cm" title="Største lengde, cm"><input type="number" class="cKg" min="0" step="0.01" placeholder="kg" aria-label="Vekt i kg" title="Vekt, kg">
+function addCatchRow(c){c=c&&c.species!==undefined?c:null;const d=document.createElement("div");d.className="crow";if(c&&c.id)d.dataset.id=c.id;
+  d.innerHTML=`<input type="text" list="spList" class="cSp" placeholder="Art" aria-label="Art"><select class="cKind" aria-label="Fanget eller sett"><option value="sett">Sett</option><option value="fanget">Fanget</option></select><label class="unit cCntW"><input type="number" class="cCnt" min="1" value="1" aria-label="Antall" title="Antall"><span>stk</span></label>
+    <label class="unit cSizeW"><input type="number" class="cSize" min="0" step="1" aria-label="Største lengde i cm" title="Største lengde, cm"><span>cm</span></label><label class="unit cKgW"><input type="number" class="cKg" min="0" step="0.01" aria-label="Vekt i kg" title="Vekt, kg"><span>kg</span></label>
     <label class="btn ghost cPh" title="Legg ved bilde">${CAMSVG}<span>Bilde</span><input type="file" accept="image/*" hidden></label><button type="button" class="btn ghost cRm" aria-label="Fjern">×</button>`;
+  if(c){d.querySelector(".cSp").value=c.species||"";d.querySelector(".cKind").value=c.kind||"sett";d.querySelector(".cCnt").value=c.count||1;d.querySelector(".cSize").value=c.size_cm??"";d.querySelector(".cKg").value=c.weight_kg??"";
+    if(c.photo_path){const lb=d.querySelector(".cPh"),fi0=lb.querySelector("input");lb.innerHTML=`<img src="${esc(photoURL(c.photo_path))}" alt="" class="cprev"><span>Bytt</span>`;lb.appendChild(fi0)}}
   d.querySelector(".cRm").onclick=()=>d.remove();
   const fi=d.querySelector("input[type=file]");fi.onchange=()=>{const f=fi.files[0];const sp=d.querySelector(".cPh span");if(!f){sp.textContent="Bilde";return}
     try{const u=URL.createObjectURL(f);d.querySelector(".cPh").innerHTML=`<img src="${u}" alt="" class="cprev"><span>Bytt</span>`;d.querySelector(".cPh").appendChild(fi)}catch(e){sp.textContent="1 bilde"}};
-  $("#cRows").appendChild(d);d.querySelector(".cSp").focus()}
-function readCatchRows(){return [...document.querySelectorAll("#cRows .crow")].map(r=>({species:normSp(r.querySelector(".cSp").value),kind:r.querySelector(".cKind").value,count:Math.max(1,Math.round(num(r.querySelector(".cCnt").value)??1)),size_cm:num(r.querySelector(".cSize").value),weight_kg:num(r.querySelector(".cKg")?.value),_file:r.querySelector("input[type=file]")?.files?.[0]||null})).filter(c=>c.species)}
+  $("#cRows").appendChild(d);if(!c)d.querySelector(".cSp").focus()}
+function readCatchRows(){return [...document.querySelectorAll("#cRows .crow")].map(r=>({id:r.dataset.id||null,species:normSp(r.querySelector(".cSp").value),kind:r.querySelector(".cKind").value,count:Math.max(1,Math.round(num(r.querySelector(".cCnt").value)??1)),size_cm:num(r.querySelector(".cSize").value),weight_kg:num(r.querySelector(".cKg")?.value),_file:r.querySelector("input[type=file]")?.files?.[0]||null})).filter(c=>c.species)}
 async function afterLogSaved(s,log,catches,snap){
   const warn=[];
   if(catches.length){
-    const rows=[];for(const c of catches){const {_file,...row}=c;
+    const rows=[];for(const c of catches){const {_file,id,...row}=c;
       if(_file){try{row.photo_path=await uploadImage(await shrinkImage(_file))}catch(e){warn.push("Et bilde ble ikke lastet opp: "+errMsg(e))}}
       rows.push({...row,log_id:log.id,site_id:s.id,date:log.date,author:S.user.id,author_name:S.me.name})}
     const {error}=await colSafe(r=>sb.from("catches").insert(r),rows,["photo_path","weight_kg"],"stats.sql","bilde og vekt");if(error)warn.push("Fangst ble ikke lagret: "+tableErr(error,"catch.sql"))}
@@ -1742,6 +1757,51 @@ function renderRecords(){
   $("#yrChips").onclick=e=>{const b=e.target.closest("[data-y]");if(!b)return;S.recYear=b.dataset.y;renderRecords()};
   $("#sortChips").onclick=e=>{const b=e.target.closest("[data-s]");if(!b)return;S.recSort=b.dataset.s;renderRecords()};
   panel.querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{openSite(b.dataset.site);focusSite(b.dataset.site)});
+}
+
+
+/* ---------- edit an existing dive log ---------- */
+S.editLog=null;
+function startEditLog(id){
+  const l=S.logs.find(x=>x.id===id);if(!l)return;S.editLog=id;
+  const v=(k,val)=>{const el=$("#"+k);if(el)el.value=val??""};
+  v("lDate",l.date);v("lTime",l.time_of_day||"");v("lVis",l.vis);v("lTemp",l.temp);v("lDepth",l.depth);v("lCond",l.cond);v("lNotes",l.notes);
+  $("#cRows").innerHTML="";for(const c of S.catches.filter(c=>c.log_id===id))addCatchRow(c);
+  const ban=$("#lEditBan");ban.hidden=false;ban.textContent=`Redigerer dykket ${fdate(l.date)}${l.author!==S.user.id&&l.author_name?" (logget av "+l.author_name+")":""}. Fjerner du en art fra listen, slettes den fra dykket.`;
+  $("#lSave").textContent="Lagre endringer";$("#lCancel").hidden=false;$("#lErr").textContent="";
+  $("#logForm").classList.add("editing");try{$("#logForm").scrollIntoView({behavior:"smooth",block:"start"})}catch(e){}
+}
+function cancelEditLog(){
+  S.editLog=null;const f=$("#logForm");if(!f)return;
+  ["lVis","lTemp","lDepth","lCond","lNotes"].forEach(k=>$("#"+k).value="");$("#lDate").value=today();$("#lTime").value=new Date().toTimeString().slice(0,5);
+  $("#cRows").innerHTML="";$("#lEditBan").hidden=true;$("#lCancel").hidden=true;$("#lSave").textContent="Logg dykket";f.classList.remove("editing");
+}
+const EDIT_SQL_MSG="Endringen ble ikke lagret i databasen. Kjør edit.sql i Supabase først.";
+async function saveLogEdit(s){
+  const l=S.logs.find(x=>x.id===S.editLog);if(!l){cancelEditLog();return}
+  const btn=$("#lSave");btn.disabled=true;btn.textContent="Lagrer…";$("#lErr").textContent="";const warn=[];
+  try{
+    const row={date:$("#lDate").value,vis:num($("#lVis").value),temp:num($("#lTemp").value),depth:num($("#lDepth").value),cond:$("#lCond").value.trim(),notes:$("#lNotes").value.trim()};
+    const tm=$("#lTime").value||"";
+    if(tm!==(l.time_of_day||"")||row.date!==l.date){row.time_of_day=tm||null;row.tide_phase=null;
+      if(tm){const snap=await condSnapshot(s.lat,s.lon,new Date(`${row.date}T${tm}`).getTime());if(snap.tide_phase!=null)row.tide_phase=snap.tide_phase;if(snap.wind_dir!=null){row.wind_dir=snap.wind_dir;row.wind_speed=snap.wind_speed}}}
+    const {data,error}=await colSafe(r=>sb.from("logs").update(r).eq("id",l.id).select(),row,["time_of_day","wind_dir","wind_speed","tide_phase"],"stats.sql","klokkeslett og forhold");
+    if(error)throw error;if(Array.isArray(data)&&!data.length)throw{message:EDIT_SQL_MSG};
+    const rows=readCatchRows(),existing=S.catches.filter(c=>c.log_id===l.id),keep=new Set(rows.filter(r=>r.id).map(r=>r.id));
+    for(const c of existing)if(!keep.has(c.id)){const {error:e2}=await sb.from("catches").delete().eq("id",c.id);if(e2)warn.push(`Kunne ikke fjerne ${c.species}: ${errMsg(e2)}`)}
+    const ins=[];
+    for(const r of rows){const {_file,id,...c}=r;const body={...c,date:row.date};
+      if(_file){try{body.photo_path=await uploadImage(await shrinkImage(_file))}catch(e){warn.push("Et bilde ble ikke lastet opp: "+errMsg(e))}}
+      if(id){const old=existing.find(x=>x.id===id);
+        const changed=Object.keys(body).some(k=>(body[k]??null)!==(old?.[k]??null));if(!changed)continue;
+        const {data:d2,error:e3}=await colSafe(x=>sb.from("catches").update(x).eq("id",id).select(),body,["photo_path","weight_kg"],"stats.sql","bilde og vekt");
+        if(e3)warn.push(`Kunne ikke endre ${c.species}: ${errMsg(e3)}`);else if(Array.isArray(d2)&&!d2.length)warn.push(EDIT_SQL_MSG)}
+      else ins.push({...body,log_id:l.id,site_id:s.id,author:S.user.id,author_name:S.me.name})}
+    if(ins.length){const {error:e4}=await colSafe(x=>sb.from("catches").insert(x),ins,["photo_path","weight_kg"],"stats.sql","bilde og vekt");if(e4)warn.push("Nye arter ble ikke lagret: "+tableErr(e4,"catch.sql"))}
+    cancelEditLog();if(warn.length)$("#lErr").textContent=[...new Set(warn)].join(" ");
+    loadLogs(s.id);loadSites();loadCatches();loadSiteReports(s.id);
+  }catch(err){$("#lErr").textContent="Kunne ikke lagre: "+errMsg(err);btn.textContent="Lagre endringer"}
+  btn.disabled=false;
 }
 
 /* ---------- maximised map ---------- */
