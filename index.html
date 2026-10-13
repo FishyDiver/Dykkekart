@@ -346,6 +346,25 @@ body.pcollapsed .splitter span{height:70px;background:rgba(241,230,200,.6)}
 .side{position:relative}
 @media (min-width:861px){body:not(.mapmax) .hgrip{display:block}body:not(.mapmax) .mapcol.hset{align-self:start;height:var(--mhd)}body:not(.mapmax) .side.hset{align-self:start;height:var(--shd)}}
 body.resizing,body.resizing *{cursor:inherit!important;user-select:none!important}
+.rzc{display:none;position:absolute;bottom:0;width:26px;height:26px;z-index:1300;touch-action:none;color:var(--ink);opacity:.55}
+.rzc:hover,.rzc.drag{opacity:1}
+.rzc::before{content:"";position:absolute;inset:5px;background:linear-gradient(135deg,transparent 48%,currentColor 48%,currentColor 56%,transparent 56%,transparent 68%,currentColor 68%,currentColor 76%,transparent 76%,transparent 86%,currentColor 86%)}
+#rzMap{right:0;cursor:nwse-resize;border-bottom-right-radius:14px}
+#rzSide{left:0;cursor:nesw-resize}#rzSide::before{transform:scaleX(-1)}
+@media (min-width:861px){body:not(.mapmax) .rzc{display:block}body:not(.mapmax) .mapcol.wset{justify-self:start;width:var(--mwd)}body:not(.mapmax) .side.wset{justify-self:end;width:var(--swd)}}
+.minbtn{display:none;position:absolute;z-index:1300;width:34px;height:34px;align-items:center;justify-content:center;border-radius:4px;border:2px solid rgba(0,0,0,.2);background:#fff;color:#333;padding:0;cursor:pointer}
+.minbtn:hover{background:#f4f4f4}
+body:not(.mapmax) .minbtn{display:flex}
+#minMap{left:10px;top:126px}.mapcol.img #minMap{top:52px}
+#minSide{right:10px;top:10px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--muted)}
+.minibar{display:none;align-items:center;gap:8px;border:1px solid rgba(241,230,200,.35);background:rgba(8,26,46,.82);color:#F1E6C8;border-radius:999px;padding:8px 14px;font:600 15px Barlow,sans-serif;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.minibar span{font-weight:500;color:#9fc3e0;font-size:13px}.minibar:hover{background:rgba(15,53,87,.95)}
+body:not(.mapmax) .mapcol.mini,body:not(.mapmax) .side.mini{background:none!important;box-shadow:none!important;border:0!important;overflow:visible!important;height:auto!important;width:auto!important;align-self:start;min-height:0}
+body:not(.mapmax) .mapcol.mini{justify-self:start}body:not(.mapmax) .side.mini{justify-self:end}
+body:not(.mapmax) .mapcol.mini>*:not(.minibar),body:not(.mapmax) .side.mini>*:not(.minibar){display:none!important}
+body:not(.mapmax) .mapcol.mini>.minibar,body:not(.mapmax) .side.mini>.minibar{display:inline-flex}
+@media (min-width:861px){body.mapmini:not(.mapmax) .splitter,body.sidemini:not(.mapmax) .splitter{visibility:hidden}}
+@media (max-width:860px){body.mapmini:not(.mapmax) .layout{grid-template-rows:auto 14px auto}body.mapmini:not(.mapmax) .splitter{visibility:hidden}}
 body.resizing #lmap{pointer-events:none}
 body:not(.mapmax) .mapcol{border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.45)}
 body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-shadow:0 8px 28px rgba(0,0,0,.45)}
@@ -562,12 +581,18 @@ body.mapmax .recbar{display:inline-flex}
       <div class="zoom" id="imgZoom"><button class="btn" id="zin" aria-label="Zoom inn">+</button><button class="btn" id="zout" aria-label="Zoom ut">−</button><button class="btn" id="zfit">Hele kartet</button></div>
     </div>
     <div class="hgrip" id="gripMap" title="Dra for å endre høyden på kartet (dobbeltklikk: full høyde)" aria-hidden="true"></div>
+    <div class="rzc" id="rzMap" title="Dra hjørnet for å endre størrelsen på kartet (dobbeltklikk: full størrelse)" aria-hidden="true"></div>
+    <button type="button" class="minbtn" id="minMap" title="Minimer kartet" aria-label="Minimer kartet"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 18h14"/></svg></button>
+    <button type="button" class="minibar" id="barMap" title="Vis kartet igjen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Kart<span>Vis</span></button>
   </section>
   <div class="splitter" id="splitter" role="separator" aria-label="Dra for å endre størrelse" title="Dra for å endre størrelse (dobbeltklikk: tilbakestill)"><span></span></div>
   <aside class="side" id="side" aria-label="Detaljer">
     <div class="sheetbar" id="sheetBar"><button class="btn ghost" id="sheetTall" type="button" aria-label="Større eller mindre panel" style="padding:4px 8px"><span class="grab"></span></button><button class="btn" id="sheetClose" type="button">Lukk</button></div>
     <div id="panel" class="panel"></div>
     <div class="hgrip" id="gripSide" title="Dra for å endre høyden på panelet (dobbeltklikk: full høyde)" aria-hidden="true"></div>
+    <div class="rzc" id="rzSide" title="Dra hjørnet for å endre størrelsen på lista (dobbeltklikk: full størrelse)" aria-hidden="true"></div>
+    <button type="button" class="minbtn" id="minSide" title="Minimer lista" aria-label="Minimer lista"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 18h14"/></svg></button>
+    <button type="button" class="minibar" id="barSide" title="Vis lista igjen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Liste<span>Vis</span></button>
   </aside>
 </main>
 
@@ -610,7 +635,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v31 (ingen svarte kartruter)";
+const APP_VERSION="v32 (dra og minimer kart og liste)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2597,14 +2622,17 @@ try{$(".top .ver").textContent=APP_VERSION.split(" ")[0]}catch(e){}
 
 
 /* ---------- user-resizable layout (splitter + height grips) ---------- */
-S.lay=Object.assign({pw:410,collapsed:false,mhd:null,shd:null,mh:null},lsGet("dk-layout")||{});
+S.lay=Object.assign({pw:410,collapsed:false,mhd:null,shd:null,mh:null,mwd:null,swd:null,mapMini:false,sideMini:false},lsGet("dk-layout")||{});
 const isNarrow=()=>{try{return window.matchMedia("(max-width:860px)").matches}catch(e){return false}};
 function applyLayout(){const lay=$(".layout"),L=S.lay;if(!lay)return;
   lay.style.setProperty("--pw",Math.round(L.pw)+"px");document.body.classList.toggle("pcollapsed",!!L.collapsed&&!isNarrow());
   if(L.mh)lay.style.setProperty("--mh",Math.round(L.mh)+"px");else lay.style.removeProperty("--mh");
   const mc=$(".mapcol"),sd=$("#side");
   mc.classList.toggle("hset",!!L.mhd);if(L.mhd)lay.style.setProperty("--mhd",Math.round(L.mhd)+"px");
-  sd.classList.toggle("hset",!!L.shd);if(L.shd)lay.style.setProperty("--shd",Math.round(L.shd)+"px")}
+  sd.classList.toggle("hset",!!L.shd);if(L.shd)lay.style.setProperty("--shd",Math.round(L.shd)+"px");
+  mc.classList.toggle("wset",!!L.mwd);if(L.mwd)lay.style.setProperty("--mwd",Math.round(L.mwd)+"px");
+  sd.classList.toggle("wset",!!L.swd);if(L.swd)lay.style.setProperty("--swd",Math.round(L.swd)+"px");
+  mc.classList.toggle("mini",!!L.mapMini);sd.classList.toggle("mini",!!L.sideMini);document.body.classList.toggle("mapmini",!!L.mapMini);document.body.classList.toggle("sidemini",!!L.sideMini)}
 function saveLayout(){lsSet("dk-layout",S.lay)}
 let _rzRaf=0;function liveResize(){if(_rzRaf)return;_rzRaf=requestAnimationFrame(()=>{_rzRaf=0;try{if(isLive())S.lmap.invalidateSize({pan:false})}catch(e){}})}
 function dragger(el,cursor,onMove,onReset){
@@ -2620,6 +2648,18 @@ function dragger(el,cursor,onMove,onReset){
     ()=>{if(isNarrow())S.lay.mh=null;else{S.lay.pw=410;S.lay.collapsed=false}});
   for(const [id,key,sel] of [["gripMap","mhd",".mapcol"],["gripSide","shd","#side"]]){const g=$("#"+id);if(!g)continue;
     dragger(g,()=>"row-resize",e=>{const top=$(sel).getBoundingClientRect().top,max=lay.getBoundingClientRect().bottom-pad()-top;const h=Math.max(key==="mhd"?220:180,Math.min(max,e.clientY-top));S.lay[key]=h>=max-4?null:h},()=>{S.lay[key]=null})}
+  // corner handles: free width + height, like a window
+  const corner=(id,sel,wk,hk,fromRight)=>{const g=$("#"+id);if(!g)return;
+    dragger(g,()=>fromRight?"nesw-resize":"nwse-resize",e=>{const el=$(sel),r=el.getBoundingClientRect(),lr=lay.getBoundingClientRect(),p=pad();
+      const colW=fromRight?(lr.right-p)-(S.lay.collapsed?lr.right:($("#splitter").getBoundingClientRect().right)):($("#splitter").getBoundingClientRect().left-(lr.left+p));
+      const w=fromRight?(r.right-e.clientX):(e.clientX-r.left),maxH=lr.bottom-p-r.top,h=Math.max(hk==="mhd"?220:180,Math.min(maxH,e.clientY-r.top));
+      S.lay[wk]=w>=colW-6?null:Math.max(fromRight?260:320,Math.min(colW,w));S.lay[hk]=h>=maxH-4?null:h},
+      ()=>{S.lay[wk]=null;S.lay[hk]=null})};
+  corner("rzMap",".mapcol","mwd","mhd",false);corner("rzSide","#side","swd","shd",true);
+  // minimise / restore
+  const mini=(k,v)=>{S.lay[k]=v;applyLayout();saveLayout();afterResize()};
+  $("#minMap").onclick=()=>mini("mapMini",true);$("#barMap").onclick=()=>mini("mapMini",false);
+  $("#minSide").onclick=()=>mini("sideMini",true);$("#barSide").onclick=()=>mini("sideMini",false);
   applyLayout();window.addEventListener("resize",()=>applyLayout());
 })();
 
@@ -2654,7 +2694,7 @@ document.addEventListener("keydown",e=>{if(e.key!=="Escape"||!S.max||S.mode!=="v
   if(document.querySelector("dialog[open]"))return;if(document.body.classList.contains("sheet"))closeSheet();else exitMax()});
 for(const fn of ["renderPanel","renderListView","renderSiteView","renderAreaView","renderEdit","renderAreaEdit","renderRecords"]){
   const orig=window[fn];if(typeof orig!=="function")continue;
-  window[fn]=function(...a){const r=orig.apply(this,a);updateSheet();syncHash();syncRecBtn();return r}}
+  window[fn]=function(...a){const r=orig.apply(this,a);updateSheet();syncHash();syncRecBtn();if(S.lay&&S.lay.sideMini&&S.view!=="list"){S.lay.sideMini=false;applyLayout();saveLayout()}return r}}
 
 /* ---------- boot ---------- */
 (function boot(){
