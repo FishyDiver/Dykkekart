@@ -395,7 +395,7 @@ body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-sha
 .dexcard .btn{background:#F1E6C8;color:#081a2e;border-color:#F1E6C8}
 .dexdist{margin:14px 0 4px}.ddhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.ddhead b{color:#F1E6C8;font-size:16px}
 .dexcard .chips .chip{color:#9fc3e0;border-color:rgba(159,195,224,.35);background:rgba(8,26,46,.6);padding:2px 10px;font-size:13px}.dexcard .chips .chip.on{color:#081a2e;background:#F1E6C8;border-color:#F1E6C8}
-.dexminimap{height:320px;border-radius:12px;overflow:hidden;border:1px solid rgba(241,230,200,.25);background:#0a2440}
+.dexminimap{user-select:none;-webkit-user-select:none;height:320px;border-radius:12px;overflow:hidden;border:1px solid rgba(241,230,200,.25);background:#0a2440}
 .dexminimap .leaflet-control-attribution{font-size:9.5px}.dexminimap path.ddring{filter:drop-shadow(0 0 2px rgba(0,0,0,.9))}
 .ddstats{font-size:14px!important;margin:7px 0 0!important}
 .ddleg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:#BFD3E4;margin:6px 0 0}.ddleg span{display:inline-flex;align-items:center;gap:6px}
@@ -607,7 +607,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v28 (tydeligere utbredelseskart)";
+const APP_VERSION="v29 (sekskanter for alle arter)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2464,8 +2464,8 @@ function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined"
   $("#ddChips").onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;$("#ddChips").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));if(b.dataset.v==="norge")map.fitBounds([[57.9,4.6],[71.2,31.2]],{padding:[4,4]});else local()};
   gbifInfo(sp).then(g=>{if(!g||S.dexMini!==map)return;
     const att='Funn: <a href="https://www.gbif.org/species/'+g.key+'" target="_blank" rel="noopener">GBIF.org</a>',base=`https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@2x.png?srs=EPSG:3857&taxonKey=${g.key}`;
-    let lay=L.tileLayer(base+"&bin=hex&hexPerTile=22&style=purpleYellow-noborder.poly",{opacity:.8,maxZoom:16,tileSize:256,attribution:att}).addTo(map),errs=0;
-    lay.on("tileerror",()=>{if(++errs===2&&S.dexMini===map){map.removeLayer(lay);lay=L.tileLayer(base+"&style=classic.point",{opacity:.9,maxZoom:16,attribution:att}).addTo(map)}});
+    // GBIF answers "204 No Content" for empty tiles; that is not an error, so no fallback is needed
+    L.tileLayer(base+"&bin=hex&hexPerTile=22&style=purpleYellow-noborder.poly",{opacity:.8,maxZoom:16,tileSize:256,attribution:att}).addTo(map);
     const gs=$("#ddGbif");if(gs){const parts=[];if(g.bodo!=null)parts.push(`${g.bodo.toLocaleString("nb-NO")} rundt Bodø`);if(g.no!=null)parts.push(`${g.no.toLocaleString("nb-NO")} i hele Norge`);
       gs.innerHTML=parts.length?`<br>Rapporterte funn i GBIF: ${esc(parts.join(", "))}.`:""}});
   return map}
