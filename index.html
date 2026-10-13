@@ -325,10 +325,75 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 .windvis svg{flex:none}
 .windvis text{fill:var(--muted);font-size:10px;font-weight:600}
 .rsec{margin:18px 0 0;padding-top:12px;border-top:1px solid var(--line)}
+body{background-color:#071526;background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed}
+.top{background:rgba(7,21,38,.55);border-bottom:1px solid rgba(169,207,232,.14);color:#E3EDF4}
+.top .brand h1{color:#F1E6C8}.top .ver{color:#9fc3e0}.top .tab{color:#9fc3e0}.top .tab.on{background:#F1E6C8;color:#081a2e}
+.top #menuBtn{color:#BFD3E4}
+.top #addChartBtn{background:rgba(241,230,200,.1);color:#F1E6C8;border-color:rgba(241,230,200,.35)}
+body:not(.mapmax) .layout{padding:14px;gap:14px}
+body:not(.mapmax) .mapcol{border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.45)}
+body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-shadow:0 8px 28px rgba(0,0,0,.45)}
+@media (max-width:860px){body:not(.mapmax) .layout{padding:8px;gap:8px}body:not(.mapmax) .mapcol,body:not(.mapmax) .side{border-radius:12px}}
+.dexbtn{--dexbtn-bg:#0b2440;border:1px solid #1f6f8b!important;background:#0b2440!important;color:#BFE6F2!important}
+.dexbtn:hover{background:#12355a!important}.dexbtn .dexcnt{font:700 12px/1 Barlow,system-ui,sans-serif;background:#1f6f8b;color:#fff;border-radius:999px;padding:3px 6px;margin-left:2px}
+.dexbtn .dexcnt:empty{display:none}body.mapmax .maptools .dexbtn{display:inline-flex;align-items:center;gap:6px}
+.dexdlg{max-width:none;max-height:none;width:100vw;height:100dvh;height:100vh;margin:0;padding:0;border:0;border-radius:0;background:#081a2e;color:#E3EDF4;overflow:hidden}
+.dexdlg[open]{display:block}.dexdlg::backdrop{background:#081a2e}
+.dexwrap{height:100%;overflow-y:auto;background-color:#081a2e;background-repeat:no-repeat;background-size:cover;background-position:center;background-attachment:fixed;-webkit-overflow-scrolling:touch}
+.dexin{max-width:1100px;margin:0 auto;padding:14px 16px 40px}
+.dextop{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:3;padding:10px 0 8px;margin:-14px 0 0;background:linear-gradient(#081a2e 75%,rgba(8,26,46,0))}
+.dextop h2{margin:0;font-size:30px;color:#F1E6C8;flex:1;letter-spacing:.5px}
+.dexclose{border:1px solid rgba(159,195,224,.35);background:rgba(8,26,46,.7);color:#E3EDF4;border-radius:999px;width:38px;height:38px;font-size:20px;line-height:1;cursor:pointer}
+.dexhead{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:center;background:rgba(15,53,87,.55);border:1px solid rgba(159,195,224,.18);border-radius:14px;padding:12px 14px;margin:4px 0 12px;backdrop-filter:blur(2px)}
+.dexhead .big{font:700 46px/1 "Barlow Condensed",sans-serif;color:#F1E6C8}.dexhead .big small{font-size:22px;color:#9fc3e0}
+.dexhead .dexbar{grid-column:2;height:10px;background:rgba(159,195,224,.15);margin:4px 0}
+.dexhead p{margin:0;font-size:14px;color:#BFD3E4}.dexhead p b{color:#F1E6C8}
+.dexdlg .chips .chip{color:#9fc3e0;border-color:rgba(159,195,224,.35);background:rgba(8,26,46,.6)}.dexdlg .chips .chip.on{color:#081a2e;background:#F1E6C8;border-color:#F1E6C8}
+.dexsec{margin:16px 0 0}.dexsec h3{color:#F1E6C8;font-size:21px;margin:0 0 8px;display:flex;align-items:baseline;gap:8px}.dexsec h3 small{color:#9fc3e0;font:600 13px Barlow,sans-serif}
+.dexdlg .dexgrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.dexdlg .dcard{border:1px solid rgba(241,230,200,.22);border-radius:12px;background:linear-gradient(165deg,rgba(25,78,120,.75),rgba(10,36,64,.85));color:#E3EDF4;transition:transform .15s,box-shadow .15s}
+.dexdlg .dcard:not(.miss):hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.dexdlg .dcard .dpic{aspect-ratio:4/3;background:#0a2440;padding:0;overflow:hidden}
+.sppic{width:100%;height:100%;object-fit:cover;display:block}.sppic.ghost{filter:grayscale(1) brightness(.55) contrast(.9);opacity:.45}
+.spnone{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(241,230,200,.7)}.spnone.ghost{color:rgba(159,195,224,.3)}
+.dexdlg .dcard .dnum{z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.8);color:#F1E6C8}.dexdlg .dcard .dcam{z-index:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))}
+.dexdlg .dcard.miss .dnum{color:#9fc3e0}
+.dhero{margin:8px -16px 0;aspect-ratio:16/10;overflow:hidden;background:#0a2440}.dhero .spnone{color:rgba(241,230,200,.6)}
+.dcred{font-size:11.5px!important;color:#7f9fb8!important;margin:3px 0 0!important}.dcred a{color:#8fd3ec}
+.dsci{font:italic 400 15px Barlow,sans-serif;color:#9fc3e0}
+.nshero{margin:8px -16px;aspect-ratio:16/10;overflow:hidden}
+.dround{width:44px;height:44px;border-radius:50%;overflow:hidden;flex:none;border:2px solid rgba(241,230,200,.6);background:#0a2440;display:inline-flex}.dround .spnone svg{width:24px;height:24px}
+.dexdlg .dcard .dnum{background:none;color:#9fc3e0;font-size:12px;top:6px;left:8px;padding:0}
+.dexdlg .dcard .dcam{position:absolute;top:6px;right:8px;width:16px;height:16px;color:#F1E6C8;opacity:.8}
+.dexdlg .dcard .dtx{padding:2px 10px 9px}.dexdlg .dcard .dtx b{font-size:15px;color:#F1E6C8}.dexdlg .dcard .dtx span{color:#9fc3e0}
+.dexdlg .dcard.miss .dpic{background:none}.dexdlg .dcard.miss{background:rgba(8,26,46,.55);border-style:dashed;border-color:rgba(159,195,224,.25)}.dexdlg .dcard.miss .dtx b{color:rgba(159,195,224,.55)}
+.rar{display:inline-block;font:700 10.5px/1 Barlow,sans-serif;letter-spacing:.4px;text-transform:uppercase;padding:3px 6px;border-radius:5px;margin-left:4px;vertical-align:1px}
+.rar.r1{background:#E3B341;color:#2B1D00}.rar.r2{background:#5aa9c9;color:#081a2e}.rar.r3{background:rgba(159,195,224,.2);color:#BFD3E4}
+.dexsheet{position:fixed;inset:0;z-index:5;background:rgba(4,12,22,.72);display:flex;align-items:flex-end;justify-content:center}
+.dexsheet[hidden]{display:none}
+.dexcard{width:min(560px,100%);max-height:92%;overflow-y:auto;background:linear-gradient(170deg,#11406a,#0a2440 60%);border:1px solid rgba(241,230,200,.25);border-radius:18px 18px 0 0;padding:14px 16px 22px;color:#E3EDF4;position:relative}
+@media (min-width:700px){.dexsheet{align-items:center}.dexcard{border-radius:18px}}
+
+.dexcard h3{margin:4px 0 2px;font-size:30px;color:#F1E6C8}.dexcard .dnum2{color:#9fc3e0;font:600 14px Barlow,sans-serif}
+.dexcard p{margin:5px 0;font-size:15px;color:#D5E3EE}.dexcard p b{color:#F1E6C8}.dexcard .linkbtn{color:#8fd3ec}
+.dexcard .dfacts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0;text-align:center}
+.dexcard .dfacts div{background:rgba(8,26,46,.5);border-radius:10px;padding:7px 4px}.dexcard .dfacts b{display:block;font:700 24px/1 "Barlow Condensed",sans-serif;color:#F1E6C8}.dexcard .dfacts span{font-size:12px;color:#9fc3e0}
+.dexcard .dphotos{display:flex;gap:6px;overflow-x:auto;margin:8px 0}.dexcard .dphotos .thumb{width:72px;height:72px;border-color:rgba(241,230,200,.3)}
+.dexcard .btn{background:#F1E6C8;color:#081a2e;border-color:#F1E6C8}
+.dexcard .dexclose{position:absolute;top:10px;right:10px}
+.dexlb .hb{color:#E3EDF4}.dexlb .ht{background:rgba(159,195,224,.15)}.dexlb .ht i{background:#F1E6C8}.dexlb .hv{color:#9fc3e0}
+.dexteaser{position:relative;display:block;width:100%;text-align:left;border:0;border-radius:14px;padding:12px 14px;margin:0 0 14px;color:#E3EDF4;cursor:pointer;background-color:#0b2440;background-size:900px auto;background-position:30% 40%;overflow:hidden;box-shadow:0 2px 8px rgba(8,26,46,.25)}
+.dexteaser .dtt{display:flex;align-items:baseline;gap:8px}.dexteaser .dtt b{font:700 22px/1.1 "Barlow Condensed",sans-serif;color:#F1E6C8}.dexteaser .dtt span{color:#9fc3e0;font-size:13.5px}
+.dexteaser .dexbar{height:7px;background:rgba(159,195,224,.18);margin:7px 0 6px}
+.dexteaser .drow{display:flex;gap:6px;align-items:center}
+.dexteaser .dcta{position:absolute;right:12px;top:12px;font-size:13px;font-weight:600;color:#F1E6C8}
+.newsp{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);z-index:3000;width:min(340px,90vw);background:linear-gradient(170deg,#11406a,#0a2440);border:1px solid #E3B341;border-radius:18px;padding:16px 16px 14px;color:#E3EDF4;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.5);opacity:0;transition:opacity .25s,transform .25s}
+.newsp.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.newsp .nst{font:700 13px Barlow,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#E3B341}.newsp h3{margin:2px 0;font-size:30px;color:#F1E6C8}
+.newsp p{margin:2px 0 10px;color:#BFD3E4}.newsp .btn{background:#F1E6C8;color:#081a2e;border-color:#F1E6C8}
 .rtabs{display:flex;gap:4px;background:var(--soft);border-radius:10px;padding:3px;margin:6px 0 10px}
 .rtabs button{flex:1;border:0;background:none;border-radius:8px;padding:7px 4px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
 .rtabs button.on{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.dexteaser{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:var(--soft);border:0;border-radius:10px;padding:8px 10px;margin:0 0 12px;color:var(--ink);cursor:pointer}.dexteaser .atx{flex:1;min-width:0;display:flex;flex-direction:column}.dexteaser .aago{white-space:nowrap}
 .dexbar{height:10px;background:var(--soft);border-radius:5px;overflow:hidden;margin:6px 0 4px}.dexbar i{display:block;height:100%;background:linear-gradient(90deg,var(--kelp),var(--alpha));border-radius:5px}
 .dexgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-top:6px}
 .dcard{display:flex;flex-direction:column;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:none;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
@@ -338,8 +403,6 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 .dcard .dtx{padding:5px 7px 6px;font-size:13px;line-height:1.25}.dcard .dtx b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dcard .dtx span{color:var(--muted);font-size:11.5px}
 .dcard.miss{border-style:dashed;cursor:default}.dcard.miss .dpic{background:var(--soft)}.dcard.miss .dtx b{color:var(--muted);font-weight:500}
 .dcard.sel{outline:2px solid var(--alpha);outline-offset:1px}
-.dexdet{border:1px solid var(--line);border-radius:12px;padding:10px;margin:10px 0 4px;display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:start}
-.dexdet .thumb{width:96px;height:96px}.dexdet h3{margin:0 0 2px;font-size:22px}.dexdet p{margin:2px 0;font-size:14px}
 .yrhero{border-radius:14px;padding:14px;color:#fff;background:linear-gradient(150deg,#0b3954,#087e8b 60%,#3fa34d);margin:8px 0 10px}
 .yrhero h3{margin:0;font-size:26px;color:#fff}.yrhero .small{color:rgba(255,255,255,.85)}
 .yrhero .kpis b{color:#fff}.yrhero .kpis span{color:rgba(255,255,255,.8)}
@@ -355,6 +418,7 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 .rec .rb{min-width:0}
 .rec .rm{color:var(--alpha);font-weight:600}
 .thumb.ph{border-style:dashed}
+
 .linkbtn.rsite{margin:0;font-size:inherit}
 @media (max-width:860px){body:not(.mapmax) .layout{grid-template-rows:max(300px,55%) auto}body:not(.mapmax) .side{min-height:auto}body:not(.mapmax) .side .panel{flex:none}}
 .editban{background:var(--soft);border-left:3px solid var(--magenta);padding:6px 10px;border-radius:6px;font-size:13.5px;margin:6px 0 4px}
@@ -394,7 +458,8 @@ body.mapmax .recbar{display:inline-flex}
 .recbar.on{background:#E3B341;color:#2B1D00}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hdrbtn,:root:not([data-theme="light"]) .recbar{background:#3A2E0E;color:#F5D27A;border-color:#8A6A1E}:root:not([data-theme="light"]) .hdrbtn.on,:root:not([data-theme="light"]) .recbar.on{background:#E3B341;color:#2B1D00}}
 @media (max-width:860px){#addChartBtn{display:none}.hdrbtn{padding:6px 10px}.top .ver{display:none}.top{gap:8px;padding:10px 12px}#menuBtn{padding:6px 8px}.brand{gap:7px}}
-@media (max-width:420px){.hdrbtn span{display:none}.hdrbtn{padding:7px 9px}}
+@media (max-width:480px){.dexbtn .dexcnt{display:none}}
+@media (max-width:420px){.hdrbtn span{display:none}.hdrbtn{padding:7px 8px}.top{gap:6px}.brand h1{font-size:24px}}
 .crow .cWhoW{grid-column:span 12}
 .crow .cWho{font-size:13.5px}
 .unit.pre span{right:auto;left:10px}
@@ -441,9 +506,10 @@ body.mapmax .recbar{display:inline-flex}
 <header class="top">
   <div class="brand">
     <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver">v17</span>
+    <h1>Dykkekart</h1><span class="ver"></span>
   </div>
   <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
+  <button id="dexHdr" class="hdrbtn dexbtn" type="button" title="Artssamling"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Arter</span><b class="dexcnt" id="dexHdrCnt"></b></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
   <button id="menuBtn" class="btn ghost">Meny</button>
@@ -462,6 +528,7 @@ body.mapmax .recbar{display:inline-flex}
     <div class="maptools">
       <button id="listBtn" class="btn maxonly" type="button">Liste</button>
       <button id="recBar" class="btn maxonly recbar" type="button" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
+      <button id="dexBar" class="btn maxonly dexbtn" type="button" title="Artssamling"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Arter</span></button>
       <button id="placeBtn" class="btn primary">Nytt dykkested</button>
       <button id="drawBtn" class="btn">Tegn</button>
       <select id="condSel" class="btn" aria-label="Vis vindforhold på kartet"><option value="off">Forhold: av</option><option value="now">Forhold nå</option><option value="+3">Om 3 timer</option><option value="+6">Om 6 timer</option><option value="d1h10">I morgen kl 10</option><option value="d1h15">I morgen kl 15</option><option value="d2h10">Overmorgen kl 10</option></select>
@@ -504,6 +571,8 @@ body.mapmax .recbar{display:inline-flex}
 
 <div id="errBar" hidden></div>
 <div id="offBar" hidden>Offline: viser sist hentede data</div>
+<dialog id="dexDlg" class="dexdlg" aria-label="Artssamling"><div class="dexwrap" id="dexWrap"></div></dialog>
+<div id="newSp" class="newsp" hidden role="status"></div>
 <dialog id="imgDlg" class="imgdlg"><img id="imgBig" alt=""><p id="imgCap" class="small"></p><form method="dialog"><button class="btn">Lukk</button></form></dialog>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
 
@@ -514,7 +583,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v20 (artssamling, dykkeåret, månefase)";
+const APP_VERSION="v22 (fiskebakgrunn og ekte artsbilder)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -891,7 +960,7 @@ async function saveLog(e){
   const snapV={};["wind_dir","wind_speed","tide_phase"].forEach(k=>{if(row[k]!=null)snapV[k]=row[k]});
   const {data:log,error}=await colSafe(r=>sb.from("logs").insert(r).select().single(),row,["time_of_day","wind_dir","wind_speed","tide_phase","buddies"],"stats.sql","klokkeslett og forhold");$("#lSave").textContent="Logg dykket";
   if(error)$("#lErr").textContent="Kunne ikke lagre: "+errMsg(error);
-  else{const warn=await afterLogSaved(s,log,catches,snapV);if(warn.length)$("#lErr").textContent=warn.join(" ");["lVis","lTemp","lDepth","lCond","lNotes"].forEach(id=>$("#"+id).value="");$("#cRows").innerHTML="";S.buddySel=[];renderBuddyPicker();loadLogs(s.id);loadSites();loadCatches();loadReports()}
+  else{const warn=await afterLogSaved(s,log,catches,snapV);const _before=new Set(S.catches.map(c=>c.species));if(warn.length)$("#lErr").textContent=warn.join(" ");["lVis","lTemp","lDepth","lCond","lNotes"].forEach(id=>$("#"+id).value="");$("#cRows").innerHTML="";S.buddySel=[];renderBuddyPicker();loadLogs(s.id);loadSites();loadCatches().then(()=>celebrateNew(_before));loadReports()}
   btn.disabled=false;
 }
 
@@ -1654,7 +1723,7 @@ function ago(t){const d=(Date.now()-Date.parse(t))/60e3;if(d<2)return"nå nettop
 async function loadCatches(){const {data,error}=await cachedQ("catches",sb.from("catches").select("*"));if(error){S.catchErr=tableErr(error,"catch.sql");return}S.catchErr=null;S.catches=data;afterCatchData()}
 async function loadReports(){const since=new Date(Date.now()-14*864e5).toISOString();const {data,error}=await cachedQ("reports",sb.from("vis_reports").select("*").gte("created_at",since));
   if(error){S.visErr=tableErr(error,"catch.sql");return}S.visErr=null;S.reports=data.sort((a,b)=>b.created_at.localeCompare(a.created_at));afterVisData()}
-function afterCatchData(){if(S.view==="list")renderList();else if(S.view==="site"){renderLogs();renderSpecies();renderSiteHero()}if(S.sp)renderPins()}
+function afterCatchData(){if(S.dexOpen)renderDexDlg();syncDexBtn();if(S.view==="list")renderList();else if(S.view==="site"){renderLogs();renderSpecies();renderSiteHero()}if(S.sp)renderPins()}
 function afterVisData(){renderPins();if(S.view==="list")renderList();else if(S.view==="site"){const s=getSite(S.sel);if(s)renderVis(s)}}
 function latestReport(siteId,maxH=48){const r=S.reports.find(x=>x.site_id===siteId);return r&&(Date.now()-Date.parse(r.created_at))<maxH*3600e3?r:null}
 function visBadge(s){const r=latestReport(s.id);return r?`<span class="vbadge" title="Sikt rapportert ${esc(ago(r.created_at))}">${fnum(r.vis,1)} m</span>`:""}
@@ -1927,12 +1996,12 @@ function recRow(c,i,medal){const s=getSite(c.site_id);
     <span class="rb"><b>${medal?"🥇 ":""}${esc(c.species)}</b> <span class="rm">${esc(measureTxt(c)||"–")}</span><br><span class="small">${s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button> · `:""}${esc(catcherName(c))}${c.date?" · "+esc(fdate(c.date)):""}</span></span></div>`}
 function SPICON(sp){const k=sp.toLowerCase();return /skjell|musling/.test(k)?(/blå|o-|hjerte/.test(k)?"musling":"skjell"):/krabbe|hummer|kreps/.test(k)?"dyr":/kråkebolle/.test(k)?"kraakebolle":/sel|oter/.test(k)?"dyr":"fisk"}
 S.recTab="rek";
-function recHead(){return `<button class="btn ghost back" id="back">Alle steder</button><h2>${S.recTab==="arter"?"Artssamling":S.recTab==="aar"?"Dykkeåret":"Rekorder og statistikk"}</h2>
-  <div class="rtabs" id="recTabs" role="tablist">${[["rek","Rekorder"],["arter","Artssamling"],["aar","Dykkeåret"]].map(([k,l])=>`<button role="tab" data-tab="${k}" class="${S.recTab===k?"on":""}" aria-selected="${S.recTab===k}">${l}</button>`).join("")}</div>`}
+function recHead(){return `<button class="btn ghost back" id="back">Alle steder</button><h2>${S.recTab==="aar"?"Dykkeåret":"Rekorder og statistikk"}</h2>
+  <div class="rtabs" id="recTabs" role="tablist">${[["rek","Rekorder"],["aar","Dykkeåret"]].map(([k,l])=>`<button role="tab" data-tab="${k}" class="${S.recTab===k?"on":""}" aria-selected="${S.recTab===k}">${l}</button>`).join("")}</div>`}
 function wireRecHead(){$("#back").onclick=()=>{S.view="list";renderPanel()};
   $("#recTabs").onclick=e=>{const b=e.target.closest("[data-tab]");if(!b||b.dataset.tab===S.recTab)return;S.recTab=b.dataset.tab;panel.scrollTop=0;renderRecords()}}
 function renderRecords(){
-  if(S.recTab==="arter")return renderDex();if(S.recTab==="aar")return renderYear();
+  if(S.recTab==="arter")S.recTab="rek";if(S.recTab==="aar")return renderYear();
   const years=[...new Set(S.catches.map(c=>(c.date||"").slice(0,4)).filter(Boolean))].sort().reverse();
   const cy=String(new Date().getFullYear());if(S.recYear==null)S.recYear=years.includes(cy)?cy:"alle";
   const inYear=c=>S.recYear==="alle"||(c.date||"").startsWith(S.recYear);
@@ -2197,9 +2266,11 @@ function highlightItems(){
   let items=pick(60);if(items.length<2)items=pick(180);
   return items.sort((a,b)=>b.sc-a.sc||String(b.c.date).localeCompare(String(a.c.date))).slice(0,8);
 }
-function renderDexTeaser(){const el=$("#dexTeaser");if(!el)return;if(!S.catches.length){el.innerHTML="";return}const d=dexData();
-  el.innerHTML=`<button class="arow dexteaser" id="dexGo"><span class="aico">${iconSVG("fisk",18)}</span><span class="atx"><span><b>Artssamling:</b> ${d.found} av ${d.total} arter funnet</span><span class="dexbar" style="margin:4px 0 0;height:6px"><i style="width:${Math.round(d.found/Math.max(1,d.total)*100)}%"></i></span></span><span class="small aago">Se alle ›</span></button>`;
-  $("#dexGo").onclick=()=>{S.recTab="arter";openRecords();if(S.max){S.sheetList=false;updateSheet()}}}
+function renderDexTeaser(){const el=$("#dexTeaser");if(!el)return;syncDexBtn();if(!S.catches.length){el.innerHTML="";return}const d=dexData();
+  const recent=Object.values(d.by).sort((a,b)=>catchSort(b.first,a.first)).slice(0,5);const pct=Math.round(d.found/Math.max(1,d.total)*100);
+  el.innerHTML=`<button class="dexteaser" id="dexGo" aria-label="Åpne artssamlingen"><span class="dcta">Åpne ›</span><span class="dtt"><b>Artssamling</b><span>${d.found} av ${d.total} arter</span></span><span class="dexbar"><i style="width:${pct}%"></i></span><span class="drow">${recent.map(o=>`<span class="dround">${spPic(o.sp,{own:o.photo&&o.photo.photo_path})}</span>`).join("")}</span></button>`;
+  const g=$("#dexGo");g.style.backgroundImage=BGART.cssURL();g.onclick=()=>openDex();
+  if(recent.some(o=>!(o.sp in S.spImg))&&!S.spImgBusy)loadSpImages(Object.keys(d.by)).then(()=>{if(S.view==="list")renderDexTeaser()})}
 function renderHighlights(){
   renderDexTeaser();
   const el=$("#highlights");if(!el)return;const items=highlightItems();
@@ -2231,6 +2302,126 @@ function renderSiteHero(){
 }
 
 
+/* ---------- flowing background art (generated SVG) ---------- */
+const BGART=(()=>{
+const r1=v=>Math.round(v*10)/10;
+function bez(P,t){const u=1-t;return [u*u*u*P[0][0]+3*u*u*t*P[1][0]+3*u*t*t*P[2][0]+t*t*t*P[3][0],u*u*u*P[0][1]+3*u*u*t*P[1][1]+3*u*t*t*P[2][1]+t*t*t*P[3][1]]}
+function tan(P,t){const u=1-t;const x=3*u*u*(P[1][0]-P[0][0])+6*u*t*(P[2][0]-P[1][0])+3*t*t*(P[3][0]-P[2][0]),y=3*u*u*(P[1][1]-P[0][1])+6*u*t*(P[2][1]-P[1][1])+3*t*t*(P[3][1]-P[2][1]);const l=Math.hypot(x,y)||1;return[x/l,y/l]}
+function prof(pts,t){for(let i=1;i<pts.length;i++)if(t<=pts[i][0]){const [a,wa]=pts[i-1],[b,wb]=pts[i],k=(t-a)/(b-a),s=k*k*(3-2*k);return wa+(wb-wa)*s}return pts[pts.length-1][1]}
+const poly=(pts,close=true)=>{let d=`M${r1(pts[0][0])},${r1(pts[0][1])}`;for(let i=1;i<pts.length-1;i++){const m=[(pts[i][0]+pts[i+1][0])/2,(pts[i][1]+pts[i+1][1])/2];d+=`Q${r1(pts[i][0])},${r1(pts[i][1])} ${r1(m[0])},${r1(m[1])}`}const l=pts[pts.length-1];d+=`L${r1(l[0])},${r1(l[1])}`;return d+(close?"Z":"")};
+// ribbon fin: from base point along a flowing curve, width profile, returns filled shape + rays
+function ribbon(P,W,wp,o={}){const N=28,up=[],lo=[],mid=[];for(let i=0;i<=N;i++){const t=i/N,p=bez(P,t),n=tan(P,t),w=prof(wp,t)*W*(1+(o.wave||0)*Math.sin(t*9+(o.ph||0)));mid.push(p);up.push([p[0]-n[1]*w,p[1]+n[0]*w]);lo.push([p[0]+n[1]*w*(o.asym??1),p[1]-n[0]*w*(o.asym??1)])}
+  let s=`<path d="${poly([...up,...lo.reverse()])}" class="bf"/>`;const rays=o.rays??5;
+  for(let k=1;k<rays;k++){const f=k/rays*2-1,pts=[];for(let i=0;i<=N;i+=2){const t=i/N,p=bez(P,t),n=tan(P,t),w=prof(wp,t)*W*f*.92;pts.push([p[0]-n[1]*w,p[1]+n[0]*w])}s+=`<path d="${poly(pts,false)}" class="br"/>`}
+  return s}
+function fish(sp){const {P,W}=sp,N=72,up=[],lo=[];let Ls=0;for(let i=1;i<=20;i++){const a=bez(P,(i-1)/20),b=bez(P,i/20);Ls+=Math.hypot(b[0]-a[0],b[1]-a[1])}
+  const raw=sp.wp,tc=Math.min(.3,raw[0][1]*W/Ls*.9),wc=prof(raw,tc),WF=t=>t<tc?wc*Math.sqrt(Math.max(0,1-(1-t/tc)**2)):prof(raw,t);sp.wpf=WF;
+  for(let i=0;i<=N;i++){const t=i/N,p=bez(P,t),n=tan(P,t),w=WF(t)*W;up.push([p[0]-n[1]*w,p[1]+n[0]*w]);lo.push([p[0]+n[1]*w,p[1]-n[0]*w])}
+  const at=t=>{const p=bez(P,t),n=tan(P,t),w=WF(t)*W;return{p,n,w,up:[p[0]-n[1]*w,p[1]+n[0]*w],lo:[p[0]+n[1]*w,p[1]-n[0]*w]}};
+  let s="";
+  // fins first (behind body)
+  for(const f of sp.fins||[]){const a=at(f.t),side=f.side==="up"?a.up:a.lo,sg=f.side==="up"?1:-1,n=a.n,nx=-n[1]*sg,ny=n[0]*sg,L=f.len*W;
+    const c=f.curl||0;const P2=[side,[side[0]+nx*L*.35-n[0]*L*.15,side[1]+ny*L*.35-n[1]*L*.15],[side[0]+nx*L*.6+n[0]*L*(.6+c),side[1]+ny*L*.6+n[1]*L*(.6+c)],[side[0]+nx*L*(.4+c*.6)+n[0]*L*(1.2+c),side[1]+ny*L*(.4+c*.6)+n[1]*L*(1.2+c)]];
+    s+=ribbon(P2,W*f.w,[[0,1],[.4,.8],[1,0]],{rays:f.rays||4,wave:.12,ph:f.t*10})}
+  if(sp.fringe){for(const sg of [1,-1]){const a0=sp.fringe[0],a1=sp.fringe[1],M=40,outer=[],inner=[];for(let i=0;i<=M;i++){const t=a0+(a1-a0)*i/M,a=at(t),e=sg>0?a.up:a.lo,k=Math.sin(Math.PI*i/M),ww=W*sp.fringe[2]*(.35+k*.65)*(1+.15*Math.sin(i*1.3));inner.push(e);outer.push([e[0]-a.n[1]*ww*sg-a.n[0]*ww*.5,e[1]+a.n[0]*ww*sg-a.n[1]*ww*.5])}
+    s+=`<path d="${poly([...inner,...outer.slice().reverse()])}" class="bf"/>`;for(let i=1;i<M;i+=2)s+=`<path d="M${r1(inner[i][0])},${r1(inner[i][1])}L${r1(outer[i+1][0])},${r1(outer[i+1][1])}" class="br"/>`}}
+  // tail: several flowing lobes
+  const e=at(1),n=e.n;for(const tl of sp.tail){const L=tl.len*W,ang=tl.ang,ca=Math.cos(ang),sa=Math.sin(ang),dx=n[0]*ca-n[1]*sa,dy=n[0]*sa+n[1]*ca,c=tl.curl||0;
+    const P3=[e.p,[e.p[0]+n[0]*L*.3,e.p[1]+n[1]*L*.3],[e.p[0]+dx*L*.7-dy*L*c,e.p[1]+dy*L*.7+dx*L*c],[e.p[0]+dx*L-dy*L*c*1.6,e.p[1]+dy*L+dx*L*c*1.6]];
+    s+=ribbon(P3,W*tl.w,[[0,.35],[.35,1],[.75,.8],[1,0]],{rays:tl.rays||6,wave:.18,ph:ang*7})}
+  s+=`<path d="${poly([...up,...lo.slice().reverse()])}" class="bb"/>`;
+  // scales
+  if(sp.scales!==false)for(let t=.24;t<.86;t+=.06)for(let k=-2;k<=2;k++){const a=at(t),w=a.w*.75*(k/2.4),p=[a.p[0]-a.n[1]*w,a.p[1]+a.n[0]*w],rr=W*.13*Math.max(.35,WF(t)),ex=-a.n[0]*rr,ey=-a.n[1]*rr;
+    if(Math.abs(k)===2&&t>.7)continue;s+=`<path d="M${r1(p[0]-a.n[1]*rr)},${r1(p[1]+a.n[0]*rr)}Q${r1(p[0]+ex*1.6)},${r1(p[1]+ey*1.6)} ${r1(p[0]+a.n[1]*rr)},${r1(p[1]-a.n[0]*rr)}" class="bs"/>`}
+  // gill + eye + extras
+  const g=at(sp.gill||.2);s+=`<path d="${poly([g.up,[g.p[0]-g.n[0]*W*.25,g.p[1]-g.n[1]*W*.25],g.lo],false)}" class="bl"/>`;
+  {const m=at(.03),q=at(.07);s+=`<path d="M${r1(m.p[0])},${r1(m.p[1])}Q${r1(q.p[0]+q.n[1]*q.w*.1)},${r1(q.p[1]-q.n[0]*q.w*.1)} ${r1(q.p[0]+q.n[1]*q.w*.45)},${r1(q.p[1]-q.n[0]*q.w*.45)}" class="bl"/>`}
+  const h=at(sp.eyeT||.08),eo=sp.eyeOff??.35,ep=[h.p[0]-h.n[1]*h.w*eo,h.p[1]+h.n[0]*h.w*eo];s+=`<circle cx="${r1(ep[0])}" cy="${r1(ep[1])}" r="${r1(W*(sp.eyeR||.11))}" class="be"/><circle cx="${r1(ep[0])}" cy="${r1(ep[1])}" r="${r1(W*(sp.eyeR||.11)*.45)}" class="bp"/>`;
+  if(sp.lat){const pts=[];for(let t=.18;t<=.97;t+=.04){const a=at(t),w=a.w*sp.lat;pts.push([a.p[0]-a.n[1]*w,a.p[1]+a.n[0]*w])}s+=`<path d="${poly(pts,false)}" class="bl" stroke-dasharray="3 3"/>`}
+  if(sp.barbel){const a=at(.03),b=a.lo;s+=`<path d="M${r1(b[0])},${r1(b[1])}q${r1(-a.n[1]*W*.3-a.n[0]*W*.1)},${r1(a.n[0]*W*.3-a.n[1]*W*.1)} ${r1(-a.n[1]*W*.25+a.n[0]*W*.2)},${r1(a.n[0]*W*.5+a.n[1]*W*.2)}" class="bl"/>`}
+  if(sp.lure){const a=at(.06),b=a.up,nx=a.n[1],ny=-a.n[0];s+=`<path d="M${r1(b[0])},${r1(b[1])}c${r1(nx*W*.9)},${r1(ny*W*.9)} ${r1(nx*W*.6-a.n[0]*W*1.1)},${r1(ny*W*.6-a.n[1]*W*1.1)} ${r1(-a.n[0]*W*1.2+nx*W*.3)},${r1(-a.n[1]*W*1.2+ny*W*.3)}" class="bl"/><circle cx="${r1(b[0]-a.n[0]*W*1.2+nx*W*.3)}" cy="${r1(b[1]-a.n[1]*W*1.2+ny*W*.3)}" r="${r1(W*.09)}" class="bp"/>`;
+    // teeth along jaw
+    for(let t=.02;t<.2;t+=.025){const q=at(t),m=[q.p[0]+q.n[1]*q.w*.35,q.p[1]-q.n[0]*q.w*.35];s+=`<path d="M${r1(m[0])},${r1(m[1])}l${r1(q.n[1]*W*.12)},${r1(-q.n[0]*W*.12)}" class="bl"/>`}}
+  if(sp.dots)for(let t=.25;t<.8;t+=.07)for(const k of [-.45,0,.45]){const a=at(t+(k?0.03:0)),w=a.w*k;s+=`<circle cx="${r1(a.p[0]-a.n[1]*w)}" cy="${r1(a.p[1]+a.n[0]*w)}" r="${r1(W*.045)}" class="bp" opacity=".5"/>`}
+  if(sp.stripes)for(let t=.2;t<.85;t+=.055){const a=at(t),b=at(t+.03),u1=a.up,m=[b.p[0]-b.n[1]*b.w*.2,b.p[1]+b.n[0]*b.w*.2];s+=`<path d="M${r1(u1[0])},${r1(u1[1])}Q${r1((u1[0]+m[0])/2+a.n[0]*W*.12)},${r1((u1[1]+m[1])/2+a.n[1]*W*.12)} ${r1(m[0])},${r1(m[1])}" class="bl"/>`}
+  return `<g>${s}</g>`}
+function kelp(x,y,h,ph){const pts=[];for(let i=0;i<=20;i++){const t=i/20;pts.push([x+Math.sin(t*5+ph)*14*t,y-h*t])}return `<path d="${poly(pts,false)}" class="bk"/>`+[.3,.5,.7,.85].map(t=>{const i=Math.round(t*20),p=pts[i],sd=i%2?1:-1;return `<path d="M${r1(p[0])},${r1(p[1])}q${sd*16},${-8} ${sd*24},${-28}" class="bk"/>`}).join("")}
+function svg(){
+  const F=[
+   // breiflabb – big, diagonal, gyotaku-ish
+   {P:[[210,230],[320,300],[380,440],[500,560]],W:95,wp:[[0,1.3],[.1,1.45],[.22,1.3],[.42,.62],[.75,.3],[1,.22]],eyeT:.12,eyeOff:.42,eyeR:.07,gill:.36,fringe:[.45,.92,.35],lure:1,scales:false,dots:1,
+    fins:[{t:.3,side:"up",len:.9,w:.6,curl:.2,rays:7},{t:.3,side:"lo",len:.9,w:.6,curl:-.2,rays:7}],tail:[{len:2.6,ang:.35,w:.55,curl:.18},{len:2.2,ang:-.25,w:.45,curl:-.12}]},
+   // kveite – broad, flat, flowing fringe
+   {P:[[990,190],[880,140],[760,160],[650,250]],W:78,wp:[[0,.5],[.15,.95],[.45,1],[.8,.5],[1,.22]],eyeT:.1,eyeOff:.25,eyeR:.1,gill:.2,lat:.05,
+    fringe:[.14,.9,.55],fins:[{t:.3,side:"lo",len:1.1,w:.25,curl:-.5}],
+    tail:[{len:2.4,ang:.4,w:.5,curl:.25},{len:2.4,ang:-.4,w:.5,curl:-.25}]},
+   // torsk
+   {P:[[1080,560],[980,520],[880,540],[780,610]],W:52,wp:[[0,.55],[.15,.92],[.32,1],[.7,.55],[.9,.22],[1,.18]],eyeT:.1,lat:.15,barbel:1,dots:1,
+    fins:[{t:.3,side:"up",len:1.4,w:.32,curl:.6},{t:.5,side:"up",len:1.5,w:.3,curl:.7},{t:.7,side:"up",len:1.4,w:.25,curl:.8},{t:.5,side:"lo",len:1.3,w:.28,curl:-.6},{t:.2,side:"lo",len:1.5,w:.25,curl:-.4}],
+    tail:[{len:3.6,ang:.3,w:.5,curl:.3},{len:3.2,ang:-.35,w:.45,curl:-.2},{len:2.6,ang:0,w:.3,curl:.1}]},
+   // sei – slender, curving up
+   {P:[[170,760],[280,720],[390,700],[480,640]],W:38,wp:[[0,.5],[.15,.9],[.35,1],[.75,.45],[1,.18]],eyeT:.1,lat:.1,
+    fins:[{t:.3,side:"up",len:1.5,w:.3,curl:.5},{t:.55,side:"up",len:1.6,w:.28,curl:.6},{t:.5,side:"lo",len:1.4,w:.26,curl:-.6}],tail:[{len:3.8,ang:.35,w:.5,curl:-.3},{len:3.4,ang:-.3,w:.45,curl:-.45}]},
+   // makrell pair
+   {P:[[620,820],[700,780],[800,780],[880,740]],W:24,wp:[[0,.45],[.15,.85],[.4,1],[.8,.4],[1,.16]],eyeT:.08,stripes:1,scales:false,
+    fins:[{t:.35,side:"up",len:1.6,w:.3,curl:.3}],tail:[{len:3.6,ang:.45,w:.45,curl:.2},{len:3.6,ang:-.45,w:.45,curl:-.2}]},
+   {P:[[700,880],[780,860],[870,860],[950,830]],W:20,wp:[[0,.45],[.15,.85],[.4,1],[.8,.4],[1,.16]],eyeT:.08,stripes:1,scales:false,
+    fins:[{t:.35,side:"up",len:1.6,w:.3,curl:.3}],tail:[{len:3.6,ang:.45,w:.45,curl:.2},{len:3.6,ang:-.45,w:.45,curl:-.2}]},
+   // steinbit – long, curving
+   {P:[[1330,560],[1200,600],[1340,760],[1200,900]],W:30,wp:[[0,.85],[.1,1],[.6,.8],[1,.3]],eyeT:.07,eyeOff:.3,scales:false,stripes:1,fringe:[.15,.95,.6],
+    fins:[{t:.2,side:"lo",len:1.5,w:.35,curl:-.6}],tail:[{len:3.4,ang:.25,w:.55,curl:.5},{len:2.6,ang:-.3,w:.4,curl:.2}]},
+   // small sei top right
+   {P:[[1350,120],[1280,170],[1200,180],[1120,240]],W:24,wp:[[0,.5],[.15,.9],[.35,1],[.75,.45],[1,.18]],eyeT:.1,lat:.1,
+    fins:[{t:.4,side:"up",len:1.6,w:.3,curl:.5}],tail:[{len:4,ang:.4,w:.5,curl:.3},{len:3.6,ang:-.35,w:.45,curl:.1}]}
+  ];
+  const kel=[kelp(60,1000,420,0),kelp(110,1000,300,1.4),kelp(560,1000,260,2),kelp(1010,1000,340,.7),kelp(1060,1000,220,2.6),kelp(1400,1000,380,1.1),kelp(1440,1000,250,3)].join("");
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="bgg" cx="40%" cy="35%" r="80%"><stop offset="0" stop-color="#0f2b47"/><stop offset="1" stop-color="#071526"/></radialGradient></defs>
+<style>.bb{fill:#a9cfe8;fill-opacity:.075;stroke:#a9cfe8;stroke-opacity:.42;stroke-width:1.4}.bf{fill:#a9cfe8;fill-opacity:.045;stroke:#a9cfe8;stroke-opacity:.22;stroke-width:1}.br{fill:none;stroke:#a9cfe8;stroke-opacity:.13;stroke-width:.8}.bs{fill:none;stroke:#a9cfe8;stroke-opacity:.16;stroke-width:.8}.bl{fill:none;stroke:#a9cfe8;stroke-opacity:.3;stroke-width:1.1;stroke-linecap:round}.be{fill:none;stroke:#a9cfe8;stroke-opacity:.4;stroke-width:1.1}.bp{fill:#a9cfe8;fill-opacity:.45}.bk{fill:none;stroke:#7fb0cf;stroke-opacity:.12;stroke-width:1.2;stroke-linecap:round}</style>
+<rect width="1500" height="1000" fill="url(#bgg)"/>${kel}${F.map(fish).join("")}</svg>`}
+let url=null;function cssURL(){return url||(url=`url("data:image/svg+xml,${encodeURIComponent(svg())}")`)}
+return {svg,cssURL};
+})();
+
+/* ---------- reference photos of species (Wikipedia / Wikimedia Commons) ---------- */
+const SCI={"Torsk":"Gadus morhua","Sei":"Pollachius virens","Lyr":"Pollachius pollachius","Hyse":"Melanogrammus aeglefinus","Hvitting":"Merlangius merlangus","Kolmule":"Micromesistius poutassou",
+ "Lange":"Molva molva","Brosme":"Brosme brosme","Steinbit":"Anarhichas lupus","Breiflabb":"Lophius piscatorius","Kveite":"Hippoglossus hippoglossus","Rødspette":"Pleuronectes platessa",
+ "Skrubbe":"Platichthys flesus","Sandflyndre":"Limanda limanda","Piggvar":"Scophthalmus maximus","Lomre":"Microstomus kitt","Uer":"Sebastes norvegicus","Berggylt":"Labrus bergylta",
+ "Grønngylt":"Symphodus melops","Bergnebb":"Ctenolabrus rupestris","Rødnebb/blåstål":"Labrus mixtus","Makrell":"Scomber scombrus","Ulke":"Myoxocephalus scorpius","Rognkjeks":"Cyclopterus lumpus",
+ "Tangsprell":"Pholis gunnellus","Pigghå":"Squalus acanthias","Laks":"Salmo salar","Sjøørret":"Salmo trutta","Kamskjell":"Pecten maximus","Harpeskjell":"Chlamys islandica",
+ "Blåskjell":"Mytilus edulis","O-skjell":"Ostrea edulis","Kongekrabbe":"Paralithodes camtschaticus","Taskekrabbe":"Cancer pagurus","Hummer":"Homarus gammarus","Sjøkreps":"Nephrops norvegicus",
+ "Kråkebolle":"Strongylocentrotus droebachiensis","Sjøpølse":"Parastichopus tremulus","Sjøstjerne":"Asterias rubens","Sel":"Phoca vitulina","Oter":"Lutra lutra"};
+S.spImg=lsGet("spimg:v1")||{};S.spImgBusy=null;
+function spImg(sp){const v=S.spImg[sp];return v&&v.src?v:null}
+async function wikiImages(host,titles){
+  const out={};if(!titles.length)return out;
+  for(let i=0;i<titles.length;i+=45){const chunk=titles.slice(i,i+45);
+    const url=`https://${host}/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&piprop=thumbnail%7Cname&pithumbsize=640&titles=${encodeURIComponent(chunk.join("|"))}`;
+    let j;try{const r=await fetch(url);if(!r.ok)continue;j=await r.json()}catch(e){continue}
+    const q=j.query||{},map={};for(const x of [...(q.normalized||[]),...(q.redirects||[])])map[x.from]=x.to;
+    const byTitle={};for(const pg of Object.values(q.pages||{}))byTitle[pg.title]=pg;
+    for(const tt of chunk){let k=tt;for(let n=0;n<3&&map[k];n++)k=map[k];const pg=byTitle[k];
+      if(pg&&pg.thumbnail&&pg.thumbnail.source)out[tt]={src:pg.thumbnail.source,file:pg.pageimage||"",page:`https://${host}/wiki/${encodeURIComponent(pg.title.replace(/ /g,"_"))}`}}}
+  return out}
+async function loadSpImages(list){
+  if(S.spImgBusy)return S.spImgBusy;
+  const now=Date.now(),need=list.filter(sp=>{const v=S.spImg[sp];return !v||(!v.src&&now-(v.t||0)>7*864e5)});if(!need.length)return;
+  S.spImgBusy=(async()=>{
+    const sci=need.filter(sp=>SCI[sp]),en=await wikiImages("en.wikipedia.org",sci.map(sp=>SCI[sp]));
+    for(const sp of sci)if(en[SCI[sp]])S.spImg[sp]=en[SCI[sp]];
+    const rest=need.filter(sp=>!spImg(sp)),nb=await wikiImages("no.wikipedia.org",rest);
+    for(const sp of rest)S.spImg[sp]=nb[sp]||{src:null,t:now};
+    lsSet("spimg:v1",S.spImg);
+  })().finally(()=>{S.spImgBusy=null});
+  await S.spImgBusy;
+}
+async function photoCredit(file){
+  if(!file)return"";const k="cr:"+file;if(S[k]!=null)return S[k];
+  try{const r=await fetch(`https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&prop=imageinfo&iiprop=extmetadata&titles=${encodeURIComponent("File:"+file)}`);const j=await r.json();
+    const pg=Object.values(j.query.pages)[0],m=pg.imageinfo&&pg.imageinfo[0].extmetadata||{};const strip=h=>String(h||"").replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();
+    S[k]=[strip(m.Artist&&m.Artist.value),strip(m.LicenseShortName&&m.LicenseShortName.value)].filter(Boolean).join(" · ")}catch(e){S[k]=""}
+  return S[k]}
+function spPic(sp,{miss=false,own=null,cls=""}={}){const v=spImg(sp),src=v?v.src:own?photoURL(own):null;
+  return src?`<img class="sppic ${cls}${miss?" ghost":""}" src="${esc(src)}" alt="${esc(sp)}" loading="lazy" referrerpolicy="no-referrer">`:`<span class="spnone ${cls}${miss?" ghost":""}">${iconSVG(SPICON(sp),40,"currentColor",1.4)}</span>`}
 /* ---------- species collection (artssamling) ---------- */
 const SPGROUPS=[["Fisk",["Torsk","Sei","Lyr","Hyse","Hvitting","Kolmule","Lange","Brosme","Steinbit","Breiflabb","Kveite","Rødspette","Skrubbe","Sandflyndre","Piggvar","Lomre","Uer","Berggylt","Grønngylt","Bergnebb","Rødnebb/blåstål","Makrell","Ulke","Rognkjeks","Tangsprell","Pigghå","Laks","Sjøørret"]],
   ["Skjell og krepsdyr",["Kamskjell","Harpeskjell","Blåskjell","O-skjell","Kongekrabbe","Taskekrabbe","Hummer","Sjøkreps"]],["Pigghuder",["Kråkebolle","Sjøpølse","Sjøstjerne"]],["Pattedyr",["Sel","Oter"]]];
@@ -2249,39 +2440,69 @@ function dexData(){
   if(extra.length)groups.push(["Andre arter",extra]);
   return {by,groups,found:Object.keys(by).length,total:known.size+extra.length};
 }
-function dexPic(o,size=40){return o.photo?`<img src="${esc(photoURL(o.photo.photo_path))}" alt="" loading="lazy">`:iconSVG(SPICON(o.sp),size,o.miss?"var(--line)":"#fff",1.6)}
-function renderDex(){
-  const d=dexData(),all=d.groups.flatMap(g=>g[1]);let num=0;const idx={};for(const o of all)idx[o.sp]=++num;
-  const firsts={},seenBy={};for(const o of Object.values(d.by)){const w=catcherName(o.first)||"Ukjent";firsts[w]=(firsts[w]||0)+1;for(const x of o.who)seenBy[x]=(seenBy[x]||0)+1}
-  const newest=Object.values(d.by).sort((a,b)=>catchSort(b.first,a.first))[0];
+const CAMI='<svg class="dcam" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="Har bilde"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+function rarity(n){return n<=1?["r1","Sjelden"]:n<=3?["r2","Uvanlig"]:["r3","Vanlig"]}
+function dexIdx(d){let num=0;const idx={};for(const o of d.groups.flatMap(g=>g[1]))idx[o.sp]=++num;return idx}
+function openDex(sp){const dlg=$("#dexDlg");if(!dlg)return;S.dexOpen=true;renderDexDlg();if(!dlg.open)dlg.showModal();if(sp)showDexCard(sp);syncDexBtn()}
+function closeDex(){const dlg=$("#dexDlg");S.dexOpen=false;if(dlg&&dlg.open)dlg.close();syncDexBtn()}
+function syncDexBtn(){const n=S.catches.length?dexData().found:0;const c=$("#dexHdrCnt");if(c)c.textContent=n?String(n):"";for(const id of ["dexHdr","dexBar"]){const b=$("#"+id);if(b)b.setAttribute("aria-pressed",!!S.dexOpen)}}
+function renderDexDlg(){
+  const wrap=$("#dexWrap");if(!wrap)return;if(!wrap.style.backgroundImage)wrap.style.backgroundImage=BGART.cssURL();
+  const d=dexData(),idx=dexIdx(d);
+  {const all=d.groups.flatMap(g=>g[1]).map(o=>o.sp);if(all.some(sp=>!(sp in S.spImg))&&!S.spImgBusy)loadSpImages(all).then(()=>{if(S.dexOpen){const st=$("#dexWrap").scrollTop;renderDexDlg();$("#dexWrap").scrollTop=st}})}
+  const firsts={};for(const o of Object.values(d.by)){const w=catcherName(o.first)||"Ukjent";firsts[w]=(firsts[w]||0)+1}
+  const recent=Object.values(d.by).sort((a,b)=>catchSort(b.first,a.first)),newest=recent[0];
   const fRows=Object.entries(firsts).sort((a,b)=>b[1]-a[1]).slice(0,6);
-  const sel=S.dexSel&&d.by[S.dexSel];
-  const card=o=>o.miss?(S.dexMiss?`<div class="dcard miss" aria-label="${esc(o.sp)}: ikke funnet ennå"><span class="dpic"><span class="dnum">#${idx[o.sp]}</span>${dexPic(o)}</span><span class="dtx"><b>${esc(o.sp)}</b><span>ikke funnet</span></span></div>`:"")
-    :`<button class="dcard${S.dexSel===o.sp?" sel":""}" data-sp="${esc(o.sp)}"><span class="dpic"><span class="dnum">#${idx[o.sp]}</span>${dexPic(o)}</span><span class="dtx"><b>${esc(o.sp)}</b><span>${o.n}× · ${o.sites.size} ${o.sites.size===1?"sted":"steder"}</span></span></button>`;
-  let det="";
-  if(sel){const f=sel.first,fs=getSite(f.site_id),b=sel.best,bs=b&&getSite(b.site_id);
-    det=`<div class="dexdet" id="dexDet">${sel.photo?`<button class="thumb" data-img="${esc(sel.photo.photo_path)}" data-cap="${esc(sel.sp+(measureTxt(sel.photo)?" · "+measureTxt(sel.photo):""))}" aria-label="Vis bilde"><img src="${esc(photoURL(sel.photo.photo_path))}" alt=""></button>`:`<span class="thumb ph" style="background:linear-gradient(160deg,#0f4c75,#1b7a8c)">${iconSVG(SPICON(sel.sp),44,"#fff",1.6)}</span>`}
-      <div><h3>${esc(sel.sp)} <span class="small">#${idx[sel.sp]}</span></h3>
-      <p>Først funnet av <b>${esc(catcherName(f)||"ukjent")}</b>${fs?` på <button class="linkbtn rsite" data-site="${esc(fs.id)}">${esc(fs.name)}</button>`:""}${f.date?", "+esc(fdate(f.date)):""}</p>
-      <p>Registrert ${sel.n} ${sel.n===1?"gang":"ganger"} på ${sel.sites.size} ${sel.sites.size===1?"sted":"steder"}${sel.caught?`, ${sel.caught} fanget`:""}</p>
-      ${b?`<p>Største: <b>${esc(measureTxt(b))}</b> av ${esc(catcherName(b))}${bs?` på <button class="linkbtn rsite" data-site="${esc(bs.id)}">${esc(bs.name)}</button>`:""}</p>`:""}
-      <p class="small" style="margin-top:4px">Sett av: ${esc([...sel.who].join(", ")||"–")}</p>
-      <button class="btn ghost" id="dexMap" style="margin-top:6px;padding:3px 10px">Vis stedene på kartet</button></div></div>`}
-  panel.innerHTML=`${recHead()}
-    <p style="margin:2px 0 0"><b style="font-family:'Barlow Condensed',sans-serif;font-size:30px">${d.found}</b> <span class="small">av ${d.total} arter funnet av gjengen</span></p>
-    <div class="dexbar"><i style="width:${Math.round(d.found/Math.max(1,d.total)*100)}%"></i></div>
-    ${newest?`<p class="small" style="margin:2px 0 0">Nyeste funn: <b>${esc(newest.sp)}</b>, av ${esc(catcherName(newest.first)||"ukjent")}${newest.first.date?" "+esc(fdate(newest.first.date)):""}</p>`:`<p class="emptytxt">Ingen arter registrert ennå. Legg til fangst eller arter du har sett når du logger et dykk.</p>`}
-    ${det}
-    <div class="chips" id="dexChips" style="margin-top:10px"><button class="chip ${S.dexMiss?"on":""}" data-m="1">Vis alle</button><button class="chip ${S.dexMiss?"":"on"}" data-m="0">Bare funnet</button></div>
-    ${d.groups.map(([g,L])=>{const f=L.filter(o=>!o.miss).length;const cards=L.map(card).join("");return cards?`<section class="rsec"><h3>${esc(g)} <span class="small">${f}/${L.length}</span></h3><div class="dexgrid">${cards}</div></section>`:""}).join("")}
-    ${fRows.length?`<section class="rsec"><h3>Flest førstefunn</h3>${hbars(fRows.map(([k,v])=>({label:k,value:v,text:`${v} ${v===1?"art":"arter"}`})))}</section>`:""}`;
-  wireRecHead();
-  $("#dexChips").onclick=e=>{const b=e.target.closest("[data-m]");if(!b)return;S.dexMiss=b.dataset.m==="1";renderDex()};
-  panel.querySelectorAll(".dcard[data-sp]").forEach(b=>b.onclick=()=>{S.dexSel=S.dexSel===b.dataset.sp?null:b.dataset.sp;renderDex();const dd=$("#dexDet");if(dd)try{dd.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(e){}});
-  panel.querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{S.siteFromNext="records";openSite(b.dataset.site);focusSite(b.dataset.site)});
-  const dm=$("#dexMap");if(dm)dm.onclick=()=>{S.sp=S.dexSel;S.view="list";renderPanel();renderPins()};
+  const F=S.dexFilter||"alle";
+  const card=o=>{if(o.miss)return F==="funnet"?"":`<div class="dcard miss" aria-label="${esc(o.sp)}: ikke funnet ennå"><span class="dpic"><span class="dnum">#${idx[o.sp]}</span>${spPic(o.sp,{miss:true})}</span><span class="dtx"><b>${esc(o.sp)}</b><span>ikke funnet ennå</span></span></div>`;
+    if(F==="mangler")return"";const r=rarity(o.n);
+    return `<button class="dcard" data-sp="${esc(o.sp)}"><span class="dpic"><span class="dnum">#${idx[o.sp]}</span>${o.photo?CAMI:""}${spPic(o.sp,{own:o.photo&&o.photo.photo_path})}</span><span class="dtx"><b>${esc(o.sp)}</b><span>${o.n}× · ${o.sites.size} ${o.sites.size===1?"sted":"steder"}<i class="rar ${r[0]}">${r[1]}</i></span></span></button>`};
+  const pct=Math.round(d.found/Math.max(1,d.total)*100);
+  $("#dexWrap").innerHTML=`<div class="dexin">
+    <div class="dextop"><h2>Artssamling</h2><button class="dexclose" id="dexX" aria-label="Lukk">✕</button></div>
+    <div class="dexhead"><div class="big" style="grid-row:span 3">${d.found}<small>/${d.total}</small></div>
+      <p><b>${pct} %</b> av artene funnet av gjengen</p><div class="dexbar"><i style="width:${pct}%"></i></div>
+      <p>${newest?`Nyeste funn: <b>${esc(newest.sp)}</b> av ${esc(catcherName(newest.first)||"ukjent")}${newest.first.date?", "+esc(fdate(newest.first.date)):""}`:"Ingen arter ennå. Logg et dykk med fangst eller arter du så, så fylles samlingen."}</p></div>
+    <div class="chips" id="dexF">${[["alle","Alle"],["funnet",`Funnet (${d.found})`],["mangler",`Mangler (${d.total-d.found})`]].map(([k,l])=>`<button class="chip ${F===k?"on":""}" data-f="${k}">${l}</button>`).join("")}</div>
+    ${d.groups.map(([g,L])=>{const f=L.filter(o=>!o.miss).length,cards=L.map(card).join("");return cards?`<section class="dexsec"><h3>${esc(g)} <small>${f} av ${L.length}</small></h3><div class="dexgrid">${cards}</div></section>`:""}).join("")}
+    ${fRows.length?`<section class="dexsec dexlb"><h3>Flest førstefunn</h3>${hbars(fRows.map(([k,v])=>({label:k,value:v,text:`${v} ${v===1?"art":"arter"}`})))}</section>`:""}
+    <p style="margin-top:22px;color:#6f8fa8;font-size:12px">Tegningene er laget for Dykkekart. Arter dere logger som ikke står på lista havner under «Andre arter».</p>
+  </div><div class="dexsheet" id="dexDet" hidden></div>`;
+  $("#dexX").onclick=closeDex;
+  $("#dexF").onclick=e=>{const b=e.target.closest("[data-f]");if(!b)return;S.dexFilter=b.dataset.f;const st=$("#dexWrap").scrollTop;renderDexDlg();$("#dexWrap").scrollTop=st};
+  $("#dexWrap").querySelectorAll(".dcard[data-sp]").forEach(b=>b.onclick=()=>showDexCard(b.dataset.sp));
 }
-
+function showDexCard(sp){
+  const d=dexData(),o=d.by[sp],el=$("#dexDet");if(!o||!el)return;const idx=dexIdx(d);
+  const f=o.first,fs=getSite(f.site_id),b=o.best,bs=b&&getSite(b.site_id),r=rarity(o.n);
+  const photos=S.catches.filter(c=>c.species===sp&&c.photo_path).sort((a,b)=>bigger(a,b)?-1:1).slice(0,12);
+  const sl=s=>s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button>`:"";
+  el.innerHTML=`<div class="dexcard" role="dialog" aria-label="${esc(sp)}"><button class="dexclose" id="dexCX" aria-label="Lukk">✕</button>
+    <span class="dnum2">#${idx[sp]} · <i class="rar ${r[0]}" style="margin:0">${r[1]}</i></span>
+    <div class="dhero">${spPic(sp,{own:o.photo&&o.photo.photo_path})}</div><p class="dcred" id="dexCred">${spImg(sp)?`Bilde: <a href="${esc(spImg(sp).page)}" target="_blank" rel="noopener">Wikipedia</a>`:""}</p>
+    <h3>${esc(sp)}${SCI[sp]?` <i class="dsci">${esc(SCI[sp])}</i>`:""}</h3>
+    <div class="dfacts"><div><b>${o.n}</b><span>registreringer</span></div><div><b>${o.sites.size}</b><span>${o.sites.size===1?"sted":"steder"}</span></div><div><b>${o.caught||0}</b><span>fanget</span></div></div>
+    <p>Først funnet av <b>${esc(catcherName(f)||"ukjent")}</b>${fs?" på "+sl(fs):""}${f.date?", "+esc(fdate(f.date)):""}.</p>
+    ${b?`<p>Største: <b>${esc(measureTxt(b))}</b> av ${esc(catcherName(b))}${bs?" på "+sl(bs):""}.</p>`:""}
+    <p style="color:#9fc3e0;font-size:14px">Sett av: ${esc([...o.who].join(", ")||"–")}</p>
+    ${photos.length?`<p style="margin:12px 0 0;font-weight:600;color:#F1E6C8">Gjengens bilder</p><div class="dphotos">${photos.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc([c.species,measureTxt(c),catcherName(c),getSite(c.site_id)?.name].filter(Boolean).join(" · "))}" aria-label="Vis bilde"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}
+    <button class="btn" id="dexMap" style="margin-top:6px">Vis stedene på kartet</button></div>`;
+  el.hidden=false;
+  {const v=spImg(sp);if(v&&v.file)photoCredit(v.file).then(c=>{const ce=$("#dexCred");if(c&&ce)ce.innerHTML=`Bilde: ${esc(c)} · <a href="${esc(v.page)}" target="_blank" rel="noopener">Wikipedia</a>`})}
+  const close=()=>{el.hidden=true;el.innerHTML=""};
+  $("#dexCX").onclick=close;el.onclick=e=>{if(e.target===el)close()};
+  el.querySelectorAll(".rsite").forEach(x=>x.onclick=()=>{closeDex();S.siteFromNext=null;openSite(x.dataset.site);focusSite(x.dataset.site)});
+  $("#dexMap").onclick=()=>{closeDex();S.sp=sp;S.view="list";renderPanel();renderPins()};
+}
+async function celebrateNew(before){
+  if(!before)return;const d=dexData(),idx=dexIdx(d);
+  const fresh=Object.keys(d.by).filter(sp=>!before.has(sp));if(!fresh.length)return;
+  const sp=fresh[0],el=$("#newSp");if(!el)return;await loadSpImages(fresh).catch(()=>{});
+  el.innerHTML=`<div class="nst">Ny art i samlingen!</div><div class="nshero">${spPic(sp)}</div><h3>${esc(sp)}</h3><p>#${idx[sp]} · ${d.found} av ${d.total} arter funnet${fresh.length>1?` · +${fresh.length-1} til`:""}</p><button class="btn" id="newSpGo">Se samlingen</button> <button class="btn ghost" id="newSpX" style="color:#BFD3E4;background:none;border-color:rgba(159,195,224,.35)">Lukk</button>`;
+  el.hidden=false;requestAnimationFrame(()=>el.classList.add("on"));
+  const hide=()=>{el.classList.remove("on");setTimeout(()=>{el.hidden=true},260)};clearTimeout(el._t);el._t=setTimeout(hide,9000);
+  $("#newSpX").onclick=hide;$("#newSpGo").onclick=()=>{hide();openDex(sp)};
+}
 /* ---------- year in diving (dykkeåret) ---------- */
 S.yrYear=null;S.yrWho=null;
 function renderYear(){
@@ -2376,6 +2597,11 @@ function moonLine(T,td){
 function syncRecBtn(){const on=S.view==="records";for(const id of ["recHdr","recBar"]){const b=$("#"+id);if(b){b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)}}}
 function toggleRecords(){if(S.view==="records"){S.view="list";renderPanel()}else{openRecords();if(S.max){S.sheetList=false;updateSheet()}}}
 $("#recHdr").onclick=toggleRecords;$("#recBar").onclick=toggleRecords;
+$("#dexHdr").onclick=()=>openDex();$("#dexBar").onclick=()=>openDex();
+$("#dexDlg").addEventListener("close",()=>{S.dexOpen=false;syncDexBtn()});
+$("#dexDlg").addEventListener("cancel",e=>{const det=$("#dexDet");if(det&&!det.hidden){e.preventDefault();det.hidden=true;det.innerHTML=""}});
+$("#dexDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();$("#imgBig").src=photoURL(b.dataset.img);$("#imgCap").textContent=b.dataset.cap||"";$("#imgDlg").showModal()});
+try{$(".top .ver").textContent=APP_VERSION.split(" ")[0]}catch(e){}
 
 /* ---------- maximised map ---------- */
 S.max=false;S.maxFs=false;S.sheetList=false;
@@ -2411,6 +2637,7 @@ for(const fn of ["renderPanel","renderListView","renderSiteView","renderAreaView
   window[fn]=function(...a){const r=orig.apply(this,a);updateSheet();syncHash();syncRecBtn();return r}}
 
 /* ---------- boot ---------- */
+try{document.body.style.backgroundImage=BGART.cssURL()}catch(e){}
 (function boot(){
   if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
   if(!CFG.SUPABASE_URL||CFG.SUPABASE_URL.includes("YOUR-PROJECT")||!CFG.SUPABASE_KEY||CFG.SUPABASE_KEY.includes("PASTE")){authScreen("config");return}
