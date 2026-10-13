@@ -333,13 +333,17 @@ body{background:#071526 url(bakgrunn.jpg?v=26) center/cover no-repeat fixed}
 .top .brand h1{color:#F1E6C8}.top .ver{color:#9fc3e0}.top .tab{color:#9fc3e0}.top .tab.on{background:#F1E6C8;color:#081a2e}
 .top #menuBtn{color:#BFD3E4}
 .top #addChartBtn{background:rgba(241,230,200,.1);color:#F1E6C8;border-color:rgba(241,230,200,.35)}
-body:not(.mapmax) .layout{padding:14px;gap:14px;column-gap:0;grid-template-columns:minmax(0,1fr) 14px var(--pw,410px)}
-body.pcollapsed:not(.mapmax) .layout{grid-template-columns:minmax(0,1fr) 14px 0}body.pcollapsed:not(.mapmax) .side{display:none}
+body:not(.mapmax) .layout{padding:14px;gap:14px;grid-template-columns:minmax(0,1fr) var(--pw,410px)}
+
 .splitter{display:none;position:relative;touch-action:none;user-select:none;z-index:5}
-body:not(.mapmax) .splitter{display:flex;align-items:center;justify-content:center;cursor:col-resize}
+@media (max-width:860px){body:not(.mapmax) .splitter{display:flex;align-items:center;justify-content:center;cursor:row-resize}}
 .splitter span{display:block;width:5px;height:46px;border-radius:3px;background:rgba(241,230,200,.35);transition:background .15s}
 .splitter:hover span,.splitter.drag span{background:rgba(241,230,200,.85)}
-body.pcollapsed .splitter span{height:70px;background:rgba(241,230,200,.6)}
+.edgeh{display:none;position:absolute;top:18%;bottom:18%;width:14px;z-index:1250;cursor:col-resize;touch-action:none}
+.edgeh::after{content:"";position:absolute;top:50%;transform:translateY(-50%);width:6px;height:52px;border-radius:3px;background:rgba(15,42,63,.4);box-shadow:0 0 0 1.5px rgba(255,255,255,.75)}
+#edgeMap{right:0}#edgeMap::after{right:3px}#edgeSide{left:0}#edgeSide::after{left:3px}
+.edgeh:hover::after,.edgeh.drag::after{background:rgba(15,42,63,.85)}
+@media (min-width:861px){body:not(.mapmax) .edgeh{display:block}}
 .hgrip{display:none;position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:70px;height:14px;cursor:row-resize;touch-action:none;z-index:1200}
 .hgrip::after{content:"";position:absolute;left:12px;right:12px;top:5px;height:4px;border-radius:2px;background:rgba(15,42,63,.35)}
 .hgrip:hover::after,.hgrip.drag::after{background:rgba(15,42,63,.75)}
@@ -363,7 +367,6 @@ body:not(.mapmax) .mapcol.mini,body:not(.mapmax) .side.mini{background:none!impo
 body:not(.mapmax) .mapcol.mini{justify-self:start}body:not(.mapmax) .side.mini{justify-self:end}
 body:not(.mapmax) .mapcol.mini>*:not(.minibar),body:not(.mapmax) .side.mini>*:not(.minibar){display:none!important}
 body:not(.mapmax) .mapcol.mini>.minibar,body:not(.mapmax) .side.mini>.minibar{display:inline-flex}
-@media (min-width:861px){body.mapmini:not(.mapmax) .splitter,body.sidemini:not(.mapmax) .splitter{visibility:hidden}}
 @media (max-width:860px){body.mapmini:not(.mapmax) .layout{grid-template-rows:auto 14px auto}body.mapmini:not(.mapmax) .splitter{visibility:hidden}}
 body.resizing #lmap{pointer-events:none}
 body:not(.mapmax) .mapcol{border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.45)}
@@ -581,6 +584,7 @@ body.mapmax .recbar{display:inline-flex}
       <div class="zoom" id="imgZoom"><button class="btn" id="zin" aria-label="Zoom inn">+</button><button class="btn" id="zout" aria-label="Zoom ut">−</button><button class="btn" id="zfit">Hele kartet</button></div>
     </div>
     <div class="hgrip" id="gripMap" title="Dra for å endre høyden på kartet (dobbeltklikk: full høyde)" aria-hidden="true"></div>
+    <div class="edgeh" id="edgeMap" title="Dra kanten for å endre bredden (dobbeltklikk: tilbakestill)" aria-hidden="true"></div>
     <div class="rzc" id="rzMap" title="Dra hjørnet for å endre størrelsen på kartet (dobbeltklikk: full størrelse)" aria-hidden="true"></div>
     <button type="button" class="minbtn" id="minMap" title="Minimer kartet" aria-label="Minimer kartet"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 18h14"/></svg></button>
     <button type="button" class="minibar" id="barMap" title="Vis kartet igjen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Kart<span>Vis</span></button>
@@ -590,6 +594,7 @@ body.mapmax .recbar{display:inline-flex}
     <div class="sheetbar" id="sheetBar"><button class="btn ghost" id="sheetTall" type="button" aria-label="Større eller mindre panel" style="padding:4px 8px"><span class="grab"></span></button><button class="btn" id="sheetClose" type="button">Lukk</button></div>
     <div id="panel" class="panel"></div>
     <div class="hgrip" id="gripSide" title="Dra for å endre høyden på panelet (dobbeltklikk: full høyde)" aria-hidden="true"></div>
+    <div class="edgeh" id="edgeSide" title="Dra kanten for å endre bredden (dobbeltklikk: tilbakestill)" aria-hidden="true"></div>
     <div class="rzc" id="rzSide" title="Dra hjørnet for å endre størrelsen på lista (dobbeltklikk: full størrelse)" aria-hidden="true"></div>
     <button type="button" class="minbtn" id="minSide" title="Minimer lista" aria-label="Minimer lista"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 18h14"/></svg></button>
     <button type="button" class="minibar" id="barSide" title="Vis lista igjen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Liste<span>Vis</span></button>
@@ -635,7 +640,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v32 (dra og minimer kart og liste)";
+const APP_VERSION="v33 (dra i kantene)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2642,20 +2647,27 @@ function dragger(el,cursor,onMove,onReset){
   el.addEventListener("dblclick",()=>{onReset();applyLayout();saveLayout();afterResize()})}
 (function initLayout(){const lay=$(".layout");if(!lay)return;
   const pad=()=>parseFloat(getComputedStyle(lay).paddingTop)||0;
-  dragger($("#splitter"),()=>isNarrow()?"row-resize":"col-resize",e=>{const r=lay.getBoundingClientRect(),L=S.lay;
-      if(isNarrow()){L.mh=Math.max(160,Math.min(window.innerHeight*.9,e.clientY-r.top+lay.scrollTop-pad()-7))}
-      else{const w=r.right-e.clientX-pad()-7,max=r.width-380;if(w<190){L.collapsed=true}else{L.collapsed=false;L.pw=Math.max(260,Math.min(max,w))}}},
-    ()=>{if(isNarrow())S.lay.mh=null;else{S.lay.pw=410;S.lay.collapsed=false}});
+  // mobile: horizontal bar between map and list
+  dragger($("#splitter"),()=>"row-resize",e=>{const r=lay.getBoundingClientRect();if(isNarrow())S.lay.mh=Math.max(160,Math.min(window.innerHeight*.9,e.clientY-r.top+lay.scrollTop-pad()-7))},()=>{S.lay.mh=null});
+  // height grips (bottom centre)
   for(const [id,key,sel] of [["gripMap","mhd",".mapcol"],["gripSide","shd","#side"]]){const g=$("#"+id);if(!g)continue;
     dragger(g,()=>"row-resize",e=>{const top=$(sel).getBoundingClientRect().top,max=lay.getBoundingClientRect().bottom-pad()-top;const h=Math.max(key==="mhd"?220:180,Math.min(max,e.clientY-top));S.lay[key]=h>=max-4?null:h},()=>{S.lay[key]=null})}
-  // corner handles: free width + height, like a window
-  const corner=(id,sel,wk,hk,fromRight)=>{const g=$("#"+id);if(!g)return;
-    dragger(g,()=>fromRight?"nesw-resize":"nwse-resize",e=>{const el=$(sel),r=el.getBoundingClientRect(),lr=lay.getBoundingClientRect(),p=pad();
-      const colW=fromRight?(lr.right-p)-(S.lay.collapsed?lr.right:($("#splitter").getBoundingClientRect().right)):($("#splitter").getBoundingClientRect().left-(lr.left+p));
-      const w=fromRight?(r.right-e.clientX):(e.clientX-r.left),maxH=lr.bottom-p-r.top,h=Math.max(hk==="mhd"?220:180,Math.min(maxH,e.clientY-r.top));
-      S.lay[wk]=w>=colW-6?null:Math.max(fromRight?260:320,Math.min(colW,w));S.lay[hk]=h>=maxH-4?null:h},
-      ()=>{S.lay[wk]=null;S.lay[hk]=null})};
-  corner("rzMap",".mapcol","mwd","mhd",false);corner("rzSide","#side","swd","shd",true);
+  // PC: every card edge can be dragged. Map's right edge and the list's left edge share the space:
+  // drag the map edge into the list and the list gets narrower (and the other way round); drag away and a gap opens.
+  const GAP=14,MINM=320,MINS=300;
+  const geo=()=>{const lr=lay.getBoundingClientRect(),p=pad();return {L:lr.left+p,R:lr.right-p,T:lr.top+p,B:lr.bottom-p,W:lr.width-2*p}};
+  const mapEdgeTo=x=>{const g=geo(),L=S.lay,colR=g.R-L.pw-GAP;
+    if(x<=colR-4){L.mwd=Math.max(MINM,x-g.L)}
+    else{L.mwd=null;L.pw=Math.max(MINS,Math.min(g.W-GAP-MINM,g.R-x-GAP));if(L.swd&&L.swd>=L.pw-6)L.swd=null}};
+  const sideEdgeTo=x=>{const g=geo(),L=S.lay,colL=g.R-L.pw;
+    if(x>=colL+4){L.swd=Math.max(MINS,g.R-x)}
+    else{L.swd=null;L.pw=Math.max(MINS,Math.min(g.W-GAP-MINM,g.R-x));const mapCol=g.W-L.pw-GAP;if(L.mwd&&L.mwd>=mapCol-6)L.mwd=null}};
+  const setH=(sel,key,y)=>{const top=$(sel).getBoundingClientRect().top,g=geo(),max=g.B-top,h=Math.max(key==="mhd"?220:180,Math.min(max,y-top));S.lay[key]=h>=max-4?null:h};
+  dragger($("#edgeMap"),()=>"col-resize",e=>mapEdgeTo(e.clientX),()=>{S.lay.mwd=null;S.lay.pw=410});
+  dragger($("#edgeSide"),()=>"col-resize",e=>sideEdgeTo(e.clientX),()=>{S.lay.swd=null;S.lay.pw=410});
+  dragger($("#rzMap"),()=>"nwse-resize",e=>{mapEdgeTo(e.clientX);setH(".mapcol","mhd",e.clientY)},()=>{S.lay.mwd=null;S.lay.mhd=null});
+  dragger($("#rzSide"),()=>"nesw-resize",e=>{sideEdgeTo(e.clientX);setH("#side","shd",e.clientY)},()=>{S.lay.swd=null;S.lay.shd=null});
+  S.lay.collapsed=false;
   // minimise / restore
   const mini=(k,v)=>{S.lay[k]=v;applyLayout();saveLayout();afterResize()};
   $("#minMap").onclick=()=>mini("mapMini",true);$("#barMap").onclick=()=>mini("mapMini",false);
