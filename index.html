@@ -610,7 +610,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v30 (bla i bilder)";
+const APP_VERSION="v31 (ingen svarte kartruter)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -747,9 +747,12 @@ function onSites(){if(S.condSel&&S.condSel!=="off")debounced("cond",refreshCond)
 function overlay(t,p,btn){const o=$("#overlay");if(!t){o.hidden=true;return}o.hidden=false;o.innerHTML=`<div><h2>${esc(t)}</h2><p>${esc(p)}</p>${btn||""}</div>`}
 
 /* ---------- live sea chart (Leaflet) ---------- */
+// A tile that fails (e.g. Kartverket busy) is retried up to 3 times instead of staying blank
+function retryTiles(layer){layer.on("tileerror",e=>{const t=e.tile,n=(t._rt||0)+1;if(n>3)return;t._rt=n;
+  setTimeout(()=>{if(!t.isConnected)return;const u=t.src.replace(/[?&]rt=[\d_]+$/,"");t.src=u+(u.includes("?")?"&":"?")+"rt="+n+"_"+Date.now()},700*n*n)});return layer}
 function initLeaflet(){
   if(S.lmap)return;
-  const kv=l=>L.tileLayer(`https://cache.kartverket.no/v1/wmts/1.0.0/${l}/default/webmercator/{z}/{y}/{x}.png`,{maxZoom:18,attribution:'&copy; <a href="https://www.kartverket.no/">Kartverket</a>'});
+  const kv=l=>retryTiles(L.tileLayer(`https://cache.kartverket.no/v1/wmts/1.0.0/${l}/default/webmercator/{z}/{y}/{x}.png`,{maxZoom:18,attribution:'&copy; <a href="https://www.kartverket.no/">Kartverket</a>'}));
   const sea=kv("sjokartraster"),topo=kv("topo"),grey=kv("topograatone");
   S.lmap=L.map(lmapEl,{zoomControl:true,renderer:L.svg({padding:.5})}).setView([67.28,14.40],10);S.lmap.addLayer(S.lmap.options.renderer);
   sea.addTo(S.lmap);
@@ -2468,7 +2471,7 @@ async function gbifInfo(sp){const c=S.gbif[sp];if(c&&Date.now()-(c.t||0)<14*864e
     const v={key:m.usageKey,no,bodo,t:Date.now()};S.gbif[sp]=v;lsSet("gbif:v1",S.gbif);return v}catch(e){return null}}
 function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined")return null;
   const map=L.map(el,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});S.dexMini=map;
-  L.tileLayer("https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png",{maxZoom:16,attribution:'&copy; Kartverket'}).addTo(map);
+  retryTiles(L.tileLayer("https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png",{maxZoom:16,attribution:'&copy; Kartverket'})).addTo(map);
   const pts=[];const bySite={};for(const c of S.catches)if(c.species===sp)(bySite[c.site_id]=bySite[c.site_id]||[]).push(c);
   for(const [id,L2] of Object.entries(bySite)){const s=getSite(id);if(!s||s.lat==null)continue;pts.push([s.lat,s.lon]);const caught=L2.filter(c=>c.kind==="fanget").reduce((n,c)=>n+(c.count||1),0);
     L.circleMarker([s.lat,s.lon],{radius:6+Math.min(10,Math.sqrt(L2.length)*2.4),color:"#FFE08A",weight:3,fillColor:"#E3B341",fillOpacity:.3,className:"ddring"}).addTo(map)

@@ -1,6 +1,6 @@
 /* Dykkekart service worker: keeps the app on the phone and caches map tiles you have viewed. */
-const V = "dk-app-v5";
-const TILES = "dk-tiles-1", TILE_MAX = 2500;
+const V = "dk-app-v6";
+const TILES = "dk-tiles-2", TILE_MAX = 2500; // new name: drops tiles cached by older versions (some were error responses)
 const SHELL = ["./", "./index.html", "./config.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./favicon.png"];
 
 self.addEventListener("install", e => {
@@ -51,13 +51,17 @@ async function staleWhileRevalidate(r) {
 }
 async function tile(r) {
   const c = await caches.open(TILES);
-  const hit = await c.match(r);
+  const hit = await c.match(r.url);
   if (hit) return hit;
   try {
-    const res = await fetch(r);
-    if (res.ok || res.type === "opaque") { await c.put(r, res.clone()); trim(c); }
+    // Ask for a readable (CORS) response so we can see if the tile is OK, and only keep good tiles
+    const res = await fetch(r.url, { mode: "cors", credentials: "omit" });
+    if (res.ok) { await c.put(r.url, res.clone()); trim(c); }
     return res;
-  } catch (err) { return Response.error(); }
+  } catch (err) {
+    // Server without CORS: load the tile normally, but never store it (we can't tell if it is an error)
+    try { return await fetch(r); } catch (e) { return Response.error(); }
+  }
 }
 let trimming = false;
 async function trim(c) {
