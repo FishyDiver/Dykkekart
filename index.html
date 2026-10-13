@@ -330,10 +330,23 @@ body{background:#071526 url(bakgrunn.jpg?v=26) center/cover no-repeat fixed}
 .top .brand h1{color:#F1E6C8}.top .ver{color:#9fc3e0}.top .tab{color:#9fc3e0}.top .tab.on{background:#F1E6C8;color:#081a2e}
 .top #menuBtn{color:#BFD3E4}
 .top #addChartBtn{background:rgba(241,230,200,.1);color:#F1E6C8;border-color:rgba(241,230,200,.35)}
-body:not(.mapmax) .layout{padding:14px;gap:14px}
+body:not(.mapmax) .layout{padding:14px;gap:14px;column-gap:0;grid-template-columns:minmax(0,1fr) 14px var(--pw,410px)}
+body.pcollapsed:not(.mapmax) .layout{grid-template-columns:minmax(0,1fr) 14px 0}body.pcollapsed:not(.mapmax) .side{display:none}
+.splitter{display:none;position:relative;touch-action:none;user-select:none;z-index:5}
+body:not(.mapmax) .splitter{display:flex;align-items:center;justify-content:center;cursor:col-resize}
+.splitter span{display:block;width:5px;height:46px;border-radius:3px;background:rgba(241,230,200,.35);transition:background .15s}
+.splitter:hover span,.splitter.drag span{background:rgba(241,230,200,.85)}
+body.pcollapsed .splitter span{height:70px;background:rgba(241,230,200,.6)}
+.hgrip{display:none;position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:70px;height:14px;cursor:row-resize;touch-action:none;z-index:1200}
+.hgrip::after{content:"";position:absolute;left:12px;right:12px;top:5px;height:4px;border-radius:2px;background:rgba(15,42,63,.35)}
+.hgrip:hover::after,.hgrip.drag::after{background:rgba(15,42,63,.75)}
+.side{position:relative}
+@media (min-width:861px){body:not(.mapmax) .hgrip{display:block}body:not(.mapmax) .mapcol.hset{align-self:start;height:var(--mhd)}body:not(.mapmax) .side.hset{align-self:start;height:var(--shd)}}
+body.resizing,body.resizing *{cursor:inherit!important;user-select:none!important}
+body.resizing #lmap{pointer-events:none}
 body:not(.mapmax) .mapcol{border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.45)}
 body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-shadow:0 8px 28px rgba(0,0,0,.45)}
-@media (max-width:860px){body:not(.mapmax) .layout{padding:8px;gap:8px}body:not(.mapmax) .mapcol,body:not(.mapmax) .side{border-radius:12px}}
+@media (max-width:860px){body:not(.mapmax) .layout{padding:8px;gap:0;grid-template-columns:1fr}body:not(.mapmax) .splitter{cursor:row-resize;height:14px}body:not(.mapmax) .splitter span{width:46px;height:5px}body.pcollapsed:not(.mapmax) .side{display:flex}body:not(.mapmax) .mapcol,body:not(.mapmax) .side{border-radius:12px}}
 .dexbtn{--dexbtn-bg:#0b2440;border:1px solid #1f6f8b!important;background:#0b2440!important;color:#BFE6F2!important}
 .dexbtn:hover{background:#12355a!important}.dexbtn .dexcnt{font:700 12px/1 Barlow,system-ui,sans-serif;background:#1f6f8b;color:#fff;border-radius:999px;padding:3px 6px;margin-left:2px}
 .dexbtn .dexcnt:empty{display:none}body.mapmax .maptools .dexbtn{display:inline-flex;align-items:center;gap:6px}
@@ -342,7 +355,7 @@ body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-sha
 .dexwrap{height:100%;overflow-y:auto;background:#081a2e url(bakgrunn.jpg?v=26) center/cover no-repeat fixed;-webkit-overflow-scrolling:touch}
 .dexin{max-width:1100px;margin:0 auto;padding:14px 16px 40px}
 .dextop{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:3;padding:10px 0 8px;margin:-14px 0 0;background:linear-gradient(#081a2e 75%,rgba(8,26,46,0))}
-.dextop h2{margin:0;font-size:30px;color:#F1E6C8;flex:1;letter-spacing:.5px}
+.dextop h2{margin:0;font-size:30px;color:#F1E6C8;flex:1;letter-spacing:.5px}.dexsub{font:500 14px Barlow,sans-serif;color:#9fc3e0;letter-spacing:0;margin-left:6px}
 .dexclose{border:1px solid rgba(159,195,224,.35);background:rgba(8,26,46,.7);color:#E3EDF4;border-radius:999px;width:38px;height:38px;font-size:20px;line-height:1;cursor:pointer}
 .dexhead{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:center;background:rgba(15,53,87,.55);border:1px solid rgba(159,195,224,.18);border-radius:14px;padding:12px 14px;margin:4px 0 12px;backdrop-filter:blur(2px)}
 .dexhead .big{font:700 46px/1 "Barlow Condensed",sans-serif;color:#F1E6C8}.dexhead .big small{font-size:22px;color:#9fc3e0}
@@ -380,6 +393,11 @@ body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-sha
 .dexcard .dfacts div{background:rgba(8,26,46,.5);border-radius:10px;padding:7px 4px}.dexcard .dfacts b{display:block;font:700 24px/1 "Barlow Condensed",sans-serif;color:#F1E6C8}.dexcard .dfacts span{font-size:12px;color:#9fc3e0}
 .dexcard .dphotos{display:flex;gap:6px;overflow-x:auto;margin:8px 0}.dexcard .dphotos .thumb{width:72px;height:72px;border-color:rgba(241,230,200,.3)}
 .dexcard .btn{background:#F1E6C8;color:#081a2e;border-color:#F1E6C8}
+.dexdist{margin:14px 0 4px}.ddhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.ddhead b{color:#F1E6C8;font-size:16px}
+.dexcard .chips .chip{color:#9fc3e0;border-color:rgba(159,195,224,.35);background:rgba(8,26,46,.6);padding:2px 10px;font-size:13px}.dexcard .chips .chip.on{color:#081a2e;background:#F1E6C8;border-color:#F1E6C8}
+.dexminimap{height:230px;border-radius:12px;overflow:hidden;border:1px solid rgba(241,230,200,.25);background:#0a2440}
+.dexminimap .leaflet-control-attribution{font-size:9.5px}
+.ddstats{font-size:14px!important;margin:7px 0 0!important}
 .dexcard .dexclose{position:absolute;top:10px;right:10px}
 .dexlb .hb{color:#E3EDF4}.dexlb .ht{background:rgba(159,195,224,.15)}.dexlb .ht i{background:#F1E6C8}.dexlb .hv{color:#9fc3e0}
 .dexteaser{position:relative;display:block;width:100%;text-align:left;border:0;border-radius:14px;padding:12px 14px;margin:0 0 14px;color:#E3EDF4;cursor:pointer;background:linear-gradient(90deg,rgba(8,26,46,.8),rgba(8,26,46,.25)),url(bakgrunn.jpg?v=26) 88% 84%/760px auto no-repeat #0b2440;overflow:hidden;box-shadow:0 2px 8px rgba(8,26,46,.25)}
@@ -420,7 +438,7 @@ body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-sha
 .thumb.ph{border-style:dashed}
 
 .linkbtn.rsite{margin:0;font-size:inherit}
-@media (max-width:860px){body:not(.mapmax) .layout{grid-template-rows:max(300px,55%) auto}body:not(.mapmax) .side{min-height:auto}body:not(.mapmax) .side .panel{flex:none}}
+@media (max-width:860px){body:not(.mapmax) .layout{grid-template-rows:var(--mh,max(300px,55%)) 14px auto}body:not(.mapmax) .side{min-height:auto}body:not(.mapmax) .side .panel{flex:none}}
 .editban{background:var(--soft);border-left:3px solid var(--magenta);padding:6px 10px;border-radius:6px;font-size:13.5px;margin:6px 0 4px}
 .logform.editing{box-shadow:0 0 0 2px var(--magenta)}
 .log.editing{border-left-color:var(--magenta);background:var(--soft)}
@@ -509,7 +527,7 @@ body.mapmax .recbar{display:inline-flex}
     <h1>Dykkekart</h1><span class="ver"></span>
   </div>
   <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
-  <button id="dexHdr" class="hdrbtn dexbtn" type="button" title="Artssamling"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Arter</span><b class="dexcnt" id="dexHdrCnt"></b></button>
+  <button id="dexHdr" class="hdrbtn dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span><b class="dexcnt" id="dexHdrCnt"></b></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
   <button id="menuBtn" class="btn ghost">Meny</button>
@@ -528,7 +546,7 @@ body.mapmax .recbar{display:inline-flex}
     <div class="maptools">
       <button id="listBtn" class="btn maxonly" type="button">Liste</button>
       <button id="recBar" class="btn maxonly recbar" type="button" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
-      <button id="dexBar" class="btn maxonly dexbtn" type="button" title="Artssamling"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Arter</span></button>
+      <button id="dexBar" class="btn maxonly dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span></button>
       <button id="placeBtn" class="btn primary">Nytt dykkested</button>
       <button id="drawBtn" class="btn">Tegn</button>
       <select id="condSel" class="btn" aria-label="Vis vindforhold på kartet"><option value="off">Forhold: av</option><option value="now">Forhold nå</option><option value="+3">Om 3 timer</option><option value="+6">Om 6 timer</option><option value="d1h10">I morgen kl 10</option><option value="d1h15">I morgen kl 15</option><option value="d2h10">Overmorgen kl 10</option></select>
@@ -537,10 +555,13 @@ body.mapmax .recbar{display:inline-flex}
       <div class="legend"><span><i style="background:var(--alpha)"></i>Delt</span><span><i style="background:var(--magenta)"></i>Bare for deg</span></div>
       <div class="zoom" id="imgZoom"><button class="btn" id="zin" aria-label="Zoom inn">+</button><button class="btn" id="zout" aria-label="Zoom ut">−</button><button class="btn" id="zfit">Hele kartet</button></div>
     </div>
+    <div class="hgrip" id="gripMap" title="Dra for å endre høyden på kartet (dobbeltklikk: full høyde)" aria-hidden="true"></div>
   </section>
+  <div class="splitter" id="splitter" role="separator" aria-label="Dra for å endre størrelse" title="Dra for å endre størrelse (dobbeltklikk: tilbakestill)"><span></span></div>
   <aside class="side" id="side" aria-label="Detaljer">
     <div class="sheetbar" id="sheetBar"><button class="btn ghost" id="sheetTall" type="button" aria-label="Større eller mindre panel" style="padding:4px 8px"><span class="grab"></span></button><button class="btn" id="sheetClose" type="button">Lukk</button></div>
     <div id="panel" class="panel"></div>
+    <div class="hgrip" id="gripSide" title="Dra for å endre høyden på panelet (dobbeltklikk: full høyde)" aria-hidden="true"></div>
   </aside>
 </main>
 
@@ -571,7 +592,7 @@ body.mapmax .recbar{display:inline-flex}
 
 <div id="errBar" hidden></div>
 <div id="offBar" hidden>Offline: viser sist hentede data</div>
-<dialog id="dexDlg" class="dexdlg" aria-label="Artssamling"><div class="dexwrap" id="dexWrap"></div></dialog>
+<dialog id="dexDlg" class="dexdlg" aria-label="Artsdex"><div class="dexwrap" id="dexWrap"></div></dialog>
 <div id="newSp" class="newsp" hidden role="status"></div>
 <dialog id="imgDlg" class="imgdlg"><img id="imgBig" alt=""><p id="imgCap" class="small"></p><form method="dialog"><button class="btn">Lukk</button></form></dialog>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
@@ -583,7 +604,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v26 (ny havbakgrunn)";
+const APP_VERSION="v27 (Artsdex, utbredelseskart, justerbar layout)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2268,7 +2289,7 @@ function highlightItems(){
 }
 function renderDexTeaser(){const el=$("#dexTeaser");if(!el)return;syncDexBtn();if(!S.catches.length){el.innerHTML="";return}const d=dexData();
   const recent=Object.values(d.by).sort((a,b)=>catchSort(b.first,a.first)).slice(0,5);const pct=Math.round(d.found/Math.max(1,d.total)*100);
-  el.innerHTML=`<button class="dexteaser" id="dexGo" aria-label="Åpne artssamlingen"><span class="dcta">Åpne ›</span><span class="dtt"><b>Artssamling</b><span>${d.found} av ${d.total} arter</span></span><span class="dexbar"><i style="width:${pct}%"></i></span><span class="drow">${recent.map(o=>`<span class="dround">${spPic(o.sp,{own:o.photo&&o.photo.photo_path})}</span>`).join("")}</span></button>`;
+  el.innerHTML=`<button class="dexteaser" id="dexGo" aria-label="Åpne Artsdex"><span class="dcta">Åpne ›</span><span class="dtt"><b>Artsdex</b><span>${d.found} av ${d.total} arter</span></span><span class="dexbar"><i style="width:${pct}%"></i></span><span class="drow">${recent.map(o=>`<span class="dround">${spPic(o.sp,{own:o.photo&&o.photo.photo_path})}</span>`).join("")}</span></button>`;
   const g=$("#dexGo");g.onclick=()=>openDex();
   if(recent.some(o=>!(o.sp in S.spImg))&&!S.spImgBusy)loadSpImages(Object.keys(d.by)).then(()=>{if(S.view==="list")renderDexTeaser()})}
 function renderHighlights(){
@@ -2379,7 +2400,7 @@ function renderDexDlg(){
     return `<button class="dcard" data-sp="${esc(o.sp)}"><span class="dpic"><span class="dnum">#${idx[o.sp]}</span>${o.photo?CAMI:""}${spPic(o.sp,{own:o.photo&&o.photo.photo_path})}</span><span class="dtx"><b>${esc(o.sp)}</b><span>${o.n}× · ${o.sites.size} ${o.sites.size===1?"sted":"steder"}<i class="rar ${r[0]}">${r[1]}</i></span></span></button>`};
   const pct=Math.round(d.found/Math.max(1,d.total)*100);
   $("#dexWrap").innerHTML=`<div class="dexin">
-    <div class="dextop"><h2>Artssamling</h2><button class="dexclose" id="dexX" aria-label="Lukk">✕</button></div>
+    <div class="dextop"><h2>Artsdex <small class="dexsub">arts-bingo for gjengen</small></h2><button class="dexclose" id="dexX" aria-label="Lukk">✕</button></div>
     <div class="dexhead"><div class="big" style="grid-row:span 3">${d.found}<small>/${d.total}</small></div>
       <p><b>${pct} %</b> av artene funnet av gjengen</p><div class="dexbar"><i style="width:${pct}%"></i></div>
       <p>${newest?`Nyeste funn: <b>${esc(newest.sp)}</b> av ${esc(catcherName(newest.first)||"ukjent")}${newest.first.date?", "+esc(fdate(newest.first.date)):""}`:"Ingen arter ennå. Logg et dykk med fangst eller arter du så, så fylles samlingen."}</p></div>
@@ -2406,19 +2427,47 @@ function showDexCard(sp){
     ${b?`<p>Største: <b>${esc(measureTxt(b))}</b> av ${esc(catcherName(b))}${bs?" på "+sl(bs):""}.</p>`:""}
     <p style="color:#9fc3e0;font-size:14px">Sett av: ${esc([...o.who].join(", ")||"–")}</p>
     ${photos.length?`<p style="margin:12px 0 0;font-weight:600;color:#F1E6C8">Gjengens bilder</p><div class="dphotos">${photos.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc([c.species,measureTxt(c),catcherName(c),getSite(c.site_id)?.name].filter(Boolean).join(" · "))}" aria-label="Vis bilde"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}
-    <button class="btn" id="dexMap" style="margin-top:6px">Vis stedene på kartet</button></div>`;
+    <div class="dexdist"><div class="ddhead"><b>Utbredelse</b><span class="chips" id="ddChips"><button class="chip on" data-v="lokal">Våre funn</button><button class="chip" data-v="norge">Hele Norge</button></span></div>
+      <div class="dexminimap" id="dexMini"></div>
+      <p class="ddstats" id="ddStats">${(()=>{const tot=S.catches.length||1,pct=o.n/tot*100;return `Gjengen: ${o.n} av ${S.catches.length} registreringer (${fnum(pct,pct<1?1:0)} %) på ${o.sites.size} ${o.sites.size===1?"sted":"steder"}.`})()} <span id="ddGbif"></span></p>
+      <p class="dcred">Gule ringer: gjengens funn. Oransje prikker: alle registrerte funn (GBIF, inkl. Artsdatabanken).</p></div>
+    <button class="btn" id="dexMap" style="margin-top:6px">Vis stedene på hovedkartet</button></div>`;
   el.hidden=false;
   {const v=spImg(sp);if(v&&v.file)photoCredit(v.file).then(c=>{const ce=$("#dexCred");if(c&&ce)ce.innerHTML=`Bilde: ${esc(c)} · <a href="${esc(v.page)}" target="_blank" rel="noopener">Wikipedia</a>`})}
-  const close=()=>{el.hidden=true;el.innerHTML=""};
+  const mini=initDexMini(sp,o);
+  const close=()=>{try{mini&&mini.remove()}catch(e){}S.dexMini=null;el.hidden=true;el.innerHTML=""};
   $("#dexCX").onclick=close;el.onclick=e=>{if(e.target===el)close()};
   el.querySelectorAll(".rsite").forEach(x=>x.onclick=()=>{closeDex();S.siteFromNext=null;openSite(x.dataset.site);focusSite(x.dataset.site)});
   $("#dexMap").onclick=()=>{closeDex();S.sp=sp;S.view="list";renderPanel();renderPins()};
 }
+/* species distribution: group's own finds + GBIF occurrences (includes Artsdatabanken / Artskart data) */
+S.gbif=lsGet("gbif:v1")||{};
+async function gbifInfo(sp){const c=S.gbif[sp];if(c&&Date.now()-(c.t||0)<14*864e5)return c;const sci=SCI[sp];if(!sci)return null;
+  try{const m=await (await fetch(`https://api.gbif.org/v1/species/match?name=${encodeURIComponent(sci)}`)).json();if(!m||!m.usageKey||m.matchType==="NONE")return null;
+    const q=a=>fetch(`https://api.gbif.org/v1/occurrence/search?taxonKey=${m.usageKey}&limit=0${a}`).then(r=>r.json()).then(j=>j.count).catch(()=>null);
+    const [no,bodo]=await Promise.all([q("&country=NO"),q("&decimalLatitude=66.6,68.2&decimalLongitude=12.8,16.4")]);
+    const v={key:m.usageKey,no,bodo,t:Date.now()};S.gbif[sp]=v;lsSet("gbif:v1",S.gbif);return v}catch(e){return null}}
+function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined")return null;
+  const map=L.map(el,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});S.dexMini=map;
+  L.tileLayer("https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png",{maxZoom:16,attribution:'&copy; Kartverket'}).addTo(map);
+  const pts=[];const bySite={};for(const c of S.catches)if(c.species===sp)(bySite[c.site_id]=bySite[c.site_id]||[]).push(c);
+  for(const [id,L2] of Object.entries(bySite)){const s=getSite(id);if(!s||s.lat==null)continue;pts.push([s.lat,s.lon]);const caught=L2.filter(c=>c.kind==="fanget").reduce((n,c)=>n+(c.count||1),0);
+    L.circleMarker([s.lat,s.lon],{radius:6+Math.min(10,Math.sqrt(L2.length)*2.4),color:"#E3B341",weight:2.5,fillColor:"#E3B341",fillOpacity:.35}).addTo(map)
+     .bindPopup(`<b>${esc(s.name)}</b><br>${L2.length} ${L2.length===1?"registrering":"registreringer"}${caught?`, ${caught} fanget`:""}`)}
+  const local=()=>{if(pts.length>1)map.fitBounds(pts,{padding:[26,26],maxZoom:12});else if(pts.length)map.setView(pts[0],11);else map.setView([67.28,14.4],8)};
+  local();setTimeout(()=>{try{map.invalidateSize();local()}catch(e){}},60);
+  $("#ddChips").onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;$("#ddChips").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));if(b.dataset.v==="norge")map.setView([65.2,14],4);else local()};
+  gbifInfo(sp).then(g=>{if(!g||S.dexMini!==map)return;
+    L.tileLayer(`https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?srs=EPSG:3857&taxonKey=${g.key}&style=orangeHeat.point`,{opacity:.85,maxZoom:16,attribution:'Funn: <a href="https://www.gbif.org/species/'+g.key+'" target="_blank" rel="noopener">GBIF.org</a>'}).addTo(map);
+    const gs=$("#ddGbif");if(gs){const parts=[];if(g.bodo!=null)parts.push(`Rundt Bodø: ${g.bodo.toLocaleString("nb-NO")} registrerte funn`);if(g.no!=null)parts.push(`i hele Norge: ${g.no.toLocaleString("nb-NO")}`);
+      let tag="";if(g.bodo!=null){tag=g.bodo<25?' <i class="rar r1" style="margin:0">Sjelden her</i>':g.bodo<250?' <i class="rar r2" style="margin:0">Uvanlig her</i>':""}
+      gs.innerHTML=parts.length?esc(parts.join(", "))+"."+tag:""}});
+  return map}
 async function celebrateNew(before){
   if(!before)return;const d=dexData(),idx=dexIdx(d);
   const fresh=Object.keys(d.by).filter(sp=>!before.has(sp));if(!fresh.length)return;
   const sp=fresh[0],el=$("#newSp");if(!el)return;await loadSpImages(fresh).catch(()=>{});
-  el.innerHTML=`<div class="nst">Ny art i samlingen!</div><div class="nshero">${spPic(sp)}</div><h3>${esc(sp)}</h3><p>#${idx[sp]} · ${d.found} av ${d.total} arter funnet${fresh.length>1?` · +${fresh.length-1} til`:""}</p><button class="btn" id="newSpGo">Se samlingen</button> <button class="btn ghost" id="newSpX" style="color:#BFD3E4;background:none;border-color:rgba(159,195,224,.35)">Lukk</button>`;
+  el.innerHTML=`<div class="nst">Ny art i Artsdex!</div><div class="nshero">${spPic(sp)}</div><h3>${esc(sp)}</h3><p>#${idx[sp]} · ${d.found} av ${d.total} arter funnet${fresh.length>1?` · +${fresh.length-1} til`:""}</p><button class="btn" id="newSpGo">Åpne Artsdex</button> <button class="btn ghost" id="newSpX" style="color:#BFD3E4;background:none;border-color:rgba(159,195,224,.35)">Lukk</button>`;
   el.hidden=false;requestAnimationFrame(()=>el.classList.add("on"));
   const hide=()=>{el.classList.remove("on");setTimeout(()=>{el.hidden=true},260)};clearTimeout(el._t);el._t=setTimeout(hide,9000);
   $("#newSpX").onclick=hide;$("#newSpGo").onclick=()=>{hide();openDex(sp)};
@@ -2522,6 +2571,34 @@ $("#dexDlg").addEventListener("close",()=>{S.dexOpen=false;syncDexBtn()});
 $("#dexDlg").addEventListener("cancel",e=>{const det=$("#dexDet");if(det&&!det.hidden){e.preventDefault();det.hidden=true;det.innerHTML=""}});
 $("#dexDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();$("#imgBig").src=photoURL(b.dataset.img);$("#imgCap").textContent=b.dataset.cap||"";$("#imgDlg").showModal()});
 try{$(".top .ver").textContent=APP_VERSION.split(" ")[0]}catch(e){}
+
+
+/* ---------- user-resizable layout (splitter + height grips) ---------- */
+S.lay=Object.assign({pw:410,collapsed:false,mhd:null,shd:null,mh:null},lsGet("dk-layout")||{});
+const isNarrow=()=>{try{return window.matchMedia("(max-width:860px)").matches}catch(e){return false}};
+function applyLayout(){const lay=$(".layout"),L=S.lay;if(!lay)return;
+  lay.style.setProperty("--pw",Math.round(L.pw)+"px");document.body.classList.toggle("pcollapsed",!!L.collapsed&&!isNarrow());
+  if(L.mh)lay.style.setProperty("--mh",Math.round(L.mh)+"px");else lay.style.removeProperty("--mh");
+  const mc=$(".mapcol"),sd=$("#side");
+  mc.classList.toggle("hset",!!L.mhd);if(L.mhd)lay.style.setProperty("--mhd",Math.round(L.mhd)+"px");
+  sd.classList.toggle("hset",!!L.shd);if(L.shd)lay.style.setProperty("--shd",Math.round(L.shd)+"px")}
+function saveLayout(){lsSet("dk-layout",S.lay)}
+let _rzRaf=0;function liveResize(){if(_rzRaf)return;_rzRaf=requestAnimationFrame(()=>{_rzRaf=0;try{if(isLive())S.lmap.invalidateSize({pan:false})}catch(e){}})}
+function dragger(el,cursor,onMove,onReset){
+  el.addEventListener("pointerdown",e=>{if(e.button>0)return;e.preventDefault();el.setPointerCapture(e.pointerId);el.classList.add("drag");document.body.classList.add("resizing");document.body.style.cursor=cursor();
+    const mv=ev=>{onMove(ev);applyLayout();liveResize()},up=()=>{el.removeEventListener("pointermove",mv);el.removeEventListener("pointerup",up);el.removeEventListener("pointercancel",up);el.classList.remove("drag");document.body.classList.remove("resizing");document.body.style.cursor="";saveLayout();afterResize()};
+    el.addEventListener("pointermove",mv);el.addEventListener("pointerup",up);el.addEventListener("pointercancel",up)});
+  el.addEventListener("dblclick",()=>{onReset();applyLayout();saveLayout();afterResize()})}
+(function initLayout(){const lay=$(".layout");if(!lay)return;
+  const pad=()=>parseFloat(getComputedStyle(lay).paddingTop)||0;
+  dragger($("#splitter"),()=>isNarrow()?"row-resize":"col-resize",e=>{const r=lay.getBoundingClientRect(),L=S.lay;
+      if(isNarrow()){L.mh=Math.max(160,Math.min(window.innerHeight*.9,e.clientY-r.top+lay.scrollTop-pad()-7))}
+      else{const w=r.right-e.clientX-pad()-7,max=r.width-380;if(w<190){L.collapsed=true}else{L.collapsed=false;L.pw=Math.max(260,Math.min(max,w))}}},
+    ()=>{if(isNarrow())S.lay.mh=null;else{S.lay.pw=410;S.lay.collapsed=false}});
+  for(const [id,key,sel] of [["gripMap","mhd",".mapcol"],["gripSide","shd","#side"]]){const g=$("#"+id);if(!g)continue;
+    dragger(g,()=>"row-resize",e=>{const top=$(sel).getBoundingClientRect().top,max=lay.getBoundingClientRect().bottom-pad()-top;const h=Math.max(key==="mhd"?220:180,Math.min(max,e.clientY-top));S.lay[key]=h>=max-4?null:h},()=>{S.lay[key]=null})}
+  applyLayout();window.addEventListener("resize",()=>applyLayout());
+})();
 
 /* ---------- maximised map ---------- */
 S.max=false;S.maxFs=false;S.sheetList=false;
