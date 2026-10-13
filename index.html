@@ -325,7 +325,7 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 .windvis svg{flex:none}
 .windvis text{fill:var(--muted);font-size:10px;font-weight:600}
 .rsec{margin:18px 0 0;padding-top:12px;border-top:1px solid var(--line)}
-body{background-color:#071526;background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed}
+body{background:#071526 url(bakgrunn.jpg) center/cover no-repeat fixed}
 .top{background:rgba(7,21,38,.55);border-bottom:1px solid rgba(169,207,232,.14);color:#E3EDF4}
 .top .brand h1{color:#F1E6C8}.top .ver{color:#9fc3e0}.top .tab{color:#9fc3e0}.top .tab.on{background:#F1E6C8;color:#081a2e}
 .top #menuBtn{color:#BFD3E4}
@@ -339,7 +339,7 @@ body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-sha
 .dexbtn .dexcnt:empty{display:none}body.mapmax .maptools .dexbtn{display:inline-flex;align-items:center;gap:6px}
 .dexdlg{max-width:none;max-height:none;width:100vw;height:100dvh;height:100vh;margin:0;padding:0;border:0;border-radius:0;background:#081a2e;color:#E3EDF4;overflow:hidden}
 .dexdlg[open]{display:block}.dexdlg::backdrop{background:#081a2e}
-.dexwrap{height:100%;overflow-y:auto;background-color:#081a2e;background-repeat:no-repeat;background-size:cover;background-position:center;background-attachment:fixed;-webkit-overflow-scrolling:touch}
+.dexwrap{height:100%;overflow-y:auto;background:#081a2e url(bakgrunn.jpg) center/cover no-repeat fixed;-webkit-overflow-scrolling:touch}
 .dexin{max-width:1100px;margin:0 auto;padding:14px 16px 40px}
 .dextop{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:3;padding:10px 0 8px;margin:-14px 0 0;background:linear-gradient(#081a2e 75%,rgba(8,26,46,0))}
 .dextop h2{margin:0;font-size:30px;color:#F1E6C8;flex:1;letter-spacing:.5px}
@@ -382,7 +382,7 @@ body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-sha
 .dexcard .btn{background:#F1E6C8;color:#081a2e;border-color:#F1E6C8}
 .dexcard .dexclose{position:absolute;top:10px;right:10px}
 .dexlb .hb{color:#E3EDF4}.dexlb .ht{background:rgba(159,195,224,.15)}.dexlb .ht i{background:#F1E6C8}.dexlb .hv{color:#9fc3e0}
-.dexteaser{position:relative;display:block;width:100%;text-align:left;border:0;border-radius:14px;padding:12px 14px;margin:0 0 14px;color:#E3EDF4;cursor:pointer;background-color:#0b2440;background-size:900px auto;background-position:30% 40%;overflow:hidden;box-shadow:0 2px 8px rgba(8,26,46,.25)}
+.dexteaser{position:relative;display:block;width:100%;text-align:left;border:0;border-radius:14px;padding:12px 14px;margin:0 0 14px;color:#E3EDF4;cursor:pointer;background:linear-gradient(90deg,rgba(8,26,46,.8),rgba(8,26,46,.25)),url(bakgrunn.jpg) 14% 74%/760px auto no-repeat #0b2440;overflow:hidden;box-shadow:0 2px 8px rgba(8,26,46,.25)}
 .dexteaser .dtt{display:flex;align-items:baseline;gap:8px}.dexteaser .dtt b{font:700 22px/1.1 "Barlow Condensed",sans-serif;color:#F1E6C8}.dexteaser .dtt span{color:#9fc3e0;font-size:13.5px}
 .dexteaser .dexbar{height:7px;background:rgba(159,195,224,.18);margin:7px 0 6px}
 .dexteaser .drow{display:flex;gap:6px;align-items:center}
@@ -583,7 +583,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v22 (fiskebakgrunn og ekte artsbilder)";
+const APP_VERSION="v24 (malt havbakgrunn)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2269,7 +2269,7 @@ function highlightItems(){
 function renderDexTeaser(){const el=$("#dexTeaser");if(!el)return;syncDexBtn();if(!S.catches.length){el.innerHTML="";return}const d=dexData();
   const recent=Object.values(d.by).sort((a,b)=>catchSort(b.first,a.first)).slice(0,5);const pct=Math.round(d.found/Math.max(1,d.total)*100);
   el.innerHTML=`<button class="dexteaser" id="dexGo" aria-label="Åpne artssamlingen"><span class="dcta">Åpne ›</span><span class="dtt"><b>Artssamling</b><span>${d.found} av ${d.total} arter</span></span><span class="dexbar"><i style="width:${pct}%"></i></span><span class="drow">${recent.map(o=>`<span class="dround">${spPic(o.sp,{own:o.photo&&o.photo.photo_path})}</span>`).join("")}</span></button>`;
-  const g=$("#dexGo");g.style.backgroundImage=BGART.cssURL();g.onclick=()=>openDex();
+  const g=$("#dexGo");g.onclick=()=>openDex();
   if(recent.some(o=>!(o.sp in S.spImg))&&!S.spImgBusy)loadSpImages(Object.keys(d.by)).then(()=>{if(S.view==="list")renderDexTeaser()})}
 function renderHighlights(){
   renderDexTeaser();
@@ -2301,86 +2301,6 @@ function renderSiteHero(){
     ${rest.length?`<div class="herostrip">${rest.map(it=>`<button class="thumb" data-img="${esc(it.path)}" data-cap="${esc(cap(it))}" aria-label="Vis bilde"><img src="${esc(photoURL(it.path))}" alt="" loading="lazy"></button>`).join("")}${ph.length+(s.photoPath?1:0)>9?`<span class="small hmore">+${ph.length+(s.photoPath?1:0)-9}</span>`:""}</div>`:""}`;
 }
 
-
-/* ---------- flowing background art (generated SVG) ---------- */
-const BGART=(()=>{
-const r1=v=>Math.round(v*10)/10;
-function bez(P,t){const u=1-t;return [u*u*u*P[0][0]+3*u*u*t*P[1][0]+3*u*t*t*P[2][0]+t*t*t*P[3][0],u*u*u*P[0][1]+3*u*u*t*P[1][1]+3*u*t*t*P[2][1]+t*t*t*P[3][1]]}
-function tan(P,t){const u=1-t;const x=3*u*u*(P[1][0]-P[0][0])+6*u*t*(P[2][0]-P[1][0])+3*t*t*(P[3][0]-P[2][0]),y=3*u*u*(P[1][1]-P[0][1])+6*u*t*(P[2][1]-P[1][1])+3*t*t*(P[3][1]-P[2][1]);const l=Math.hypot(x,y)||1;return[x/l,y/l]}
-function prof(pts,t){for(let i=1;i<pts.length;i++)if(t<=pts[i][0]){const [a,wa]=pts[i-1],[b,wb]=pts[i],k=(t-a)/(b-a),s=k*k*(3-2*k);return wa+(wb-wa)*s}return pts[pts.length-1][1]}
-const poly=(pts,close=true)=>{let d=`M${r1(pts[0][0])},${r1(pts[0][1])}`;for(let i=1;i<pts.length-1;i++){const m=[(pts[i][0]+pts[i+1][0])/2,(pts[i][1]+pts[i+1][1])/2];d+=`Q${r1(pts[i][0])},${r1(pts[i][1])} ${r1(m[0])},${r1(m[1])}`}const l=pts[pts.length-1];d+=`L${r1(l[0])},${r1(l[1])}`;return d+(close?"Z":"")};
-// ribbon fin: from base point along a flowing curve, width profile, returns filled shape + rays
-function ribbon(P,W,wp,o={}){const N=28,up=[],lo=[],mid=[];for(let i=0;i<=N;i++){const t=i/N,p=bez(P,t),n=tan(P,t),w=prof(wp,t)*W*(1+(o.wave||0)*Math.sin(t*9+(o.ph||0)));mid.push(p);up.push([p[0]-n[1]*w,p[1]+n[0]*w]);lo.push([p[0]+n[1]*w*(o.asym??1),p[1]-n[0]*w*(o.asym??1)])}
-  let s=`<path d="${poly([...up,...lo.reverse()])}" class="bf"/>`;const rays=o.rays??5;
-  for(let k=1;k<rays;k++){const f=k/rays*2-1,pts=[];for(let i=0;i<=N;i+=2){const t=i/N,p=bez(P,t),n=tan(P,t),w=prof(wp,t)*W*f*.92;pts.push([p[0]-n[1]*w,p[1]+n[0]*w])}s+=`<path d="${poly(pts,false)}" class="br"/>`}
-  return s}
-function fish(sp){const {P,W}=sp,N=72,up=[],lo=[];let Ls=0;for(let i=1;i<=20;i++){const a=bez(P,(i-1)/20),b=bez(P,i/20);Ls+=Math.hypot(b[0]-a[0],b[1]-a[1])}
-  const raw=sp.wp,tc=Math.min(.3,raw[0][1]*W/Ls*.9),wc=prof(raw,tc),WF=t=>t<tc?wc*Math.sqrt(Math.max(0,1-(1-t/tc)**2)):prof(raw,t);sp.wpf=WF;
-  for(let i=0;i<=N;i++){const t=i/N,p=bez(P,t),n=tan(P,t),w=WF(t)*W;up.push([p[0]-n[1]*w,p[1]+n[0]*w]);lo.push([p[0]+n[1]*w,p[1]-n[0]*w])}
-  const at=t=>{const p=bez(P,t),n=tan(P,t),w=WF(t)*W;return{p,n,w,up:[p[0]-n[1]*w,p[1]+n[0]*w],lo:[p[0]+n[1]*w,p[1]-n[0]*w]}};
-  let s="";
-  // fins first (behind body)
-  for(const f of sp.fins||[]){const a=at(f.t),side=f.side==="up"?a.up:a.lo,sg=f.side==="up"?1:-1,n=a.n,nx=-n[1]*sg,ny=n[0]*sg,L=f.len*W;
-    const c=f.curl||0;const P2=[side,[side[0]+nx*L*.35-n[0]*L*.15,side[1]+ny*L*.35-n[1]*L*.15],[side[0]+nx*L*.6+n[0]*L*(.6+c),side[1]+ny*L*.6+n[1]*L*(.6+c)],[side[0]+nx*L*(.4+c*.6)+n[0]*L*(1.2+c),side[1]+ny*L*(.4+c*.6)+n[1]*L*(1.2+c)]];
-    s+=ribbon(P2,W*f.w,[[0,1],[.4,.8],[1,0]],{rays:f.rays||4,wave:.12,ph:f.t*10})}
-  if(sp.fringe){for(const sg of [1,-1]){const a0=sp.fringe[0],a1=sp.fringe[1],M=40,outer=[],inner=[];for(let i=0;i<=M;i++){const t=a0+(a1-a0)*i/M,a=at(t),e=sg>0?a.up:a.lo,k=Math.sin(Math.PI*i/M),ww=W*sp.fringe[2]*(.35+k*.65)*(1+.15*Math.sin(i*1.3));inner.push(e);outer.push([e[0]-a.n[1]*ww*sg-a.n[0]*ww*.5,e[1]+a.n[0]*ww*sg-a.n[1]*ww*.5])}
-    s+=`<path d="${poly([...inner,...outer.slice().reverse()])}" class="bf"/>`;for(let i=1;i<M;i+=2)s+=`<path d="M${r1(inner[i][0])},${r1(inner[i][1])}L${r1(outer[i+1][0])},${r1(outer[i+1][1])}" class="br"/>`}}
-  // tail: several flowing lobes
-  const e=at(1),n=e.n;for(const tl of sp.tail){const L=tl.len*W,ang=tl.ang,ca=Math.cos(ang),sa=Math.sin(ang),dx=n[0]*ca-n[1]*sa,dy=n[0]*sa+n[1]*ca,c=tl.curl||0;
-    const P3=[e.p,[e.p[0]+n[0]*L*.3,e.p[1]+n[1]*L*.3],[e.p[0]+dx*L*.7-dy*L*c,e.p[1]+dy*L*.7+dx*L*c],[e.p[0]+dx*L-dy*L*c*1.6,e.p[1]+dy*L+dx*L*c*1.6]];
-    s+=ribbon(P3,W*tl.w,[[0,.35],[.35,1],[.75,.8],[1,0]],{rays:tl.rays||6,wave:.18,ph:ang*7})}
-  s+=`<path d="${poly([...up,...lo.slice().reverse()])}" class="bb"/>`;
-  // scales
-  if(sp.scales!==false)for(let t=.24;t<.86;t+=.06)for(let k=-2;k<=2;k++){const a=at(t),w=a.w*.75*(k/2.4),p=[a.p[0]-a.n[1]*w,a.p[1]+a.n[0]*w],rr=W*.13*Math.max(.35,WF(t)),ex=-a.n[0]*rr,ey=-a.n[1]*rr;
-    if(Math.abs(k)===2&&t>.7)continue;s+=`<path d="M${r1(p[0]-a.n[1]*rr)},${r1(p[1]+a.n[0]*rr)}Q${r1(p[0]+ex*1.6)},${r1(p[1]+ey*1.6)} ${r1(p[0]+a.n[1]*rr)},${r1(p[1]-a.n[0]*rr)}" class="bs"/>`}
-  // gill + eye + extras
-  const g=at(sp.gill||.2);s+=`<path d="${poly([g.up,[g.p[0]-g.n[0]*W*.25,g.p[1]-g.n[1]*W*.25],g.lo],false)}" class="bl"/>`;
-  {const m=at(.03),q=at(.07);s+=`<path d="M${r1(m.p[0])},${r1(m.p[1])}Q${r1(q.p[0]+q.n[1]*q.w*.1)},${r1(q.p[1]-q.n[0]*q.w*.1)} ${r1(q.p[0]+q.n[1]*q.w*.45)},${r1(q.p[1]-q.n[0]*q.w*.45)}" class="bl"/>`}
-  const h=at(sp.eyeT||.08),eo=sp.eyeOff??.35,ep=[h.p[0]-h.n[1]*h.w*eo,h.p[1]+h.n[0]*h.w*eo];s+=`<circle cx="${r1(ep[0])}" cy="${r1(ep[1])}" r="${r1(W*(sp.eyeR||.11))}" class="be"/><circle cx="${r1(ep[0])}" cy="${r1(ep[1])}" r="${r1(W*(sp.eyeR||.11)*.45)}" class="bp"/>`;
-  if(sp.lat){const pts=[];for(let t=.18;t<=.97;t+=.04){const a=at(t),w=a.w*sp.lat;pts.push([a.p[0]-a.n[1]*w,a.p[1]+a.n[0]*w])}s+=`<path d="${poly(pts,false)}" class="bl" stroke-dasharray="3 3"/>`}
-  if(sp.barbel){const a=at(.03),b=a.lo;s+=`<path d="M${r1(b[0])},${r1(b[1])}q${r1(-a.n[1]*W*.3-a.n[0]*W*.1)},${r1(a.n[0]*W*.3-a.n[1]*W*.1)} ${r1(-a.n[1]*W*.25+a.n[0]*W*.2)},${r1(a.n[0]*W*.5+a.n[1]*W*.2)}" class="bl"/>`}
-  if(sp.lure){const a=at(.06),b=a.up,nx=a.n[1],ny=-a.n[0];s+=`<path d="M${r1(b[0])},${r1(b[1])}c${r1(nx*W*.9)},${r1(ny*W*.9)} ${r1(nx*W*.6-a.n[0]*W*1.1)},${r1(ny*W*.6-a.n[1]*W*1.1)} ${r1(-a.n[0]*W*1.2+nx*W*.3)},${r1(-a.n[1]*W*1.2+ny*W*.3)}" class="bl"/><circle cx="${r1(b[0]-a.n[0]*W*1.2+nx*W*.3)}" cy="${r1(b[1]-a.n[1]*W*1.2+ny*W*.3)}" r="${r1(W*.09)}" class="bp"/>`;
-    // teeth along jaw
-    for(let t=.02;t<.2;t+=.025){const q=at(t),m=[q.p[0]+q.n[1]*q.w*.35,q.p[1]-q.n[0]*q.w*.35];s+=`<path d="M${r1(m[0])},${r1(m[1])}l${r1(q.n[1]*W*.12)},${r1(-q.n[0]*W*.12)}" class="bl"/>`}}
-  if(sp.dots)for(let t=.25;t<.8;t+=.07)for(const k of [-.45,0,.45]){const a=at(t+(k?0.03:0)),w=a.w*k;s+=`<circle cx="${r1(a.p[0]-a.n[1]*w)}" cy="${r1(a.p[1]+a.n[0]*w)}" r="${r1(W*.045)}" class="bp" opacity=".5"/>`}
-  if(sp.stripes)for(let t=.2;t<.85;t+=.055){const a=at(t),b=at(t+.03),u1=a.up,m=[b.p[0]-b.n[1]*b.w*.2,b.p[1]+b.n[0]*b.w*.2];s+=`<path d="M${r1(u1[0])},${r1(u1[1])}Q${r1((u1[0]+m[0])/2+a.n[0]*W*.12)},${r1((u1[1]+m[1])/2+a.n[1]*W*.12)} ${r1(m[0])},${r1(m[1])}" class="bl"/>`}
-  return `<g>${s}</g>`}
-function kelp(x,y,h,ph){const pts=[];for(let i=0;i<=20;i++){const t=i/20;pts.push([x+Math.sin(t*5+ph)*14*t,y-h*t])}return `<path d="${poly(pts,false)}" class="bk"/>`+[.3,.5,.7,.85].map(t=>{const i=Math.round(t*20),p=pts[i],sd=i%2?1:-1;return `<path d="M${r1(p[0])},${r1(p[1])}q${sd*16},${-8} ${sd*24},${-28}" class="bk"/>`}).join("")}
-function svg(){
-  const F=[
-   // breiflabb – big, diagonal, gyotaku-ish
-   {P:[[210,230],[320,300],[380,440],[500,560]],W:95,wp:[[0,1.3],[.1,1.45],[.22,1.3],[.42,.62],[.75,.3],[1,.22]],eyeT:.12,eyeOff:.42,eyeR:.07,gill:.36,fringe:[.45,.92,.35],lure:1,scales:false,dots:1,
-    fins:[{t:.3,side:"up",len:.9,w:.6,curl:.2,rays:7},{t:.3,side:"lo",len:.9,w:.6,curl:-.2,rays:7}],tail:[{len:2.6,ang:.35,w:.55,curl:.18},{len:2.2,ang:-.25,w:.45,curl:-.12}]},
-   // kveite – broad, flat, flowing fringe
-   {P:[[990,190],[880,140],[760,160],[650,250]],W:78,wp:[[0,.5],[.15,.95],[.45,1],[.8,.5],[1,.22]],eyeT:.1,eyeOff:.25,eyeR:.1,gill:.2,lat:.05,
-    fringe:[.14,.9,.55],fins:[{t:.3,side:"lo",len:1.1,w:.25,curl:-.5}],
-    tail:[{len:2.4,ang:.4,w:.5,curl:.25},{len:2.4,ang:-.4,w:.5,curl:-.25}]},
-   // torsk
-   {P:[[1080,560],[980,520],[880,540],[780,610]],W:52,wp:[[0,.55],[.15,.92],[.32,1],[.7,.55],[.9,.22],[1,.18]],eyeT:.1,lat:.15,barbel:1,dots:1,
-    fins:[{t:.3,side:"up",len:1.4,w:.32,curl:.6},{t:.5,side:"up",len:1.5,w:.3,curl:.7},{t:.7,side:"up",len:1.4,w:.25,curl:.8},{t:.5,side:"lo",len:1.3,w:.28,curl:-.6},{t:.2,side:"lo",len:1.5,w:.25,curl:-.4}],
-    tail:[{len:3.6,ang:.3,w:.5,curl:.3},{len:3.2,ang:-.35,w:.45,curl:-.2},{len:2.6,ang:0,w:.3,curl:.1}]},
-   // sei – slender, curving up
-   {P:[[170,760],[280,720],[390,700],[480,640]],W:38,wp:[[0,.5],[.15,.9],[.35,1],[.75,.45],[1,.18]],eyeT:.1,lat:.1,
-    fins:[{t:.3,side:"up",len:1.5,w:.3,curl:.5},{t:.55,side:"up",len:1.6,w:.28,curl:.6},{t:.5,side:"lo",len:1.4,w:.26,curl:-.6}],tail:[{len:3.8,ang:.35,w:.5,curl:-.3},{len:3.4,ang:-.3,w:.45,curl:-.45}]},
-   // makrell pair
-   {P:[[620,820],[700,780],[800,780],[880,740]],W:24,wp:[[0,.45],[.15,.85],[.4,1],[.8,.4],[1,.16]],eyeT:.08,stripes:1,scales:false,
-    fins:[{t:.35,side:"up",len:1.6,w:.3,curl:.3}],tail:[{len:3.6,ang:.45,w:.45,curl:.2},{len:3.6,ang:-.45,w:.45,curl:-.2}]},
-   {P:[[700,880],[780,860],[870,860],[950,830]],W:20,wp:[[0,.45],[.15,.85],[.4,1],[.8,.4],[1,.16]],eyeT:.08,stripes:1,scales:false,
-    fins:[{t:.35,side:"up",len:1.6,w:.3,curl:.3}],tail:[{len:3.6,ang:.45,w:.45,curl:.2},{len:3.6,ang:-.45,w:.45,curl:-.2}]},
-   // steinbit – long, curving
-   {P:[[1330,560],[1200,600],[1340,760],[1200,900]],W:30,wp:[[0,.85],[.1,1],[.6,.8],[1,.3]],eyeT:.07,eyeOff:.3,scales:false,stripes:1,fringe:[.15,.95,.6],
-    fins:[{t:.2,side:"lo",len:1.5,w:.35,curl:-.6}],tail:[{len:3.4,ang:.25,w:.55,curl:.5},{len:2.6,ang:-.3,w:.4,curl:.2}]},
-   // small sei top right
-   {P:[[1350,120],[1280,170],[1200,180],[1120,240]],W:24,wp:[[0,.5],[.15,.9],[.35,1],[.75,.45],[1,.18]],eyeT:.1,lat:.1,
-    fins:[{t:.4,side:"up",len:1.6,w:.3,curl:.5}],tail:[{len:4,ang:.4,w:.5,curl:.3},{len:3.6,ang:-.35,w:.45,curl:.1}]}
-  ];
-  const kel=[kelp(60,1000,420,0),kelp(110,1000,300,1.4),kelp(560,1000,260,2),kelp(1010,1000,340,.7),kelp(1060,1000,220,2.6),kelp(1400,1000,380,1.1),kelp(1440,1000,250,3)].join("");
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="bgg" cx="40%" cy="35%" r="80%"><stop offset="0" stop-color="#0f2b47"/><stop offset="1" stop-color="#071526"/></radialGradient></defs>
-<style>.bb{fill:#a9cfe8;fill-opacity:.075;stroke:#a9cfe8;stroke-opacity:.42;stroke-width:1.4}.bf{fill:#a9cfe8;fill-opacity:.045;stroke:#a9cfe8;stroke-opacity:.22;stroke-width:1}.br{fill:none;stroke:#a9cfe8;stroke-opacity:.13;stroke-width:.8}.bs{fill:none;stroke:#a9cfe8;stroke-opacity:.16;stroke-width:.8}.bl{fill:none;stroke:#a9cfe8;stroke-opacity:.3;stroke-width:1.1;stroke-linecap:round}.be{fill:none;stroke:#a9cfe8;stroke-opacity:.4;stroke-width:1.1}.bp{fill:#a9cfe8;fill-opacity:.45}.bk{fill:none;stroke:#7fb0cf;stroke-opacity:.12;stroke-width:1.2;stroke-linecap:round}</style>
-<rect width="1500" height="1000" fill="url(#bgg)"/>${kel}${F.map(fish).join("")}</svg>`}
-let url=null;function cssURL(){return url||(url=`url("data:image/svg+xml,${encodeURIComponent(svg())}")`)}
-return {svg,cssURL};
-})();
 
 /* ---------- reference photos of species (Wikipedia / Wikimedia Commons) ---------- */
 const SCI={"Torsk":"Gadus morhua","Sei":"Pollachius virens","Lyr":"Pollachius pollachius","Hyse":"Melanogrammus aeglefinus","Hvitting":"Merlangius merlangus","Kolmule":"Micromesistius poutassou",
@@ -2447,7 +2367,7 @@ function openDex(sp){const dlg=$("#dexDlg");if(!dlg)return;S.dexOpen=true;render
 function closeDex(){const dlg=$("#dexDlg");S.dexOpen=false;if(dlg&&dlg.open)dlg.close();syncDexBtn()}
 function syncDexBtn(){const n=S.catches.length?dexData().found:0;const c=$("#dexHdrCnt");if(c)c.textContent=n?String(n):"";for(const id of ["dexHdr","dexBar"]){const b=$("#"+id);if(b)b.setAttribute("aria-pressed",!!S.dexOpen)}}
 function renderDexDlg(){
-  const wrap=$("#dexWrap");if(!wrap)return;if(!wrap.style.backgroundImage)wrap.style.backgroundImage=BGART.cssURL();
+  const wrap=$("#dexWrap");if(!wrap)return;
   const d=dexData(),idx=dexIdx(d);
   {const all=d.groups.flatMap(g=>g[1]).map(o=>o.sp);if(all.some(sp=>!(sp in S.spImg))&&!S.spImgBusy)loadSpImages(all).then(()=>{if(S.dexOpen){const st=$("#dexWrap").scrollTop;renderDexDlg();$("#dexWrap").scrollTop=st}})}
   const firsts={};for(const o of Object.values(d.by)){const w=catcherName(o.first)||"Ukjent";firsts[w]=(firsts[w]||0)+1}
@@ -2637,7 +2557,6 @@ for(const fn of ["renderPanel","renderListView","renderSiteView","renderAreaView
   window[fn]=function(...a){const r=orig.apply(this,a);updateSheet();syncHash();syncRecBtn();return r}}
 
 /* ---------- boot ---------- */
-try{document.body.style.backgroundImage=BGART.cssURL()}catch(e){}
 (function boot(){
   if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
   if(!CFG.SUPABASE_URL||CFG.SUPABASE_URL.includes("YOUR-PROJECT")||!CFG.SUPABASE_KEY||CFG.SUPABASE_KEY.includes("PASTE")){authScreen("config");return}
