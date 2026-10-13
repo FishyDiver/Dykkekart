@@ -339,6 +339,11 @@ body:not(.mapmax) .layout{padding:14px;gap:14px;grid-template-columns:minmax(0,1
 @media (max-width:860px){body:not(.mapmax) .splitter{display:flex;align-items:center;justify-content:center;cursor:row-resize}}
 .splitter span{display:block;width:5px;height:46px;border-radius:3px;background:rgba(241,230,200,.35);transition:background .15s}
 .splitter:hover span,.splitter.drag span{background:rgba(241,230,200,.85)}
+.heatglow span{display:block;border-radius:50%;background:radial-gradient(circle,rgba(255,70,30,.85) 0%,rgba(255,140,40,.55) 30%,rgba(255,200,60,.22) 55%,rgba(255,220,80,0) 72%);pointer-events:none}
+.heatbar{position:absolute;left:50%;top:56px;transform:translateX(-50%);z-index:1001;display:flex;align-items:center;gap:10px;background:rgba(8,26,46,.88);color:#F1E6C8;border:1px solid rgba(241,230,200,.3);border-radius:999px;padding:5px 6px 5px 12px;font-size:13.5px;box-shadow:0 4px 14px rgba(0,0,0,.35);white-space:nowrap;max-width:calc(100% - 120px)}
+.heatbar[hidden]{display:none}.heatbar .hbt span{color:#9fc3e0}.heatbar .hdot{display:inline-block;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle,#ff4a1e,#ffb43c 60%,transparent 70%);margin-right:4px}
+.heatbar .hbg{display:flex;align-items:center;gap:5px;color:#BFD3E4;cursor:pointer}.heatbar button{border:0;background:rgba(241,230,200,.15);color:#F1E6C8;border-radius:50%;width:24px;height:24px;cursor:pointer}
+@media (max-width:480px){.heatbar{top:52px;font-size:12.5px;gap:6px}.heatbar .hbt span{display:none}}
 .edgeh{display:none;position:absolute;top:18%;bottom:18%;width:14px;z-index:1250;cursor:col-resize;touch-action:none}
 .edgeh::after{content:"";position:absolute;top:50%;transform:translateY(-50%);width:6px;height:52px;border-radius:3px;background:rgba(15,42,63,.4);box-shadow:0 0 0 1.5px rgba(255,255,255,.75)}
 #edgeMap{right:0}#edgeMap::after{right:3px}#edgeSide{left:0}#edgeSide::after{left:3px}
@@ -423,6 +428,9 @@ body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-sha
 .dexminimap{user-select:none;-webkit-user-select:none;height:320px;border-radius:12px;overflow:hidden;border:1px solid rgba(241,230,200,.25);background:#0a2440}
 .dexminimap .leaflet-control-attribution{font-size:9.5px}.dexminimap path.ddring{filter:drop-shadow(0 0 2px rgba(0,0,0,.9))}
 .ddstats{font-size:14px!important;margin:7px 0 0!important}
+.dseason{margin:14px 0 4px}.season{display:block}.season text{fill:#9fc3e0;font-size:10px}.lg-bar{width:14px;height:10px;border-radius:2px;display:inline-block}
+.drules{margin:14px 0 4px;background:rgba(8,26,46,.5);border:1px solid rgba(241,230,200,.18);border-radius:12px;padding:10px 12px}.drules b{color:#F1E6C8;font-size:16px}
+.drules ul{margin:6px 0 4px;padding-left:18px;font-size:14px;color:#D5E3EE}.drules li{margin:2px 0}.drules p{margin:4px 0!important;font-size:14px}.drules a{color:#8fd3ec}
 .ddleg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:#BFD3E4;margin:6px 0 0}.ddleg span{display:inline-flex;align-items:center;gap:6px}
 .lg-ring{width:12px;height:12px;border-radius:50%;border:2.5px solid #E3B341;background:rgba(227,179,65,.35);display:inline-block}
 .lg-hex{width:34px;height:10px;border-radius:3px;background:linear-gradient(90deg,#5b2a86,#b5367a,#f0a33a,#f6e65a);display:inline-block}
@@ -474,6 +482,7 @@ body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-sha
 .lacts .x{float:none}
 .crow{grid-template-columns:repeat(12,1fr)!important}
 .crow .cSp{grid-column:span 5}.crow .cKind{grid-column:span 4}.crow .cCntW{grid-column:span 3}
+.crow .cwarn{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:2px 10px;font-size:13px;color:#B3261E;background:rgba(179,38,30,.08);border-radius:6px;padding:4px 8px}.crow .cwarn[hidden]{display:none}.crow .cwarn a{color:inherit;font-weight:600}
 .crow .cSizeW,.crow .cKgW{grid-column:span 3}.crow .cPh{grid-column:span 4}.crow .cRm{grid-column:span 2}
 .unit{position:relative;display:block;margin:0}
 .unit input{padding-right:28px!important;padding-left:8px!important}
@@ -565,6 +574,7 @@ body.mapmax .recbar{display:inline-flex}
   <section class="mapcol">
     <div id="lmap"></div>
     <div id="zoomNote" class="zoomnote" hidden>Zoom inn for å se parkering</div>
+    <div id="heatBar" class="heatbar" hidden></div>
     <div id="gWrap" class="gwrap"><input id="gSearch" type="search" placeholder="Søk sted eller dykkested" aria-label="Søk etter sted eller dykkested" autocomplete="off"><div id="gResults" class="gres" hidden></div></div>
     <button id="maxBtn" type="button" aria-label="Maksimer kartet" title="Maksimer kartet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path id="maxIco" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/></svg></button>
     <div id="wrap" class="wrap" hidden>
@@ -640,7 +650,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v33 (dra i kantene)";
+const APP_VERSION="v34 (regler, sesong, månedens fangst, varmekart)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -785,6 +795,7 @@ function initLeaflet(){
   const kv=l=>retryTiles(L.tileLayer(`https://cache.kartverket.no/v1/wmts/1.0.0/${l}/default/webmercator/{z}/{y}/{x}.png`,{maxZoom:18,attribution:'&copy; <a href="https://www.kartverket.no/">Kartverket</a>'}));
   const sea=kv("sjokartraster"),topo=kv("topo"),grey=kv("topograatone");
   S.lmap=L.map(lmapEl,{zoomControl:true,renderer:L.svg({padding:.5})}).setView([67.28,14.40],10);S.lmap.addLayer(S.lmap.options.renderer);
+  S.lmap.createPane("heatPane").style.zIndex=390;S.heatLayer=L.layerGroup().addTo(S.lmap);
   sea.addTo(S.lmap);
   L.control.layers({"Sjøkart":sea,"Topografisk":topo,"Gråtone":grey},null,{position:"topright"}).addTo(S.lmap);
   L.control.scale({imperial:false}).addTo(S.lmap);
@@ -794,7 +805,7 @@ function initLeaflet(){
   S.lmap.on("mouseout",()=>{$("#coord").textContent=""});
 }
 function renderLive(){
-  if(!S.lmap)return;S.lLayer.clearLayers();S.sdLayer.clearLayers();S.fLayer.clearLayers();S.siteMarkers={};const MS=[];
+  if(!S.lmap)return;try{renderHeat()}catch(e){}S.lLayer.clearLayers();S.sdLayer.clearLayers();S.fLayer.clearLayers();S.siteMarkers={};const MS=[];
   for(const {s} of filtered()){
     const icon=L.divIcon({className:"lp"+(siteHasPin(s)?" round":"")+(s._priv?" priv":"")+(S.sel===s.id?" sel":""),html:siteMarkerHTML(s)+condDot(s)+visBadge(s)+`<span class="lbl">${esc(s.name)}</span>`,...siteAnchor(s)});
     const m=L.marker([s.lat,s.lon],{icon,title:s.name,keyboard:true,siteId:s.id}).on("click",()=>{if(S.mode==="view"&&!S.drawer&&!S.editingArea)openSite(s.id)});S.siteMarkers[s.id]=m;MS.push(m)}
@@ -1793,7 +1804,7 @@ function spSiteSet(){return new Set(S.catches.filter(c=>c.species===S.sp).map(c=
 function catchEditorHTML(){return `<div class="catchEd"><label style="margin-top:12px">Fangst og arter sett</label><div id="cRows"></div><button type="button" class="btn ghost" id="cAdd" style="padding:3px 8px;margin-top:4px">+ Legg til art</button>
   <datalist id="spList">${[...new Set([...S.catches.map(c=>c.species),...SPECIES])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist>
   <datalist id="whoList">${[...new Set([...(S.members||[]).map(m=>m.name).filter(n=>n&&n!==S.me.name),...S.catches.map(c=>c.caught_by).filter(Boolean),...(S.buddySel||[])])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>`}
-function wireCatchEditor(){const b=$("#cAdd");if(b)b.onclick=addCatchRow}
+function wireCatchEditor(){const b=$("#cAdd");if(b)b.onclick=addCatchRow;const dt=$("#lDate");if(dt)dt.addEventListener("change",()=>document.querySelectorAll("#cRows .crow").forEach(checkCatchRow))}
 /* ---------- dive buddies ---------- */
 S.buddySel=[];
 function joinNames(a){a=a.filter(Boolean);return a.length<2?(a[0]||""):a.slice(0,-1).join(", ")+" og "+a[a.length-1]}
@@ -2022,10 +2033,12 @@ function addCatchRow(c){c=c&&c.species!==undefined?c:null;const d=document.creat
   d.innerHTML=`<input type="text" list="spList" class="cSp" placeholder="Art" aria-label="Art"><select class="cKind" aria-label="Fanget eller sett"><option value="sett">Sett</option><option value="fanget">Fanget</option></select><label class="unit cCntW"><input type="number" class="cCnt" min="1" value="1" aria-label="Antall" title="Antall"><span>stk</span></label>
     <label class="unit cSizeW"><input type="number" class="cSize" min="0" step="1" aria-label="Største lengde i cm" title="Største lengde, cm"><span>cm</span></label><label class="unit cKgW"><input type="number" class="cKg" min="0" step="0.01" aria-label="Vekt i kg" title="Vekt, kg"><span>kg</span></label>
     <label class="btn ghost cPh" title="Legg ved bilde">${CAMSVG}<span>Bilde</span><input type="file" accept="image/*" hidden></label><button type="button" class="btn ghost cRm" aria-label="Fjern">×</button>
-    <label class="unit pre cWhoW"><span>Av</span><input type="text" class="cWho" list="whoList" placeholder="meg, eller velg/skriv navn" aria-label="Hvem fikk eller så den" autocomplete="off"></label>`;
+    <label class="unit pre cWhoW"><span>Av</span><input type="text" class="cWho" list="whoList" placeholder="meg, eller velg/skriv navn" aria-label="Hvem fikk eller så den" autocomplete="off"></label><div class="cwarn" hidden></div>`;
   if(c){d.querySelector(".cSp").value=c.species||"";d.querySelector(".cKind").value=c.kind||"sett";d.querySelector(".cCnt").value=c.count||1;d.querySelector(".cSize").value=c.size_cm??"";d.querySelector(".cKg").value=c.weight_kg??"";d.querySelector(".cWho").value=c.caught_by||"";
     if(c.photo_path){const lb=d.querySelector(".cPh"),fi0=lb.querySelector("input");lb.innerHTML=`<img src="${esc(photoURL(c.photo_path))}" alt="" class="cprev"><span>Bytt</span>`;lb.appendChild(fi0)}}
   d.querySelector(".cRm").onclick=()=>d.remove();
+  for(const s of [".cSp",".cKind",".cSize"]){const el=d.querySelector(s);el.addEventListener("input",()=>checkCatchRow(d));el.addEventListener("change",()=>checkCatchRow(d))}
+  setTimeout(()=>checkCatchRow(d),0);
   const fi=d.querySelector("input[type=file]");fi.onchange=()=>{const f=fi.files[0];const sp=d.querySelector(".cPh span");if(!f){sp.textContent="Bilde";return}
     try{const u=URL.createObjectURL(f);d.querySelector(".cPh").innerHTML=`<img src="${u}" alt="" class="cprev"><span>Bytt</span>`;d.querySelector(".cPh").appendChild(fi)}catch(e){sp.textContent="1 bilde"}};
   $("#cRows").appendChild(d);if(!c)d.querySelector(".cSp").focus()}
@@ -2067,12 +2080,12 @@ function recRow(c,i,medal){const s=getSite(c.site_id);
     <span class="rb"><b>${medal?"🥇 ":""}${esc(c.species)}</b> <span class="rm">${esc(measureTxt(c)||"–")}</span><br><span class="small">${s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button> · `:""}${esc(catcherName(c))}${c.date?" · "+esc(fdate(c.date)):""}</span></span></div>`}
 function SPICON(sp){const k=sp.toLowerCase();return /skjell|musling/.test(k)?(/blå|o-|hjerte/.test(k)?"musling":"skjell"):/krabbe|hummer|kreps/.test(k)?"dyr":/kråkebolle/.test(k)?"kraakebolle":/sel|oter/.test(k)?"dyr":"fisk"}
 S.recTab="rek";
-function recHead(){return `<button class="btn ghost back" id="back">Alle steder</button><h2>${S.recTab==="aar"?"Dykkeåret":"Rekorder og statistikk"}</h2>
-  <div class="rtabs" id="recTabs" role="tablist">${[["rek","Rekorder"],["aar","Dykkeåret"]].map(([k,l])=>`<button role="tab" data-tab="${k}" class="${S.recTab===k?"on":""}" aria-selected="${S.recTab===k}">${l}</button>`).join("")}</div>`}
+function recHead(){return `<button class="btn ghost back" id="back">Alle steder</button><h2>${S.recTab==="aar"?"Dykkeåret":S.recTab==="mnd"?"Månedens fangst":"Rekorder og statistikk"}</h2>
+  <div class="rtabs" id="recTabs" role="tablist">${[["rek","Rekorder"],["mnd","Måneden"],["aar","Dykkeåret"]].map(([k,l])=>`<button role="tab" data-tab="${k}" class="${S.recTab===k?"on":""}" aria-selected="${S.recTab===k}">${l}</button>`).join("")}</div>`}
 function wireRecHead(){$("#back").onclick=()=>{S.view="list";renderPanel()};
   $("#recTabs").onclick=e=>{const b=e.target.closest("[data-tab]");if(!b||b.dataset.tab===S.recTab)return;S.recTab=b.dataset.tab;panel.scrollTop=0;renderRecords()}}
 function renderRecords(){
-  if(S.recTab==="arter")S.recTab="rek";if(S.recTab==="aar")return renderYear();
+  if(S.recTab==="arter")S.recTab="rek";if(S.recTab==="aar")return renderYear();if(S.recTab==="mnd")return renderMonth();
   const years=[...new Set(S.catches.map(c=>(c.date||"").slice(0,4)).filter(Boolean))].sort().reverse();
   const cy=String(new Date().getFullYear());if(S.recYear==null)S.recYear=years.includes(cy)?cy:"alle";
   const inYear=c=>S.recYear==="alle"||(c.date||"").startsWith(S.recYear);
@@ -2413,6 +2426,56 @@ async function photoCredit(file){
   return S[k]}
 function spPic(sp,{miss=false,own=null,cls=""}={}){const v=spImg(sp),src=v?v.src:own?photoURL(own):null;
   return src?`<img class="sppic ${cls}${miss?" ghost":""}" src="${esc(src)}" alt="${esc(sp)}" loading="lazy" referrerpolicy="no-referrer">`:`<span class="spnone ${cls}${miss?" ghost":""}">${iconSVG(SPICON(sp),40,"currentColor",1.4)}</span>`}
+
+/* ---------- fishing rules for recreational fishing / spearfishing in Nordland (north of 62°N) ----------
+   Checked 13 Oct 2026 against Fiskeridirektoratet (minstemål page, modified 2026-09-15), dykking.no (kveite 2025) and SNL (undervannsjakt).
+   Always shown with a link to the official sources; the app only warns, it never blocks. */
+const RULES_CHECKED="13. oktober 2026";
+const RULES={
+ "Kveite":{min:84,maxKeep:200,closed:[12,20,4,20],text:["Minstemål 84 cm.","Fredet 20. desember–20. april nord for 62°N. Gjelder alle redskap, også harpun og kniv.","Kveite over 200 cm skal slippes ut.","Sør for 62°N er det forbudt å fiske kveite hele året."]},
+ "Torsk":{min:44,text:["Minstemål 44 cm nord for 62°N."]},
+ "Hyse":{min:40,text:["Minstemål 40 cm nord for 62°N."]},
+ "Hvitting":{min:32,text:["Minstemål 32 cm."]},
+ "Rødspette":{min:29,text:["Minstemål 29 cm."]},
+ "Uer":{min:32,text:["Minstemål 32 cm innenfor 12 nautiske mil fra grunnlinjene (30 cm utenfor)."]},
+ "Breiflabb":{text:["Minstemålet på 60 cm gjelder bare garnfiske."]},
+ "Sjøørret":{ban:"Det er ikke lov å ta sjøørret med harpun (undervannsjakt).",min:30,text:["Ikke lov med undervannsjakt.","Minstemål 30 cm i Nordland, Troms og Finnmark (for annet fiske)."]},
+ "Laks":{ban:"Det er ikke lov å ta laks med harpun (undervannsjakt).",text:["Ikke lov med undervannsjakt."]},
+ "Hummer":{ban:"Det er ikke lov å ta hummer ved undervannsjakt eller dykking.",text:["Ikke lov å ta ved undervannsjakt eller dykking.","Minstemål 90 mm ryggskjoldlengde (for teinefiske)."]},
+ "Taskekrabbe":{min:13,text:["Minstemål 13 cm skallbredde (nord for Rogaland)."]},
+ "Kamskjell":{min:10,text:["Minstemål 10 cm (stort kamskjell)."]},
+ "Sjøkreps":{min:13,text:["Minstemål 13 cm."]}
+};
+const RULE_SRC=[["Fiskeridirektoratet: minstemål","https://www.fiskeridir.no/Fritidsfiske/Minstemaal"],["Fiskeridirektoratet: fritidsfiske","https://www.fiskeridir.no/Fritidsfiske"]];
+function inClosed(r,dateStr){if(!r||!r.closed||!dateStr)return false;const d=new Date(dateStr+"T12:00:00");if(isNaN(d))return false;const [m1,d1,m2,d2]=r.closed,v=(d.getMonth()+1)*100+d.getDate(),a=m1*100+d1,b=m2*100+d2;return a<=b?(v>=a&&v<=b):(v>=a||v<=b)}
+function ruleWarnings(c,dateStr){const r=RULES[c.species];if(!r||c.kind!=="fanget")return[];const w=[];
+  if(r.ban)w.push(r.ban);
+  if(inClosed(r,dateStr))w.push(`${c.species} er fredet i denne perioden (20. desember–20. april).`);
+  if(r.min&&c.size_cm!=null&&c.size_cm<r.min)w.push(`Under minstemålet på ${r.min} cm.`);
+  if(r.maxKeep&&c.size_cm!=null&&c.size_cm>r.maxKeep)w.push(`${c.species} over ${r.maxKeep} cm skal slippes ut.`);
+  return w}
+function checkCatchRow(row){const box=row.querySelector(".cwarn");if(!box)return;const c={species:normSp(row.querySelector(".cSp").value),kind:row.querySelector(".cKind").value,size_cm:num(row.querySelector(".cSize").value)};
+  const w=ruleWarnings(c,($("#lDate")||{}).value);box.innerHTML=w.length?w.map(x=>`<span>⚠ ${esc(x)}</span>`).join("")+` <a href="${RULE_SRC[0][1]}" target="_blank" rel="noopener">Regler</a>`:"";box.hidden=!w.length}
+function rulesHTML(sp){const r=RULES[sp];return `<div class="drules"><b>Regler i Nordland</b>${r?`<ul>${r.text.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<p>Ingen særskilte minstemål eller fredningstider registrert for ${esc(sp.toLocaleLowerCase("nb"))} i appen.</p>`}
+  <p class="dcred">Sjekket ${RULES_CHECKED}. Reglene kan endres, så sjekk alltid ${RULE_SRC.map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${n}</a>`).join(" eller ")} eller appen «Fritidsfiske».</p></div>`}
+
+
+/* ---------- species heatmap on the main map ---------- */
+S.heatGbif=false;S.heatGbifLayer=null;
+function renderHeat(){const bar=$("#heatBar");if(!S.heatLayer)return;S.heatLayer.clearLayers();
+  if(S.heatGbifLayer&&(!S.sp||!S.heatGbif||S.heatGbifLayer._sp!==S.sp)){S.lmap.removeLayer(S.heatGbifLayer);S.heatGbifLayer=null}
+  if(!S.sp||!isLive()){if(bar)bar.hidden=true;return}
+  const by={};for(const c of S.catches)if(c.species===S.sp)(by[c.site_id]=by[c.site_id]||[]).push(c);
+  const mx=Math.max(1,...Object.values(by).map(a=>a.length));
+  for(const [id,arr] of Object.entries(by)){const s=getSite(id);if(!s||s.lat==null)continue;const f=Math.sqrt(arr.length/mx),d=Math.round(70+110*f);
+    L.marker([s.lat,s.lon],{pane:"heatPane",interactive:false,keyboard:false,icon:L.divIcon({className:"heatglow",html:`<span style="width:${d}px;height:${d}px;opacity:${(.55+.4*f).toFixed(2)}"></span>`,iconSize:[d,d],iconAnchor:[d/2,d/2]})}).addTo(S.heatLayer)}
+  if(S.heatGbif&&!S.heatGbifLayer){const sp=S.sp;gbifInfo(sp).then(g=>{if(!g||S.sp!==sp||!S.heatGbif||S.heatGbifLayer)return;
+    S.heatGbifLayer=L.tileLayer(`https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@2x.png?srs=EPSG:3857&taxonKey=${g.key}&bin=hex&hexPerTile=40&style=purpleYellow-noborder.poly`,{opacity:.7,pane:"heatPane",attribution:'Funn: <a href="https://www.gbif.org/species/'+g.key+'" target="_blank" rel="noopener">GBIF.org</a>'});S.heatGbifLayer._sp=sp;S.heatGbifLayer.addTo(S.lmap)})}
+  if(bar){const n=Object.keys(by).length;bar.hidden=false;
+    bar.innerHTML=`<span class="hbt"><i class="hdot"></i><b>${esc(S.sp)}</b> <span>${n} ${n===1?"sted":"steder"}</span></span><label class="hbg"><input type="checkbox" id="heatG" ${S.heatGbif?"checked":""}> Alle rapporterte funn</label><button type="button" id="heatX" aria-label="Fjern varmekart" title="Fjern artsfilter">✕</button>`;
+    $("#heatG").onchange=e=>{S.heatGbif=e.target.checked;renderHeat()};
+    $("#heatX").onclick=()=>{S.sp="";const sel=$("#spSel");if(sel)sel.value="";if(S.view==="list")renderList();renderPins()}}}
+
 /* ---------- species collection (artssamling) ---------- */
 const SPGROUPS=[["Fisk",["Torsk","Sei","Lyr","Hyse","Hvitting","Kolmule","Lange","Brosme","Steinbit","Breiflabb","Kveite","Rødspette","Skrubbe","Sandflyndre","Piggvar","Lomre","Uer","Berggylt","Grønngylt","Bergnebb","Rødnebb/blåstål","Makrell","Ulke","Rognkjeks","Tangsprell","Pigghå","Laks","Sjøørret"]],
   ["Skjell og krepsdyr",["Kamskjell","Harpeskjell","Blåskjell","O-skjell","Kongekrabbe","Taskekrabbe","Hummer","Sjøkreps"]],["Pigghuder",["Kråkebolle","Sjøpølse","Sjøstjerne"]],["Pattedyr",["Sel","Oter"]]];
@@ -2478,6 +2541,9 @@ function showDexCard(sp){
     ${b?`<p>Største: <b>${esc(measureTxt(b))}</b> av ${esc(catcherName(b))}${bs?" på "+sl(bs):""}.</p>`:""}
     ${miss?"":`<p style="color:#9fc3e0;font-size:14px">Sett av: ${esc([...o.who].join(", ")||"–")}</p>`}
     ${photos.length?`<p style="margin:12px 0 0;font-weight:600;color:#F1E6C8">Gjengens bilder</p><div class="dphotos">${photos.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc([c.species,measureTxt(c),catcherName(c),getSite(c.site_id)?.name].filter(Boolean).join(" · "))}" aria-label="Vis bilde"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}
+    <div class="dseason"><div class="ddhead"><b>Sesong</b></div><div id="ddSeason">${seasonSVG(sp,(S.gbif[sp]||{}).months)}</div>
+      <div class="ddleg"><span><i class="lg-bar" style="background:#F1E6C8"></i>Gjengens registreringer</span><span><i class="lg-bar" style="background:#b5367a"></i>Rapportert rundt Bodø (GBIF)</span>${RULES[sp]&&RULES[sp].closed?`<span><i class="lg-bar" style="background:rgba(179,38,30,.6)"></i>Fredet</span>`:""}</div></div>
+    ${rulesHTML(sp)}
     <div class="dexdist"><div class="ddhead"><b>Utbredelse</b><span class="chips" id="ddChips"><button class="chip on" data-v="lokal">${miss?"Rundt Bodø":"Våre funn"}</button><button class="chip" data-v="norge">Hele Norge</button></span></div>
       <div class="dexminimap" id="dexMini"></div>
       <p class="ddstats" id="ddStats">${miss?"Ikke registrert av gjengen ennå.":(()=>{const tot=S.catches.length||1,pct=o.n/tot*100;return `Gjengen: ${o.n} av ${S.catches.length} registreringer (${fnum(pct,pct<1?1:0)} %) på ${o.sites.size} ${o.sites.size===1?"sted":"steder"}.`})()} <span id="ddGbif"></span></p>
@@ -2493,12 +2559,22 @@ function showDexCard(sp){
   const dm=$("#dexMap");if(dm)dm.onclick=()=>{closeDex();S.sp=sp;S.view="list";renderPanel();renderPins()};
 }
 /* species distribution: group's own finds + GBIF occurrences (includes Artsdatabanken / Artskart data) */
-S.gbif=lsGet("gbif:v1")||{};
+S.gbif=lsGet("gbif:v2")||{};
 async function gbifInfo(sp){const c=S.gbif[sp];if(c&&Date.now()-(c.t||0)<14*864e5)return c;const sci=SCI[sp];if(!sci)return null;
   try{const m=await (await fetch(`https://api.gbif.org/v1/species/match?name=${encodeURIComponent(sci)}`)).json();if(!m||!m.usageKey||m.matchType==="NONE")return null;
     const q=a=>fetch(`https://api.gbif.org/v1/occurrence/search?taxonKey=${m.usageKey}&limit=0${a}`).then(r=>r.json()).then(j=>j.count).catch(()=>null);
-    const [no,bodo]=await Promise.all([q("&country=NO"),q("&decimalLatitude=66.6,68.2&decimalLongitude=12.8,16.4")]);
-    const v={key:m.usageKey,no,bodo,t:Date.now()};S.gbif[sp]=v;lsSet("gbif:v1",S.gbif);return v}catch(e){return null}}
+    const BOX="&decimalLatitude=66.6,68.2&decimalLongitude=12.8,16.4";
+    const months=fetch(`https://api.gbif.org/v1/occurrence/search?taxonKey=${m.usageKey}&limit=0&facet=month&facetLimit=12${BOX}`).then(r=>r.json()).then(j=>{const a=Array(12).fill(0);const f=(j.facets||[])[0];if(f)for(const c of f.counts)a[(+c.name)-1]=c.count;return a}).catch(()=>null);
+    const [no,bodo,mon]=await Promise.all([q("&country=NO"),q(BOX),months]);
+    const v={key:m.usageKey,no,bodo,months:mon,t:Date.now()};S.gbif[sp]=v;lsSet("gbif:v2",S.gbif);return v}catch(e){return null}}
+function seasonSVG(sp,gm){const own=Array(12).fill(0);for(const c of S.catches)if(c.species===sp&&c.date){const m=+String(c.date).slice(5,7)-1;if(m>=0)own[m]+=1}
+  const W=360,cw=W/12,H1=34,H2=gm?30:0,top=4,r=RULES[sp];let s="";
+  if(r&&r.closed){const [m1,d1,m2,d2]=r.closed;const span=(m,a,b)=>{const days=new Date(2026,m,0).getDate();s+=`<rect x="${((m-1)*cw+(a-1)/days*cw).toFixed(1)}" y="0" width="${((b-a+1)/days*cw).toFixed(1)}" height="${top+H1+H2+6}" fill="#E0533A" opacity=".38"/>`};
+    let m=m1;span(m,d1,new Date(2026,m,0).getDate());m=m%12+1;while(m!==m2){span(m,1,new Date(2026,m,0).getDate());m=m%12+1}span(m2,1,d2)}
+  const mo=Math.max(1,...own);own.forEach((v,i)=>{const h=v?Math.max(3,v/mo*H1):1.5;s+=`<rect x="${(i*cw+4).toFixed(1)}" y="${(top+H1-h).toFixed(1)}" width="${(cw-8).toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${v?"#F1E6C8":"rgba(241,230,200,.25)"}"><title>${v} registreringer i gjengen</title></rect>`});
+  if(gm){const mg=Math.max(1,...gm);gm.forEach((v,i)=>{const h=v?Math.max(2,v/mg*H2):1.5;s+=`<rect x="${(i*cw+4).toFixed(1)}" y="${(top+H1+6).toFixed(1)}" width="${(cw-8).toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${v?"#b5367a":"rgba(181,54,122,.25)"}"><title>${v} rapporterte funn rundt Bodø</title></rect>`})}
+  s+=["J","F","M","A","M","J","J","A","S","O","N","D"].map((l,i)=>`<text x="${(i*cw+cw/2).toFixed(1)}" y="${top+H1+H2+20}" text-anchor="middle">${l}</text>`).join("");
+  return `<svg class="season" viewBox="0 0 ${W} ${top+H1+H2+24}" width="100%" role="img" aria-label="Sesong per måned">${s}</svg>`}
 function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined")return null;
   const map=L.map(el,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});S.dexMini=map;
   retryTiles(L.tileLayer("https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png",{maxZoom:16,attribution:'&copy; Kartverket'})).addTo(map);
@@ -2509,7 +2585,7 @@ function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined"
   const local=()=>{if(pts.length>1)map.fitBounds(pts,{padding:[26,26],maxZoom:12});else if(pts.length)map.setView(pts[0],11);else map.setView([67.28,14.4],8)};
   local();setTimeout(()=>{try{map.invalidateSize();local()}catch(e){}},60);
   $("#ddChips").onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;$("#ddChips").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));if(b.dataset.v==="norge")map.fitBounds([[57.9,4.6],[71.2,31.2]],{padding:[4,4]});else local()};
-  gbifInfo(sp).then(g=>{if(!g||S.dexMini!==map)return;
+  gbifInfo(sp).then(g=>{if(!g||S.dexMini!==map)return;const ss=$("#ddSeason");if(ss&&g.months)ss.innerHTML=seasonSVG(sp,g.months);
     const att='Funn: <a href="https://www.gbif.org/species/'+g.key+'" target="_blank" rel="noopener">GBIF.org</a>',base=`https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@2x.png?srs=EPSG:3857&taxonKey=${g.key}`;
     // GBIF answers "204 No Content" for empty tiles; that is not an error, so no fallback is needed
     L.tileLayer(base+"&bin=hex&hexPerTile=22&style=purpleYellow-noborder.poly",{opacity:.8,maxZoom:16,tileSize:256,attribution:att}).addTo(map);
@@ -2525,6 +2601,41 @@ async function celebrateNew(before){
   const hide=()=>{el.classList.remove("on");setTimeout(()=>{el.hidden=true},260)};clearTimeout(el._t);el._t=setTimeout(hide,9000);
   $("#newSpX").onclick=hide;$("#newSpGo").onclick=()=>{hide();openDex(sp)};
 }
+
+/* ---------- month's catch (resets every month) ---------- */
+S.mnd=null;
+function renderMonth(){
+  const now=new Date(),cur=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");
+  const months=[...new Set([cur,...S.catches.map(c=>(c.date||"").slice(0,7)).filter(Boolean)])].sort().reverse().slice(0,8);
+  if(!S.mnd||!months.includes(S.mnd))S.mnd=months[0];const M=S.mnd;
+  const mlab=m=>{const [y,mm]=m.split("-");return new Date(+y,+mm-1,15).toLocaleDateString("nb-NO",{month:"long",year:"numeric"})};
+  const inM=x=>(x.date||"").startsWith(M),cs=S.catches.filter(inM),caught=cs.filter(c=>c.kind==="fanget"),sized=caught.filter(c=>c.weight_kg!=null||c.size_cm!=null);
+  const sortBig=a=>a.slice().sort((x,y)=>bigger(x,y)?-1:bigger(y,x)?1:0);
+  const best=sortBig(sized)[0];
+  const kings={};for(const c of sized){const k=kings[c.species];if(!k||bigger(c,k))kings[c.species]=c}
+  const kingList=sortBig(Object.values(kings));
+  const logs=(S.allLogs||[]).filter(inM);
+  const firstEver={};for(const c of S.catches.slice().sort(catchSort))if(c.species&&!firstEver[c.species])firstEver[c.species]=c;
+  const newSp=Object.values(firstEver).filter(inM);
+  const per={};for(const c of cs){const n=catcherName(c)||"Ukjent";(per[n]=per[n]||new Set()).add(c.species)}
+  const spRows=Object.entries(per).map(([k,v])=>({label:k,value:v.size,text:`${v.size} ${v.size===1?"art":"arter"}`})).sort((a,b)=>b.value-a.value).slice(0,6);
+  const crowns={};for(const c of kingList){const n=catcherName(c)||"Ukjent";crowns[n]=(crowns[n]||0)+1}
+  const crownRows=Object.entries(crowns).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v])=>({label:k,value:v,text:`${v} ${v===1?"krone":"kroner"}`}));
+  const isCur=M===cur,daysLeft=isCur?new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate():0;
+  panel.innerHTML=`${recHead()}
+    <div class="chips" id="mndChips">${months.map(m=>`<button class="chip ${m===M?"on":""}" data-m="${m}">${esc(mlab(m))}</button>`).join("")}</div>
+    <p class="small" style="margin:6px 0 0">${isCur?`Nullstilles om ${daysLeft+1} ${daysLeft===0?"dag":"dager"}. Den største av hver art i måneden får kronen 👑.`:"Avsluttet måned."}</p>
+    <div class="kpis"><div><b>${S.allLogs==null?"…":logs.length}</b><span>dykk</span></div><div><b>${new Set(cs.map(c=>c.species)).size}</b><span>arter</span></div><div><b>${caught.reduce((n,c)=>n+(c.count||1),0)}</b><span>fanget</span></div><div><b>${newSp.length}</b><span>nye arter</span></div></div>
+    ${best?`<section class="rsec"><h3>Månedens største</h3>${recRow(best,null,false).replace("<b>","<b>👑 ")}</section>`:`<p class="emptytxt">Ingen fangster med vekt eller lengde i ${esc(mlab(M))} ennå.${isCur?" Førstemann får kronen!":""}</p>`}
+    ${kingList.length>1?`<section class="rsec"><h3>Kongen av hver art</h3>${kingList.map(c=>recRow(c,null,false).replace("<b>","<b>👑 ")).join("")}</section>`:""}
+    ${crownRows.length?`<section class="rsec"><h3>Flest kroner</h3>${hbars(crownRows)}</section>`:""}
+    ${spRows.length?`<section class="rsec"><h3>Flest arter denne måneden</h3>${hbars(spRows)}</section>`:""}
+    ${newSp.length?`<section class="rsec"><h3>Nye arter for gjengen</h3><p style="margin:0">${newSp.map(c=>`<b>${esc(c.species)}</b> <span class="small">(${esc(catcherName(c)||"ukjent")})</span>`).join(", ")}</p></section>`:""}`;
+  wireRecHead();
+  $("#mndChips").onclick=e=>{const b=e.target.closest("[data-m]");if(!b)return;S.mnd=b.dataset.m;renderMonth()};
+  panel.querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{S.siteFromNext="records";openSite(b.dataset.site);focusSite(b.dataset.site)});
+}
+
 /* ---------- year in diving (dykkeåret) ---------- */
 S.yrYear=null;S.yrWho=null;
 function renderYear(){
