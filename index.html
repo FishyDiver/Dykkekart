@@ -303,7 +303,10 @@ body.mapmax .side .panel{overflow-y:auto;padding-top:12px}
 .gallery .thumb{width:100%;height:auto;aspect-ratio:1}
 .imgdlg{max-width:min(920px,96vw);padding:12px}
 .imgdlg img{display:block;max-width:100%;max-height:72vh;margin:0 auto;border-radius:8px}
-.imgdlg form{text-align:right;margin-top:8px}
+.imgdlg form{text-align:right;margin:0}
+.lbwrap{position:relative}.lbnav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:64px;border:0;border-radius:10px;background:rgba(5,15,25,.55);color:#fff;font:300 40px/1 Barlow,sans-serif;cursor:pointer;opacity:.85}
+.lbnav:hover{background:rgba(5,15,25,.8);opacity:1}.lbprev{left:6px}.lbnext{right:6px}.lbnav[hidden]{display:none}
+.lbfoot{display:flex;align-items:center;gap:10px;margin-top:8px}.lbfoot #imgCap{flex:1;margin:0}.lbcount{font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 .recbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:0 0 14px;color:var(--ink)}
 .recbtn:hover{border-color:var(--alpha)}
 .recbtn>svg{color:var(--alpha);flex:none}
@@ -597,7 +600,7 @@ body.mapmax .recbar{display:inline-flex}
 <div id="offBar" hidden>Offline: viser sist hentede data</div>
 <dialog id="dexDlg" class="dexdlg" aria-label="Artsdex"><div class="dexwrap" id="dexWrap"></div></dialog>
 <div id="newSp" class="newsp" hidden role="status"></div>
-<dialog id="imgDlg" class="imgdlg"><img id="imgBig" alt=""><p id="imgCap" class="small"></p><form method="dialog"><button class="btn">Lukk</button></form></dialog>
+<dialog id="imgDlg" class="imgdlg"><div class="lbwrap"><img id="imgBig" alt=""><button type="button" class="lbnav lbprev" id="lbPrev" aria-label="Forrige bilde">‹</button><button type="button" class="lbnav lbnext" id="lbNext" aria-label="Neste bilde">›</button></div><div class="lbfoot"><p id="imgCap" class="small"></p><span class="lbcount" id="lbCount"></span><form method="dialog"><button class="btn">Lukk</button></form></div></dialog>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -607,7 +610,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v29 (sekskanter for alle arter)";
+const APP_VERSION="v30 (bla i bilder)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2008,8 +2011,19 @@ function catchesHTML(logId){const L=S.catches.filter(c=>c.log_id===logId);if(!L.
   const f=k=>L.filter(c=>c.kind===k).map(c=>`${c.count>1?c.count+" ":""}${esc(c.species.toLocaleLowerCase("nb"))}${measureTxt(c)?` (${esc(measureTxt(c))})`:""}${c.caught_by?` <span class="by">av ${esc(c.caught_by)}</span>`:""}`).join(", ");
   const a=f("fanget"),b=f("sett"),ph=L.filter(c=>c.photo_path);
   return `<div class="m">${a?`Fanget: ${a}`:""}${a&&b?"<br>":""}${b?`Sett: ${b}`:""}</div>${ph.length?`<div class="thumbs">${ph.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+(measureTxt(c)?" · "+measureTxt(c):"")+(c.caught_by?" · "+c.caught_by:""))}" aria-label="Vis bilde av ${esc(c.species)}"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}`}
-document.addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.preventDefault();
-  $("#imgBig").src=photoURL(b.dataset.img);$("#imgCap").textContent=b.dataset.cap||"";$("#imgDlg").showModal()});
+/* lightbox: open a photo and browse the others in the same section (arrow keys, buttons, swipe) */
+S.lb={list:[],i:0};
+function openLightbox(b){const scope=b.closest(".dexcard")||b.closest("#dexWrap")||b.closest("#panel")||document,seen=new Set(),list=[];
+  for(const x of scope.querySelectorAll("[data-img]")){const k=x.dataset.img;if(!k||seen.has(k))continue;seen.add(k);list.push({img:k,cap:x.dataset.cap||""})}
+  S.lb={list,i:Math.max(0,list.findIndex(x=>x.img===b.dataset.img))};showLb();const d=$("#imgDlg");if(!d.open)d.showModal()}
+function showLb(){const {list,i}=S.lb,it=list[i];if(!it)return;$("#imgBig").src=photoURL(it.img);$("#imgCap").textContent=it.cap;
+  const many=list.length>1;$("#lbPrev").hidden=!many;$("#lbNext").hidden=!many;$("#lbCount").textContent=many?`${i+1} / ${list.length}`:"";
+  for(const k of [i-1,i+1]){const n=list[(k+list.length)%list.length];if(n){const im=new Image();im.src=photoURL(n.img)}}}
+function stepLb(d){const n=S.lb.list.length;if(n<2)return;S.lb.i=(S.lb.i+d+n)%n;showLb()}
+$("#lbPrev").onclick=()=>stepLb(-1);$("#lbNext").onclick=()=>stepLb(1);
+document.addEventListener("keydown",e=>{if(!$("#imgDlg").open)return;if(e.key==="ArrowLeft"){e.preventDefault();stepLb(-1)}else if(e.key==="ArrowRight"){e.preventDefault();stepLb(1)}});
+{let x0=null;const d=$("#imgDlg");d.addEventListener("touchstart",e=>{x0=e.touches[0].clientX},{passive:true});d.addEventListener("touchend",e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>50)stepLb(dx<0?1:-1)})}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.preventDefault();openLightbox(b)});
 
 /* ---------- records & statistics page ---------- */
 S.recYear=null;S.recSort="kg";S.allLogs=null;S.allReports=null;
@@ -2575,7 +2589,7 @@ $("#recHdr").onclick=toggleRecords;$("#recBar").onclick=toggleRecords;
 $("#dexHdr").onclick=()=>openDex();$("#dexBar").onclick=()=>openDex();
 $("#dexDlg").addEventListener("close",()=>{S.dexOpen=false;syncDexBtn()});
 $("#dexDlg").addEventListener("cancel",e=>{const det=$("#dexDet");if(det&&!det.hidden){e.preventDefault();det.hidden=true;det.innerHTML=""}});
-$("#dexDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();$("#imgBig").src=photoURL(b.dataset.img);$("#imgCap").textContent=b.dataset.cap||"";$("#imgDlg").showModal()});
+$("#dexDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();openLightbox(b)});
 try{$(".top .ver").textContent=APP_VERSION.split(" ")[0]}catch(e){}
 
 
