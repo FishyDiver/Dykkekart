@@ -470,6 +470,48 @@ body.mapmax .maptools .seabtn{display:inline-flex;align-items:center;gap:6px}
   .sc-envleg{font-size:11px;padding-right:6px}.sc-envleg em{display:none}.sc-envleg .sc-envt{font-size:10px;letter-spacing:.5px}.sc-envtrack{height:80px}
   .sc-own{min-width:15px;height:15px;font-size:9px;line-height:12px;padding:0 2px}.sc-noteed{padding-left:0}.sc-secrow .sc-sec{font-size:10.5px;letter-spacing:1px}}
 
+/* v39: calmer season calendar */
+.sc{--lw:150px;max-width:1080px}
+.sc-now{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:12px 2px 14px;margin:0 0 4px;border-bottom:1px solid rgba(241,230,200,.12)}
+.sc-nowm b{display:block;font:700 34px/1 "Barlow Condensed",sans-serif;color:#F1E6C8}.sc-nowm span{color:#7f9fb8;font-size:13px}
+.sc-nowl{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}.sc-nowl>div{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.sc-nowl .k{font:700 10.5px Barlow,sans-serif;letter-spacing:1.5px;text-transform:uppercase;width:38px}.sc-nowl .k.t{color:#F3D67E}.sc-nowl .k.g{color:#8fd3ec}
+.sc-chip{border:1px solid rgba(241,230,200,.22);background:rgba(8,26,46,.5);color:#E3EDF4;border-radius:999px;padding:2px 10px;font:500 13.5px Barlow,sans-serif;cursor:pointer}
+.sc-chip:hover{border-color:#F1E6C8}
+.sc-nowl .sc-warn{color:#ffb3a3;font-size:13.5px;margin:2px 0 0}
+.sc-tools{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin:12px 0 4px}
+.sc-row{min-height:40px;border-radius:8px}.sc-row.z{background:rgba(159,195,224,.035)}
+.sc-row .sc-track{height:40px}
+.sc-lab{height:40px;gap:8px;padding:0 10px 0 8px}
+.sc-lab b{font:500 14.5px Barlow,sans-serif;color:#E3EDF4;overflow:hidden;text-overflow:ellipsis}
+.sc-lab:hover b{color:#F1E6C8;text-decoration:underline;text-underline-offset:3px}
+.sc-lab .lvnow{flex:none}
+.sc-secrow .sc-sec{padding:0 0 4px 8px;font-size:11.5px;letter-spacing:2px}
+.sc-secrow{margin-top:8px}.sc-thin{height:28px}
+.sc-track{background-image:linear-gradient(to right,rgba(159,195,224,.05) 1px,transparent 1px)}
+.sc-cur{background:rgba(241,230,200,.06)}
+.sc-dot{position:absolute;bottom:3px;transform:translateX(-50%);border-radius:50%;background:#F1E6C8;box-shadow:0 0 0 1.5px rgba(8,26,46,.85);z-index:2;pointer-events:none}
+.sc-env .sc-envtrack{height:60px}.sc-envleg{flex-direction:row;flex-wrap:wrap;gap:4px 10px;font-size:11.5px;padding:0 8px}
+.sc-head{padding:2px 0 6px}
+.sc-leg{gap:6px 18px;margin:16px 0 4px;font-size:12px;color:#9fc3e0}.sc-leg i.ribbon{width:54px;height:12px}.sc-leg i.dotl{width:8px;height:8px;border-radius:50%;background:#F1E6C8}
+.sc-legnote{color:#6f8fa8}
+.sc-secfull{font:700 11.5px Barlow,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#9fc3e0;padding:14px 0 5px 8px;border-bottom:1px solid rgba(241,230,200,.08);margin-bottom:3px}
+.sc-edithint{margin:4px 0 8px;font-size:13px}
+.seadlg .dextop h2{font-size:28px}
+@media (max-width:700px){.sc{--lw:88px}.sc-nowm b{font-size:28px}.sc-nowl .k{width:auto}.sc-lab{padding:0 4px;height:36px}.sc-lab b{font-size:12.5px}.sc-lab .lvnow{display:none}.sc-row .sc-track,.sc-row{height:36px;min-height:36px}.sc-tools{flex-direction:column;align-items:flex-start}}
+
+.spfit{position:relative;display:block;width:100%;height:100%;overflow:hidden;background:#0a2440}
+.spfit .spbg{position:absolute;left:-12%;top:-12%;width:124%;height:124%;object-fit:cover;filter:blur(16px) brightness(.5) saturate(1.15)}
+.spfit .sppic{position:relative;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 14px rgba(0,0,0,.45))}
+.spfit.ghost{filter:grayscale(1) brightness(.6);opacity:.5}
+.dhero{position:relative}.dpickbtn{position:absolute;right:10px;bottom:10px;border:1px solid rgba(241,230,200,.5);background:rgba(8,26,46,.75);color:#F1E6C8;border-radius:999px;padding:4px 12px;font:600 12.5px Barlow,sans-serif;cursor:pointer;backdrop-filter:blur(4px)}
+.dpickbtn:hover{background:rgba(8,26,46,.95)}
+#spPickBox{margin:8px 0 4px}.dpickh{font-size:13px!important;color:#BFD3E4!important;margin:4px 0 8px!important}
+.dpickg{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+.dpickc{position:relative;aspect-ratio:1;padding:0;border:2px solid transparent;border-radius:10px;overflow:hidden;background:#0a2440;cursor:pointer}
+.dpickc img{width:100%;height:100%;object-fit:cover;display:block}.dpickc span{position:absolute;left:0;right:0;bottom:0;font:600 10px Barlow,sans-serif;color:#F1E6C8;background:linear-gradient(transparent,rgba(5,15,25,.85));padding:8px 4px 3px;text-align:center}
+.dpickc:hover{border-color:rgba(241,230,200,.6)}.dpickc.on{border-color:#F3D67E;box-shadow:0 0 0 2px rgba(243,214,126,.35)}
+
 .dexbtn{--dexbtn-bg:#0b2440;border:1px solid #1f6f8b!important;background:#0b2440!important;color:#BFE6F2!important}
 .dexbtn:hover{background:#12355a!important}.dexbtn .dexcnt{font:700 12px/1 Barlow,system-ui,sans-serif;background:#1f6f8b;color:#fff;border-radius:999px;padding:3px 6px;margin-left:2px}
 .dexbtn .dexcnt:empty{display:none}body.mapmax .maptools .dexbtn{display:inline-flex;align-items:center;gap:6px}
@@ -746,7 +788,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v38 (flere arter, tang og tare)";
+const APP_VERSION="v40 (bedre artsbilder, ryddig sesong)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2454,7 +2496,7 @@ function highlightItems(){
 function renderDexTeaser(){const el=$("#dexTeaser");if(!el)return;syncDexBtn();if(!S.catches.length){el.innerHTML="";return}const d=dexData();
   const recent=Object.values(d.by).sort((a,b)=>catchSort(b.first,a.first)).slice(0,5);const pct=Math.round(d.found/Math.max(1,d.total)*100);
   el.innerHTML=`<button class="dexteaser" id="dexGo" aria-label="Åpne Artsdex"><span class="dcta">Åpne ›</span><span class="dtt"><b>Artsdex</b><span>${d.found} av ${d.total} arter</span></span><span class="dexbar"><i style="width:${pct}%"></i></span><span class="drow">${recent.map(o=>`<span class="dround">${spPic(o.sp,{own:o.photo&&o.photo.photo_path})}</span>`).join("")}</span></button>`;
-  const g=$("#dexGo");g.onclick=()=>openDex();
+  const g=$("#dexGo");g.onclick=()=>openDex();if(S.spPick==null&&!S._pickLoading){S._pickLoading=1;loadSpPick().then(()=>{if(S.view==="list")renderDexTeaser()})}
   if(recent.some(o=>!(o.sp in S.spImg))&&!S.spImgBusy)loadSpImages(Object.keys(d.by)).then(()=>{if(S.view==="list")renderDexTeaser()})}
 function renderHighlights(){
   renderDexTeaser();
@@ -2495,8 +2537,17 @@ const SCI={"Torsk":"Gadus morhua","Sei":"Pollachius virens","Lyr":"Pollachius po
  "Tangsprell":"Pholis gunnellus","Pigghå":"Squalus acanthias","Laks":"Salmo salar","Sjøørret":"Salmo trutta","Kamskjell":"Pecten maximus","Harpeskjell":"Chlamys islandica",
  "Blåskjell":"Mytilus edulis","O-skjell":"Ostrea edulis","Kongekrabbe":"Paralithodes camtschaticus","Taskekrabbe":"Cancer pagurus","Hummer":"Homarus gammarus","Sjøkreps":"Nephrops norvegicus",
  "Kråkebolle":"Strongylocentrotus droebachiensis","Sjøpølse":"Parastichopus tremulus","Sjøstjerne":"Asterias rubens","Sel":"Phoca vitulina","Oter":"Lutra lutra","Sypike": "Trisopterus minutus", "Lysing": "Merluccius merluccius", "Flekksteinbit": "Anarhichas minor", "Lusuer": "Sebastes viviparus", "Sild": "Clupea harengus", "Ålekvabbe": "Zoarces viviparus", "Hestskjell": "Modiolus modiolus", "Kuskjell": "Arctica islandica", "Hjerteskjell": "Cerastoderma edule", "Sandskjell": "Mya arenaria", "Kongsnegl": "Buccinum undatum", "Strandsnegl": "Littorina littorea", "Strandkrabbe": "Carcinus maenas", "Pyntekrabbe": "Hyas araneus", "Rød kråkebolle": "Echinus esculentus", "Akkar": "Todarodes sagittatus", "Sukkertare": "Saccharina latissima", "Fingertare": "Laminaria digitata", "Stortare": "Laminaria hyperborea", "Butare": "Alaria esculenta", "Søl": "Palmaria palmata", "Krusflik": "Chondrus crispus", "Havsalat": "Ulva lactuca", "Blæretang": "Fucus vesiculosus", "Grisetang": "Ascophyllum nodosum", "Havert": "Halichoerus grypus", "Nise": "Phocoena phocoena", "Spekkhogger": "Orcinus orca"};
-S.spImg=lsGet("spimg:v1")||{};S.spImgBusy=null;
-function spImg(sp){const v=S.spImg[sp];return v&&v.src?v:null}
+S.spImg=lsGet("spimg:v2")||{};S.spImgBusy=null;S.spPick=null;S.spPickErr=null;
+function spImg(sp){const p=S.spPick&&S.spPick[sp];if(p&&p.src)return p;const v=S.spImg[sp];return v&&v.src?v:null}
+async function loadSpPick(){try{const {data,error}=await sb.from("species_photo").select("*");if(error){S.spPickErr=tableErr(error,"photo.sql");S.spPick=lsGet("sppick")||{};return}
+  S.spPickErr=null;S.spPick={};for(const r of data||[])S.spPick[r.species]=r}catch(e){S.spPick=lsGet("sppick")||{}}}
+const INAT="https://api.inaturalist.org/v1";
+async function inatTaxon(sci){try{const r=await fetch(`${INAT}/taxa?q=${encodeURIComponent(sci)}&per_page=8`);if(!r.ok)return null;const j=await r.json();
+  const L=j.results||[];return L.find(x=>(x.name||"").toLowerCase()===sci.toLowerCase())||L[0]||null}catch(e){return null}}
+function inatPic(ph,taxId){if(!ph)return null;const u=ph.medium_url||String(ph.url||"").replace("/square.","/medium.");if(!u)return null;
+  return {src:u,big:u.replace("/medium.","/large."),credit:ph.attribution||"",page:`https://www.inaturalist.org/taxa/${taxId}`,kind:"inat"}}
+async function inatImages(sps){const out={};let i=0;const work=async()=>{while(i<sps.length){const sp=sps[i++];const tx=await inatTaxon(SCI[sp]);const v=tx&&inatPic(tx.default_photo,tx.id);if(v){v.taxon=tx.id;out[sp]=v}}};
+  await Promise.all([work(),work(),work(),work()]);return out}
 async function wikiImages(host,titles){
   const out={};if(!titles.length)return out;
   for(let i=0;i<titles.length;i+=45){const chunk=titles.slice(i,i+45);
@@ -2511,11 +2562,13 @@ async function loadSpImages(list){
   if(S.spImgBusy)return S.spImgBusy;
   const now=Date.now(),need=list.filter(sp=>{const v=S.spImg[sp];return !v||(!v.src&&now-(v.t||0)>7*864e5)});if(!need.length)return;
   S.spImgBusy=(async()=>{
-    const sci=need.filter(sp=>SCI[sp]),en=await wikiImages("en.wikipedia.org",sci.map(sp=>SCI[sp]));
-    for(const sp of sci)if(en[SCI[sp]])S.spImg[sp]=en[SCI[sp]];
+    const sci=need.filter(sp=>SCI[sp]),inat=await inatImages(sci);
+    for(const sp of sci)if(inat[sp])S.spImg[sp]=inat[sp];
+    const noInat=sci.filter(sp=>!inat[sp]),en=await wikiImages("en.wikipedia.org",noInat.map(sp=>SCI[sp]));
+    for(const sp of noInat)if(en[SCI[sp]])S.spImg[sp]=Object.assign(en[SCI[sp]],{kind:"wiki"});
     const rest=need.filter(sp=>!spImg(sp)),nb=await wikiImages("no.wikipedia.org",rest);
     for(const sp of rest)S.spImg[sp]=nb[sp]||{src:null,t:now};
-    lsSet("spimg:v1",S.spImg);
+    lsSet("spimg:v2",S.spImg);
   })().finally(()=>{S.spImgBusy=null});
   await S.spImgBusy;
 }
@@ -2525,7 +2578,8 @@ async function photoCredit(file){
     const pg=Object.values(j.query.pages)[0],m=pg.imageinfo&&pg.imageinfo[0].extmetadata||{};const strip=h=>String(h||"").replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();
     S[k]=[strip(m.Artist&&m.Artist.value),strip(m.LicenseShortName&&m.LicenseShortName.value)].filter(Boolean).join(" · ")}catch(e){S[k]=""}
   return S[k]}
-function spPic(sp,{miss=false,own=null,cls=""}={}){const v=spImg(sp),src=v?v.src:own?photoURL(own):null;
+function spPic(sp,{miss=false,own=null,cls="",fit=false,big=false}={}){const v=spImg(sp),src=v?((big&&v.big)||v.src):own?photoURL(own):null;
+  if(src&&fit)return `<span class="spfit ${cls}${miss?" ghost":""}"><img class="spbg" src="${esc(src)}" alt="" aria-hidden="true" loading="lazy" referrerpolicy="no-referrer"><img class="sppic" src="${esc(src)}" alt="${esc(sp)}" loading="lazy" referrerpolicy="no-referrer"></span>`;
   return src?`<img class="sppic ${cls}${miss?" ghost":""}" src="${esc(src)}" alt="${esc(sp)}" loading="lazy" referrerpolicy="no-referrer">`:`<span class="spnone ${cls}${miss?" ghost":""}">${iconSVG(SPICON(sp),40,"currentColor",1.4)}</span>`}
 
 /* ---------- fishing rules for recreational fishing / spearfishing in Nordland (north of 62°N) ----------
@@ -2606,7 +2660,7 @@ function dexData(){
 const CAMI='<svg class="dcam" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="Har bilde"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
 function rarity(n){return n<=1?["r1","Sjelden"]:n<=3?["r2","Uvanlig"]:["r3","Vanlig"]}
 function dexIdx(d){let num=0;const idx={};for(const o of d.groups.flatMap(g=>g[1]))idx[o.sp]=++num;return idx}
-function openDex(sp){const dlg=$("#dexDlg");if(!dlg)return;if(S.seaDB==null)loadSeason();S.dexOpen=true;renderDexDlg();if(!dlg.open)dlg.showModal();if(sp)showDexCard(sp);syncDexBtn()}
+function openDex(sp){const dlg=$("#dexDlg");if(!dlg)return;if(S.seaDB==null)loadSeason();if(S.spPick==null)loadSpPick().then(()=>{if(S.dexOpen){const st=$("#dexWrap").scrollTop;renderDexDlg();$("#dexWrap").scrollTop=st}});S.dexOpen=true;renderDexDlg();if(!dlg.open)dlg.showModal();if(sp)showDexCard(sp);syncDexBtn()}
 function closeDex(){const dlg=$("#dexDlg");S.dexOpen=false;if(dlg&&dlg.open)dlg.close();syncDexBtn()}
 function syncDexBtn(){const n=S.catches.length?dexData().found:0;const c=$("#dexHdrCnt");if(c)c.textContent=n?String(n):"";for(const id of ["dexHdr","dexBar"]){const b=$("#"+id);if(b)b.setAttribute("aria-pressed",!!S.dexOpen)}}
 function renderDexDlg(){
@@ -2617,9 +2671,9 @@ function renderDexDlg(){
   const recent=Object.values(d.by).sort((a,b)=>catchSort(b.first,a.first)),newest=recent[0];
   const fRows=Object.entries(firsts).sort((a,b)=>b[1]-a[1]).slice(0,6);
   const F=S.dexFilter||"alle";
-  const card=o=>{if(o.miss)return F==="funnet"?"":`<button class="dcard miss" data-sp="${esc(o.sp)}" aria-label="${esc(o.sp)}: ikke funnet ennå, se utbredelse"><span class="dpic"><span class="dnum">#${idx[o.sp]}</span>${spPic(o.sp,{miss:true})}</span><span class="dtx"><b>${esc(o.sp)}</b><span>ikke funnet ennå</span></span></button>`;
+  const card=o=>{if(o.miss)return F==="funnet"?"":`<button class="dcard miss" data-sp="${esc(o.sp)}" aria-label="${esc(o.sp)}: ikke funnet ennå, se utbredelse"><span class="dpic"><span class="dnum">#${idx[o.sp]}</span>${spPic(o.sp,{miss:true,fit:true})}</span><span class="dtx"><b>${esc(o.sp)}</b><span>ikke funnet ennå</span></span></button>`;
     if(F==="mangler")return"";const r=rarity(o.n);
-    return `<button class="dcard" data-sp="${esc(o.sp)}"><span class="dpic"><span class="dnum">#${idx[o.sp]}</span>${o.photo?CAMI:""}${spPic(o.sp,{own:o.photo&&o.photo.photo_path})}</span><span class="dtx"><b>${esc(o.sp)}</b><span>${o.n}× · ${o.sites.size} ${o.sites.size===1?"sted":"steder"}<i class="rar ${r[0]}">${r[1]}</i></span></span></button>`};
+    return `<button class="dcard" data-sp="${esc(o.sp)}"><span class="dpic"><span class="dnum">#${idx[o.sp]}</span>${o.photo?CAMI:""}${spPic(o.sp,{own:o.photo&&o.photo.photo_path,fit:true})}</span><span class="dtx"><b>${esc(o.sp)}</b><span>${o.n}× · ${o.sites.size} ${o.sites.size===1?"sted":"steder"}<i class="rar ${r[0]}">${r[1]}</i></span></span></button>`};
   const pct=Math.round(d.found/Math.max(1,d.total)*100);
   $("#dexWrap").innerHTML=`<div class="dexin">
     <div class="dextop"><h2>Artsdex <small class="dexsub">arts-bingo for gjengen</small></h2><button class="dexclose" id="dexX" aria-label="Lukk">✕</button></div>
@@ -2643,7 +2697,7 @@ function showDexCard(sp){
   const sl=s=>s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button>`:"";
   el.innerHTML=`<div class="dexcard" role="dialog" aria-label="${esc(sp)}"><button class="dexclose" id="dexCX" aria-label="Lukk">✕</button>
     <span class="dnum2">#${idx[sp]} · ${miss?`<i class="rar r3" style="margin:0">Ikke funnet ennå</i>`:`<i class="rar ${r[0]}" style="margin:0" title="Hvor ofte gjengen har registrert arten">${r[1]} i loggen</i>`}</span>
-    <div class="dhero">${spPic(sp,{own:o.photo&&o.photo.photo_path})}</div><p class="dcred" id="dexCred">${spImg(sp)?`Bilde: <a href="${esc(spImg(sp).page)}" target="_blank" rel="noopener">Wikipedia</a>`:""}</p>
+    <div class="dhero">${spPic(sp,{own:o.photo&&o.photo.photo_path,fit:true,big:true})}<button class="dpickbtn" id="dPickB" type="button">Bytt bilde</button></div><p class="dcred" id="dexCred">${credHTML(spImg(sp))}</p><div id="spPickBox" hidden></div>
     <h3>${esc(sp)}${SCI[sp]?` <i class="dsci">${esc(SCI[sp])}</i>`:""}</h3>
     ${miss?`<p>Ingen i gjengen har registrert ${esc(sp.toLocaleLowerCase("nb"))} ennå. Kartet under viser hvor arten er rapportert, så dere vet hvor dere kan lete. Førstemann som logger den, får den inn i Artsdex.</p>`:`<div class="dfacts"><div><b>${o.n}</b><span>registreringer</span></div><div><b>${o.sites.size}</b><span>${o.sites.size===1?"sted":"steder"}</span></div><div><b>${o.caught||0}</b><span>fanget</span></div></div>
     <p>Først funnet av <b>${esc(catcherName(f)||"ukjent")}</b>${fs?" på "+sl(fs):""}${f.date?", "+esc(fdate(f.date)):""}.</p>`}
@@ -2660,7 +2714,8 @@ function showDexCard(sp){
       <p class="dcred">GBIF viser hvor arten er <i>rapportert</i>, ikke hvor vanlig den er. Arter folk sjelden melder inn kan se sjeldnere ut enn de er.</p></div>
     <button class="btn" id="dexMap" style="margin-top:6px">${miss?"Vis utbredelsen på hovedkartet":"Vis på hovedkartet"}</button></div>`;
   el.hidden=false;
-  {const v=spImg(sp);if(v&&v.file)photoCredit(v.file).then(c=>{const ce=$("#dexCred");if(c&&ce)ce.innerHTML=`Bilde: ${esc(c)} · <a href="${esc(v.page)}" target="_blank" rel="noopener">Wikipedia</a>`})}
+  {const v=spImg(sp);if(v&&v.file&&!v.credit)photoCredit(v.file).then(c=>{const ce=$("#dexCred");if(c&&ce)ce.innerHTML=credHTML(Object.assign({},v,{credit:c}))})}
+  $("#dPickB").onclick=()=>openPhotoPicker(sp);
   const mini=initDexMini(sp,o);
   {const sa=$("#ddSeaAll");if(sa)sa.onclick=()=>{closeDex();openSeason()}}
   const close=()=>{try{mini&&mini.remove()}catch(e){}S.dexMini=null;el.hidden=true;el.innerHTML=""};
@@ -2677,7 +2732,7 @@ async function gbifInfo(sp){const c=S.gbif[sp];if(c&&Date.now()-(c.t||0)<14*864e
     const months=fetch(`https://api.gbif.org/v1/occurrence/search?taxonKey=${m.usageKey}&limit=0&facet=month&facetLimit=12${BOX}`).then(r=>r.json()).then(j=>{const a=Array(12).fill(0);const f=(j.facets||[])[0];if(f)for(const c of f.counts)a[(+c.name)-1]=c.count;return a}).catch(()=>null);
     const [no,bodo,mon]=await Promise.all([q("&country=NO"),q(BOX),months]);
     const v={key:m.usageKey,no,bodo,months:mon,t:Date.now()};S.gbif[sp]=v;lsSet("gbif:v2",S.gbif);return v}catch(e){return null}}
-function seasonSVG(sp,gm){const v=seaLevels(sp);return `<div class="sc sc-card"><div class="sc-track">${scTrackInner(v.lv,sp,{H:50,gbif:gm})}</div><div class="sc-months sc-cm">${scMonthsHTML(true)}</div></div>`}
+function seasonSVG(sp,gm){const v=seaLevels(sp);return `<div class="sc sc-card"><div class="sc-track">${scTrackInner(v.lv,sp,{H:50,gbif:gm,today:true})}</div><div class="sc-months sc-cm">${scMonthsHTML(true)}</div></div>`}
 function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined")return null;
   const map=L.map(el,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});S.dexMini=map;
   retryTiles(L.tileLayer("https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png",{maxZoom:16,attribution:'&copy; Kartverket'})).addTo(map);
@@ -2694,11 +2749,35 @@ function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined"
     const gs=$("#ddGbif");if(gs){const parts=[];if(g.bodo!=null)parts.push(`${g.bodo.toLocaleString("nb-NO")} rundt Bodø`);if(g.no!=null)parts.push(`${g.no.toLocaleString("nb-NO")} i hele Norge`);
       gs.innerHTML=parts.length?`<br>Rapporterte funn i GBIF: ${esc(parts.join(", "))}.`:""}});
   return map}
+function credHTML(v){if(!v)return"";const src=v.kind==="inat"?"iNaturalist":v.kind==="egen"?"":"Wikipedia";
+  return `Bilde${v.updated_name?` (valgt av ${esc(v.updated_name)})`:""}: ${esc(v.credit||"")}${src&&v.page?`${v.credit?" · ":""}<a href="${esc(v.page)}" target="_blank" rel="noopener">${src}</a>`:""}`}
+async function openPhotoPicker(sp){const box=$("#spPickBox");if(!box)return;if(!box.hidden){box.hidden=true;return}box.hidden=false;
+  box.innerHTML=`<p class="dpickh">Henter bilder…</p>`;
+  const cands=[],seen=new Set(),add=v=>{if(v&&v.src&&!seen.has(v.src)){seen.add(v.src);cands.push(v)}};
+  for(const c of S.catches.filter(c=>c.species===sp&&c.photo_path))add({src:photoURL(c.photo_path),credit:[catcherName(c),measureTxt(c)].filter(Boolean).join(" · "),kind:"egen"});
+  if(SCI[sp]){const base=S.spImg[sp],tid=(base&&base.taxon)||((await inatTaxon(SCI[sp]))||{}).id;
+    if(tid){try{const j=await (await fetch(`${INAT}/taxa/${tid}`)).json();const tx=(j.results||[])[0];for(const tp of (tx&&tx.taxon_photos)||[]){const v=inatPic(tp.photo,tid);if(v)add(v)}}catch(e){}}
+    const w=await wikiImages("en.wikipedia.org",[SCI[sp]]);if(w[SCI[sp]])add(Object.assign(w[SCI[sp]],{kind:"wiki"}))}
+  if(box.hidden)return;
+  const curSrc=(spImg(sp)||{}).src;
+  box.innerHTML=`<p class="dpickh">Velg bildet som viser arten best, gjerne levende under vann. Valget gjelder for hele gjengen.${S.spPickErr?` <span class="seawarn">(${esc(S.spPickErr)} Til da lagres valget bare på denne enheten.)</span>`:""}</p>
+    <div class="dpickg">${cands.map((v,i)=>`<button type="button" class="dpickc${v.src===curSrc?" on":""}" data-i="${i}" title="${esc(v.credit||"")}"><img src="${esc(v.src)}" alt="" loading="lazy" referrerpolicy="no-referrer"><span>${v.kind==="egen"?"Gjengens":v.kind==="inat"?"iNaturalist":"Wikipedia"}</span></button>`).join("")||`<p class="dpickh">Fant ingen bilder.</p>`}</div>
+    ${S.spPick&&S.spPick[sp]?`<button type="button" class="linkbtn" id="dPickReset" style="color:#8fd3ec">Tilbakestill til standardbildet</button>`:""}`;
+  box.querySelectorAll(".dpickc").forEach(b=>b.onclick=async()=>{const v=cands[+b.dataset.i];const row={species:sp,src:v.src,big:v.big||v.src,credit:v.credit||"",page:v.page||"",kind:v.kind||"",updated_name:S.me.name,updated_at:new Date().toISOString()};
+    await savePick(sp,row)});
+  const rs=$("#dPickReset");if(rs)rs.onclick=()=>savePick(sp,null);
+}
+async function savePick(sp,row){S.spPick=S.spPick||{};
+  if(!S.spPickErr){const {error}=row?await sb.from("species_photo").upsert(row):await sb.from("species_photo").delete().eq("species",sp);
+    if(error){S.spPickErr=tableErr(error,"photo.sql")}}
+  if(row)S.spPick[sp]=row;else delete S.spPick[sp];
+  if(S.spPickErr){const loc=lsGet("sppick")||{};if(row)loc[sp]=row;else delete loc[sp];lsSet("sppick",loc)}
+  toast(row?"Bildet er byttet":"Standardbildet er tilbake");if(S.dexOpen){const st=$("#dexWrap").scrollTop;renderDexDlg();$("#dexWrap").scrollTop=st;showDexCard(sp)}renderDexTeaser()}
 async function celebrateNew(before){
   if(!before)return;const d=dexData(),idx=dexIdx(d);
   const fresh=Object.keys(d.by).filter(sp=>!before.has(sp));if(!fresh.length)return;
   const sp=fresh[0],el=$("#newSp");if(!el)return;await loadSpImages(fresh).catch(()=>{});
-  el.innerHTML=`<div class="nst">Ny art i Artsdex!</div><div class="nshero">${spPic(sp)}</div><h3>${esc(sp)}</h3><p>#${idx[sp]} · ${d.found} av ${d.total} arter funnet${fresh.length>1?` · +${fresh.length-1} til`:""}</p><button class="btn" id="newSpGo">Åpne Artsdex</button> <button class="btn ghost" id="newSpX" style="color:#BFD3E4;background:none;border-color:rgba(159,195,224,.35)">Lukk</button>`;
+  el.innerHTML=`<div class="nst">Ny art i Artsdex!</div><div class="nshero">${spPic(sp,{fit:true,big:true})}</div><h3>${esc(sp)}</h3><p>#${idx[sp]} · ${d.found} av ${d.total} arter funnet${fresh.length>1?` · +${fresh.length-1} til`:""}</p><button class="btn" id="newSpGo">Åpne Artsdex</button> <button class="btn ghost" id="newSpX" style="color:#BFD3E4;background:none;border-color:rgba(159,195,224,.35)">Lukk</button>`;
   el.hidden=false;requestAnimationFrame(()=>el.classList.add("on"));
   const hide=()=>{el.classList.remove("on");setTimeout(()=>{el.hidden=true},260)};clearTimeout(el._t);el._t=setTimeout(hide,9000);
   $("#newSpX").onclick=hide;$("#newSpGo").onclick=()=>{hide();openDex(sp)};
@@ -2843,7 +2922,6 @@ const DEFAULT_SEASON={
  "Rognkjeks":[0,1,2,3,3,2,1,0,0,0,0,0,"Kommer inn på grunt vann for å gyte om våren. Hannen vokter eggene."],
  "Rødspette":[1,1,1,1,2,3,3,3,2,2,1,1,"På sandbunn, grunnere om sommeren."],
  "Hyse":[1,1,1,1,1,1,1,1,1,1,1,1,"Står helst dypere enn vanlig dykkedybde."],
- "Ulke":[2,2,2,2,2,2,2,2,2,2,2,2,"Vanlig på grunt vann hele året."],
  "Kamskjell":[2,2,2,2,2,2,2,2,2,2,2,2,"Hele året. Ofte best sikt om vinteren."],
  "Taskekrabbe":[1,1,1,1,2,2,3,3,3,2,1,1,"Mest på grunt vann sommer–høst."]
 };
@@ -2852,7 +2930,11 @@ S.seaDB=null;S.seaErr=null;S.seaEdit=null;S.seaFilter="alle";S.seaSort="gruppe";
 async function loadSeason(){try{const {data,error}=await sb.from("season_cal").select("*");if(error){S.seaErr=tableErr(error,"season.sql");S.seaDB={};return}S.seaErr=null;S.seaDB={};for(const r of data||[])S.seaDB[r.species]=r}catch(e){S.seaErr="Kunne ikke hente sesongdata.";S.seaDB={}}}
 function seaLevels(sp){const r=S.seaDB&&S.seaDB[sp];if(r&&Array.isArray(r.levels)&&r.levels.length===12)return {lv:r.levels.map(Number),note:r.note||"",who:r.updated_name||"",custom:true};
   const d=DEFAULT_SEASON[sp];return d?{lv:d.slice(0,12),note:d[12]||"",custom:false}:{lv:Array(12).fill(0),note:"",custom:false}}
-function seaSpecies(){const s=new Set([...Object.keys(DEFAULT_SEASON),...Object.keys(S.seaDB||{}),...S.catches.map(c=>c.species).filter(Boolean)]);
+const HARVEST=new Set(["Torsk","Sei","Lyr","Hyse","Hvitting","Lysing","Lange","Brosme","Steinbit","Flekksteinbit","Breiflabb","Kveite","Rødspette","Skrubbe","Sandflyndre","Lomre","Piggvar","Uer","Makrell","Sild","Rognkjeks",
+  "Kamskjell","Harpeskjell","Blåskjell","O-skjell","Hjerteskjell","Kuskjell","Sandskjell","Kongsnegl","Kongekrabbe","Taskekrabbe","Sjøkreps","Kråkebolle","Rød kråkebolle","Sjøpølse","Akkar",
+  "Sukkertare","Fingertare","Butare","Søl","Krusflik","Havsalat"]);
+function seaSpecies(){const known=new Set(SPGROUPS.flatMap(g=>g[1]));
+  const s=new Set([...Object.keys(DEFAULT_SEASON),...Object.keys(S.seaDB||{}),...S.catches.map(c=>c.species).filter(sp=>sp&&(HARVEST.has(sp)||!known.has(sp)))]);
   for(const sp of Object.keys(RULES))if(RULES[sp].ban)s.delete(sp);return [...s]}
 function ownByMonth(sp){const a=Array(12).fill(0);for(const c of S.catches)if(c.species===sp&&c.date){const m=+String(c.date).slice(5,7)-1;if(m>=0)a[m]++}return a}
 function closedSpan(r,m){// fraction [start,width] of month m (0-11) covered by a closed season
@@ -2885,17 +2967,19 @@ function scRibbonSVG(lv,r,{H=50,gbif=null}={}){const id="scg"+(++S.scN),cy=H/2,k
   const stops=st.map(([x,[c,o]])=>`<stop offset="${(Math.max(0,Math.min(1200,x))/1200).toFixed(4)}" stop-color="${c}" stop-opacity="${o}"/>`).join("");
   let bars="";if(gbif&&gbif.some(v=>v>0)){const mx=Math.max(...gbif);bars=gbif.map((v,m)=>{if(!v)return"";const h=Math.max(2,v/mx*(H-4));return `<rect x="${100*m+24}" y="${(H-h).toFixed(1)}" width="52" height="${h.toFixed(1)}" fill="#b5367a" opacity=".32"/>`}).join("")}
   return `<svg viewBox="0 0 1200 ${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1200" y2="0">${stops}</linearGradient></defs>${bars}
-    ${lv.includes(3)||segs.length?`<path d="${d}" fill="url(#${id})" filter="url(#scGlow)" opacity=".45"/>`:""}<path d="${d}" fill="url(#${id})" stroke="rgba(255,255,255,.14)" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>`}
+    ${lv.includes(3)?`<path d="${d}" fill="url(#${id})" filter="url(#scGlow)" opacity=".22"/>`:""}<path d="${d}" fill="url(#${id})" stroke="rgba(255,255,255,.14)" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>`}
 function scMarks(){const now=new Date(),cm=now.getMonth();return [`<span class="sc-cur" style="left:${(cm/12*100).toFixed(3)}%;width:${(100/12).toFixed(3)}%"></span>`,`<span class="sc-today" style="left:${(yearFrac(now)*100).toFixed(2)}%"></span>`]}
-function scTrackInner(lv,sp,{H=50,gbif=null,edit=false}={}){const r=RULES[sp],own=ownByMonth(sp),[cur,today]=scMarks();
-  let h=cur+scRibbonSVG(lv,r,{H,gbif})+today;
-  own.forEach((v,m)=>{if(v)h+=`<span class="sc-own" style="left:${((m+.5)/12*100).toFixed(2)}%" title="Gjengen: ${v} registreringer i ${MNS[m]}">${v}</span>`});
+function scTrackInner(lv,sp,{H=50,gbif=null,edit=false,showOwn=true,today:showToday=false,dots=false}={}){const r=RULES[sp],own=ownByMonth(sp),[cur,today]=scMarks();
+  let h=cur+scRibbonSVG(lv,r,{H,gbif})+(showToday?today:"");
+  if(showOwn){const mo=Math.max(1,...own);own.forEach((v,m)=>{if(!v)return;const left=((m+.5)/12*100).toFixed(2);
+    h+=dots?`<span class="sc-dot" style="left:${left}%;width:${(5+5*Math.sqrt(v/mo)).toFixed(1)}px;height:${(5+5*Math.sqrt(v/mo)).toFixed(1)}px" title="Gjengen: ${v} registreringer i ${MNS[m]}"></span>`:`<span class="sc-own" style="left:${left}%" title="Gjengen: ${v} registreringer i ${MNS[m]}">${v}</span>`})}
   if(edit)h+=`<div class="sc-edit">${lv.map((l,m)=>`<button type="button" data-sp="${esc(sp)}" data-m="${m}" title="${MNS[m]}: ${LVL[l]} – trykk for å endre">${[1,2,3].map(k=>`<i class="${l>=k?"on":""}"></i>`).join("")}</button>`).join("")}</div>`;
   else h+=`<div class="sc-hov">${lv.map((l,m)=>{const fr=closedSpan(r,m);return `<div title="${esc(sp)}, ${MNS[m]}: ${LVL[l]}${fr?" · fredet"+(fr[1]<1?" deler av måneden":""):""}${own[m]?` · gjengen: ${own[m]} reg.`:""}"></div>`}).join("")}</div>`;
   return h}
 function scMonthsHTML(short){const cm=new Date().getMonth();return MNS.map((m,i)=>`<span class="${i===cm?"now":""}">${short?m[0].toUpperCase():`<span class="mlong">${m}</span><span class="mshort">${m[0].toUpperCase()}</span>`}</span>`).join("")}
+S.scOpt=Object.assign({own:false,env:false},lsGet("dk-sc")||{});
 function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wrap.scrollTop;
-  const now=new Date(),cm=now.getMonth(),ed=S.seaEdit;
+  const now=new Date(),cm=now.getMonth(),ed=S.seaEdit,O=S.scOpt;
   const sps=seaSpecies(),data={};for(const sp of sps){const v=seaLevels(sp);data[sp]=ed&&ed[sp]?Object.assign({},v,ed[sp]):v}
   const grp=sp=>{for(const [g,L] of SPGROUPS)if(L.includes(sp))return g;return "Andre arter"};
   let list=sps.slice();if(S.seaFilter==="naa")list=list.filter(sp=>data[sp].lv[cm]>=2);
@@ -2904,46 +2988,45 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   const top=sps.filter(sp=>data[sp].lv[cm]===3),good=sps.filter(sp=>data[sp].lv[cm]===2);
   const kv=RULES["Kveite"];let kvTxt="";if(kv&&kv.closed){const inC=inClosed(kv,now.toISOString().slice(0,10));
     if(inC)kvTxt="Kveita er fredet til 20. april.";else{const y=now.getMonth()===11&&now.getDate()>20?now.getFullYear()+1:now.getFullYear(),dd=Math.ceil((new Date(y,11,20)-now)/864e5);if(dd<=75)kvTxt=`Kveita fredes om ${dd} ${dd===1?"dag":"dager"} (20. desember).`}}
-  // the sea through the year
   const dl=Array.from({length:12},(_,m)=>{const s2=sunTimes(new Date(now.getFullYear(),m,15,12),67.28,14.40);if(s2.sun.never==="down")return 24;if(s2.sun.never==="up")return 0;return (s2.sun.set-s2.sun.rise)/36e5});
-  const logs=S.allLogs||[],vp=visPoints(logs,S.reports||[]),vs=Array(12).fill(0),vn=Array(12).fill(0);for(const q of vp){vs[q.month]+=q.vis;vn[q.month]++}
-  const ts=Array(12).fill(0),tn=Array(12).fill(0);for(const l of logs)if(l.temp!=null&&l.date){const m=+l.date.slice(5,7)-1;ts[m]+=+l.temp;tn[m]++}
-  const vv=vs.map((s,i)=>vn[i]?s/vn[i]:null),tv=ts.map((s,i)=>tn[i]?s/tn[i]:null),hasV=vv.filter(x=>x!=null).length>=2,hasT=tv.filter(x=>x!=null).length>=2;
-  const EH=96,ey=(v,mx)=>EH-6-Math.min(1,v/mx)*(EH-16);
-  const dpts=[];for(let m=-1;m<=12;m++)dpts.push([50+100*m,ey(dl[(m+12)%12],24)]);
-  const dline=`M${dpts[0][0]},${dpts[0][1].toFixed(1)}${crSeg(dpts)}`;
-  const series=(vals,mx)=>{const p=vals.map((v,m)=>v==null?null:[50+100*m,ey(v,mx)]).filter(Boolean);return p.length>=2?`M${p[0][0]},${p[0][1].toFixed(1)}${crSeg(p)}`:""};
-  const pts=(vals,mx,cls)=>vals.map((v,m)=>v==null?"":`<span class="sc-pt ${cls}" style="left:${((m+.5)/12*100).toFixed(2)}%;top:${(ey(v,mx)/EH*100).toFixed(1)}%"></span>`).join("");
-  const [cur,today]=scMarks();
-  const env=`<div class="sc-env"><div class="sc-envleg"><b class="sc-envt">Havet gjennom året</b><span><i style="background:#F1E6C8"></i>Dagslys<em>${Math.round(dl[cm])} t</em></span>${hasT?`<span><i style="background:#FFAA5A"></i>Vanntemp<em>${tv[cm]!=null?Math.round(tv[cm])+" °C":"–"}</em></span>`:""}${hasV?`<span><i style="background:#8fd3ec"></i>Sikt<em>${vv[cm]!=null?Math.round(vv[cm])+" m":"–"}</em></span>`:""}</div>
-    <div class="sc-track sc-envtrack">${cur}<svg viewBox="0 0 1200 ${EH}" preserveAspectRatio="none" aria-hidden="true"><path d="${dline}L1250,${EH}L-50,${EH}Z" fill="url(#scDay)"/><path d="${dline}" fill="none" stroke="#F1E6C8" stroke-opacity=".75" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
-      ${hasT?`<path d="${series(tv,15)}" fill="none" stroke="#FFAA5A" stroke-width="2" vector-effect="non-scaling-stroke"/>`:""}${hasV?`<path d="${series(vv,20)}" fill="none" stroke="#8fd3ec" stroke-width="2" stroke-dasharray="5 4" vector-effect="non-scaling-stroke"/>`:""}</svg>
-      ${today}${hasT?pts(tv,15,"t"):""}${hasV?pts(vv,20,"v"):""}<div class="sc-hov">${MNS.map((m,i)=>`<div title="${m}: ${Math.round(dl[i])} t dagslys${tv[i]!=null?` · vann ${fnum(tv[i],1)} °C (${tn[i]} målinger)`:""}${vv[i]!=null?` · sikt ${fnum(vv[i],1)} m (${vn[i]} målinger)`:""}"></div>`).join("")}</div></div></div>`;
+  const [cur]=scMarks();
+  // optional: the sea through the year (compact)
+  let env="";
+  if(O.env){const logs=S.allLogs||[],vp=visPoints(logs,S.reports||[]),vs=Array(12).fill(0),vn=Array(12).fill(0);for(const q of vp){vs[q.month]+=q.vis;vn[q.month]++}
+    const ts=Array(12).fill(0),tn=Array(12).fill(0);for(const l of logs)if(l.temp!=null&&l.date){const m=+l.date.slice(5,7)-1;ts[m]+=+l.temp;tn[m]++}
+    const vv=vs.map((s,i)=>vn[i]?s/vn[i]:null),tv=ts.map((s,i)=>tn[i]?s/tn[i]:null),hasV=vv.filter(x=>x!=null).length>=2,hasT=tv.filter(x=>x!=null).length>=2;
+    const EH=60,ey=(v,mx)=>EH-5-Math.min(1,v/mx)*(EH-12),dpts=[];for(let m=-1;m<=12;m++)dpts.push([50+100*m,ey(dl[(m+12)%12],24)]);
+    const dline=`M${dpts[0][0]},${dpts[0][1].toFixed(1)}${crSeg(dpts)}`,series=(vals,mx)=>{const q=vals.map((v,m)=>v==null?null:[50+100*m,ey(v,mx)]).filter(Boolean);return q.length>=2?`M${q[0][0]},${q[0][1].toFixed(1)}${crSeg(q)}`:""};
+    env=`<div class="sc-env"><div class="sc-envleg"><span><i style="background:#F1E6C8"></i>Dagslys</span>${hasT?`<span><i style="background:#FFAA5A"></i>Vanntemp</span>`:""}${hasV?`<span><i style="background:#8fd3ec"></i>Sikt</span>`:""}</div>
+      <div class="sc-track sc-envtrack">${cur}<svg viewBox="0 0 1200 ${EH}" preserveAspectRatio="none" aria-hidden="true"><path d="${dline}L1250,${EH}L-50,${EH}Z" fill="url(#scDay)"/><path d="${dline}" fill="none" stroke="#F1E6C8" stroke-opacity=".6" stroke-width="1.4" vector-effect="non-scaling-stroke"/>
+        ${hasT?`<path d="${series(tv,15)}" fill="none" stroke="#FFAA5A" stroke-width="1.8" vector-effect="non-scaling-stroke"/>`:""}${hasV?`<path d="${series(vv,20)}" fill="none" stroke="#8fd3ec" stroke-width="1.8" stroke-dasharray="5 4" vector-effect="non-scaling-stroke"/>`:""}</svg>
+        <div class="sc-hov">${MNS.map((m,i)=>`<div title="${m}: ${Math.round(dl[i])} t dagslys${tv[i]!=null?` · vann ${fnum(tv[i],1)} °C`:""}${vv[i]!=null?` · sikt ${fnum(vv[i],1)} m`:""}"></div>`).join("")}</div></div></div>`}
   // species rows
-  let rows="",lastG=null;
+  let rows="",lastG=null,zebra=0;
   for(const sp of list){const d=data[sp],l=d.lv[cm];
-    if(S.seaSort!=="naa"){const g=grp(sp);if(g!==lastG){rows+=`<div class="sc-row sc-secrow"><div class="sc-sec">${esc(g)}</div><div class="sc-track sc-thin">${cur}${today}</div></div>`;lastG=g}}
-    rows+=`<div class="sc-row"><button class="sc-lab" data-sp="${esc(sp)}" title="${esc((d.note?d.note+" · ":"")+"Åpne i Artsdex")}"><span class="ph">${spPic(sp)}</span><span class="tx"><b>${esc(sp)}${l>=2?`<em class="lvnow l${l}">${l===3?"topp nå":"bra nå"}</em>`:""}</b><small>${esc(d.note||"")}${d.custom?`<i> · justert av ${esc(d.who||"gjengen")}</i>`:""}</small></span></button><div class="sc-track">${scTrackInner(d.lv,sp,{edit:!!ed})}</div></div>`;
+    if(S.seaSort!=="naa"){const g=grp(sp);if(g!==lastG){rows+=`<div class="sc-secfull">${esc(g)}</div>`;lastG=g;zebra=0}}
+    rows+=`<div class="sc-row${zebra++%2?" z":""}"><button class="sc-lab" data-sp="${esc(sp)}" title="${esc((d.note?d.note+"\n":"")+(d.custom?"Justert av "+(d.who||"gjengen")+"\n":"")+"Trykk for å åpne i Artsdex")}"><b>${esc(sp)}</b>${l>=2?`<em class="lvnow l${l}">${l===3?"topp":"bra"}</em>`:""}</button><div class="sc-track">${scTrackInner(d.lv,sp,{H:40,edit:!!ed,showOwn:O.own,dots:true})}</div></div>`;
     if(ed)rows+=`<div class="sc-noteed"><input data-note="${esc(sp)}" value="${esc(d.note)}" placeholder="Kort notat om sesongen for ${esc(sp.toLocaleLowerCase("nb"))}"></div>`}
   const mname=now.toLocaleDateString("nb-NO",{month:"long"}),Mname=mname[0].toUpperCase()+mname.slice(1);
+  const nm=a=>a.map(sp=>`<button class="sc-chip" data-sp="${esc(sp)}">${esc(sp)}</button>`).join("");
   wrap.innerHTML=`<div class="dexin sc">
-    <div class="dextop"><h2>Sesongkalender <small class="dexsub">når har du sjansen?</small></h2><button class="dexclose" id="seaX" aria-label="Lukk">✕</button></div>
-    <div class="sc-hero"><div class="sc-hmonth"><small>Nå</small><b>${esc(Mname)}</b><span>Uke ${isoWeek(now)} · ${Math.round(dl[cm])} t dagslys i Bodø</span></div>
-      <div class="sc-hsp">${top.map(sp=>`<button class="sc-top" data-sp="${esc(sp)}"><span class="ph">${spPic(sp)}</span><span class="nm">${esc(sp)}</span><small>Topp</small></button>`).join("")}${good.map(sp=>`<button class="sc-top l2" data-sp="${esc(sp)}"><span class="ph">${spPic(sp)}</span><span class="nm">${esc(sp)}</span><small>Bra</small></button>`).join("")}${!top.length&&!good.length?`<p class="sc-quiet">Rolig måned. Ingen arter er markert som bra eller topp nå.</p>`:""}</div>
-      ${kvTxt?`<p class="sc-warn">⚠ ${esc(kvTxt)}</p>`:""}</div>
-    <div class="seatools"><div class="chips" id="seaF"><button class="chip ${S.seaFilter==="alle"?"on":""}" data-f="alle">Alle arter</button><button class="chip ${S.seaFilter==="naa"?"on":""}" data-f="naa">I sesong nå</button><button class="chip ${S.seaSort==="naa"?"on":""}" data-s="naa">Best nå først</button></div>
-      <div>${ed?`<button class="btn" id="seaCancel">Avbryt</button> <button class="btn primary" id="seaSave">Lagre</button>`:`<button class="btn" id="seaEditB">Rediger sesongene</button>`}</div></div>
-    ${ed?`<p class="sc-edithint">Trykk på en måned for å bytte nivå: lite sannsynlig → mulig → bra → topp. Prikkene viser nivået. Endringene lagres for hele gjengen.</p>`:""}
+    <div class="dextop"><h2>Sesongkalender</h2><button class="dexclose" id="seaX" aria-label="Lukk">✕</button></div>
+    <div class="sc-now"><div class="sc-nowm"><b>${esc(Mname)}</b><span>uke ${isoWeek(now)} · ${Math.round(dl[cm])} t dagslys</span></div>
+      <div class="sc-nowl">${top.length?`<div><span class="k t">Topp</span>${nm(top)}</div>`:""}${good.length?`<div><span class="k g">Bra</span>${nm(good)}</div>`:""}${!top.length&&!good.length?`<div class="sc-quiet">Ingen arter i toppsesong nå.</div>`:""}${kvTxt?`<div class="sc-warn">⚠ ${esc(kvTxt)}</div>`:""}</div></div>
+    <div class="sc-tools"><div class="chips" id="seaF"><button class="chip ${S.seaFilter==="alle"?"on":""}" data-f="alle">Alle</button><button class="chip ${S.seaFilter==="naa"?"on":""}" data-f="naa">I sesong nå</button><button class="chip ${S.seaSort==="naa"?"on":""}" data-s="naa">Best nå først</button></div>
+      <div class="chips" id="seaO"><button class="chip ${O.own?"on":""}" data-o="own" title="Vis gjengens registreringer som prikker">Våre funn</button><button class="chip ${O.env?"on":""}" data-o="env" title="Vis dagslys, vanntemperatur og sikt">Forhold</button>${ed?`<button class="chip" id="seaCancel">Avbryt</button><button class="chip on" id="seaSave">Lagre</button>`:`<button class="chip" id="seaEditB">Rediger</button>`}</div></div>
+    ${ed?`<p class="sc-edithint">Trykk på en måned for å bytte nivå (prikkene viser nivået). Lagres for hele gjengen.</p>`:""}
     <div class="sc-head"><div></div><div class="sc-months">${scMonthsHTML(false)}</div></div>
     ${env}
     <div id="scRows">${rows||`<p class="emptytxt" style="color:#9fc3e0">Ingen arter er i sesong denne måneden.</p>`}</div>
-    <div class="sc-leg"><span><i class="ribbon"></i>Lite sannsynlig → topp (tykkelse og farge)</span><span><i style="background:#E0533A"></i>Fredet</span><span><i class="dot">3</i>Gjengens registreringer</span><span><i class="today"></i>I dag</span></div>
-    <p class="sc-foot">Sesongene er et startforslag for undervannsjakt på grunt vann rundt Bodø, og gjengen kan justere dem med «Rediger sesongene». Tallene på båndene er gjengens egne registreringer (alle år). Arter som ikke er lov å ta med harpun (laks, sjøørret, hummer) er utelatt. Dagslys er regnet ut for Bodø, og sikt og vanntemperatur er snitt fra loggene deres.</p>
+    <div class="sc-leg"><span><i class="ribbon"></i>Lite → topp</span><span><i style="background:#E0533A"></i>Fredet</span>${O.own?`<span><i class="dotl"></i>Gjengens funn</span>`:""}<span class="sc-legnote">Startforslag for undervannsjakt rundt Bodø. Trykk på en art for detaljer.</span></div>
   </div>`;
   wrap.scrollTop=stTop;
   $("#seaX").onclick=closeSeason;
   $("#seaF").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.f)S.seaFilter=b.dataset.f;if(b.dataset.s)S.seaSort=S.seaSort==="naa"?"gruppe":"naa";renderSeason()};
-  wrap.querySelectorAll(".sc-lab[data-sp],.sc-top[data-sp]").forEach(b=>b.onclick=()=>{if(S.seaEdit)return;closeSeason();openDex(b.dataset.sp)});
+  $("#seaO").onclick=e=>{const b=e.target.closest("[data-o]");if(!b)return;O[b.dataset.o]=!O[b.dataset.o];lsSet("dk-sc",O);
+    if(b.dataset.o==="env"&&O.env&&S.allLogs==null)cachedQ("alllogs",sb.from("logs").select("*")).then(a2=>{if(!a2.error)S.allLogs=a2.data;if(S.seaOpen)renderSeason()});renderSeason()};
+  wrap.querySelectorAll(".sc-lab[data-sp],.sc-chip[data-sp]").forEach(b=>b.onclick=()=>{if(S.seaEdit)return;closeSeason();openDex(b.dataset.sp)});
   const eb=$("#seaEditB");if(eb)eb.onclick=()=>{if(S.seaErr){alert(S.seaErr);return}S.seaEdit={};renderSeason()};
   const cb=$("#seaCancel");if(cb)cb.onclick=()=>{S.seaEdit=null;renderSeason()};
   if(ed){$("#scRows").onclick=e=>{const c=e.target.closest(".sc-edit button[data-sp]");if(!c)return;const sp=c.dataset.sp,m=+c.dataset.m,cur2=S.seaEdit[sp]||{lv:data[sp].lv.slice(),note:data[sp].note};cur2.lv=cur2.lv.slice();cur2.lv[m]=(cur2.lv[m]+1)%4;S.seaEdit[sp]=cur2;renderSeason()};
