@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dykkekart</title>
-<link rel="icon" type="image/png" href="favicon.png">
+<title>Jaktkart</title>
+<link rel="icon" type="image/png" href="favicon.png?v=44">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0F2A3F">
-<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="apple-touch-icon" href="icon-180.png?v=44">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Dykkekart">
+<meta name="apple-mobile-web-app-title" content="Jaktkart">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
@@ -50,6 +50,17 @@ img{max-width:100%}
 
 .top{display:flex;align-items:center;gap:14px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px}
+.brand .jk-logo{flex:none;height:auto}/* login screen in the sea theme */
+#auth{background:#081a2e url(bakgrunn.jpg?v=26) center/cover no-repeat}
+#auth::before{content:"";position:absolute;inset:0;background:rgba(6,16,28,.55)}
+#auth .box{position:relative;background:#0a1a2c;border:1px solid rgba(159,195,224,.16);color:#E3EDF4;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+#auth h1{color:#F1E6C8}#auth p{color:#9fc3e0}#auth label{color:#9fc3e0}
+#auth input[type=text],#auth input[type=password],#auth input[type=email]{display:block;width:100%;box-sizing:border-box;background:#0d2238;border:1px solid rgba(159,195,224,.25);color:#E3EDF4;border-radius:10px;padding:10px 12px;font:inherit}
+#auth input:focus{outline:2px solid #4fd0d6;outline-offset:1px;border-color:transparent}
+#auth .btn.primary{background:#F1E6C8;color:#081a2e;border-color:#F1E6C8}#auth .btn.primary:hover{background:#fff6dc}
+#auth .btn:not(.primary){background:transparent;color:#F1E6C8;border-color:rgba(241,230,200,.4)}
+#auth .linkbtn{color:#8fd3ec}#auth .err{color:#ffb3a3}
+.jk-brandrow{display:flex;align-items:center;gap:10px;margin:0 0 14px}.jk-brandrow b{font:700 24px Barlow,system-ui,sans-serif;color:#F1E6C8;letter-spacing:.3px}.jk-brandrow .jk-logo{flex:none}
 .brand h1{font-size:26px;font-weight:700}
 #tabs{display:flex;gap:4px;overflow-x:auto;flex:1;min-width:0}
 .tab{border:0;background:none;padding:6px 14px;border-radius:999px;color:var(--muted);white-space:nowrap;font-weight:500}
@@ -773,8 +784,8 @@ body.mapmax .recbar{display:inline-flex}
 
 <header class="top">
   <div class="brand">
-    <svg width="26" height="30" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>
-    <h1>Dykkekart</h1><span class="ver"></span>
+    <svg class="jk-logo" width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><clipPath id="jkH"><circle cx="32" cy="32" r="24"/></clipPath><circle cx="32" cy="32" r="24" fill="#123a5e"/><g clip-path="url(#jkH)"><path d="M4 33 C12 29 18 37 26 33 S40 29 48 33 S58 37 62 33 V62 H4Z" fill="#4fd0d6"/><g transform="translate(16,35) scale(.27)"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="#F1E6C8"/><circle cx="22" cy="34" r="5" fill="#1ea5ae"/></g></g><circle cx="32" cy="32" r="24" fill="none" stroke="#F1E6C8" stroke-width="3.6"/><path d="M32 2v9M32 53v9M2 32h9M53 32h9" stroke="#F1E6C8" stroke-width="3.6" stroke-linecap="round"/></svg>
+    <h1>Jaktkart</h1><span class="ver"></span>
   </div>
   <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
   <button id="dexHdr" class="hdrbtn dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span><b class="dexcnt" id="dexHdrCnt"></b></button>
@@ -865,8 +876,8 @@ body.mapmax .recbar{display:inline-flex}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script>
-/* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v43 (fem sesongnivåer og kurver for forhold)";
+/* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
+const APP_VERSION="v44 (nytt navn: Jaktkart)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -939,13 +950,13 @@ function chartCorners(c){const g=c.geo;return[[0,0],[1,0],[1,1],[0,1]].map(([a,b
 /* ---------- auth ---------- */
 function authScreen(kind,msg){
   const a=$("#auth"),b=$("#authBox");a.hidden=false;
-  const logo=`<svg width="34" height="40" viewBox="0 0 30 36" aria-hidden="true"><path d="M5 2H15V20H5Z" fill="#fff" stroke="currentColor" stroke-width="1.2"/><path d="M15 2H28L22 11L28 20H15Z" fill="var(--alpha)" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V34" stroke="currentColor" stroke-width="2"/></svg>`;
+  const logo=`<div class="jk-brandrow"><svg class="jk-logo" width="40" height="40" viewBox="0 0 64 64" aria-hidden="true"><clipPath id="jkA"><circle cx="32" cy="32" r="24"/></clipPath><circle cx="32" cy="32" r="24" fill="#123a5e"/><g clip-path="url(#jkA)"><path d="M4 33 C12 29 18 37 26 33 S40 29 48 33 S58 37 62 33 V62 H4Z" fill="#4fd0d6"/><g transform="translate(16,35) scale(.27)"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="#F1E6C8"/><circle cx="22" cy="34" r="5" fill="#1ea5ae"/></g></g><circle cx="32" cy="32" r="24" fill="none" stroke="#F1E6C8" stroke-width="3.6"/><path d="M32 2v9M32 53v9M2 32h9M53 32h9" stroke="#F1E6C8" stroke-width="3.6" stroke-linecap="round"/></svg><b>Jaktkart</b></div>`;
   if(kind==="config"){b.innerHTML=`${logo}<h1>Nesten klar</h1><p>Fyll inn Supabase-adressen og nøkkelen i <b>config.js</b>, og last siden på nytt.</p>`;return}
-  if(kind==="notmember"){b.innerHTML=`${logo}<h1>Ikke invitert ennå</h1><p>Du er logget inn som <b>${esc(S.user.email)}</b>, men denne e-posten er ikke lagt til i dykkekartet. Be den som eier kartet legge deg til under Meny, Medlemmer.</p><button class="btn" id="aOut" style="margin-top:14px">Logg ut</button>`;$("#aOut").onclick=()=>sb.auth.signOut();return}
+  if(kind==="notmember"){b.innerHTML=`${logo}<h1>Ikke invitert ennå</h1><p>Du er logget inn som <b>${esc(S.user.email)}</b>, men denne e-posten er ikke lagt til i jaktkartet. Be den som eier kartet legge deg til under Meny, Medlemmer.</p><button class="btn" id="aOut" style="margin-top:14px">Logg ut</button>`;$("#aOut").onclick=()=>sb.auth.signOut();return}
   if(kind==="name"){b.innerHTML=`${logo}<h1>Hva heter du?</h1><p>Navnet vises ved dykkene du logger.</p><form class="f" id="nf"><label for="aName">Navn</label><input type="text" id="aName" required><div class="err" id="aErr"></div><div style="margin-top:14px"><button class="btn primary">Fortsett</button></div></form>`;
     $("#nf").onsubmit=async e=>{e.preventDefault();const n=$("#aName").value.trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error){$("#aErr").textContent=errMsg(error);return}S.me.name=n;a.hidden=true;start()};$("#aName").focus();return}
   const signup=kind==="signup";
-  b.innerHTML=`${logo}<h1>${signup?"Lag konto":"Logg inn"}</h1><p>${signup?"Bruk e-posten du ble invitert med.":"Dykkekart for deg og dykkekompisene."}</p>
+  b.innerHTML=`${logo}<h1>${signup?"Lag konto":"Logg inn"}</h1><p>${signup?"Bruk e-posten du ble invitert med.":"Jaktkart – undervannsjakt for deg og kompisene."}</p>
   <form class="f" id="af"><label for="aEmail">E-post</label><input type="text" id="aEmail" inputmode="email" autocomplete="email" required>
   <label for="aPw">Passord${signup?" (minst 6 tegn)":""}</label><input type="password" id="aPw" autocomplete="${signup?"new-password":"current-password"}" required minlength="6">
   <div class="err" id="aErr">${esc(msg||"")}</div><div style="margin-top:14px"><button class="btn primary" id="aGo">${signup?"Lag konto":"Logg inn"}</button></div></form>
@@ -1293,7 +1304,7 @@ function renderEdit(s){
   <div class="two"><div><label for="fLat">Breddegrad</label><input type="text" id="fLat" inputmode="decimal" value="${lat0??""}" placeholder="67.2345"></div><div><label for="fLon">Lengdegrad</label><input type="text" id="fLon" inputmode="decimal" value="${lon0??""}" placeholder="14.3456"></div></div>
   <p class="small">${lat0!=null?"Hentet fra kartet. Endrer du tallene, flyttes stedet på sjøkartet.":"Valgfritt. Med koordinater vises stedet på sjøkartet."}</p>
   <label for="fPhoto">${v.photoPath?"Bytt bilde":"Bilde fra stedet (valgfritt)"}</label><input type="file" id="fPhoto" accept="image/png,image/jpeg,image/webp">
-  ${isNew?`<label>Hvem ser stedet</label><div class="radios"><label><input type="radio" name="vis" value="shared" checked> Alle på dykkekartet</label><label><input type="radio" name="vis" value="priv"> Bare meg</label></div>`:""}
+  ${isNew?`<label>Hvem ser stedet</label><div class="radios"><label><input type="radio" name="vis" value="shared" checked> Alle på jaktkartet</label><label><input type="radio" name="vis" value="priv"> Bare meg</label></div>`:""}
   <div class="err" id="fErr"></div>
   <div class="formbtns"><button class="btn primary" id="fSave">${isNew?"Lagre dykkested":"Lagre endringer"}</button><button type="button" class="btn ghost" id="fCancel">Avbryt</button></div></form>`;
   const prevSite=()=>{const el=$("#fPrev");if(el)el.innerHTML=`${siteMarkerHTML({icon:sIcon,color:sColor,_priv:!!v._priv},22)} Slik ser stedet ut på kartet`};prevSite();
@@ -1393,7 +1404,7 @@ function renderMenu(){
   ${admin?`<form class="f" id="mAdd"><label for="mEmail">Inviter en dykkekompis (e-post)</label><div style="display:flex;gap:8px"><input type="text" id="mEmail" inputmode="email" required placeholder="kompis@epost.no"><button class="btn primary">Legg til</button></div></form>
   <p class="small">Send dem deretter lenken til denne siden: <b>${esc(location.origin+location.pathname)}</b>. De trykker «Første gang? Lag konto» og bruker e-posten du la inn.</p>`:""}</div>
   <div class="menu-sec"><h3>Kart</h3><p class="small" style="margin:0 0 8px">Legg til et eget kartbilde (skjermbilde eller QGIS-eksport) som ekstra fane.</p><button class="btn" id="mChart">Nytt kartblad</button></div>
-  <div class="menu-sec"><h3>App</h3>${isStandalone()?`<p class="small" style="margin:0">Du bruker app-versjonen.</p>`:installEvt?`<p class="small" style="margin:0 0 8px">Legg Dykkekart på hjemskjermen som en app.</p><button class="btn primary" id="mInstall">Installer app</button>`:isIOS()?`<p class="small" style="margin:0">iPhone: åpne siden i Safari, trykk Del-knappen (firkant med pil opp) og velg «Legg til på Hjem-skjerm».</p>`:`<p class="small" style="margin:0">Android: åpne siden i Chrome, trykk ⋮ og velg «Installer app» eller «Legg til på startsiden».</p>`}</div>
+  <div class="menu-sec"><h3>App</h3>${isStandalone()?`<p class="small" style="margin:0">Du bruker app-versjonen.</p>`:installEvt?`<p class="small" style="margin:0 0 8px">Legg Jaktkart på hjemskjermen som en app.</p><button class="btn primary" id="mInstall">Installer app</button>`:isIOS()?`<p class="small" style="margin:0">iPhone: åpne siden i Safari, trykk Del-knappen (firkant med pil opp) og velg «Legg til på Hjem-skjerm».</p>`:`<p class="small" style="margin:0">Android: åpne siden i Chrome, trykk ⋮ og velg «Installer app» eller «Legg til på startsiden».</p>`}</div>
   <div class="menu-sec"><h3>Eksport</h3><p class="small" style="margin:0 0 8px">Alle steder med koordinater som GPX, for GPS, OsmAnd eller Google Earth.</p><button class="btn" id="mGpx">Last ned GPX</button></div>
   <div class="menu-sec"><h3>GeoJSON (QGIS)</h3><p class="small" style="margin:0 0 8px">Alle dykkesteder og områder du kan se, som GeoJSON.</p><button class="btn" id="mGeo">Last ned GeoJSON</button>
   <label for="mGeoKind" style="display:block;margin:14px 0 3px" class="small">Importer områder, linjer og markører (EPSG:4326). Type for objekter uten type:</label>
@@ -1413,7 +1424,7 @@ function renderMenu(){
   if(admin){
     $("#mAdd").onsubmit=async e=>{e.preventDefault();const em=$("#mEmail").value.trim().toLowerCase();if(!em.includes("@")){$("#mErr").textContent="Skriv inn en gyldig e-post.";return}
       const {error}=await sb.from("members").insert({email:em});if(error)$("#mErr").textContent=error.code==="23505"?"Den e-posten er allerede lagt til.":errMsg(error);else{await loadMembers();renderMenu()}};
-    $("#menuBody").querySelectorAll("[data-rm]").forEach(b=>b.onclick=async()=>{if(!confirm(`Fjerne ${b.dataset.rm} fra dykkekartet?`))return;const {error}=await sb.from("members").delete().eq("email",b.dataset.rm);if(error)$("#mErr").textContent=errMsg(error);else{await loadMembers();renderMenu()}});
+    $("#menuBody").querySelectorAll("[data-rm]").forEach(b=>b.onclick=async()=>{if(!confirm(`Fjerne ${b.dataset.rm} fra jaktkartet?`))return;const {error}=await sb.from("members").delete().eq("email",b.dataset.rm);if(error)$("#mErr").textContent=errMsg(error);else{await loadMembers();renderMenu()}});
     $("#mImp").onchange=e=>{const f=e.target.files[0];if(f)importFile(f)};
   }
 }
@@ -1421,13 +1432,13 @@ function downloadGpx(){
   const x=v=>esc(v||"");const pts=allSites().filter(s=>s.lat!=null&&s.lon!=null);
   const body=pts.map(s=>{const d=[s.maxDepth!=null?`Maks dybde ${s.maxDepth} m`:"",s.bottom&&`Bunn: ${s.bottom}`,s.tide&&`Tidevann/strøm: ${s.tide}`,s.wind?.length&&`Tåler vind fra: ${s.wind.join(", ")}`,s.hazards&&`Farer: ${s.hazards}`,s.species&&`Arter: ${s.species}`,s.notes].filter(Boolean).join("\n");
     return `  <wpt lat="${s.lat}" lon="${s.lon}"><name>${x(s.name)}</name><desc>${x(d)}</desc><sym>Scuba Flag</sym></wpt>`}).join("\n");
-  const gpx=`<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="Dykkekart" xmlns="http://www.topografix.com/GPX/1/1">\n${body}\n</gpx>\n`;
+  const gpx=`<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="Jaktkart" xmlns="http://www.topografix.com/GPX/1/1">\n${body}\n</gpx>\n`;
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([gpx],{type:"application/gpx+xml"}));a.download="dykkesteder.gpx";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
 }
 async function importFile(file){
   const msg=$("#mImpMsg");const say=t=>{msg.textContent=t};
   try{
-    const d=JSON.parse(await file.text());if(!d||d.format!=="dykkekart-migrering")throw{message:"Dette er ikke en migreringsfil fra Dykkekart."};
+    const d=JSON.parse(await file.text());if(!d||d.format!=="dykkekart-migrering")throw{message:"Dette er ikke en migreringsfil fra Jaktkart (Dykkekart)."};
     const cmap={},smap={};let nc=0,ns=0,nl=0;
     for(const c of d.charts||[]){say(`Laster opp kartblad «${c.name}»…`);
       const blob=await (await fetch(c.image)).blob();const f=new File([blob],"kart."+(blob.type.split("/")[1]||"jpg"),{type:blob.type});
@@ -1735,7 +1746,7 @@ function renderAreaEdit(a){
     <details class="geo" ${pt||icon?"open":""}><summary>Symbol${pt?"":" (vises midt i området)"}</summary>${iconPickerHTML("arIc",icon,pt?"Standard for typen":"Ingen")}</details>
     <label for="arNotes">Notater</label><textarea id="arNotes" placeholder="Hva er spesielt her">${esc(a?.notes)}</textarea>
     <label for="arSite">Hører til dykkested (valgfritt)</label><select id="arSite"><option value="">Ingen</option>${sites.map(s=>`<option value="${esc(s.id)}" ${a&&a.siteId===s.id?"selected":""}>${esc(s.name)}</option>`).join("")}</select>
-    ${isNew?`<label>Hvem ser ${pt?"markøren":"området"}</label><div class="radios"><label><input type="radio" name="arVis" value="shared" checked> Alle på dykkekartet</label><label><input type="radio" name="arVis" value="priv"> Bare meg</label></div>`:""}
+    ${isNew?`<label>Hvem ser ${pt?"markøren":"området"}</label><div class="radios"><label><input type="radio" name="arVis" value="shared" checked> Alle på jaktkartet</label><label><input type="radio" name="arVis" value="priv"> Bare meg</label></div>`:""}
     <div class="err" id="arErr"></div>
     <div class="formbtns"><button class="btn primary" id="arSave">${isNew?"Lagre":"Lagre endringer"}</button><button type="button" class="btn ghost" id="arCancel">Avbryt</button></div></form>`;
   const cur=()=>({kind,value,color,icon,pattern,dash});
@@ -1811,7 +1822,7 @@ function downloadGeoJSON(){
   for(const s of S.sites)if(s.lat!=null&&s.lon!=null)feats.push({type:"Feature",geometry:{type:"Point",coordinates:[s.lon,s.lat]},
     properties:{layer:"dykkested",name:s.name,access:ACCESS[s.access]||s.access,max_depth:s.maxDepth,bottom:s.bottom,tide:s.tide,season:s.season,wind:(s.wind||[]).join(","),hazards:s.hazards,rules:s.rules,species:s.species,notes:s.notes,rating:s.rating,log_count:s.logCount,last_dive:s.lastDive,icon:s.icon,color:s.color,private:s._priv}});
   for(const a of S.areas)feats.push({type:"Feature",geometry:a.geom,properties:{layer:isPoint(a.geom)?"markor":"omrade",name:a.name,kind:a.kind,kind_name:AREA_TYPES[a.kind]?.name,value:a.value,value_name:areaLabel(a),color:colorOf(a),icon:a.icon,pattern:a.pattern,dash:a.dash,notes:a.notes,site:a.siteId?(getSite(a.siteId)?.name||""):"",private:a._priv}});
-  download("dykkekart.geojson",JSON.stringify({type:"FeatureCollection",features:feats},null,1),"application/geo+json");
+  download("jaktkart.geojson",JSON.stringify({type:"FeatureCollection",features:feats},null,1),"application/geo+json");
 }
 async function importGeoJSON(file,fallback){
   const msg=$("#mGeoMsg");const say=t=>{msg.textContent=t};
@@ -2453,7 +2464,7 @@ function toast(msg){let t=$("#toast");if(!t){t=document.createElement("div");t.i
 function shareURL(kind,id){return location.origin+location.pathname+"#"+kind+"="+id}
 async function shareLink(kind,id,title){
   const url=shareURL(kind,id);
-  try{if(navigator.share){await navigator.share({title:title+" – Dykkekart",text:title,url});return}}catch(e){if(e&&e.name==="AbortError")return}
+  try{if(navigator.share){await navigator.share({title:title+" – Jaktkart",text:title,url});return}}catch(e){if(e&&e.name==="AbortError")return}
   try{await navigator.clipboard.writeText(url);toast("Lenke kopiert. Lim den inn i Messenger eller en melding.")}catch(e){prompt("Kopier lenken:",url)}
 }
 function syncHash(){
@@ -2763,7 +2774,7 @@ function renderDexDlg(){
     <div class="chips" id="dexF">${[["alle","Alle"],["funnet",`Funnet (${d.found})`],["mangler",`Mangler (${d.total-d.found})`]].map(([k,l])=>`<button class="chip ${F===k?"on":""}" data-f="${k}">${l}</button>`).join("")}</div>
     ${d.groups.map(([g,L])=>{const f=L.filter(o=>!o.miss).length,cards=L.map(card).join("");return cards?`<section class="dexsec"><h3>${esc(g)} <small>${f} av ${L.length}</small></h3><div class="dexgrid">${cards}</div></section>`:""}).join("")}
     ${fRows.length?`<section class="dexsec dexlb"><h3>Flest førstefunn</h3>${hbars(fRows.map(([k,v])=>({label:k,value:v,text:`${v} ${v===1?"art":"arter"}`})))}</section>`:""}
-    <p style="margin-top:22px;color:#6f8fa8;font-size:12px">Tegningene er laget for Dykkekart. Arter dere logger som ikke står på lista havner under «Andre arter».</p>
+    <p style="margin-top:22px;color:#6f8fa8;font-size:12px">Bildene kommer fra iNaturalist og Wikipedia (fotograf og lisens står på hvert kort) eller fra gjengens egne fangstbilder. Arter dere logger som ikke står på lista, havner under «Andre arter».</p>
   </div><div class="dexsheet" id="dexDet" hidden></div>`;
   $("#dexX").onclick=closeDex;
   $("#dexF").onclick=e=>{const b=e.target.closest("[data-f]");if(!b)return;S.dexFilter=b.dataset.f;const st=$("#dexWrap").scrollTop;renderDexDlg();$("#dexWrap").scrollTop=st};
