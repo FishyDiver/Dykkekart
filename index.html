@@ -564,7 +564,21 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .sc-reg{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#7f9fb8}
 .sc-reg select{appearance:none;-webkit-appearance:none;background:#0d2238 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F1E6C8' stroke-width='2'/%3E%3C/svg%3E") right 12px center no-repeat;color:#F1E6C8;border:1px solid rgba(241,230,200,.4);border-radius:999px;padding:6px 34px 6px 14px;font:600 14px Barlow,sans-serif;letter-spacing:0;text-transform:none;cursor:pointer;max-width:100%}
 .sc-reg select:disabled{opacity:.5;cursor:not-allowed}.sc-reg select option{background:#0a1a2c;color:#E3EDF4}
-.sc-local{color:#cfe0ee}.sc-dnow.fr,.sc-dbest.fr{color:#ff8a73;font-weight:600}
+.sc-local{color:#cfe0ee}
+/* list title row with the activity bell (theme colours, works in light and dark mode) */
+.lhead{position:relative;display:flex;align-items:flex-start;gap:10px}.lhead-t{flex:1;min-width:0}
+.lvis{margin:3px 0 0;font-size:13px;color:var(--muted)}.lvis .linkbtn{margin:0 2px;padding:0;font-size:13px;color:var(--alpha)}.lvis .linkbtn b{color:var(--alpha)}
+.actbtn{position:relative;flex:none;width:42px;height:42px;margin-top:4px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.actbtn:hover{border-color:var(--alpha)}.actbtn.on{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.actcnt{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;box-sizing:border-box;border-radius:9px;background:#E0533A;color:#fff;font:700 11px/18px Barlow,sans-serif;text-align:center;padding:0 4px;box-shadow:0 0 0 2px var(--panel)}
+.actpop{position:absolute;right:0;top:54px;z-index:40;width:min(420px,100%);max-height:min(72vh,600px);overflow:auto;box-sizing:border-box;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.35);padding:8px 12px 10px}
+.actpop[hidden]{display:none}
+.actph{display:flex;align-items:center;gap:10px;position:sticky;top:-8px;background:var(--panel);padding:6px 0 8px;margin-top:-2px;z-index:1;border-bottom:1px solid var(--line)}
+.actph>b{font-size:17px;color:var(--ink);flex:1}.actph .chips{margin:0;flex-wrap:nowrap}.actph .chip{padding:3px 11px;font-size:13px}
+.actx{background:none;border:0;color:var(--muted);font-size:16px;cursor:pointer;padding:4px 6px;border-radius:6px}.actx:hover{color:var(--ink)}
+.actpop .feed{margin:0}.actpop .arow{position:relative}
+.actpop .arow.new::before{content:"";position:absolute;left:-7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#E0533A}
+.actpop .emptytxt{margin:12px 0;color:var(--muted)}.sc-dnow.fr,.sc-dbest.fr{color:#ff8a73;font-weight:600}
 .sc-nowm{flex:0 1 auto;min-width:0}.sc-nowl{flex:1 1 320px}
 @media (max-width:700px){.sc-now{flex-direction:column;align-items:stretch;gap:12px}.sc-nowl{flex:none}.sc-reg{flex-wrap:wrap}.sc-reg select{flex:1;min-width:0}}.dd-reg{font-weight:500;color:#9fc3e0;font-size:.85em}
 .sc-dbtns .chip{color:#F1E6C8;border-color:rgba(241,230,200,.55)}.sc-dbtns .chip:hover{background:rgba(241,230,200,.12)}
@@ -883,7 +897,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v47 (bosser fjernet)";
+const APP_VERSION="v48 (aktivitet bak egen knapp)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1150,12 +1164,17 @@ function renderFrames(){
 /* ---------- panel ---------- */
 function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="site")renderSiteView();else if(S.view==="area")renderAreaView();else if(S.view==="records")renderRecords()}
 function renderListView(){
-  panel.innerHTML=`<div id="highlights"></div><div id="dexTeaser"></div><h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="small" id="condNote" style="margin:4px 0 0"></p>
+  panel.innerHTML=`<div id="highlights"></div><div id="dexTeaser"></div>
+    <div class="lhead"><div class="lhead-t"><h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="lvis" id="lVis"></p></div>
+      <button type="button" class="actbtn" id="actBtn" aria-haspopup="true" aria-expanded="false" title="Siste aktivitet: dykk, logger og nye steder"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><b class="actcnt" id="actCnt" hidden></b></button>
+      <div class="actpop" id="actPop" hidden></div></div>
+    <p class="small" id="condNote" style="margin:4px 0 0"></p>
     <input class="search" id="q" type="search" placeholder="Søk i navn, arter, bunn, notater" value="${esc(S.q)}" aria-label="Søk">
     <div class="chips">${["alle","land","bat"].map(a=>`<button class="chip ${S.acc===a?"on":""}" data-a="${a}">${a==="alle"?"Alle":ACCESS[a]}</button>`).join("")}</div>
-    <div id="spWrap"></div><div id="visFeed"></div><div id="feed"></div><div id="siteList"></div><div id="unpos"></div><div id="areaList"></div><div id="chartActions"></div>`;
+    <div id="spWrap"></div><div id="siteList"></div><div id="unpos"></div><div id="areaList"></div><div id="chartActions"></div>`;
   $("#q").oninput=e=>{S.q=e.target.value;renderList();renderPins();renderAreas()};
   panel.querySelector(".chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;S.acc=b.dataset.a;panel.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));renderList();renderPins()};
+  $("#actBtn").onclick=e=>{e.stopPropagation();toggleAct()};
   renderList();
 }
 function siteRow(s,showHome){
@@ -1182,7 +1201,7 @@ function renderList(){
   clickRow($("#unpos"));
   renderAreaList();
   const cn=$("#condNote");if(cn)cn.innerHTML=condNoteHTML();
-  renderHighlights();renderSpWrap();renderVisFeed();renderFeed();
+  renderHighlights();renderSpWrap();renderVisLine();renderFeed();
   let a="";
   if(!isLive()){const mine=c.createdBy===S.user.id||S.me.role==="admin";
     a=`<div class="actions"><button class="btn" id="setChart">Kartinnstillinger</button>${mine&&!allSites().some(s=>s.chartId===c.id)?'<button class="btn ghost danger" id="delChart">Slett kartbladet</button>':""}</div>`}
@@ -2115,6 +2134,11 @@ function renderSpWrap(){const el=$("#spWrap");if(!el)return;
   el.innerHTML=`<select id="spSel" class="spsel" aria-label="Vis steder med art"><option value="">Alle arter</option>${extra}${sp.map(x=>`<option value="${esc(x)}" ${x===S.sp?"selected":""}>${esc(x)} (${cnt[x].size} ${cnt[x].size===1?"sted":"steder"})</option>`).join("")}</select>`;
   $("#spSel").onchange=e=>{S.sp=e.target.value;renderList();renderPins()};
 }
+function renderVisLine(){const el=$("#lVis");if(!el)return;
+  const r=S.reports.find(x=>getSite(x.site_id)&&Date.now()-Date.parse(x.created_at)<14*864e5);
+  if(!r){el.innerHTML="";el.hidden=true;return}const st=getSite(r.site_id);el.hidden=false;
+  el.innerHTML=`Siste sikt <button type="button" class="linkbtn" data-site="${esc(st.id)}"><b>${fnum(r.vis,1)} m</b> ${esc(st.name)}</button> <span>${esc(ago(r.created_at))}${r.author===S.user.id?"":", "+esc(r.author_name||"")}</span>`;
+  el.querySelector("[data-site]").onclick=()=>{openSite(st.id);focusSite(st.id)}}
 function renderVisFeed(){const el=$("#visFeed");if(!el)return;
   const seen=new Set(),rows=[];for(const r of S.reports){if(seen.has(r.site_id))continue;const s=getSite(r.site_id);if(!s)continue;seen.add(r.site_id);if(Date.now()-Date.parse(r.created_at)<72*3600e3)rows.push([r,s])}
   el.innerHTML=rows.length?`<div class="feed"><h3>Siste sikt</h3>${rows.slice(0,6).map(([r,s])=>`<button class="frow" data-site="${esc(s.id)}"><b>${fnum(r.vis,1)} m</b> ${esc(s.name)} <span class="small">${esc(ago(r.created_at))}${r.author===S.user.id?"":", "+esc(r.author_name||"")}</span></button>`).join("")}</div>`:"";
@@ -2501,9 +2525,11 @@ function feedItems(){
     const cap=caught.slice(0,3).map(c=>{const extra=[measureTxt(c),c.caught_by&&c.caught_by!==l.author_name?c.caught_by:""].filter(Boolean).join(", ");return `${c.count>1?c.count+" ":""}${c.species.toLocaleLowerCase("nb")}${extra?" ("+extra+")":""}`}).join(", ")+(caught.length>3?` og ${caught.length-3} til`:"");
     const parts=[cap?"Fanget "+cap:"",seen.length?`så ${seen.length} ${seen.length===1?"art":"arter"}`:"",l.vis!=null?`sikt ${fnum(l.vis,1)} m`:""].filter(Boolean);
     const dt=Date.parse(`${l.date}T${l.time_of_day||"12:00"}`);
-    items.push({t:isFinite(dt)?dt:Date.parse(l.created_at||0),when:diveWhen(l),site:s,who:joinNames([l.author===S.user.id?"Du":(l.author_name||"Noen"),...(l.buddies||[]).filter(b=>b&&b!==l.author_name).map(b=>b===S.me.name?"deg":b)]),verb:"dykket på",text:parts.join(" · "),photo:C.find(c=>c.photo_path)})}
+    items.push({kind:"dive",mine:l.author===S.user.id,ct:Date.parse(l.created_at||"")||(isFinite(dt)?dt:0),t:isFinite(dt)?dt:Date.parse(l.created_at||0),when:diveWhen(l),site:s,who:joinNames([l.author===S.user.id?"Du":(l.author_name||"Noen"),...(l.buddies||[]).filter(b=>b&&b!==l.author_name).map(b=>b===S.me.name?"deg":b)]),verb:"dykket på",text:parts.join(" · "),photo:C.find(c=>c.photo_path)})}
   const cutoff=Date.now()-45*864e5;
-  for(const s of S.sites)if(s.createdAt&&Date.parse(s.createdAt)>cutoff)items.push({t:Date.parse(s.createdAt),when:ago(s.createdAt),site:s,who:s.createdBy===S.user.id?"Du":"",verb:s.createdBy===S.user.id?"la til":"Nytt dykkested:",text:"",isNew:true});
+  for(const r of S.reports){if(r.vis==null||r.note==="Fra dykkelogg")continue;const t=Date.parse(r.created_at);if(!(t>cutoff))continue;const s=getSite(r.site_id);if(!s)continue;
+    items.push({kind:"vis",mine:r.author===S.user.id,ct:t,t,when:ago(r.created_at),site:s,who:r.author===S.user.id?"Du":(r.author_name||"Noen"),verb:"meldte sikt på",text:`${fnum(r.vis,1)} m${r.note?" · "+r.note:""}`})}
+  for(const s of S.sites)if(s.createdAt&&Date.parse(s.createdAt)>cutoff)items.push({kind:"site",mine:s.createdBy===S.user.id,ct:Date.parse(s.createdAt),t:Date.parse(s.createdAt),when:ago(s.createdAt),site:s,who:s.createdBy===S.user.id?"Du":"",verb:s.createdBy===S.user.id?"la til":"Nytt dykkested:",text:"",isNew:true});
   return items.filter(it=>isFinite(it.t)).sort((a,b)=>b.t-a.t);
 }
 function diveWhen(l){
@@ -2512,15 +2538,29 @@ function diveWhen(l){
   if(diff<0)return d.toLocaleDateString("nb-NO",{day:"numeric",month:"short"});if(diff===0)return "i dag"+tm;if(diff===1)return "i går"+tm;if(diff<7)return diff+" dager siden";
   return d.toLocaleDateString("nb-NO",{day:"numeric",month:"short"});
 }
+/* activity lives behind the bell next to the list title: dives and logs first, "Alt" adds new sites and visibility reports */
+S.actOpen=false;S.actAll=false;S.actSeen=+(lsGet("dk-actseen")||0)||Date.now()-7*864e5;S.actSeenPrev=S.actSeen;
+function toggleAct(force){S.actOpen=force!=null?force:!S.actOpen;if(S.actOpen){S.actSeenPrev=S.actSeen;S.actSeen=Date.now();lsSet("dk-actseen",S.actSeen)}else S.feedMore=false;renderFeed()}
+document.addEventListener("click",e=>{if(!S.actOpen)return;if(e.target.closest("#actPop")||e.target.closest("#actBtn"))return;toggleAct(false)});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.actOpen){toggleAct(false);const b=$("#actBtn");if(b)b.focus()}});
 function renderFeed(){
-  const el=$("#feed");if(!el)return;const items=feedItems();
-  if(!items.length){el.innerHTML="";return}
-  const show=items.slice(0,S.feedMore?25:5);
-  el.innerHTML=`<div class="feed act"><h3>Siste aktivitet</h3>${show.map(it=>`<button class="arow" data-site="${esc(it.site.id)}">
-    ${it.photo?`<span class="thumb sm"><img src="${esc(photoURL(it.photo.photo_path))}" alt="" loading="lazy"></span>`:`<span class="aico">${it.isNew?flagSVG(false,16):iconSVG("dykker",18)}</span>`}
-    <span class="atx"><span><b>${esc(it.who)}</b>${it.who?" ":""}${esc(it.verb)} <b>${esc(it.site.name)}</b></span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`).join("")}
-    ${items.length>5?`<button class="linkbtn" id="feedMore">${S.feedMore?"Vis færre":`Vis flere (${Math.min(items.length,25)-5})`}</button>`:""}</div>`;
-  el.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>{openSite(b.dataset.site);focusSite(b.dataset.site)});
+  const btn=$("#actBtn"),cnt=$("#actCnt"),pop=$("#actPop");if(!btn)return;const all=feedItems();
+  const fresh=all.filter(it=>!it.mine&&it.ct>S.actSeen).length;
+  if(cnt){cnt.hidden=!fresh;cnt.textContent=fresh>9?"9+":String(fresh)}
+  btn.classList.toggle("on",S.actOpen);btn.setAttribute("aria-expanded",String(S.actOpen));
+  btn.title=fresh?`Siste aktivitet: ${fresh} ${fresh===1?"ny hendelse":"nye hendelser"} siden sist`:"Siste aktivitet: dykk, logger og nye steder";
+  if(!pop)return;pop.hidden=!S.actOpen;if(!S.actOpen){pop.innerHTML="";return}
+  pop.onclick=e=>e.stopPropagation(); // clicks inside re-render the panel; don't let them count as "outside"
+  const items=S.actAll?all:all.filter(it=>it.kind==="dive"),N=S.feedMore?30:10,show=items.slice(0,N);
+  const row=it=>`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-site="${esc(it.site.id)}">
+    ${it.photo?`<span class="thumb sm"><img src="${esc(photoURL(it.photo.photo_path))}" alt="" loading="lazy"></span>`:`<span class="aico">${it.kind==="site"?flagSVG(false,16):it.kind==="vis"?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>':iconSVG("dykker",18)}</span>`}
+    <span class="atx"><span><b>${esc(it.who)}</b>${it.who?" ":""}${esc(it.verb)} <b>${esc(it.site.name)}</b></span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`;
+  pop.innerHTML=`<div class="actph"><b>Siste aktivitet</b><span class="chips"><button type="button" class="chip${S.actAll?"":" on"}" data-act="dive">Dykk</button><button type="button" class="chip${S.actAll?" on":""}" data-act="all">Alt</button></span><button type="button" class="actx" aria-label="Lukk">✕</button></div>
+    <div class="feed act">${show.map(row).join("")||`<p class="emptytxt">${S.actAll?"Ingen aktivitet":"Ingen dykk logget"} de siste 45 dagene.</p>`}
+    ${items.length>10?`<button class="linkbtn" id="feedMore">${S.feedMore?"Vis færre":`Vis flere (${Math.min(items.length,30)-10})`}</button>`:""}</div>`;
+  pop.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>{toggleAct(false);openSite(b.dataset.site);focusSite(b.dataset.site)});
+  pop.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{S.actAll=b.dataset.act==="all";S.feedMore=false;renderFeed()});
+  pop.querySelector(".actx").onclick=()=>toggleAct(false);
   const fm=$("#feedMore");if(fm)fm.onclick=()=>{S.feedMore=!S.feedMore;renderFeed()};
 }
 
