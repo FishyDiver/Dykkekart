@@ -564,7 +564,38 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .sc-reg{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#7f9fb8}
 .sc-reg select{appearance:none;-webkit-appearance:none;background:#0d2238 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F1E6C8' stroke-width='2'/%3E%3C/svg%3E") right 12px center no-repeat;color:#F1E6C8;border:1px solid rgba(241,230,200,.4);border-radius:999px;padding:6px 34px 6px 14px;font:600 14px Barlow,sans-serif;letter-spacing:0;text-transform:none;cursor:pointer;max-width:100%}
 .sc-reg select:disabled{opacity:.5;cursor:not-allowed}.sc-reg select option{background:#0a1a2c;color:#E3EDF4}
-.sc-local{color:#cfe0ee}.sc-dnow.fr,.sc-dbest.fr{color:#ff8a73;font-weight:600}
+.sc-local{color:#cfe0ee}
+/* bosses on the map */
+.bossic{background:none!important;border:0!important}
+.boss{position:relative;width:76px;height:124px;display:flex;flex-direction:column;align-items:center;cursor:pointer;filter:drop-shadow(0 6px 10px rgba(0,0,0,.55));animation:bossIn .45s ease-out both}
+.bx-stem{position:absolute;left:50%;top:80px;bottom:4px;width:2px;margin-left:-1px;background:linear-gradient(rgba(241,230,200,.85),rgba(241,230,200,.25))}
+.bx-dot{position:absolute;left:50%;bottom:0;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#F1E6C8;box-shadow:0 0 0 3px rgba(241,230,200,.25)}
+.t-legend .bx-dot{background:#F3D67E;box-shadow:0 0 0 3px rgba(243,214,126,.35),0 0 10px rgba(243,214,126,.8)}
+.bx-ring{width:58px;height:58px;border-radius:50%;padding:3px;box-sizing:border-box;transition:transform .15s;margin-top:6px}
+.bx-ring img,.bx-ph{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;border:2px solid #0a1a2c;box-sizing:border-box;background:#0b2440}
+.bx-ph{display:flex;align-items:center;justify-content:center}.bx-ph svg{width:70%}
+.boss:hover .bx-ring{transform:scale(1.08)}
+.t-boss .bx-ring{background:conic-gradient(from 200deg,#e0a86e,#8a5a2b,#e0a86e,#f6d6b0,#e0a86e)}
+.t-elite .bx-ring{background:conic-gradient(from 200deg,#93ebb0,#1ea5ae,#93ebb0,#e6fff0,#93ebb0);box-shadow:0 0 12px rgba(79,208,214,.45)}
+.t-legend .bx-ring{background:conic-gradient(from 200deg,#F3D67E,#a9761f,#F3D67E,#fff3c4,#F3D67E);animation:bossGlow 2.8s ease-in-out infinite}
+.bx-name{margin-top:-9px;position:relative;z-index:1;background:#0a1a2c;border:1px solid rgba(241,230,200,.5);color:#F1E6C8;font:700 9.5px Barlow,sans-serif;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.t-legend .bx-name{border-color:#F3D67E;color:#F3D67E}
+.bx-lv{position:absolute;top:2px;right:4px;min-width:20px;height:20px;box-sizing:border-box;border-radius:10px;background:#E0533A;color:#fff;font:700 11px/20px Barlow,sans-serif;text-align:center;padding:0 5px;box-shadow:0 0 0 2px #0a1a2c}
+.bx-crown{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:28px;z-index:2}
+.bx-tip{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);border:6px solid transparent;border-top:8px solid rgba(241,230,200,.85)}
+@keyframes bossIn{from{opacity:0;transform:translateY(10px) scale(.8)}}
+@keyframes bossGlow{0%,100%{box-shadow:0 0 0 2px rgba(243,214,126,.3),0 0 14px rgba(243,214,126,.5)}50%{box-shadow:0 0 0 3px rgba(243,214,126,.55),0 0 28px rgba(243,214,126,.85)}}
+@media (prefers-reduced-motion:reduce){.boss,.t-legend .bx-ring{animation:none}}
+.bossctl{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:2px solid rgba(0,0,0,.25);background:#0b2440;color:#7f9fb8;cursor:pointer;padding:0}
+.bossctl svg{width:22px;filter:grayscale(1) brightness(.75)}.bossctl.on svg{filter:none}.bossctl:hover{background:#12355a}
+.bosspopwrap .leaflet-popup-content-wrapper{background:#0a1a2c;color:#E3EDF4;border:1px solid rgba(241,230,200,.25);border-radius:14px}
+.bosspopwrap .leaflet-popup-tip{background:#0a1a2c}.bosspopwrap .leaflet-popup-content{margin:12px 14px}.bosspopwrap a.leaflet-popup-close-button{color:#9fc3e0}
+.bosspop p{margin:6px 0;font-size:13.5px;line-height:1.45;color:#cfe0ee}.bosspop .bp-o{color:#9fc3e0}
+.bp-h{display:flex;align-items:center;gap:10px;margin-bottom:4px}.bp-h b{display:block;font:700 18px Barlow,sans-serif;color:#F1E6C8}.bp-h span{font-size:12px;color:#9fc3e0}
+.bosspop.t-legend .bp-h span{color:#F3D67E}.bosspop.t-elite .bp-h span{color:#93ebb0}
+.bp-h .bp-pic,.bp-h .sppic,.bp-h img{width:46px;height:46px;border-radius:50%;object-fit:cover;flex:none}
+.bp-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.bp-btns .btn{background:transparent;color:#F1E6C8;border:1px solid rgba(241,230,200,.45);border-radius:999px;padding:4px 11px;font-size:12.5px}
+@media (max-width:700px){.boss{transform:scale(.84);transform-origin:50% 100%}}.sc-dnow.fr,.sc-dbest.fr{color:#ff8a73;font-weight:600}
 .sc-nowm{flex:0 1 auto;min-width:0}.sc-nowl{flex:1 1 320px}
 @media (max-width:700px){.sc-now{flex-direction:column;align-items:stretch;gap:12px}.sc-nowl{flex:none}.sc-reg{flex-wrap:wrap}.sc-reg select{flex:1;min-width:0}}.dd-reg{font-weight:500;color:#9fc3e0;font-size:.85em}
 .sc-dbtns .chip{color:#F1E6C8;border-color:rgba(241,230,200,.55)}.sc-dbtns .chip:hover{background:rgba(241,230,200,.12)}
@@ -883,7 +914,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v45 (sesongkalender per område)";
+const APP_VERSION="v46 (bosser på kartet)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1038,6 +1069,12 @@ function initLeaflet(){
   L.control.scale({imperial:false}).addTo(S.lmap);
   S.fLayer=L.layerGroup().addTo(S.lmap);S.aLayer=L.layerGroup().addTo(S.lmap);S.apLayer=makeAreaPointLayer().addTo(S.lmap);S.prLayer=makeAreaPointLayer();S.pkLayer=makeAreaPointLayer();S.bdLayer=L.layerGroup();S.lmap.on("zoomend",applyZoomLayers);{const zn=$("#zoomNote");if(zn)lmapEl.appendChild(zn)}S.dLayer=L.layerGroup().addTo(S.lmap);S.lLayer=makeSiteLayer().addTo(S.lmap);S.sdLayer=L.layerGroup().addTo(S.lmap);if(L.Draw)hookDrawEvents();else showErr("tegneverktøyet lastet ikke");
   S.lmap.on("click",e=>liveClick(e.latlng));
+  S.lmap.on("zoomend",()=>{try{renderBosses()}catch(e){}});
+  {const BossCtl=L.Control.extend({options:{position:"topright"},onAdd(){const b=L.DomUtil.create("button","bossctl"+(S.boss?" on":""));b.type="button";
+      b.title="Bosser: arter som dominerer gjengens registreringer i et område";b.setAttribute("aria-label","Vis eller skjul bosser på kartet");b.setAttribute("aria-pressed",String(S.boss));
+      b.innerHTML='<svg viewBox="0 0 32 20" aria-hidden="true"><path d="M2 18 L4 5 L11 11 L16 2 L21 11 L28 5 L30 18 Z" fill="#F3D67E" stroke="#7a5310" stroke-width="1.4" stroke-linejoin="round"/><circle cx="16" cy="2.5" r="2" fill="#fff3c4"/></svg>';L.DomEvent.disableClickPropagation(b);
+      b.onclick=()=>{S.boss=!S.boss;lsSet("dk-boss",S.boss);b.classList.toggle("on",S.boss);b.setAttribute("aria-pressed",String(S.boss));renderBosses();toast(S.boss?"Bosser vises på kartet":"Bosser er skjult")};return b}});
+   new BossCtl().addTo(S.lmap)}
   S.lmap.on("mousemove",e=>{if(isLive())$("#coord").textContent=`${e.latlng.lat.toFixed(4)}° N, ${e.latlng.lng.toFixed(4)}° Ø`});
   S.lmap.on("mouseout",()=>{$("#coord").textContent=""});
 }
@@ -1051,6 +1088,7 @@ function renderLive(){
   for(const c of S.charts){if(!c.geo)continue;const k=chartCorners(c),la=k.map(p=>p[0]),lo=k.map(p=>p[1]);
     L.rectangle([[Math.min(...la),Math.min(...lo)],[Math.max(...la),Math.max(...lo)]],{color:"#C0266D",weight:2,dashArray:"6 5",fillOpacity:.05,interactive:S.mode==="view"})
      .bindTooltip(c.name,{permanent:true,direction:"center",className:"ftip"}).on("click",()=>switchChart(c.id)).addTo(S.fLayer)}
+  try{renderBosses()}catch(e){}
 }
 async function liveClick(ll){
   if(S.mode==="view")return;
@@ -2031,7 +2069,54 @@ function ago(t){const d=(Date.now()-Date.parse(t))/60e3;if(d<2)return"nå nettop
 async function loadCatches(){const {data,error}=await cachedQ("catches",sb.from("catches").select("*"));if(error){S.catchErr=tableErr(error,"catch.sql");return}S.catchErr=null;S.catches=data;afterCatchData()}
 async function loadReports(){const since=new Date(Date.now()-14*864e5).toISOString();const {data,error}=await cachedQ("reports",sb.from("vis_reports").select("*").gte("created_at",since));
   if(error){S.visErr=tableErr(error,"catch.sql");return}S.visErr=null;S.reports=data.sort((a,b)=>b.created_at.localeCompare(a.created_at));afterVisData()}
-function afterCatchData(){if(S.dexOpen)renderDexDlg();syncDexBtn();if(S.view==="list")renderList();else if(S.view==="site"){renderLogs();renderSpecies();renderSiteHero()}if(S.sp)renderPins()}
+/* ---------- "bosses": an iconic species that dominates the group's registrations in an area ---------- */
+/* weight = how much one registration counts, so a few kveite or breiflabb can outrank lots of torsk */
+const BOSS_W={"Kveite":3,"Breiflabb":3,"Havert":3,"Oter":3,"Spekkhogger":3,"Nise":2.5,"Sel":2.5,"Kongekrabbe":2.5,"Hummer":2.5,"Piggvar":2.5,"Flekksteinbit":2.2,"Steinbit":2,"Uer":2,"Lange":2,"Akkar":2,"Pigghå":2,
+  "Brosme":1.6,"Lysing":1.6,"Lusuer":1.6,"Lyr":1.5,"Rognkjeks":1.5,"Sjøkreps":1.5,"Lomre":1.3,"Berggylt":1.3,"Kamskjell":1.2,"Taskekrabbe":1.2,"Hyse":1.2,"Kongsnegl":1.2,"Makrell":1,"Sei":1,"Rødspette":1,"Hvitting":1,"Sandflyndre":1,"Skrubbe":.9,"Torsk":.8};
+const BOSS_MIN=3,BOSS_MAX=14;
+S.boss=lsGet("dk-boss")!==false;S.bossLayer=null;
+function computeBosses(z){const map=S.lmap,by={};
+  for(const c of S.catches){if(!c.site_id||!c.species)continue;(by[c.site_id]=by[c.site_id]||[]).push(c)}
+  const items=Object.keys(by).map(id=>{const st=getSite(id);return st&&st.lat!=null&&st.lon!=null?{s:st,cs:by[id],p:map.project([st.lat,st.lon],z)}:null}).filter(Boolean).sort((a,b)=>b.cs.length-a.cs.length);
+  const Rpx=z>=14?70:z>=12?100:130,groups=[];
+  for(const it of items){let g=groups.find(g=>Math.hypot(g.p.x-it.p.x,g.p.y-it.p.y)<Rpx);if(!g){g={p:it.p,items:[]};groups.push(g)}g.items.push(it)}
+  const gc={};let gt=0;for(const c of S.catches){if(!c.site_id||!c.species)continue;gt++;if(BOSS_W[c.species])gc[c.species]=(gc[c.species]||0)+1}
+  const out=[];
+  for(const g of groups){const cnt={},tot={n:0};for(const it of g.items)for(const c of it.cs){tot.n++;if(BOSS_W[c.species])cnt[c.species]=(cnt[c.species]||0)+1}
+    const ranked=Object.entries(cnt).map(([sp,n])=>{const lift=Math.max(.5,Math.min(4,(n/tot.n)/((gc[sp]||n)/(gt||1))));return {sp,n,lift,score:n*BOSS_W[sp]*lift}}).sort((a,b)=>b.score-a.score||b.n-a.n);
+    g.all=ranked;g.ranked=ranked.filter(r=>r.n>=BOSS_MIN);g.tot=tot.n}
+  const won={};
+  for(const g of groups.filter(g=>g.ranked&&g.ranked.length).sort((a,b)=>b.ranked[0].score-a.ranked[0].score)){
+    const pick=g.ranked.map(r=>({...r,adj:r.score*Math.pow(.72,won[r.sp]||0)})).sort((a,b)=>b.adj-a.adj)[0];won[pick.sp]=(won[pick.sp]||0)+1;
+    const top=pick,ranked=[pick,...g.all.filter(r=>r.sp!==pick.sp)],tot={n:g.tot};
+    let la=0,lo=0,w=0;const sites=new Set();let best=null;
+    for(const it of g.items){const k=it.cs.filter(c=>c.species===top.sp);if(!k.length)continue;la+=it.s.lat*k.length;lo+=it.s.lon*k.length;w+=k.length;sites.add(it.s);
+      for(const c of k){const sc=(+c.weight_kg||0)*1000+(+c.size_cm||0);if(sc>0&&(!best||sc>best.sc))best={c,sc,s:it.s}}}
+    out.push({sp:top.sp,n:top.n,score:top.score,total:tot.n,ll:[la/w,lo/w],sites:[...sites],best,others:ranked.slice(1).sort((x,y)=>y.n-x.n).slice(0,3),tier:top.n>=10?"legend":top.n>=5?"elite":"boss"})}
+  return out.sort((a,b)=>b.score-a.score).slice(0,BOSS_MAX)}
+const BOSS_TIER={legend:"Legendarisk boss",elite:"Storboss",boss:"Boss"};
+function bossPopHTML(b){const pct=Math.round(b.n/b.total*100),names=b.sites.map(x=>x.name).slice(0,4).join(", ")+(b.sites.length>4?" …":"");
+  return `<div class="bosspop t-${b.tier}"><div class="bp-h">${spPic(b.sp,{cls:"bp-pic"})}<div><b>${esc(b.sp)}</b><span>${BOSS_TIER[b.tier]} · ${b.n} registreringer</span></div></div>
+    <p>${esc(b.sp)} står for ${pct} % av gjengens registreringer her (${b.n} av ${b.total}), på ${b.sites.length} ${b.sites.length===1?"sted":"steder"}: ${esc(names)}.</p>
+    ${b.best?`<p>Største: <b>${esc(measureTxt(b.best.c))}</b>${catcherName(b.best.c)?` av ${esc(catcherName(b.best.c))}`:""} på ${esc(b.best.s.name)}.</p>`:""}
+    ${b.others.length?`<p class="bp-o">Utfordrere: ${b.others.map(o=>`${esc(o.sp)} (${o.n})`).join(", ")}</p>`:""}
+    <div class="bp-btns"><button type="button" class="btn" data-bdex="${esc(b.sp)}">Åpne i Artsdex</button><button type="button" class="btn" data-bheat="${esc(b.sp)}">Vis alle funn</button></div></div>`}
+function bossIconHTML(b){const v=spImg(b.sp);
+  const pic=v?`<img src="${esc(v.src)}" alt="" loading="lazy">`:`<span class="bx-ph"><svg viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="#F1E6C8"/></svg></span>`;
+  return `<div class="boss t-${b.tier}"><i class="bx-stem"></i><i class="bx-dot"></i>${b.tier==="legend"?'<svg class="bx-crown" viewBox="0 0 32 20" aria-hidden="true"><path d="M2 18 L4 5 L11 11 L16 2 L21 11 L28 5 L30 18 Z" fill="#F3D67E" stroke="#7a5310" stroke-width="1.4" stroke-linejoin="round"/><circle cx="16" cy="2.5" r="2" fill="#fff3c4"/></svg>':""}<div class="bx-ring">${pic}</div><div class="bx-name">${esc(b.sp)}</div><div class="bx-lv" title="${b.n} registreringer">${b.n}</div></div>`}
+function renderBosses(){if(!S.lmap||typeof L==="undefined")return;
+  if(!S.bossLayer){S.lmap.createPane("bossPane").style.zIndex=620;S.bossLayer=L.layerGroup().addTo(S.lmap)}
+  S.bossLayer.clearLayers();if(!S.boss||!isLive()||S.sp)return;
+  const list=computeBosses(S.lmap.getZoom());
+  const need=list.map(b=>b.sp).filter(sp=>!(sp in S.spImg));if(need.length&&!S.spImgBusy)loadSpImages(need).then(()=>renderBosses());
+  for(const b of list){const m=L.marker(b.ll,{pane:"bossPane",keyboard:true,riseOnHover:true,title:`${b.sp} dominerer her (${b.n} registreringer)`,
+      icon:L.divIcon({className:"bossic",html:bossIconHTML(b),iconSize:[76,124],iconAnchor:[38,124],popupAnchor:[0,-116]})});
+    m.bindPopup(()=>bossPopHTML(b),{className:"bosspopwrap",maxWidth:300,minWidth:240,autoPanPaddingTopLeft:[20,70],autoPanPaddingBottomRight:[20,20]});
+    m.on("popupopen",e=>{const el=e.popup.getElement();if(!el)return;
+      el.querySelectorAll("[data-bdex]").forEach(x=>x.onclick=()=>{S.lmap.closePopup();openDex(x.dataset.bdex)});
+      el.querySelectorAll("[data-bheat]").forEach(x=>x.onclick=()=>{S.lmap.closePopup();showSpeciesOnMap(x.dataset.bheat,false)})});
+    m.addTo(S.bossLayer)}}
+function afterCatchData(){if(S.dexOpen)renderDexDlg();syncDexBtn();if(S.view==="list")renderList();else if(S.view==="site"){renderLogs();renderSpecies();renderSiteHero()}if(S.sp)renderPins();try{renderBosses()}catch(e){}}
 function afterVisData(){renderPins();if(S.view==="list")renderList();else if(S.view==="site"){const s=getSite(S.sel);if(s)renderVis(s)}}
 function latestReport(siteId,maxH=48){const r=S.reports.find(x=>x.site_id===siteId);return r&&(Date.now()-Date.parse(r.created_at))<maxH*3600e3?r:null}
 function visBadge(s){const r=latestReport(s.id);return r?`<span class="vbadge" title="Sikt rapportert ${esc(ago(r.created_at))}">${fnum(r.vis,1)} m</span>`:""}
