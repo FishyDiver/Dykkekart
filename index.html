@@ -561,6 +561,12 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .sc-dtxt .who{display:block;font-size:12px;color:#9fc3e0;margin-top:3px}
 .sc-dtxt .sc-dnone{color:#9fc3e0;font-size:14px}
 .sc-dbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.sc-reg{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#7f9fb8}
+.sc-reg select{appearance:none;-webkit-appearance:none;background:#0d2238 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F1E6C8' stroke-width='2'/%3E%3C/svg%3E") right 12px center no-repeat;color:#F1E6C8;border:1px solid rgba(241,230,200,.4);border-radius:999px;padding:6px 34px 6px 14px;font:600 14px Barlow,sans-serif;letter-spacing:0;text-transform:none;cursor:pointer;max-width:100%}
+.sc-reg select:disabled{opacity:.5;cursor:not-allowed}.sc-reg select option{background:#0a1a2c;color:#E3EDF4}
+.sc-local{color:#cfe0ee}.sc-dnow.fr,.sc-dbest.fr{color:#ff8a73;font-weight:600}
+.sc-nowm{flex:0 1 auto;min-width:0}.sc-nowl{flex:1 1 320px}
+@media (max-width:700px){.sc-now{flex-direction:column;align-items:stretch;gap:12px}.sc-nowl{flex:none}.sc-reg{flex-wrap:wrap}.sc-reg select{flex:1;min-width:0}}.dd-reg{font-weight:500;color:#9fc3e0;font-size:.85em}
 .sc-dbtns .chip{color:#F1E6C8;border-color:rgba(241,230,200,.55)}.sc-dbtns .chip:hover{background:rgba(241,230,200,.12)}
 .sc-dtxt.dd{margin:2px 0 10px}.sc-dtxt.dd p{font-size:14.5px}.sc-dbest{color:#9fc3e0}.sc-dbest b{color:#5fd0a4}
 /* v43: solid panel behind the calendar, five levels, curves, brush */
@@ -877,7 +883,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v44 (nytt navn: Jaktkart)";
+const APP_VERSION="v45 (sesongkalender per område)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2692,16 +2698,50 @@ const RULES={
  "Sjøkreps":{min:13,text:["Minstemål 13 cm."]}
 };
 const RULE_SRC=[["Fiskeridirektoratet: minstemål","https://www.fiskeridir.no/Fritidsfiske/Minstemaal"],["Fiskeridirektoratet: fritidsfiske","https://www.fiskeridir.no/Fritidsfiske"]];
+/* ---------- regions: season calendar, rules and GBIF numbers follow the chosen area ---------- */
+const REGIONS=[
+ {id:"finnmark",name:"Finnmark",short:"Finnmark",lat:70.66,lon:23.68,box:[69.8,71.3,20.5,31.0],n62:true},
+ {id:"troms",name:"Tromsø og Troms",short:"Tromsø",lat:69.65,lon:18.96,box:[68.8,70.3,15.5,21.5],n62:true},
+ {id:"nordland",name:"Bodø og Nordland",short:"Bodø",lat:67.28,lon:14.40,box:[66.6,68.2,12.8,16.4],n62:true},
+ {id:"trondelag",name:"Trondheim og Trøndelag",short:"Trondheim",lat:63.43,lon:10.39,box:[63.2,64.6,8.3,11.5],n62:true},
+ {id:"nordmore",name:"Kristiansund og Nordmøre",short:"Kristiansund",lat:63.11,lon:7.73,box:[62.8,63.5,6.9,8.8],n62:true},
+ {id:"sunnmore",name:"Ålesund og Sunnmøre",short:"Ålesund",lat:62.47,lon:6.15,box:[62.0,62.8,5.0,7.2],n62:true},
+ {id:"vestland",name:"Bergen og Vestland",short:"Bergen",lat:60.39,lon:5.32,box:[59.6,61.6,4.5,6.4],n62:false},
+ {id:"rogaland",name:"Stavanger og Rogaland",short:"Stavanger",lat:58.97,lon:5.73,box:[58.4,59.7,5.0,6.6],n62:false,smallCrab:true},
+ {id:"agder",name:"Kristiansand og Agder",short:"Kristiansand",lat:58.15,lon:8.0,box:[57.9,58.8,6.5,9.2],n62:false,smallCrab:true,spawnBan:true},
+ {id:"oslofjord",name:"Oslofjorden og Telemark",short:"Oslofjorden",lat:59.4,lon:10.5,box:[58.8,59.95,9.3,11.2],n62:false,smallCrab:true,codBan:true}];
+const REG=id=>REGIONS.find(g=>g.id===id)||REGIONS[2];
+function regionOf(lat,lon){if(lat==null||lon==null)return null;lat=+lat;lon=+lon;
+  const inBox=REGIONS.find(g=>lat>=g.box[0]&&lat<=g.box[1]&&lon>=g.box[2]&&lon<=g.box[3]);if(inBox)return inBox;
+  let best=null,bd=1e9;for(const g of REGIONS){const dy=lat-g.lat,dx=(lon-g.lon)*Math.cos(lat*Math.PI/180),d=dx*dx+dy*dy;if(d<bd){bd=d;best=g}}return best}
+function autoRegion(){const n={};for(const st of (typeof allSites==="function"?allSites():[])){const g=regionOf(st.lat,st.lon);if(g)n[g.id]=(n[g.id]||0)+1}
+  const top=Object.entries(n).sort((a,b)=>b[1]-a[1])[0];return top?top[0]:"nordland"}
+function curRegion(){if(!S.region)S.region=lsGet("dk-region")||autoRegion();return S.region}
+function siteRegionId(id){const st=id&&typeof getSite==="function"?getSite(id):null,g=st?regionOf(st.lat,st.lon):null;return g?g.id:(S.homeRegion||(S.homeRegion=autoRegion()))}
+/* rules that differ from the northern base rules in RULES */
+function regionRules(rid){const g=REG(rid),o={};
+  if(!g.n62){
+    o.Kveite={closed:[1,1,12,31],text:["Forbudt å fiske kveite sør for 62°N hele året. Gjelder alle redskap, også harpun og kniv."]};
+    o.Torsk={min:40,text:["Minstemål 40 cm innenfor 4 nautiske mil fra grunnlinjene sør for 62°N."]};
+    o.Hyse={min:32,text:["Minstemål 32 cm sør for 62°N."]}}
+  if(g.smallCrab)o.Taskekrabbe={min:11,text:["Minstemål 11 cm skallbredde fra svenskegrensen til og med Rogaland."]};
+  if(g.spawnBan)o.Torsk={min:40,text:["Minstemål 40 cm innenfor 4 nautiske mil fra grunnlinjene sør for 62°N.","I 14 gytefelt mellom svenskegrensen og Lindesnes er alt fiske forbudt fra januar til april."]};
+  if(g.codBan)o.Torsk={closed:[1,1,12,31],text:["Forbudt å fiske torsk fra svenskegrensen til og med Telemark, også ved undervannsjakt. Forbudet gjelder på ubestemt tid."]};
+  return o}
+function rulesFor(sp,rid){const o=regionRules(rid||curRegion());return o[sp]||RULES[sp]}
+const MNAME=["januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"];
+function closedFull(r){return !!(r&&r.closed&&r.closed[0]===1&&r.closed[1]===1&&r.closed[2]===12&&r.closed[3]===31)}
+function closedTxt(r){if(!r||!r.closed)return "";if(closedFull(r))return "hele året";const [m1,d1,m2,d2]=r.closed;return `${d1}. ${MNAME[m1-1]}–${d2}. ${MNAME[m2-1]}`}
 function inClosed(r,dateStr){if(!r||!r.closed||!dateStr)return false;const d=new Date(dateStr+"T12:00:00");if(isNaN(d))return false;const [m1,d1,m2,d2]=r.closed,v=(d.getMonth()+1)*100+d.getDate(),a=m1*100+d1,b=m2*100+d2;return a<=b?(v>=a&&v<=b):(v>=a||v<=b)}
-function ruleWarnings(c,dateStr){const r=RULES[c.species];if(!r||c.kind!=="fanget")return[];const w=[];
+function ruleWarnings(c,dateStr,rid){const r=rulesFor(c.species,rid);if(!r||c.kind!=="fanget")return[];const w=[];
   if(r.ban)w.push(r.ban);
-  if(inClosed(r,dateStr))w.push(`${c.species} er fredet i denne perioden (20. desember–20. april).`);
+  if(inClosed(r,dateStr))w.push(closedFull(r)?`${c.species} er fredet hele året i dette området.`:`${c.species} er fredet i denne perioden (${closedTxt(r)}).`);
   if(r.min&&c.size_cm!=null&&c.size_cm<r.min)w.push(`Under minstemålet på ${r.min} cm.`);
   if(r.maxKeep&&c.size_cm!=null&&c.size_cm>r.maxKeep)w.push(`${c.species} over ${r.maxKeep} cm skal slippes ut.`);
   return w}
 function checkCatchRow(row){const box=row.querySelector(".cwarn");if(!box)return;const c={species:normSp(row.querySelector(".cSp").value),kind:row.querySelector(".cKind").value,size_cm:num(row.querySelector(".cSize").value)};
-  const w=ruleWarnings(c,($("#lDate")||{}).value);box.innerHTML=w.length?w.map(x=>`<span>⚠ ${esc(x)}</span>`).join("")+` <a href="${RULE_SRC[0][1]}" target="_blank" rel="noopener">Regler</a>`:"";box.hidden=!w.length}
-function rulesHTML(sp){const r=RULES[sp];return `<div class="drules"><b>Regler i Nordland</b>${r?`<ul>${r.text.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<p>Ingen særskilte minstemål eller fredningstider registrert for ${esc(sp.toLocaleLowerCase("nb"))} i appen.</p>`}
+  const w=ruleWarnings(c,($("#lDate")||{}).value,siteRegionId(S.sel));box.innerHTML=w.length?w.map(x=>`<span>⚠ ${esc(x)}</span>`).join("")+` <a href="${RULE_SRC[0][1]}" target="_blank" rel="noopener">Regler</a>`:"";box.hidden=!w.length}
+function rulesHTML(sp){const r=rulesFor(sp);return `<div class="drules"><b>Regler: ${esc(REG(curRegion()).name)}</b>${r?`<ul>${r.text.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<p>Ingen særskilte minstemål eller fredningstider registrert for ${esc(sp.toLocaleLowerCase("nb"))} i appen.</p>`}
   <p class="dcred">Sjekket ${RULES_CHECKED}. Reglene kan endres, så sjekk alltid ${RULE_SRC.map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${n}</a>`).join(" eller ")} eller appen «Fritidsfiske».</p></div>`}
 
 
@@ -2795,10 +2835,10 @@ function showDexCard(sp){S.dexCard=sp;
     ${b?`<p>Største: <b>${esc(measureTxt(b))}</b> av ${esc(catcherName(b))}${bs?" på "+sl(bs):""}.</p>`:""}
     ${miss?"":`<p style="color:#9fc3e0;font-size:14px">Sett av: ${esc([...o.who].join(", ")||"–")}</p>`}
     ${photos.length?`<p style="margin:12px 0 0;font-weight:600;color:#F1E6C8">Gjengens bilder</p><div class="dphotos">${photos.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc([c.species,measureTxt(c),catcherName(c),getSite(c.site_id)?.name].filter(Boolean).join(" · "))}" aria-label="Vis bilde"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}
-    <div class="dseason"><div class="ddhead"><b>Sesong</b><button class="linkbtn" id="ddSeaAll" type="button">Hele sesongkalenderen ›</button></div>${(()=>{const v=seaLevels(sp),t=seaTextHTML(sp,v),bm=bestMonths(v.lv);return t||bm?`<div class="sc-dtxt dd">${bm?`<p class="sc-dbest">Best: <b>${esc(bm)}</b></p>`:""}${t}</div>`:""})()}<div id="ddSeason">${seasonSVG(sp,(S.gbif[sp]||{}).months)}</div>
-      <div class="ddleg"><span><i class="lg-bar sbx l4"></i>Topp</span><span><i class="lg-bar sbx l3"></i>Bra</span><span><i class="lg-bar sbx l2"></i>Mulig</span><span><i class="lg-bar sbx l1"></i>Vanskelig</span><span><i class="lg-bar" style="background:rgba(214,190,140,.5)"></i>Rapportert rundt Bodø</span><span><i class="dotl"></i>Gjengens funn</span>${RULES[sp]&&RULES[sp].closed?`<span><i class="lg-bar sbx fr"></i>Fredet</span>`:""}</div></div>
+    <div class="dseason"><div class="ddhead"><b>Sesong <span class="dd-reg">· ${esc(REG(curRegion()).name)}</span></b><button class="linkbtn" id="ddSeaAll" type="button">Hele sesongkalenderen ›</button></div>${(()=>{const v=seaLevels(sp),t=seaTextHTML(sp,v),full=closedFull(rulesFor(sp)),bm=full?"":bestMonths(v.lv);return t||bm||full?`<div class="sc-dtxt dd">${full?`<p class="sc-dbest fr">Fredet hele året her</p>`:bm?`<p class="sc-dbest">Best: <b>${esc(bm)}</b></p>`:""}${t}</div>`:""})()}<div id="ddSeason">${seasonSVG(sp,(S.gbif[sp]||{}).months)}</div>
+      <div class="ddleg"><span><i class="lg-bar sbx l4"></i>Topp</span><span><i class="lg-bar sbx l3"></i>Bra</span><span><i class="lg-bar sbx l2"></i>Mulig</span><span><i class="lg-bar sbx l1"></i>Vanskelig</span><span><i class="lg-bar" style="background:rgba(214,190,140,.5)"></i>Rapportert rundt ${esc(REG(curRegion()).short)}</span><span><i class="dotl"></i>Gjengens funn</span>${rulesFor(sp)&&rulesFor(sp).closed?`<span><i class="lg-bar sbx fr"></i>Fredet</span>`:""}</div></div>
     ${rulesHTML(sp)}
-    <div class="dexdist"><div class="ddhead"><b>Utbredelse</b><span class="chips" id="ddChips"><button class="chip on" data-v="lokal">${miss?"Rundt Bodø":"Våre funn"}</button><button class="chip" data-v="norge">Hele Norge</button></span></div>
+    <div class="dexdist"><div class="ddhead"><b>Utbredelse</b><span class="chips" id="ddChips"><button class="chip on" data-v="lokal">${miss?"Rundt "+esc(REG(curRegion()).short):"Våre funn"}</button><button class="chip" data-v="norge">Hele Norge</button></span></div>
       <div class="dexminimap" id="dexMini"></div>
       <p class="ddstats" id="ddStats">${miss?"Ikke registrert av gjengen ennå.":(()=>{const tot=S.catches.length||1,pct=o.n/tot*100;return `Gjengen: ${o.n} av ${S.catches.length} registreringer (${fnum(pct,pct<1?1:0)} %) på ${o.sites.size} ${o.sites.size===1?"sted":"steder"}.`})()} <span id="ddGbif"></span></p>
       <div class="ddleg"><span><i class="lg-ring"></i>Gjengens funn</span><span><i class="lg-hex"></i>Rapporterte funn (GBIF, inkl. Artsdatabanken): lilla = få, gul = mange</span></div>
@@ -2816,13 +2856,19 @@ function showDexCard(sp){S.dexCard=sp;
 }
 /* species distribution: group's own finds + GBIF occurrences (includes Artsdatabanken / Artskart data) */
 S.gbif=lsGet("gbif:v2")||{};
-async function gbifInfo(sp){const c=S.gbif[sp];if(c&&Date.now()-(c.t||0)<14*864e5)return c;const sci=SCI[sp];if(!sci)return null;
-  try{const m=await (await fetch(`https://api.gbif.org/v1/species/match?name=${encodeURIComponent(sci)}`)).json();if(!m||!m.usageKey||m.matchType==="NONE")return null;
-    const q=a=>fetch(`https://api.gbif.org/v1/occurrence/search?taxonKey=${m.usageKey}&limit=0${a}`).then(r=>r.json()).then(j=>j.count).catch(()=>null);
-    const BOX="&decimalLatitude=66.6,68.2&decimalLongitude=12.8,16.4";
-    const months=fetch(`https://api.gbif.org/v1/occurrence/search?taxonKey=${m.usageKey}&limit=0&facet=month&facetLimit=12${BOX}`).then(r=>r.json()).then(j=>{const a=Array(12).fill(0);const f=(j.facets||[])[0];if(f)for(const c of f.counts)a[(+c.name)-1]=c.count;return a}).catch(()=>null);
-    const [no,bodo,mon]=await Promise.all([q("&country=NO"),q(BOX),months]);
-    const v={key:m.usageKey,no,bodo,months:mon,t:Date.now()};S.gbif[sp]=v;lsSet("gbif:v2",S.gbif);return v}catch(e){return null}}
+/* returns {key, no (all of Norway), local (chosen area), months (chosen area)}; cached per species and area for 14 days */
+async function gbifInfo(sp,rid){rid=rid||curRegion();const fresh=c=>c&&Date.now()-(c.t||0)<14*864e5;let c=S.gbif[sp];
+  if(c&&c.bodo!==undefined&&!c.reg){c.reg={nordland:{n:c.bodo,months:c.months,t:c.t}}}
+  const out=v=>{const r=v.reg&&v.reg[rid];return {key:v.key,no:v.no,local:r?r.n:null,months:r?r.months:null}};
+  if(fresh(c)&&c.reg&&fresh(c.reg[rid]))return out(c);
+  const sci=SCI[sp];if(!sci)return null;
+  try{let key=c&&c.key;if(!key){const m=await (await fetch(`https://api.gbif.org/v1/species/match?name=${encodeURIComponent(sci)}`)).json();if(!m||!m.usageKey||m.matchType==="NONE")return null;key=m.usageKey}
+    const q=a=>fetch(`https://api.gbif.org/v1/occurrence/search?taxonKey=${key}&limit=0${a}`).then(r=>r.json()).then(j=>j.count).catch(()=>null);
+    const b=REG(rid).box,BOX=`&decimalLatitude=${b[0]},${b[1]}&decimalLongitude=${b[2]},${b[3]}`;
+    const months=fetch(`https://api.gbif.org/v1/occurrence/search?taxonKey=${key}&limit=0&facet=month&facetLimit=12${BOX}`).then(r=>r.json()).then(j=>{const a=Array(12).fill(0);const f=(j.facets||[])[0];if(f)for(const c2 of f.counts)a[(+c2.name)-1]=c2.count;return a}).catch(()=>null);
+    const [no,loc,mon]=await Promise.all([fresh(c)&&c.no!=null?Promise.resolve(c.no):q("&country=NO"),q(BOX),months]);
+    const v=Object.assign({},c||{},{key,no,t:fresh(c)?c.t:Date.now()});delete v.bodo;delete v.months;v.reg=Object.assign({},(c&&c.reg)||{});v.reg[rid]={n:loc,months:mon,t:Date.now()};
+    S.gbif[sp]=v;lsSet("gbif:v2",S.gbif);return out(v)}catch(e){return null}}
 /* conditions per month as curves: daylight (area), water temperature and visibility (lines with values) */
 function envCurvesHTML(dl,tv,vv,tn,vn,cm){const H=100,X=m=>50+100*m,cl=v=>Math.max(0,Math.min(1,v)),y=(v,mx)=>H-6-cl(v/mx)*(H-12),yV=v=>15+(1-cl(v/20))*30,yT=v=>60+(1-cl(v/15))*30;
   const dp=[];for(let m=-1;m<=12;m++)dp.push([X(m),y(dl[(m+12)%12],24)]);
@@ -2846,9 +2892,9 @@ function envCurvesHTML(dl,tv,vv,tn,vn,cm){const H=100,X=m=>50+100*m,cl=v=>Math.m
       ${line(T,"#FFAA5A",2.2)}${line(V,"#8fd3ec",2.6)}</svg>
       ${dots(T,"t",tv,v=>fnum(v,0)+"°")}${dots(V,"v",vv,v=>fnum(v,0)+"<small> m</small>")}
       <div class="ec-hov">${MNS.map((m,i)=>`<div title="${m}: ${Math.round(dl[i])} t dagslys${tv[i]!=null?` · vann ${fnum(tv[i],1)} °C (${tn[i]} ${tn[i]===1?"logg":"logger"})`:""}${vv[i]!=null?` · sikt ${fnum(vv[i],1)} m (${vn[i]} ${vn[i]===1?"måling":"målinger"})`:""}"></div>`).join("")}</div></div></div>
-    ${!T.pts.length&&!V.pts.length?`<p class="ec-none">Ingen logger med sikt eller vanntemperatur ennå. Kurvene fylles ut etter hvert som dere logger dykk.</p>`:`<p class="ec-none">Sikt og vanntemperatur er snitt fra gjengens logger. Stiplet linje = måneder uten data.</p>`}`}
+    ${!T.pts.length&&!V.pts.length?`<p class="ec-none">Ingen logger med sikt eller vanntemperatur fra dette området ennå. Kurvene fylles ut etter hvert som dere logger dykk her.</p>`:`<p class="ec-none">Sikt og vanntemperatur er snitt fra gjengens logger. Stiplet linje = måneder uten data.</p>`}`}
 function seasonSVG(sp,gm){const v=seaLevels(sp),mx=gm?Math.max(1,...gm):1;
-  return `<div class="sc sc-card">${scBoxes(v.lv,sp,{own:true})}${gm&&gm.some(x=>x>0)?`<div class="sc-gbif">${gm.map((x,m)=>`<span title="${MNS[m]}: ${x} rapporterte funn rundt Bodø"><i style="height:${x?Math.max(8,x/mx*100):0}%"></i></span>`).join("")}</div>`:""}<div class="sc-months sc-cm">${scMonthsHTML(true)}</div></div>`}
+  return `<div class="sc sc-card">${scBoxes(v.lv,sp,{own:true})}${gm&&gm.some(x=>x>0)?`<div class="sc-gbif">${gm.map((x,m)=>`<span title="${MNS[m]}: ${x} rapporterte funn rundt ${esc(REG(curRegion()).short)}"><i style="height:${x?Math.max(8,x/mx*100):0}%"></i></span>`).join("")}</div>`:""}<div class="sc-months sc-cm">${scMonthsHTML(true)}</div></div>`}
 function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined")return null;
   const map=L.map(el,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});S.dexMini=map;
   retryTiles(L.tileLayer("https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png",{maxZoom:16,attribution:'&copy; Kartverket'})).addTo(map);
@@ -2856,13 +2902,13 @@ function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined"
   for(const [id,L2] of Object.entries(bySite)){const s=getSite(id);if(!s||s.lat==null)continue;pts.push([s.lat,s.lon]);const caught=L2.filter(c=>c.kind==="fanget").reduce((n,c)=>n+(c.count||1),0);
     L.circleMarker([s.lat,s.lon],{radius:6+Math.min(10,Math.sqrt(L2.length)*2.4),color:"#FFE08A",weight:3,fillColor:"#E3B341",fillOpacity:.3,className:"ddring"}).addTo(map)
      .bindPopup(`<b>${esc(s.name)}</b><br>${L2.length} ${L2.length===1?"registrering":"registreringer"}${caught?`, ${caught} fanget`:""}`)}
-  const local=()=>{if(pts.length>1)map.fitBounds(pts,{padding:[26,26],maxZoom:12});else if(pts.length)map.setView(pts[0],11);else map.setView([67.28,14.4],8)};
+  const local=()=>{if(pts.length>1)map.fitBounds(pts,{padding:[26,26],maxZoom:12});else if(pts.length)map.setView(pts[0],11);else{const g=REG(curRegion());map.setView([g.lat,g.lon],8)}};
   local();setTimeout(()=>{try{map.invalidateSize();local()}catch(e){}},60);
   $("#ddChips").onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;$("#ddChips").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));if(b.dataset.v==="norge")map.fitBounds([[57.9,4.6],[71.2,31.2]],{padding:[4,4]});else local()};
   gbifInfo(sp).then(g=>{if(!g||S.dexMini!==map)return;const ss=$("#ddSeason");if(ss&&g.months)ss.innerHTML=seasonSVG(sp,g.months);
     // GBIF answers "204 No Content" for empty tiles; that is not an error
     gbifHexLayer(g.key,{maxZoom:16}).addTo(map);
-    const gs=$("#ddGbif");if(gs){const parts=[];if(g.bodo!=null)parts.push(`${g.bodo.toLocaleString("nb-NO")} rundt Bodø`);if(g.no!=null)parts.push(`${g.no.toLocaleString("nb-NO")} i hele Norge`);
+    const gs=$("#ddGbif");if(gs){const parts=[];if(g.local!=null)parts.push(`${g.local.toLocaleString("nb-NO")} rundt ${REG(curRegion()).short}`);if(g.no!=null)parts.push(`${g.no.toLocaleString("nb-NO")} i hele Norge`);
       gs.innerHTML=parts.length?`<br>Rapporterte funn i GBIF: ${esc(parts.join(", "))}.`:""}});
   return map}
 function credHTML(v){if(!v)return"";const src=v.kind==="inat"?"iNaturalist":v.kind==="egen"?"":"Wikipedia";
@@ -3044,11 +3090,11 @@ const DEFAULT_SEASON={
 };
 /* longer season texts, shown when a species is opened in the calendar and in the Artsdex card */
 const SEA_MORE={
- "Torsk":["Kysttorsken er stedbunden og står i tareskog, steinur og langs bratte kanter hele året.","Skreien vandrer inn fra Barentshavet og gyter langs kysten i Vestfjorden og Lofoten fra februar til april. Da kan det stå stor torsk grunnere enn ellers.","Om sommeren trekker den største torsken gjerne dypere ned i kaldere vann, mens småtorsken blir stående grunt i tareskogen."],
- "Sei":["Seien er en stimfisk som trekker inn mot kysten om sommeren og høsten.","Stor sei samler seg der det går mye strøm, som i Saltstraumen og rundt odder og skjær, og er ofte mest aktiv rundt strømskiftet.","Om vinteren står den stort sett dypere og lenger ute."],
- "Lyr":["Lyren er en sørlig art og er mindre vanlig i Nordland enn lenger sør.","Den står gjerne i og over tareskogen og langs bratte kanter, oftest sommer og høst.","Lyren er sky. Rolig dykking og å ligge stille i tarekanten gir best sjanse."],
- "Makrell":["Makrellen gyter lenger sør og trekker nordover langs kysten når vannet blir varmere.","Rundt Bodø kommer den vanligvis i juli og blir til september, men tidspunktet varierer fra år til år med vanntemperaturen.","Den svømmer raskt i stimer nær overflaten og er et vanskelig mål med harpun."],
- "Kveite":["Om sommeren kommer kveita grunt for å jakte, gjerne på sand- og grusbunn nær tarekanter og bratte skråninger. Den kan stå på bare noen få meters dyp.","Om vinteren trekker den dypt for å gyte, og nord for 62°N er den fredet fra 20. desember til 20. april, også for harpun.","Den ligger ofte helt stille og delvis nedgravd, så se etter omrisset og øynene."],
+ "Torsk":["Kysttorsken er stedbunden og står i tareskog, steinur og langs bratte kanter hele året.","Om sommeren trekker den største torsken gjerne dypere ned i kaldere vann, mens småtorsken blir stående grunt i tareskogen."],
+ "Sei":["Seien er en stimfisk som trekker inn mot kysten om sommeren og høsten.","Stor sei samler seg der det går mye strøm, rundt odder, skjær og sund, og er ofte mest aktiv rundt strømskiftet.","Om vinteren står den stort sett dypere og lenger ute."],
+ "Lyr":["Lyren er en sørlig art. Den er vanlig fra Trøndelag og sørover og blir sjeldnere jo lenger nord man kommer.","Den står gjerne i og over tareskogen og langs bratte kanter, oftest sommer og høst.","Lyren er sky. Rolig dykking og å ligge stille i tarekanten gir best sjanse."],
+ "Makrell":["Makrellen gyter lenger sør og trekker nordover langs kysten når vannet blir varmere.","Den kommer først i sør, gjerne i mai–juni, og når Nordland rundt juli. Tidspunktet varierer fra år til år med vanntemperaturen.","Den svømmer raskt i stimer nær overflaten og er et vanskelig mål med harpun."],
+ "Kveite":["Om sommeren kommer kveita grunt for å jakte, gjerne på sand- og grusbunn nær tarekanter og bratte skråninger. Den kan stå på bare noen få meters dyp.","Om vinteren trekker den dypt for å gyte.","Den ligger ofte helt stille og delvis nedgravd, så se etter omrisset og øynene."],
  "Steinbit":["Steinbiten holder til i steinur og bergsprekker og ligger ofte med hodet ut av et hull.","Den er ofte grunnere vår og sommer og står dypere om høsten og vinteren.","Hunnen legger eggene i en stor klump på bunnen, og hannen vokter dem til de klekker. I kaldt vann kan det ta mange måneder. Pass fingrene, for tennene er kraftige."],
  "Breiflabb":["Breiflabben er en bakholdsjeger som ligger urørlig på sand, grus eller mellom tare og lokker til seg byttedyr med «fiskestanga» på hodet.","Om sommeren kommer den inn på grunt vann, og da kan den sees på 5–20 meters dyp.","Den er godt kamuflert, så se etter den store munnen og kanten av kroppen."],
  "Rognkjeks":["Rognkjeksen lever ute i havet store deler av året og kommer inn på grunt vann for å gyte på vinteren og våren.","Hunnen legger eggene på stein på grunt vann og drar igjen. Hannen (rognkallen) suger seg fast og vokter eggene i flere uker.","Mange lar en vaktende hann være i fred, for uten ham blir eggene fort spist."],
@@ -3058,40 +3104,83 @@ const SEA_MORE={
  "Taskekrabbe":["Taskekrabben står på ganske grunt vann i sommerhalvåret og trekker dypere om vinteren.","Voksne krabber skifter skall fra august til oktober. Rett etterpå er de lite fylt med kjøtt, så krabber med hardt, gammelt skall er best.","Arten har blitt vanligere nordover langs kysten de siste tiårene."]
 };
 /* the group's own note (empty when nothing custom is saved); used as the value of the note field in edit mode */
-function seaNoteVal(sp){const e=S.seaEdit&&S.seaEdit[sp];if(e&&e.note!=null)return e.note;const v=seaLevels(sp),def=DEFAULT_SEASON[sp];return v.custom&&v.note&&!(def&&def[12]===v.note)?v.note:""}
-function seaTextHTML(sp,d){let h="";const def=DEFAULT_SEASON[sp];
+function seaNoteVal(sp){const e=S.seaEdit&&S.seaEdit[sp];if(e&&e.note!=null)return e.note;const v=seaLevels(sp),def=seaDefaults()[sp];return v.custom&&v.note&&!(def&&def[12]===v.note)?v.note:""}
+function seaTextHTML(sp,d,rid){rid=rid||curRegion();let h="";const def=seaDefaults(rid)[sp];
   if(d.custom&&d.note&&!(def&&def[12]===d.note))h+=`<p class="sc-cust">${esc(d.note)}<span class="who">Notat fra ${esc(d.who||"gjengen")}</span></p>`;
   const more=SEA_MORE[sp];
   if(more)h+=more.map(x=>`<p>${esc(x)}</p>`).join("");
   else if(!d.custom&&d.note)h+=`<p>${esc(d.note)}</p>`;
+  h+=seaLocal(sp,rid).map(x=>`<p class="sc-local">${esc(x)}</p>`).join("");
   return h}
 function bestMonths(lv){const mx=Math.max(...lv);if(mx<3)return "";if(lv.every(x=>x===mx))return "hele året";
   const on=lv.map(x=>x===mx),runs=[];let start=-1;
   for(let i=0;i<12;i++){if(on[i]&&start<0)start=i;if(!on[i]&&start>=0){runs.push([start,i-1]);start=-1}}if(start>=0)runs.push([start,11]);
   if(runs.length>1&&runs[0][0]===0&&runs[runs.length-1][1]===11){const last=runs.pop();runs[0]=[last[0],runs[0][1]]}
   return runs.map(([a,b])=>a===b?MNS[a]:MNS[a]+"–"+MNS[b]).join(" og ")}
-function rulesShort(sp){const r=RULES[sp];if(!r)return "";if(r.ban)return "Ikke lov med harpun";const a=[];
+function rulesShort(sp){const r=rulesFor(sp);if(!r)return "";if(r.ban)return "Ikke lov med harpun";if(closedFull(r))return "Fredet hele året her";const a=[];
   if(r.min)a.push(`Minstemål ${r.min} cm`);if(r.closed){const [m1,d1,m2,d2]=r.closed;a.push(`Fredet ${d1}.${String(m1).padStart(2,"0")}–${d2}.${String(m2).padStart(2,"0")}`)}if(r.maxKeep)a.push(`Over ${r.maxKeep} cm slippes ut`);return a.join(" · ")}
-function scDetailHTML(sp,d,cm,Mname){const l=d.lv[cm],best=bestMonths(d.lv),rs=rulesShort(sp),ow=ownByMonth(sp),tot=ow.reduce((a,b)=>a+b,0),top=tot?ow.indexOf(Math.max(...ow)):-1,txt=seaTextHTML(sp,d);
+function scDetailHTML(sp,d,cm,Mname){const l=d.lv[cm],r0=rulesFor(sp),full=closedFull(r0),shut=!full&&inClosed(r0,new Date().toISOString().slice(0,10)),best=full?"":bestMonths(d.lv),rs=full?"":rulesShort(sp),ow=ownByMonth(sp),tot=ow.reduce((a,b)=>a+b,0),top=tot?ow.indexOf(Math.max(...ow)):-1,txt=seaTextHTML(sp,d);
   return `<div class="sc-det" role="region" aria-label="Om ${esc(sp)}">
-    <div class="sc-dmeta"><span class="sc-dnow l${l}">${esc(Mname)}: ${LVL[l].toLocaleLowerCase("nb")}</span>${best?`<span>Best: <b>${esc(best)}</b></span>`:""}${rs?`<span class="sc-drule">${esc(rs)}</span>`:""}${tot?`<span>Gjengen: ${tot} reg., flest i ${MNS[top]}</span>`:""}</div>
+    <div class="sc-dmeta">${full?`<span class="sc-dnow fr">Fredet hele året her</span>`:shut?`<span class="sc-dnow fr">${esc(Mname)}: fredet</span>`:`<span class="sc-dnow l${l}">${esc(Mname)}: ${LVL[l].toLocaleLowerCase("nb")}</span>`}${best?`<span>Best: <b>${esc(best)}</b></span>`:""}${rs?`<span class="sc-drule">${esc(rs)}</span>`:""}${tot?`<span>Gjengen: ${tot} reg., flest i ${MNS[top]}</span>`:""}</div>
     <div class="sc-dtxt">${txt||`<p class="sc-dnone">Ingen sesongtekst for ${esc(sp.toLocaleLowerCase("nb"))} ennå. Trykk «Rediger» for å skrive et notat til gjengen.</p>`}</div>
     <div class="sc-dbtns"><button class="chip" type="button" data-dex="${esc(sp)}">Åpne i Artsdex ›</button></div></div>`}
+/* rough starting suggestions for the other areas (0 ikke aktuelt … 4 topp); the group adjusts them per area in the app */
+const REGION_SEASON={
+ finnmark:{"Torsk":[3,4,4,4,4,3,3,3,3,3,3,3],"Sei":[1,1,1,1,2,3,4,4,4,3,2,1],"Kveite":[0,0,0,1,2,3,4,4,3,2,1,1],"Steinbit":[2,2,2,3,4,4,3,3,3,2,2,2],
+   "Breiflabb":[0,0,0,0,0,1,1,1,1,0,0,0],"Rognkjeks":[0,0,1,2,3,4,3,1,0,0,0,0],"Rødspette":[1,1,1,1,2,3,4,4,3,2,1,1],"Hyse":[1,1,1,1,1,1,1,1,1,1,1,1],"Taskekrabbe":[0,0,0,0,1,1,2,2,2,1,0,0]},
+ troms:{"Torsk":[3,4,4,4,3,3,3,3,3,4,3,3],"Sei":[1,1,1,2,3,4,4,4,4,3,2,1],"Lyr":[0,0,0,0,0,1,1,1,1,0,0,0],"Makrell":[0,0,0,0,0,0,1,1,1,0,0,0],"Kveite":[0,0,0,1,3,4,4,4,3,2,1,1],
+   "Steinbit":[2,2,3,4,4,4,3,3,3,2,2,2],"Breiflabb":[0,0,0,0,1,1,2,2,1,1,0,0],"Rognkjeks":[0,1,2,3,4,3,2,0,0,0,0,0],"Rødspette":[1,1,1,2,3,4,4,4,3,2,1,1],"Hyse":[1,1,1,1,1,1,1,1,1,1,1,1],"Taskekrabbe":[0,0,0,1,1,2,3,3,3,2,1,0]},
+ trondelag:{"Torsk":[3,3,3,3,3,3,3,3,3,4,4,3],"Sei":[2,2,2,2,3,4,4,4,4,3,3,2],"Lyr":[1,1,1,2,2,3,3,3,3,3,2,1],"Makrell":[0,0,0,0,0,2,3,4,4,2,0,0],"Kveite":[0,0,0,1,3,4,4,4,4,3,2,1],
+   "Steinbit":[2,2,3,4,4,3,3,3,3,2,2,2],"Breiflabb":[0,0,1,1,2,3,4,4,3,2,1,0],"Rognkjeks":[1,2,3,4,3,2,1,0,0,0,0,1],"Rødspette":[1,1,1,2,3,4,4,4,3,3,2,1],"Hyse":[1,1,1,1,1,1,1,1,1,1,1,1],
+   "Kamskjell":[3,3,3,3,3,3,3,3,3,3,3,3],"Taskekrabbe":[1,1,1,2,3,3,4,4,4,3,2,1]},
+ nordmore:{"Torsk":[3,4,4,3,3,3,3,3,3,4,4,3],"Sei":[2,2,2,2,3,4,4,4,4,3,3,2],"Lyr":[1,1,1,2,3,3,3,3,3,3,2,1],"Makrell":[0,0,0,0,1,2,4,4,4,2,0,0],"Kveite":[0,0,0,1,3,4,4,4,4,3,2,1],
+   "Steinbit":[2,2,3,3,4,3,3,3,3,2,2,2],"Breiflabb":[0,0,1,1,2,3,4,4,3,2,1,0],"Rognkjeks":[1,2,3,4,3,2,1,0,0,0,0,1],"Rødspette":[1,1,1,2,3,4,4,4,3,3,2,1],"Hyse":[1,1,1,1,1,1,1,1,1,1,1,1],
+   "Kamskjell":[3,3,3,3,3,3,3,3,3,3,3,3],"Taskekrabbe":[1,1,1,2,3,3,4,4,4,3,2,1]},
+ sunnmore:{"Torsk":[3,4,4,3,3,3,3,3,3,4,4,3],"Sei":[2,2,2,2,3,4,4,4,4,3,3,2],"Lyr":[1,1,2,2,3,3,4,4,3,3,2,1],"Makrell":[0,0,0,0,2,3,4,4,4,2,1,0],"Kveite":[0,0,0,1,3,4,4,4,4,3,2,1],
+   "Steinbit":[2,2,3,3,4,3,3,3,3,2,2,2],"Breiflabb":[0,0,1,1,2,3,4,4,3,2,1,0],"Rognkjeks":[1,2,3,4,3,2,1,0,0,0,0,1],"Rødspette":[1,1,1,2,3,4,4,4,3,3,2,1],"Hyse":[1,1,1,1,1,1,1,1,1,1,1,1],
+   "Kamskjell":[3,3,3,3,3,3,3,3,3,3,3,3],"Taskekrabbe":[1,1,1,2,3,3,4,4,4,3,2,1]},
+ vestland:{"Torsk":[2,3,3,3,2,2,2,2,3,3,3,2],"Sei":[2,2,2,2,3,3,3,4,4,3,3,2],"Lyr":[2,2,2,3,3,4,4,4,4,3,3,2],"Makrell":[0,0,0,0,2,4,4,4,4,3,1,0],"Kveite":[0,0,0,1,2,3,3,3,3,2,1,0],
+   "Steinbit":[1,1,2,2,2,2,1,1,1,1,1,1],"Breiflabb":[1,1,1,2,3,3,4,4,3,2,1,1],"Rognkjeks":[2,3,4,4,3,1,0,0,0,0,0,1],"Rødspette":[1,1,2,2,3,4,4,4,3,3,2,1],"Hyse":[1,1,1,1,1,1,1,1,1,1,1,1],
+   "Kamskjell":[3,3,3,3,3,3,3,3,3,3,3,3],"Taskekrabbe":[1,1,1,2,3,3,4,4,4,3,2,1]},
+ rogaland:{"Torsk":[2,3,3,3,2,2,2,2,3,3,3,2],"Sei":[2,2,2,2,3,3,3,3,3,3,2,2],"Lyr":[2,2,2,3,4,4,4,4,4,3,3,2],"Makrell":[0,0,0,1,3,4,4,4,4,3,1,0],"Kveite":[0,0,0,1,2,3,3,3,3,2,1,0],
+   "Steinbit":[1,1,1,2,2,1,1,1,1,1,1,1],"Breiflabb":[1,1,1,2,3,3,4,4,3,2,1,1],"Rognkjeks":[2,3,4,4,2,1,0,0,0,0,1,1],"Rødspette":[1,1,2,3,3,4,4,4,3,3,2,1],"Hyse":[1,1,1,1,1,1,1,1,1,1,1,1],
+   "Kamskjell":[3,3,3,3,3,3,3,3,3,3,3,3],"Taskekrabbe":[1,1,1,2,3,3,4,4,4,3,2,1]},
+ agder:{"Torsk":[2,2,2,2,2,2,2,2,3,3,3,2],"Sei":[1,1,1,1,2,3,3,3,3,2,2,1],"Lyr":[1,1,2,2,3,4,4,4,4,3,2,1],"Makrell":[0,0,0,1,3,4,4,4,4,2,1,0],"Kveite":[0,0,0,1,2,2,2,2,2,2,1,0],
+   "Steinbit":[1,1,1,1,1,1,1,1,1,1,1,1],"Breiflabb":[1,1,1,1,2,2,2,2,2,2,1,1],"Rognkjeks":[2,3,4,3,2,1,0,0,0,0,1,1],"Rødspette":[1,1,2,3,3,4,4,4,3,3,2,1],"Hyse":[1,1,1,1,1,1,1,1,1,1,1,1],
+   "Kamskjell":[2,2,2,2,2,2,2,2,2,2,2,2],"Taskekrabbe":[1,1,1,2,3,4,4,4,4,3,2,1]},
+ oslofjord:{"Torsk":[2,2,2,2,2,2,2,2,2,2,2,2],"Sei":[1,1,1,1,2,3,3,3,3,2,1,1],"Lyr":[1,1,1,2,3,3,4,4,3,3,2,1],"Makrell":[0,0,0,0,2,4,4,4,3,2,0,0],"Kveite":[0,0,0,0,1,1,1,1,1,1,0,0],
+   "Steinbit":[1,1,1,1,1,1,1,1,1,1,1,1],"Breiflabb":[1,1,1,1,1,2,2,2,2,1,1,1],"Rognkjeks":[2,3,4,3,2,1,0,0,0,0,1,1],"Rødspette":[1,1,2,3,3,4,4,4,3,3,2,1],"Hyse":[1,1,1,1,1,1,1,1,1,1,1,1],
+   "Kamskjell":[1,1,1,1,1,1,1,1,1,1,1,1],"Taskekrabbe":[1,1,1,2,3,4,4,4,4,3,2,1]}
+};
+const seaDefaults=rid=>(rid||curRegion())==="nordland"?DEFAULT_SEASON:(REGION_SEASON[rid||curRegion()]||{});
+/* database key: plain species name for Bodø/Nordland (as before), "Art@område" for the other areas */
+const seaKey=(sp,rid)=>{rid=rid||curRegion();return rid==="nordland"?sp:sp+"@"+rid};
+const keyRegion=k=>k.includes("@")?k.split("@")[1]:"nordland",keySp=k=>k.split("@")[0];
+/* area-specific lines added to the general season texts */
+function seaLocal(sp,rid){const g=REG(rid),o=[];
+  if(sp==="Torsk"){if(rid==="nordland")o.push("I Vestfjorden og Lofoten gyter skreien fra februar til april. Da kan det stå stor torsk grunnere enn ellers.");
+    else if(rid==="troms"||rid==="finnmark")o.push("Om vinteren og våren kommer skreien og loddetorsken inn mot kysten, og da kan det stå stor torsk grunt.");
+    else if(rid==="nordmore"||rid==="sunnmore")o.push("Skreien gyter også på bankene utenfor Møre i februar–mars.");
+    else if(g.codBan)o.push("Her er torsken fredet, så den kan bare sees, ikke tas.");
+    else if(!g.n62)o.push("Kysttorsken i Sør-Norge er svakere enn i nord, og flere steder har egne fredningsområder. Sjekk reglene før du tar torsk.")}
+  if(sp==="Sei"&&rid==="nordland")o.push("Saltstraumen er kjent for stor sei, særlig sommer og høst.");
+  if(sp==="Kveite")o.push(g.n62?"Nord for 62°N er den fredet fra 20. desember til 20. april, også for harpun.":"Sør for 62°N er det forbudt å fiske kveite hele året, også med harpun.");
+  return o}
 const LVL=["Ikke aktuelt","Vanskelig","Mulig","Bra","Topp"],SEA_SCALE=5,SEA_N=5,MNS=["jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des"];
 S.seaDB=null;S.seaErr=null;S.seaEdit=null;S.seaOpenSp=null;S.seaBrush=3;S.seaFilter="alle";S.seaSort="gruppe";
 async function loadSeason(){try{const {data,error}=await sb.from("season_cal").select("*");if(error){S.seaErr=tableErr(error,"season.sql");S.seaDB={};return}S.seaErr=null;S.seaDB={};for(const r of data||[])S.seaDB[r.species]=r}catch(e){S.seaErr="Kunne ikke hente sesongdata.";S.seaDB={}}}
-function seaLevels(sp){const r=S.seaDB&&S.seaDB[sp];
+function seaLevels(sp,rid){rid=rid||curRegion();const r=S.seaDB&&S.seaDB[seaKey(sp,rid)];
   if(r&&Array.isArray(r.levels)){const a=r.levels.map(Number),base={note:r.note||"",who:r.updated_name||"",custom:true};
     if(a.length===13&&a[12]===SEA_SCALE)return Object.assign({lv:a.slice(0,12).map(x=>Math.max(0,Math.min(4,x)))},base);
     if(a.length===12)return Object.assign({lv:a.map(x=>x>0?Math.min(4,x+1):0)},base)} // old 0–3 scale: mulig/bra/topp move up one step
-  const d=DEFAULT_SEASON[sp];return d?{lv:d.slice(0,12),note:d[12]||"",custom:false}:{lv:Array(12).fill(0),note:"",custom:false}}
+  const d=seaDefaults(rid)[sp];return d?{lv:d.slice(0,12),note:d[12]||"",custom:false}:{lv:Array(12).fill(0),note:"",custom:false}}
 const HARVEST=new Set(["Torsk","Sei","Lyr","Hyse","Hvitting","Lysing","Lange","Brosme","Steinbit","Flekksteinbit","Breiflabb","Kveite","Rødspette","Skrubbe","Sandflyndre","Lomre","Piggvar","Uer","Makrell","Sild","Rognkjeks",
   "Kamskjell","Harpeskjell","Blåskjell","O-skjell","Hjerteskjell","Kuskjell","Sandskjell","Kongsnegl","Kongekrabbe","Taskekrabbe","Sjøkreps","Kråkebolle","Rød kråkebolle","Sjøpølse","Akkar",
   "Sukkertare","Fingertare","Butare","Søl","Krusflik","Havsalat"]);
-function seaSpecies(){const known=new Set(SPGROUPS.flatMap(g=>g[1]));
-  const s=new Set([...Object.keys(DEFAULT_SEASON),...Object.keys(S.seaDB||{}),...S.catches.map(c=>c.species).filter(sp=>sp&&(HARVEST.has(sp)||!known.has(sp)))]);
+function seaSpecies(rid){rid=rid||curRegion();const known=new Set(SPGROUPS.flatMap(g=>g[1]));
+  const s=new Set([...Object.keys(seaDefaults(rid)),...Object.keys(S.seaDB||{}).filter(k=>keyRegion(k)===rid).map(keySp),...S.catches.filter(c=>siteRegionId(c.site_id)===rid).map(c=>c.species).filter(sp=>sp&&(HARVEST.has(sp)||!known.has(sp)))]);
   for(const sp of Object.keys(RULES))if(RULES[sp].ban)s.delete(sp);return [...s]}
-function ownByMonth(sp){const a=Array(12).fill(0);for(const c of S.catches)if(c.species===sp&&c.date){const m=+String(c.date).slice(5,7)-1;if(m>=0)a[m]++}return a}
+function ownByMonth(sp,rid){rid=rid||curRegion();const a=Array(12).fill(0);for(const c of S.catches)if(c.species===sp&&c.date&&siteRegionId(c.site_id)===rid){const m=+String(c.date).slice(5,7)-1;if(m>=0)a[m]++}return a}
 function closedSpan(r,m){// fraction [start,width] of month m (0-11) covered by a closed season
   if(!r||!r.closed)return null;const [m1,d1,m2,d2]=r.closed,days=new Date(2026,m+1,0).getDate(),mm=m+1;
   const inside=d=>{const v=mm*100+d,a=m1*100+d1,b=m2*100+d2;return a<=b?(v>=a&&v<=b):(v>=a||v<=b)};
@@ -3133,7 +3222,7 @@ function scTrackInner(lv,sp,{H=50,gbif=null,edit=false,showOwn=true,today:showTo
   return h}
 function scMonthsHTML(short){const cm=new Date().getMonth();return MNS.map((m,i)=>`<span class="${i===cm?"now":""}">${short?m[0].toUpperCase():`<span class="mlong">${m}</span><span class="mshort">${m[0].toUpperCase()}</span>`}</span>`).join("")}
 /* season boxes: one box per month in sea colours */
-function scBoxes(lv,sp,{own=false,edit=false}={}){const r=RULES[sp],ow=own?ownByMonth(sp):null,cm=new Date().getMonth();
+function scBoxes(lv,sp,{own=false,edit=false}={}){const r=rulesFor(sp),ow=own?ownByMonth(sp):null,cm=new Date().getMonth();
   return `<div class="sc-boxes">${lv.map((l,m)=>{const fr=closedSpan(r,m),full=fr&&fr[1]>.97;
     const tip=`${sp}, ${MNS[m]}: ${LVL[l]}${fr?" · fredet"+(full?"":" deler av måneden"):""}${ow&&ow[m]?` · gjengen: ${ow[m]} reg.`:""}${edit?" (trykk for å endre)":""}`;
     return `<${edit?"button type=\"button\"":"div"} class="sbx l${l}${m===cm?" now":""}${full?" fr":""}" data-sp="${esc(sp)}" data-m="${m}" title="${esc(tip)}">${fr&&!full?`<span class="frp" style="left:${(fr[0]*100).toFixed(1)}%;width:${(fr[1]*100).toFixed(1)}%"></span>`:""}${ow&&ow[m]?`<span class="od" style="width:${Math.min(10,5+ow[m])}px;height:${Math.min(10,5+ow[m])}px"></span>`:""}</${edit?"button":"div"}>`}).join("")}</div>`}
@@ -3146,13 +3235,14 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   if(S.seaSort==="naa")list.sort((a,b)=>data[b].lv[cm]-data[a].lv[cm]||a.localeCompare(b,"nb"));
   else{const order=SPGROUPS.flatMap(g=>g[1]);list.sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return (ia<0?999:ia)-(ib<0?999:ib)||a.localeCompare(b,"nb")})}
   const top=sps.filter(sp=>data[sp].lv[cm]===4),good=sps.filter(sp=>data[sp].lv[cm]===3);
-  const kv=RULES["Kveite"];let kvTxt="";if(kv&&kv.closed){const inC=inClosed(kv,now.toISOString().slice(0,10));
+  const rid=curRegion(),RG=REG(rid);
+  const kv=rulesFor("Kveite",rid);let kvTxt="";if(closedFull(kv))kvTxt=RG.codBan?"Kveite og torsk er fredet hele året i dette området.":"Kveite er fredet hele året sør for 62°N.";else if(kv&&kv.closed){const inC=inClosed(kv,now.toISOString().slice(0,10));
     if(inC)kvTxt="Kveita er fredet til 20. april.";else{const y=now.getMonth()===11&&now.getDate()>20?now.getFullYear()+1:now.getFullYear(),dd=Math.ceil((new Date(y,11,20)-now)/864e5);if(dd<=75)kvTxt=`Kveita fredes om ${dd} ${dd===1?"dag":"dager"} (20. desember).`}}
-  const dl=Array.from({length:12},(_,m)=>{const s2=sunTimes(new Date(now.getFullYear(),m,15,12),67.28,14.40);if(s2.sun.never==="down")return 24;if(s2.sun.never==="up")return 0;return (s2.sun.set-s2.sun.rise)/36e5});
+  const dl=Array.from({length:12},(_,m)=>{const s2=sunTimes(new Date(now.getFullYear(),m,15,12),RG.lat,RG.lon);if(s2.sun.never==="down")return 24;if(s2.sun.never==="up")return 0;return (s2.sun.set-s2.sun.rise)/36e5});
   const [cur]=scMarks();
   // optional: conditions per month as boxes
   let env="";
-  if(O.env){const logs=S.allLogs||[],vp=visPoints(logs,S.reports||[]),vs=Array(12).fill(0),vn=Array(12).fill(0);for(const q of vp){vs[q.month]+=q.vis;vn[q.month]++}
+  if(O.env){const logs=(S.allLogs||[]).filter(l=>siteRegionId(l.site_id)===rid),vp=visPoints(logs,(S.reports||[]).filter(q=>siteRegionId(q.site_id)===rid)),vs=Array(12).fill(0),vn=Array(12).fill(0);for(const q of vp){vs[q.month]+=q.vis;vn[q.month]++}
     const ts=Array(12).fill(0),tn=Array(12).fill(0);for(const l of logs)if(l.temp!=null&&l.date){const m=+l.date.slice(5,7)-1;ts[m]+=+l.temp;tn[m]++}
     env=`<div class="sc-envblock">${envCurvesHTML(dl,ts.map((s2,i)=>tn[i]?s2/tn[i]:null),vs.map((s2,i)=>vn[i]?s2/vn[i]:null),tn,vn,cm)}</div>`}
   const mname=now.toLocaleDateString("nb-NO",{month:"long"}),Mname=mname[0].toUpperCase()+mname.slice(1);
@@ -3167,7 +3257,8 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   const nm=a=>a.map(sp=>`<button class="sc-chip" data-sp="${esc(sp)}">${esc(sp)}</button>`).join("");
   wrap.innerHTML=`<div class="dexin sc${ed?" sc-editing":""}">
     <div class="dextop"><h2>Sesongkalender</h2><button class="dexclose" id="seaX" aria-label="Lukk">✕</button></div>
-    <div class="sc-now"><div class="sc-nowm"><b>${esc(Mname)}</b><span>uke ${isoWeek(now)} · ${Math.round(dl[cm])} t dagslys</span></div>
+    <div class="sc-now"><div class="sc-nowm"><b>${esc(Mname)}</b><span>uke ${isoWeek(now)} · ${Math.round(dl[cm])} t dagslys</span>
+      <label class="sc-reg" title="${ed?"Lagre eller avbryt redigeringen før du bytter område":"Velg område"}"><span>Område</span><select id="seaReg"${ed?" disabled":""}>${REGIONS.map(g=>`<option value="${g.id}"${g.id===rid?" selected":""}>${esc(g.name)}</option>`).join("")}</select></label></div>
       <div class="sc-nowl">${top.length?`<div><span class="k t">Topp</span>${nm(top)}</div>`:""}${good.length?`<div><span class="k g">Bra</span>${nm(good)}</div>`:""}${!top.length&&!good.length?`<div class="sc-quiet">Ingen arter i toppsesong nå.</div>`:""}${kvTxt?`<div class="sc-warn">⚠ ${esc(kvTxt)}</div>`:""}</div></div>
     <div class="sc-tools"><div class="chips" id="seaF"><button class="chip ${S.seaFilter==="alle"?"on":""}" data-f="alle">Alle</button><button class="chip ${S.seaFilter==="naa"?"on":""}" data-f="naa">I sesong nå</button><button class="chip ${S.seaSort==="naa"?"on":""}" data-s="naa">Best nå først</button></div>
       <div class="chips" id="seaO"><button class="chip ${O.own?"on":""}" data-o="own" title="Vis gjengens registreringer som prikker">Våre funn</button><button class="chip ${O.env?"on":""}" data-o="env" title="Vis dagslys, vanntemperatur og sikt">Forhold</button>${ed?`<button class="chip" id="seaCancel">Avbryt</button><button class="chip on" id="seaSave">Lagre</button>`:`<button class="chip" id="seaEditB">Rediger</button>`}</div></div>
@@ -3177,10 +3268,12 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
     <div class="sc-head"><div></div><div class="sc-months">${scMonthsHTML(false)}</div></div>
     ${env}
     <div id="scRows">${rows||`<p class="emptytxt" style="color:#9fc3e0">Ingen arter er i sesong denne måneden.</p>`}</div>
-    <p class="sc-foot">Startforslag for undervannsjakt rundt Bodø. Trykk på en art for å lese mer, eller «Rediger» for å justere.</p>
+    <p class="sc-foot">${rid==="nordland"?"Startforslag for undervannsjakt rundt Bodø.":`Grove startforslag for ${esc(RG.name)}. Juster gjerne med «Rediger» når dere kjenner området.`} Justeringer lagres per område. Trykk på en art for å lese mer.</p>
   </div>`;
   wrap.scrollTop=stTop;
   $("#seaX").onclick=closeSeason;
+  {const rs=$("#seaReg");if(rs)rs.onchange=()=>{S.region=rs.value;lsSet("dk-region",S.region);S.seaOpenSp=null;renderSeason();
+    const sp2=seaSpecies();if(sp2.some(x=>!(x in S.spImg))&&!S.spImgBusy)loadSpImages(sp2).then(()=>{if(S.seaOpen)renderSeason()})}}
   $("#seaF").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.f)S.seaFilter=b.dataset.f;if(b.dataset.s)S.seaSort=S.seaSort==="naa"?"gruppe":"naa";renderSeason()};
   $("#seaO").onclick=e=>{const b=e.target.closest("[data-o]");if(!b)return;O[b.dataset.o]=!O[b.dataset.o];lsSet("dk-sc",O);
     if(b.dataset.o==="env"&&O.env&&S.allLogs==null)cachedQ("alllogs",sb.from("logs").select("*")).then(a2=>{if(!a2.error)S.allLogs=a2.data;if(S.seaOpen)renderSeason()});renderSeason()};
@@ -3202,7 +3295,7 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
     rowsEl.onclick=e=>{const c=e.target.closest("button.sbx[data-sp]");if(c&&e.detail===0){paint(c);if(changed){changed=false;renderSeason()}}};
     const br=$("#seaBrush");if(br)br.onclick=e=>{const b=e.target.closest("[data-b]");if(!b)return;S.seaBrush=+b.dataset.b;renderSeason()};
     wrap.querySelectorAll("input[data-note]").forEach(i=>i.oninput=()=>{const sp=i.dataset.note,cur2=S.seaEdit[sp]||{lv:data[sp].lv.slice(),note:seaNoteVal(sp)};cur2.note=i.value;S.seaEdit[sp]=cur2});
-    $("#seaSave").onclick=async()=>{const rowsUp=Object.entries(S.seaEdit).map(([sp,v])=>({species:sp,levels:[...v.lv,SEA_SCALE],note:(v.note||"").trim(),updated_name:S.me.name,updated_at:new Date().toISOString()}));
+    $("#seaSave").onclick=async()=>{const rowsUp=Object.entries(S.seaEdit).map(([sp,v])=>({species:seaKey(sp),levels:[...v.lv,SEA_SCALE],note:(v.note||"").trim(),updated_name:S.me.name,updated_at:new Date().toISOString()}));
       if(!rowsUp.length){S.seaEdit=null;renderSeason();return}
       const btn=$("#seaSave");btn.disabled=true;btn.textContent="Lagrer…";
       const {error}=await sb.from("season_cal").upsert(rowsUp);
