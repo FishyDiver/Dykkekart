@@ -650,7 +650,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v34 (regler, sesong, månedens fangst, varmekart)";
+const APP_VERSION="v35 (tydelige funn ved zoom)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2460,6 +2460,10 @@ function rulesHTML(sp){const r=RULES[sp];return `<div class="drules"><b>Regler i
   <p class="dcred">Sjekket ${RULES_CHECKED}. Reglene kan endres, så sjekk alltid ${RULE_SRC.map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${n}</a>`).join(" eller ")} eller appen «Fritidsfiske».</p></div>`}
 
 
+/* GBIF hexagon layer: fewer hexagons per tile when zoomed in, so each one stays big enough to see */
+const GBIF_HPT=d=>{const z=+d.z;return z<=5?32:z<=7?24:z<=9?16:z<=11?11:z<=13?8:6};
+function gbifHexLayer(key,opts={}){return L.tileLayer(`https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@2x.png?srs=EPSG:3857&taxonKey=${key}&bin=hex&hexPerTile={hpt}&style=purpleYellow-noborder.poly`,
+  Object.assign({hpt:GBIF_HPT,opacity:.8,maxZoom:18,tileSize:256,attribution:'Funn: <a href="https://www.gbif.org/species/'+key+'" target="_blank" rel="noopener">GBIF.org</a>'},opts))}
 /* ---------- species heatmap on the main map ---------- */
 S.heatGbif=false;S.heatGbifLayer=null;
 function renderHeat(){const bar=$("#heatBar");if(!S.heatLayer)return;S.heatLayer.clearLayers();
@@ -2470,7 +2474,7 @@ function renderHeat(){const bar=$("#heatBar");if(!S.heatLayer)return;S.heatLayer
   for(const [id,arr] of Object.entries(by)){const s=getSite(id);if(!s||s.lat==null)continue;const f=Math.sqrt(arr.length/mx),d=Math.round(70+110*f);
     L.marker([s.lat,s.lon],{pane:"heatPane",interactive:false,keyboard:false,icon:L.divIcon({className:"heatglow",html:`<span style="width:${d}px;height:${d}px;opacity:${(.55+.4*f).toFixed(2)}"></span>`,iconSize:[d,d],iconAnchor:[d/2,d/2]})}).addTo(S.heatLayer)}
   if(S.heatGbif&&!S.heatGbifLayer){const sp=S.sp;gbifInfo(sp).then(g=>{if(!g||S.sp!==sp||!S.heatGbif||S.heatGbifLayer)return;
-    S.heatGbifLayer=L.tileLayer(`https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@2x.png?srs=EPSG:3857&taxonKey=${g.key}&bin=hex&hexPerTile=40&style=purpleYellow-noborder.poly`,{opacity:.7,pane:"heatPane",attribution:'Funn: <a href="https://www.gbif.org/species/'+g.key+'" target="_blank" rel="noopener">GBIF.org</a>'});S.heatGbifLayer._sp=sp;S.heatGbifLayer.addTo(S.lmap)})}
+    S.heatGbifLayer=gbifHexLayer(g.key,{opacity:.75,pane:"heatPane"});S.heatGbifLayer._sp=sp;S.heatGbifLayer.addTo(S.lmap)})}
   if(bar){const n=Object.keys(by).length;bar.hidden=false;
     bar.innerHTML=`<span class="hbt"><i class="hdot"></i><b>${esc(S.sp)}</b> <span>${n} ${n===1?"sted":"steder"}</span></span><label class="hbg"><input type="checkbox" id="heatG" ${S.heatGbif?"checked":""}> Alle rapporterte funn</label><button type="button" id="heatX" aria-label="Fjern varmekart" title="Fjern artsfilter">✕</button>`;
     $("#heatG").onchange=e=>{S.heatGbif=e.target.checked;renderHeat()};
@@ -2586,9 +2590,8 @@ function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined"
   local();setTimeout(()=>{try{map.invalidateSize();local()}catch(e){}},60);
   $("#ddChips").onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;$("#ddChips").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));if(b.dataset.v==="norge")map.fitBounds([[57.9,4.6],[71.2,31.2]],{padding:[4,4]});else local()};
   gbifInfo(sp).then(g=>{if(!g||S.dexMini!==map)return;const ss=$("#ddSeason");if(ss&&g.months)ss.innerHTML=seasonSVG(sp,g.months);
-    const att='Funn: <a href="https://www.gbif.org/species/'+g.key+'" target="_blank" rel="noopener">GBIF.org</a>',base=`https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@2x.png?srs=EPSG:3857&taxonKey=${g.key}`;
-    // GBIF answers "204 No Content" for empty tiles; that is not an error, so no fallback is needed
-    L.tileLayer(base+"&bin=hex&hexPerTile=22&style=purpleYellow-noborder.poly",{opacity:.8,maxZoom:16,tileSize:256,attribution:att}).addTo(map);
+    // GBIF answers "204 No Content" for empty tiles; that is not an error
+    gbifHexLayer(g.key,{maxZoom:16}).addTo(map);
     const gs=$("#ddGbif");if(gs){const parts=[];if(g.bodo!=null)parts.push(`${g.bodo.toLocaleString("nb-NO")} rundt Bodø`);if(g.no!=null)parts.push(`${g.no.toLocaleString("nb-NO")} i hele Norge`);
       gs.innerHTML=parts.length?`<br>Rapporterte funn i GBIF: ${esc(parts.join(", "))}.`:""}});
   return map}
