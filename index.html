@@ -565,6 +565,70 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .sc-reg select{appearance:none;-webkit-appearance:none;background:#0d2238 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F1E6C8' stroke-width='2'/%3E%3C/svg%3E") right 12px center no-repeat;color:#F1E6C8;border:1px solid rgba(241,230,200,.4);border-radius:999px;padding:6px 34px 6px 14px;font:600 14px Barlow,sans-serif;letter-spacing:0;text-transform:none;cursor:pointer;max-width:100%}
 .sc-reg select:disabled{opacity:.5;cursor:not-allowed}.sc-reg select option{background:#0a1a2c;color:#E3EDF4}
 .sc-local{color:#cfe0ee}
+/* extra layers: info box */
+.ovlinfo{position:absolute;right:10px;top:62px;z-index:999;width:min(270px,calc(100% - 20px));max-height:calc(100% - 180px);overflow:auto;background:rgba(8,26,46,.9);color:#E3EDF4;border:1px solid rgba(241,230,200,.2);border-radius:12px;padding:8px 10px;font-size:12.5px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.ovl-sec+.ovl-sec{margin-top:8px;padding-top:8px;border-top:1px solid rgba(241,230,200,.12)}
+.ovl-sec b{display:block;color:#F1E6C8;font-size:13px}.ovl-sec b small{color:#7f9fb8;font-weight:500}.ovl-sec small{display:block;color:#9fc3e0;margin-top:4px;line-height:1.35}.ovl-sec small.err{color:#ffb3a3}
+.ovl-leg{display:block;max-width:100%;margin-top:4px;background:#fff;border-radius:4px;padding:2px}
+.chl-nav{display:flex;align-items:center;gap:8px;margin:4px 0}.chl-nav button{background:rgba(241,230,200,.12);border:0;color:#F1E6C8;border-radius:6px;padding:2px 8px;cursor:pointer}.chl-nav button:disabled{opacity:.35;cursor:default}
+.chl-leg{display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:11px;color:#9fc3e0}.chl-leg i{grid-column:1/-1;height:8px;border-radius:4px;background:linear-gradient(90deg,#5b2a86,#2c4fd4,#1aa6c9,#2fbf71,#e3d43a,#e8892c,#c8352b)}.chl-leg span:last-child{text-align:right}
+.fogc{pointer-events:none;transition:opacity .2s}
+/* year replay */
+.rp{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:1002;width:min(420px,calc(100% - 24px));background:rgba(8,26,46,.92);color:#E3EDF4;border:1px solid rgba(241,230,200,.25);border-radius:14px;padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.rp-top{display:flex;align-items:center;gap:8px}.rp-top b{color:#F1E6C8;font-size:14px}.rp-top span{margin-left:auto;font:700 15px Barlow,sans-serif;color:#7fe3a0;min-width:90px;text-align:right}
+.rp-top button{background:rgba(241,230,200,.12);border:0;color:#F1E6C8;border-radius:8px;width:30px;height:28px;cursor:pointer}
+.rp-bar{height:5px;border-radius:3px;background:rgba(159,195,224,.18);margin:8px 0 6px;overflow:hidden}.rp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4fd0d6,#7fe3a0)}
+.rp-stats{font-size:13px;color:#cfe0ee}.rp-stats b{color:#F1E6C8}.rp-end{display:flex;gap:6px;margin-top:8px}.rp-end .btn{background:transparent;color:#F1E6C8;border:1px solid rgba(241,230,200,.45);border-radius:999px;padding:4px 12px}
+.rp-pulse{background:none!important;border:0!important}.rp-pulse i{position:absolute;inset:0;border-radius:50%;border:3px solid #7fe3a0;animation:rpPulse 1.5s ease-out forwards}
+@keyframes rpPulse{from{transform:scale(.15);opacity:1}to{transform:scale(1);opacity:0}}
+.rp-bub{background:none!important;border:0!important}.rp-bub div{display:flex;align-items:center;gap:6px;background:rgba(8,26,46,.92);border:1px solid rgba(241,230,200,.45);border-radius:999px;padding:3px 10px 3px 3px;color:#E3EDF4;font-size:12px;white-space:nowrap;width:max-content;margin:0 auto;animation:rpBub 2.3s ease-out forwards;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.rp-bub img{width:34px;height:34px;border-radius:50%;object-fit:cover}.rp-bub b{color:#F1E6C8}.rp-bub em{display:block;font-style:normal;color:#F3D67E;font-weight:700;font-size:11px}.rp-bub.new div{border-color:#F3D67E}
+@keyframes rpBub{0%{opacity:0;transform:translateY(8px)}12%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+body.replaying .zoomnote{display:none!important}
+.yrhero .yrplay{display:inline-flex;margin-top:12px;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:6px 14px;font-weight:600}.yrhero .yrplay:hover{background:rgba(255,255,255,.28)}
+@media (prefers-reduced-motion:reduce){.rp-pulse i,.rp-bub div{animation-duration:.01s}}
+@media (max-width:700px){.ovlinfo{top:auto;bottom:22px;left:8px;right:auto;width:min(250px,calc(100% - 16px));max-height:42%;font-size:12px;padding:7px 9px}
+  .rp{bottom:20px;padding:8px 10px}.rp-top b{font-size:12.5px;line-height:1.2}.rp-top span{font-size:13px;min-width:0}.rp-stats{font-size:12px}}
+/* catch patterns in the Artsdex card */
+.dpat{margin:14px 0 6px}
+.dpat-s{margin:6px 0 10px;padding-left:18px;color:#E3EDF4;font-size:14.5px;line-height:1.45}.dpat-s li{margin:4px 0}.dpat-s b{color:#F1E6C8;font-weight:600}.dpat-s small{color:#9fc3e0}
+.dpat .dpat-few,.dpat .dpat-wait{color:#9fc3e0;font-size:14px;margin:6px 0}
+.dpat-prog{height:6px;border-radius:3px;background:rgba(159,195,224,.15);overflow:hidden}.dpat-prog i{display:block;height:100%;background:#4fd0d6}
+.dpat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 18px}
+.dpat-n{font-size:12.5px;color:#9fc3e0;margin-bottom:3px}.dpat-n small{color:#6f8fa8}
+.dpat-bars{display:grid;gap:3px;height:58px;align-items:end}
+.dpat-b{position:relative;height:42px;display:flex;align-items:flex-end;margin-bottom:16px}
+.dpat-b i{display:block;width:100%;background:linear-gradient(#4fd0d6,#1ea5ae);border-radius:3px 3px 0 0;min-height:1px}
+.dpat-b em{position:absolute;left:-1px;right:-1px;height:2px;background:#F1E6C8;opacity:.85}
+.dpat-b span{position:absolute;top:100%;left:50%;transform:translateX(-50%);font-size:9.5px;color:#7f9fb8;white-space:nowrap;margin-top:2px}
+.dpat .dpat-foot{font-size:12px;line-height:1.4;color:#6f8fa8;margin:8px 0 0}
+/* slack-water card */
+.slack{margin:0 0 12px;padding:12px 14px;border-radius:12px;background:var(--soft);border:1px solid var(--line)}
+.slack.on{border-color:var(--kelp);box-shadow:0 0 0 1px var(--kelp) inset}
+.sl-h{display:flex;align-items:center;gap:8px;color:var(--ink)}.sl-h b{font-size:15px}.sl-h span{margin-left:auto;font-size:12px;color:var(--muted)}.sl-h .ic-slack{color:var(--alpha)}
+.slack.on .sl-h .ic-slack{color:var(--kelp)}
+.sl-big{font:700 24px Barlow,sans-serif;margin:6px 0 0;color:var(--ink)}.slack.on .sl-big{color:var(--kelp)}
+.sl-sub{font-size:13px;color:var(--muted);margin:2px 0 6px}
+.slbar text{font-size:10px;fill:var(--muted)}
+.sl-list{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;margin-top:2px}.sl-list span.on{color:var(--kelp);font-weight:700}.sl-list small{color:var(--muted)}
+.slgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:end}.slgrid input{width:100%;box-sizing:border-box}
+.slackset{margin:8px 0;padding:8px 10px;border:1px solid var(--line);border-radius:10px}.slackset summary{cursor:pointer;font-weight:600;display:flex;align-items:center;gap:6px}
+.slbadge{position:absolute;left:16px;top:-7px;background:#0a1a2c;color:#F1E6C8;border:1px solid rgba(241,230,200,.5);font-size:10.5px;font-weight:700;padding:0 5px;border-radius:8px;white-space:nowrap;pointer-events:none;line-height:15px}
+.slbadge.on{background:#2fa36b;border-color:#2fa36b;color:#fff}
+/* icon strip on the map */
+.hud{position:absolute;top:54px;left:56px;z-index:1000;max-width:calc(100% - 120px)}
+#heatBar:not([hidden])~.hud{top:96px}
+.mapcol.img .hud{display:none}
+.hud-row{display:flex;gap:2px;align-items:center;background:rgba(8,26,46,.84);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(241,230,200,.2);border-radius:999px;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.3);overflow-x:auto;scrollbar-width:none}
+.hud-row::-webkit-scrollbar{display:none}
+.hud-i{display:flex;align-items:center;gap:5px;background:none;border:0;color:#F1E6C8;font:600 12.5px Barlow,sans-serif;padding:3px 9px 3px 6px;border-radius:999px;white-space:nowrap;cursor:pointer;flex:none}
+.hud-i:hover,.hud-i.open{background:rgba(241,230,200,.14)}
+.hud-i .sm{display:none}.hud-i.hi span{color:#F3D67E}.hud-i.on{background:#2fa36b;color:#fff}.hud-i.on .ic-slack{color:#fff}.hud-i .ic-slack{color:#8fd3ec}
+.hud-pop{margin-top:6px;width:min(280px,calc(100vw - 90px));background:rgba(8,26,46,.95);color:#E3EDF4;border:1px solid rgba(241,230,200,.2);border-radius:12px;padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:13px}
+.hud-pop b{display:block;color:#F1E6C8;font-size:14px;margin-bottom:4px}.hud-pop p{margin:2px 0}
+.hd-row{display:grid;grid-template-columns:auto auto 1fr auto;gap:8px;align-items:center;padding:2px 0;border-bottom:1px solid rgba(241,230,200,.08)}.hd-row.on{color:#7fe3a0}
+.hd-src{font-size:11px;color:#7f9fb8!important;margin-top:4px!important}.hud-pop .linkbtn{color:#8fd3ec;margin-top:6px}
+@media (max-width:700px){.hud-i .lg{display:none}.hud-i .sm{display:inline}.hud-i .sm:empty{display:none}.hud{top:52px;left:52px;max-width:calc(100% - 64px)}.hud-i{font-size:11.5px;padding:3px 7px 3px 5px;gap:4px}.hud-i svg{width:17px;height:17px}}
 /* list title row with the activity bell (theme colours, works in light and dark mode) */
 .lhead{position:relative;display:flex;align-items:flex-start;gap:10px}.lhead-t{flex:1;min-width:0}
 .lvis{margin:3px 0 0;font-size:13px;color:var(--muted)}.lvis .linkbtn{margin:0 2px;padding:0;font-size:13px;color:var(--alpha)}.lvis .linkbtn b{color:var(--alpha)}
@@ -820,7 +884,7 @@ body.mapmax .recbar{display:inline-flex}
     <div id="lmap"></div>
     <div id="zoomNote" class="zoomnote" hidden>Zoom inn for å se parkering</div>
     <div id="heatBar" class="heatbar" hidden></div>
-    <div id="gWrap" class="gwrap"><input id="gSearch" type="search" placeholder="Søk sted eller dykkested" aria-label="Søk etter sted eller dykkested" autocomplete="off"><div id="gResults" class="gres" hidden></div></div>
+    <div id="hud" class="hud" hidden></div><div id="gWrap" class="gwrap"><input id="gSearch" type="search" placeholder="Søk sted eller dykkested" aria-label="Søk etter sted eller dykkested" autocomplete="off"><div id="gResults" class="gres" hidden></div></div>
     <button id="maxBtn" type="button" aria-label="Maksimer kartet" title="Maksimer kartet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path id="maxIco" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/></svg></button>
     <div id="wrap" class="wrap" hidden>
       <div id="inner" class="inner"><img id="chartImg" alt=""><div id="frames"></div><div id="pins"></div></div>
@@ -897,7 +961,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v48 (aktivitet bak egen knapp)";
+const APP_VERSION="v49 (strømstille, ikonlinje, mønstre og nye kartlag)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -946,7 +1010,7 @@ async function uploadImage(file){if(file.size>45*1024*1024)throw{message:"Bildet
 /* ---------- mapping db <-> app ---------- */
 function rowToSite(r){return{id:r.id,chartId:r.chart_id,x:r.x,y:r.y,lat:r.lat,lon:r.lon,name:r.name,access:r.access,maxDepth:r.max_depth,bottom:r.bottom,tide:r.tide,season:r.season,
   wind:r.wind||[],hazards:r.hazards,rules:r.rules,species:r.species,notes:r.notes,rating:r.rating,photoPath:r.photo_path,_priv:r.private,createdBy:r.created_by,
-  createdAt:r.created_at||null,logCount:r.log_count||0,lastDive:r.last_dive,visAvg:r.vis_avg,tideMode:r.tide_mode||"none",tideOffset:r.tide_offset||0,tideWidth:r.tide_width||60,icon:r.icon||null,color:r.color||null}}
+  createdAt:r.created_at||null,logCount:r.log_count||0,lastDive:r.last_dive,visAvg:r.vis_avg,tideMode:r.tide_mode||"none",tideOffset:r.tide_offset||0,tideWidth:r.tide_width||60,slackHw:r.slack_hw??null,slackLw:r.slack_lw??null,slackLen:r.slack_len??30,icon:r.icon||null,color:r.color||null}}
 function rowToChart(r){return{id:r.id,name:r.name,imagePath:r.image_path,w:r.w,h:r.h,geo:r.geo,createdBy:r.created_by}}
 
 /* ---------- projections ---------- */
@@ -1020,7 +1084,7 @@ async function start(){
 }
 const timers={};function debounced(k,fn){clearTimeout(timers[k]);timers[k]=setTimeout(fn,300)}
 async function loadCharts(){const {data,error}=await cachedQ("charts",sb.from("charts").select("*").order("created_at"));if(!error){S.charts=data.map(rowToChart);if(S.active!=="live"&&!S.charts.find(c=>c.id===S.active))S.active="live"}}
-async function loadSites(){const {data,error}=await cachedQ("sites",sb.from("sites").select("*"));if(!error){S.sites=data.map(rowToSite);onSites()}}
+async function loadSites(){const {data,error}=await cachedQ("sites",sb.from("sites").select("*"));if(!error){S.sites=data.map(rowToSite);onSites();refreshSlack().catch(()=>{});hudSoon()}}
 async function loadMembers(){const {data}=await sb.from("members").select("*").order("added_at");S.members=data||[]}
 
 /* ---------- sites helpers ---------- */
@@ -1048,17 +1112,18 @@ function initLeaflet(){
   S.lmap=L.map(lmapEl,{zoomControl:true,renderer:L.svg({padding:.5})}).setView([67.28,14.40],10);S.lmap.addLayer(S.lmap.options.renderer);
   S.lmap.createPane("heatPane").style.zIndex=390;S.heatLayer=L.layerGroup().addTo(S.lmap);
   sea.addTo(S.lmap);
-  L.control.layers({"Sjøkart":sea,"Topografisk":topo,"Gråtone":grey},null,{position:"topright"}).addTo(S.lmap);
+  L.control.layers({"Sjøkart":sea,"Topografisk":topo,"Gråtone":grey},makeOverlays(),{position:"topright"}).addTo(S.lmap);initOverlays();
   L.control.scale({imperial:false}).addTo(S.lmap);
   S.fLayer=L.layerGroup().addTo(S.lmap);S.aLayer=L.layerGroup().addTo(S.lmap);S.apLayer=makeAreaPointLayer().addTo(S.lmap);S.prLayer=makeAreaPointLayer();S.pkLayer=makeAreaPointLayer();S.bdLayer=L.layerGroup();S.lmap.on("zoomend",applyZoomLayers);{const zn=$("#zoomNote");if(zn)lmapEl.appendChild(zn)}S.dLayer=L.layerGroup().addTo(S.lmap);S.lLayer=makeSiteLayer().addTo(S.lmap);S.sdLayer=L.layerGroup().addTo(S.lmap);if(L.Draw)hookDrawEvents();else showErr("tegneverktøyet lastet ikke");
   S.lmap.on("click",e=>liveClick(e.latlng));
+  S.lmap.on("moveend",()=>{if(S.view!=="site")hudSoon()});
   S.lmap.on("mousemove",e=>{if(isLive())$("#coord").textContent=`${e.latlng.lat.toFixed(4)}° N, ${e.latlng.lng.toFixed(4)}° Ø`});
   S.lmap.on("mouseout",()=>{$("#coord").textContent=""});
 }
 function renderLive(){
   if(!S.lmap)return;try{renderHeat()}catch(e){}S.lLayer.clearLayers();S.sdLayer.clearLayers();S.fLayer.clearLayers();S.siteMarkers={};const MS=[];
   for(const {s} of filtered()){
-    const icon=L.divIcon({className:"lp"+(siteHasPin(s)?" round":"")+(s._priv?" priv":"")+(S.sel===s.id?" sel":""),html:siteMarkerHTML(s)+condDot(s)+visBadge(s)+`<span class="lbl">${esc(s.name)}</span>`,...siteAnchor(s)});
+    const icon=L.divIcon({className:"lp"+(siteHasPin(s)?" round":"")+(s._priv?" priv":"")+(S.sel===s.id?" sel":""),html:siteMarkerHTML(s)+condDot(s)+visBadge(s)+slackBadge(s)+`<span class="lbl">${esc(s.name)}</span>`,...siteAnchor(s)});
     const m=L.marker([s.lat,s.lon],{icon,title:s.name,keyboard:true,siteId:s.id}).on("click",()=>{if(S.mode==="view"&&!S.drawer&&!S.editingArea)openSite(s.id)});S.siteMarkers[s.id]=m;MS.push(m)}
   if(S.lLayer.addLayers)S.lLayer.addLayers(MS);else MS.forEach(m=>m.addTo(S.lLayer));
   if(S.draft&&S.draft.live)L.marker([S.draft.lat,S.draft.lon],{icon:L.divIcon({className:"lp draft",html:flagSVG(false)+'<span class="lbl">Nytt sted</span>',iconSize:[30,36],iconAnchor:[4,34]}),interactive:false,opacity:.75}).addTo(S.sdLayer);
@@ -1175,7 +1240,7 @@ function renderListView(){
   $("#q").oninput=e=>{S.q=e.target.value;renderList();renderPins();renderAreas()};
   panel.querySelector(".chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;S.acc=b.dataset.a;panel.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));renderList();renderPins()};
   $("#actBtn").onclick=e=>{e.stopPropagation();toggleAct()};
-  renderList();
+  renderList();try{hudSoon()}catch(e){}
 }
 function siteRow(s,showHome){
   const meta=[ACCESS[s.access],s.maxDepth!=null?`maks ${fnum(s.maxDepth)} m`:"",s.bottom].filter(Boolean).join(", ");
@@ -1234,7 +1299,7 @@ function renderSiteBody(){
   $("#siteBody").innerHTML=`<h2>${esc(s.name)}</h2>
     <div class="tags">${s.access?`<span class="tag">${ACCESS[s.access]}</span>`:""}${s.rating?`<span class="tag">${dots(s.rating)}</span>`:""}${s._priv?'<span class="tag p">Bare for deg</span>':""}</div>
     ${others.length?`<div class="links" style="margin:-6px 0 12px">Vis på: ${others.map(c=>`<button class="btn ghost" style="padding:0 6px" data-go="${esc(c.id)}">${esc(c.name)}</button>`).join("")}</div>`:""}
-    <div id="siteHero"></div><div id="visBox"></div><div id="condBox"></div>
+    <div id="siteHero"></div><div id="visBox"></div><div id="slackBox"></div><div id="condBox"></div>
     
     ${facts.length?`<dl class="facts">${facts.map(f=>`<div><dt>${f[0]}</dt><dd>${esc(f[1])}</dd></div>`).join("")}</dl>`:""}
     <div class="windbox">${rose(s.wind||[],false,96)}<p><strong>${wind?"Tåler vind fra "+esc(wind):"Vind ikke registrert"}</strong>${wind?"Grønne sektorer gir le på plassen.":"Legg inn hvilke vindretninger plassen tåler under Rediger."}</p></div>
@@ -1242,7 +1307,7 @@ function renderSiteBody(){
   $("#siteBody").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const id=b.dataset.go;switchChart(id);const p=sitePos(s,activeChart());if(!p)return;
     if(id==="live"){S.lmap.setView(p,15);return}
     const go=()=>centerOn(p[0],p[1],2);img.complete&&img.naturalWidth&&S.imgFor===id?setTimeout(go,0):img.addEventListener("load",()=>setTimeout(go,0),{once:true})});
-  renderCond(s);renderVis(s);renderSiteHero();
+  renderCond(s);renderVis(s);renderSiteHero();renderSlackBox(s);try{loadHud()}catch(e){}
   const cp=$("#cp");if(cp)cp.onclick=()=>{navigator.clipboard?.writeText(`${s.lat}, ${s.lon}`).then(()=>{cp.textContent="Kopiert"},()=>{})};
   const canDel=s.createdBy===S.user.id||(S.me.role==="admin"&&!s._priv);
   const moveLbl=isLive()&&s.lat==null?"Plasser på sjøkartet":"Flytt på kartet";
@@ -1319,6 +1384,10 @@ function renderEdit(s){
   <label for="fTmode">Dykkevindu (tidevann)</label><select id="fTmode">${[["none","Ikke satt"],["high","Rundt flo"],["low","Rundt fjære"],["both","Rundt både flo og fjære"]].map(([k,t])=>`<option value="${k}" ${(v.tideMode||"none")===k?"selected":""}>${t}</option>`).join("")}</select>
   <div class="two"><div><label for="fToff">Forskyvning (min)</label><input type="number" id="fToff" step="5" value="${v.tideOffset??0}"></div><div><label for="fTwid">Varighet (min)</label><input type="number" id="fTwid" min="10" step="5" value="${v.tideWidth??60}"></div></div>
   <p class="small">Forskyvning er minutter etter flo eller fjære der vinduet er midt i (negativt tall = før). Der strømmen snur senere enn flo og fjære, setter du forskyvningen til hvor mye senere.</p>
+  <details class="slackset"${v.slackHw!=null||v.slackLw!=null?" open":""}><summary>${SLACK_ICON} Strømstille (for strømsteder)</summary>
+    <p class="small">For steder der strømmen styrer dykket, som Saltstraumen. Skriv hvor mange minutter etter høyvann og lavvann i ${esc((v.lat!=null&&v.lon!=null?regionOf(v.lat,v.lon):REG(curRegion())).short)} strømmen står stille (negativt tall = før), og hvor lenge det varer. Alt i minutter. La feltene stå tomme hvis det ikke gjelder.</p>
+    <div class="slgrid"><div><label for="fSlH">Etter høyvann</label><input type="number" id="fSlH" step="1" value="${v.slackHw??""}"></div><div><label for="fSlL">Etter lavvann</label><input type="number" id="fSlL" step="1" value="${v.slackLw??""}"></div><div><label for="fSlD">Varer</label><input type="number" id="fSlD" min="5" step="5" value="${v.slackLen??30}"></div></div>
+  </details>
   <label for="fSeason">Beste sesong</label><input type="text" id="fSeason" value="${esc(v.season)}" placeholder="F.eks. mars–mai, før algeoppblomstringen">
   <label>Tåler vind fra (klikk sektorene)</label><div id="roseBox"></div>
   <label for="fHaz">Farer</label><textarea id="fHaz" placeholder="Båttrafikk, garn, strøm, anleggsarbeid">${esc(v.hazards)}</textarea>
@@ -1343,16 +1412,16 @@ function renderEdit(s){
   $("#ef").onsubmit=async e=>{
     e.preventDefault();const btn=$("#fSave");btn.disabled=true;$("#fErr").textContent="";
     const lat=num($("#fLat").value),lon=num($("#fLon").value),both=lat!=null&&lon!=null;
-    const row={name:$("#fName").value.trim(),access:$("#fAcc").value,max_depth:num($("#fDepth").value),bottom:$("#fBottom").value.trim(),tide:$("#fTide").value.trim(),tide_mode:$("#fTmode").value,tide_offset:Math.round(num($("#fToff").value)??0),tide_width:Math.max(10,Math.round(num($("#fTwid").value)??60)),season:$("#fSeason").value.trim(),
+    const row={name:$("#fName").value.trim(),access:$("#fAcc").value,max_depth:num($("#fDepth").value),bottom:$("#fBottom").value.trim(),tide:$("#fTide").value.trim(),tide_mode:$("#fTmode").value,tide_offset:Math.round(num($("#fToff").value)??0),tide_width:Math.max(10,Math.round(num($("#fTwid").value)??60)),slack_hw:num($("#fSlH").value)==null?null:Math.round(num($("#fSlH").value)),slack_lw:num($("#fSlL").value)==null?null:Math.round(num($("#fSlL").value)),slack_len:Math.max(5,Math.round(num($("#fSlD").value)??30)),season:$("#fSeason").value.trim(),
       wind:DIRS.filter(d=>wind.includes(d)),hazards:$("#fHaz").value.trim(),rules:$("#fRules").value.trim(),species:$("#fSpecies").value.trim(),notes:$("#fNotes").value.trim(),rating:rating||null,
       lat:both?lat:null,lon:both?lon:null,icon:sIcon,color:sColor,updated_at:new Date().toISOString()};
     try{
       const f=$("#fPhoto").files[0];if(f)row.photo_path=await uploadImage(f);
       if(isNew){row.private=panel.querySelector('input[name="vis"]:checked')?.value==="priv";row.created_by=S.user.id;
         row.chart_id=S.draft.live?null:S.draft.chartId;row.x=S.draft.live?null:S.draft.x;row.y=S.draft.live?null:S.draft.y;
-        const {data,error}=await tideSafe(r=>colSafe(x=>sb.from("sites").insert(x).select().single(),r,["icon","color"],"style.sql"),row);if(error)throw error;
+        const {data,error}=await tideSafe(r=>colSafe(x=>sb.from("sites").insert(x).select().single(),r,["icon","color","slack_hw","slack_lw","slack_len"],"style.sql"),row);if(error)throw error;
         S.draft=null;S.sites.push(rowToSite(data));openSite(data.id);loadSites()}
-      else{const {error}=await tideSafe(r=>colSafe(x=>sb.from("sites").update(x).eq("id",s.id),r,["icon","color"],"style.sql"),row);if(error)throw error;await loadSites();S.view="site";renderSiteView()}
+      else{const {error}=await tideSafe(r=>colSafe(x=>sb.from("sites").update(x).eq("id",s.id),r,["icon","color","slack_hw","slack_lw","slack_len"],"style.sql"),row);if(error)throw error;await loadSites();S.view="site";renderSiteView()}
     }catch(err){$("#fErr").textContent="Kunne ikke lagre: "+errMsg(err);btn.disabled=false}
   };
   $("#fName").focus();
@@ -1472,7 +1541,7 @@ async function importFile(file){
     for(const s of d.sites||[]){say(`Legger inn «${s.name}»…`);
       const row={name:s.name,access:s.access||"land",max_depth:s.maxDepth??null,bottom:s.bottom||"",tide:s.tide||"",season:s.season||"",wind:s.wind||[],hazards:s.hazards||"",rules:s.rules||"",species:s.species||"",notes:s.notes||"",rating:s.rating||null,
         lat:s.lat??null,lon:s.lon??null,chart_id:cmap[s.chartId]||null,x:cmap[s.chartId]?s.x:null,y:cmap[s.chartId]?s.y:null,private:!!s.private,created_by:S.user.id};
-      const {data,error}=await tideSafe(r=>colSafe(x=>sb.from("sites").insert(x).select().single(),r,["icon","color"],"style.sql"),row);if(error)throw error;smap[s.oldId]=data.id;ns++}
+      const {data,error}=await tideSafe(r=>colSafe(x=>sb.from("sites").insert(x).select().single(),r,["icon","color","slack_hw","slack_lw","slack_len"],"style.sql"),row);if(error)throw error;smap[s.oldId]=data.id;ns++}
     for(const l of d.logs||[]){if(!smap[l.siteId])continue;
       const {error}=await sb.from("logs").insert({site_id:smap[l.siteId],date:l.date,vis:l.vis??null,temp:l.temp??null,depth:l.depth??null,cond:l.cond||"",notes:l.notes||"",author:S.user.id,author_name:S.me.name});if(error)throw error;nl++}
     say(`Ferdig: ${nc} kartblad, ${ns} dykkesteder og ${nl} loggføringer importert.`);
@@ -1506,7 +1575,7 @@ function wireColorPicker(id,onPick){const el=$("#"+id);if(!el)return;const inp=e
   el.onclick=e=>{const b=e.target.closest("button[data-c]");if(!b)return;inp._custom=false;mark(b.dataset.c);onPick(b.dataset.c||null)};
   inp.oninput=()=>{inp._custom=true;el.querySelectorAll("button").forEach(x=>x.classList.remove("on"));onPick(inp.value)}}
 const COLFILE={photo_path:["stats.sql","bilde og vekt"],weight_kg:["stats.sql","bilde og vekt"],time_of_day:["stats.sql","klokkeslett og forhold"],wind_dir:["stats.sql","vind og tidevann"],wind_speed:["stats.sql","vind og tidevann"],tide_phase:["stats.sql","vind og tidevann"],buddies:["buddy.sql","hvem du dykket med"],
-  caught_by:["assign.sql","hvem som fikk fangsten"],color:["style.sql","farge og symbol"],icon:["style.sql","farge og symbol"],pattern:["style.sql","farge og symbol"],dash:["style.sql","farge og symbol"]};
+  caught_by:["assign.sql","hvem som fikk fangsten"],color:["style.sql","farge og symbol"],icon:["style.sql","farge og symbol"],pattern:["style.sql","farge og symbol"],dash:["style.sql","farge og symbol"],slack_hw:["slack.sql","strømstille"],slack_lw:["slack.sql","strømstille"],slack_len:["slack.sql","strømstille"]};
 async function colSafe(fn,row,cols,file,what="farge og symbol"){
   let res=await fn(row);const stripped=[];
   for(let n=0;n<=cols.length&&res&&res.error;n++){
@@ -1938,6 +2007,203 @@ function tideWindows(s,td){
   const off=(s.tideOffset||0)*60e3,half=(s.tideWidth||60)*30e3;
   return td.ext.filter(e=>mode==="both"||e[2]===mode).map(e=>[e[0]+off-half,e[0]+off+half,e[2]]);
 }
+
+/* ---------- slack water (strømstille): minutes after high/low water in the area's reference harbour ---------- */
+const SLACK_ICON='<svg class="ic-slack" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h6M5 5l3 3-3 3"/><path d="M22 16h-6M19 13l-3 3 3 3"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/></svg>';
+function hasSlack(s){return !!s&&(s.slackHw!=null||s.slackLw!=null)&&s.lat!=null&&s.lon!=null}
+function slackRef(s){return regionOf(s.lat,s.lon)||REG("nordland")}
+S.slackEv={};S.slackErr={};
+async function slackFor(s){if(!hasSlack(s))return null;const g=slackRef(s);
+  const td=await getTide(g.lat,g.lon),len=Math.max(5,s.slackLen||30)*60e3,ev=[];
+  for(const e of td.ext){const off=e[2]==="high"?s.slackHw:s.slackLw;if(off==null)continue;const c=e[0]+off*60e3;ev.push({t:c,a:c-len/2,b:c+len/2,kind:e[2],ref:e[0]})}
+  ev.sort((a,b)=>a.t-b.t);const v={ev,ref:g,station:td.station||g.short};S.slackEv[s.id]=v;return v}
+function slackNow(v,now=Date.now()){if(!v)return{};return{cur:v.ev.find(x=>x.a<=now&&x.b>=now),next:v.ev.find(x=>x.a>now)}}
+function durShort(ms){const m=Math.max(0,Math.round(ms/60e3)),h=Math.floor(m/60),mm=m%60;return h?`${h} t ${mm} min`:`${mm} min`}
+function durTiny(ms){const m=Math.max(0,Math.round(ms/60e3)),h=Math.floor(m/60),mm=m%60;return h?`${h}t ${mm}m`:`${mm}m`}
+function slackBadge(s){const v=S.slackEv[s.id];if(!v)return"";const {cur,next}=slackNow(v);
+  if(cur)return `<span class="slbadge on" title="Strømstille nå, til ${hm(cur.b)}">stille</span>`;
+  if(next&&next.a-Date.now()<=90*60e3)return `<span class="slbadge" title="Strømstille ${hm(next.a)}–${hm(next.b)}">${durTiny(next.a-Date.now())}</span>`;return ""}
+async function refreshSlack(){const list=allSites().filter(hasSlack);if(!list.length){S.slackEv={};return}
+  await Promise.all(list.map(s=>slackFor(s).then(()=>{delete S.slackErr[s.id]}).catch(e=>{S.slackErr[s.id]=e&&e.message||"Tidevann kunne ikke hentes"})));
+  slackTick(true)}
+S.slackSig="";
+function slackTick(force){const sig=allSites().filter(s=>S.slackEv[s.id]).map(s=>s.id+":"+slackBadge(s)).join("|");
+  if(force||sig!==S.slackSig){S.slackSig=sig;try{if(isLive())renderLive()}catch(e){}}
+  const s=S.view==="site"&&getSite(S.sel);if(s)renderSlackBox(s);try{renderHud()}catch(e){}}
+setInterval(()=>{if(S.started)slackTick(false)},30e3);
+setInterval(()=>{if(S.started)refreshSlack()},20*60e3);
+function slackBar(v,now){const W=360,H=26,t0=now-2*3600e3,t1=now+22*3600e3,x=t=>(t-t0)/(t1-t0)*W;let h="";
+  for(let t=Math.ceil(t0/3600e3)*3600e3;t<=t1;t+=3600e3){const d=new Date(t),X=x(t).toFixed(1);if(d.getHours()%3===0)h+=`<line x1="${X}" x2="${X}" y1="${H-6}" y2="${H}" stroke="var(--line)"/><text x="${X}" y="${H+11}" text-anchor="middle">${String(d.getHours()).padStart(2,"0")}</text>`}
+  for(const e of v.ev){if(e.b<t0||e.a>t1)continue;const a=Math.max(0,x(e.a)),b=Math.min(W,x(e.b));h+=`<rect x="${a.toFixed(1)}" y="2" width="${Math.max(2,b-a).toFixed(1)}" height="${H-8}" rx="3" fill="var(--kelp)"><title>Strømstille ${hm(e.a)}–${hm(e.b)}</title></rect>`}
+  h+=`<line x1="${x(now).toFixed(1)}" x2="${x(now).toFixed(1)}" y1="-2" y2="${H}" stroke="var(--magenta)" stroke-width="2"/>`;
+  return `<svg class="spark slbar" viewBox="0 -4 ${W} ${H+18}" width="100%" role="img" aria-label="Strømstille de neste 22 timene">${h}</svg>`}
+async function renderSlackBox(s){const el=$("#slackBox");if(!el)return;if(!hasSlack(s)){el.innerHTML="";return}
+  let v=S.slackEv[s.id];
+  if(!v){el.innerHTML=`<div class="slack"><div class="sl-h">${SLACK_ICON}<b>Strømstille</b></div><p class="small" style="margin:4px 0 0">${S.slackErr[s.id]?esc(S.slackErr[s.id]):"Henter tidevann…"}</p></div>`;
+    try{v=await slackFor(s)}catch(e){S.slackErr[s.id]=e.message;el.innerHTML=`<div class="slack"><div class="sl-h">${SLACK_ICON}<b>Strømstille</b></div><p class="small err" style="margin:4px 0 0">${esc(e.message||"Tidevann kunne ikke hentes")}</p></div>`;return}
+    if(S.sel!==s.id||!$("#slackBox"))return}
+  const now=Date.now(),{cur,next}=slackNow(v,now),up=v.ev.filter(e=>e.b>now).slice(0,5),nm=e=>e.kind==="high"?"høyvann":"lavvann";
+  const big=cur?`Strømstille nå · ${durShort(cur.b-now)} igjen`:next?`Om ${durShort(next.a-now)}`:"Ingen strømstille i varselet";
+  const sub=cur?`Til kl ${hm(cur.b)} · ${hm(cur.ref)} var ${nm(cur)} i ${esc(v.ref.short)}`:next?`${dayLbl(next.a)==="i dag"?"":esc(dayLbl(next.a))+" "}kl ${hm(next.a)}–${hm(next.b)} · etter ${nm(next)} i ${esc(v.ref.short)} kl ${hm(next.ref)}`:"";
+  el.innerHTML=`<div class="slack${cur?" on":""}"><div class="sl-h">${SLACK_ICON}<b>Strømstille</b><span>regnet fra tidevannet i ${esc(v.ref.short)}</span></div>
+    <div class="sl-big">${big}</div><div class="sl-sub">${sub}</div>${slackBar(v,now)}
+    <div class="sl-list">${up.map(e=>`<span${e===cur?' class="on"':""}>${esc(dayLbl(e.a)==="i dag"?"":dayLbl(e.a)+" ")}${hm(e.a)}–${hm(e.b)} <small>${e.kind==="high"?"flo":"fjære"}</small></span>`).join("")}</div>
+    <p class="small" style="margin:6px 0 0">${s.slackHw!=null?`${s.slackHw>=0?s.slackHw+" min etter":(-s.slackHw)+" min før"} høyvann`:""}${s.slackHw!=null&&s.slackLw!=null?" og ":""}${s.slackLw!=null?`${s.slackLw>=0?s.slackLw+" min etter":(-s.slackLw)+" min før"} lavvann`:""}, varer ${s.slackLen||30} min (fra Rediger). Tidene blir aldri bedre enn tallene, og vind og springflo kan forskyve strømmen. Sjekk alltid selv før du hopper i.</p></div>`}
+
+/* ---------- icon strip on the map: weather, tide, moon, sun and slack at a glance ---------- */
+function wxIcon(code){const c=String(code||""),night=/_night/.test(c),b=c.replace(/_(day|night|polartwilight)$/,"");
+  const sun='<circle cx="12" cy="12" r="4.4" fill="#F3C04A"/><g stroke="#F3C04A" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g>';
+  const moon='<path d="M15.5 3.5a8.5 8.5 0 1 0 5 13.6 7 7 0 0 1-5-13.6z" fill="#F2E6B8"/>';
+  const cloud=(x=0,y=0,f="#d7e3ee")=>`<path transform="translate(${x} ${y})" d="M7 18h10.5a4 4 0 0 0 .4-8 5.5 5.5 0 0 0-10.6 1.4A3.3 3.3 0 0 0 7 18z" fill="${f}"/>`;
+  const small=(f)=>`<g transform="translate(-4 -5) scale(.72)">${f}</g>`;
+  let g;
+  if(b==="clearsky")g=night?moon:sun;
+  else if(b==="fair"||b==="partlycloudy")g=small(night?moon:sun)+cloud(2,2);
+  else if(b==="cloudy")g=cloud(0,-1);
+  else if(b==="fog")g='<g stroke="#d7e3ee" stroke-width="2" stroke-linecap="round"><path d="M4 9h16M3 13h18M5 17h14"/></g>';
+  else if(/thunder/.test(b))g=cloud(0,-3)+'<path d="M12.5 15l-2.5 4h2.5l-1.5 4 4-5.5h-2.5l1.5-2.5z" fill="#F3D67E"/>';
+  else if(/sleet/.test(b))g=cloud(0,-3)+'<path d="M9 18l-1 3" stroke="#8fd3ec" stroke-width="2" stroke-linecap="round"/><circle cx="15" cy="20" r="1.4" fill="#fff"/>';
+  else if(/snow/.test(b))g=cloud(0,-3)+'<circle cx="9" cy="19.5" r="1.4" fill="#fff"/><circle cx="13" cy="21" r="1.4" fill="#fff"/><circle cx="16.5" cy="19" r="1.4" fill="#fff"/>';
+  else if(/rain/.test(b))g=cloud(0,-3)+'<path d="M9 18l-1 3M13 18l-1 3M17 18l-1 3" stroke="#8fd3ec" stroke-width="2" stroke-linecap="round"/>';
+  else g=cloud(0,-1);
+  return `<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">${g}</svg>`}
+const WXNAME={clearsky:"Klarvær",fair:"Lettskyet",partlycloudy:"Delvis skyet",cloudy:"Skyet",fog:"Tåke",lightrain:"Lett regn",rain:"Regn",heavyrain:"Kraftig regn",lightrainshowers:"Lette regnbyger",rainshowers:"Regnbyger",heavyrainshowers:"Kraftige regnbyger",lightsnow:"Lett snø",snow:"Snø",heavysnow:"Kraftig snø",snowshowers:"Snøbyger",lightsleet:"Lett sludd",sleet:"Sludd",sleetshowers:"Sluddbyger",rainandthunder:"Regn og torden"};
+function wxName(code){const b=String(code||"").replace(/_(day|night|polartwilight)$/,"");return WXNAME[b]||(/thunder/.test(b)?"Torden":/snow/.test(b)?"Snø":/sleet/.test(b)?"Sludd":/rain/.test(b)?"Regn":"")}
+function tideIcon(dir){return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17c2.5-2 5-2 7.5 0s5 2 7.5 0 3.5-1.2 5 0" stroke="#4fd0d6" stroke-width="2"/><path d="M2 21c2.5-2 5-2 7.5 0s5 2 7.5 0 3.5-1.2 5 0" stroke="#4fd0d6" stroke-width="2" opacity=".5"/>${dir>0?'<path d="M12 12V3M8.5 6.5 12 3l3.5 3.5" stroke="#F1E6C8" stroke-width="2"/>':dir<0?'<path d="M12 3v9M8.5 8.5 12 12l3.5-3.5" stroke="#F1E6C8" stroke-width="2"/>':'<path d="M7 8h10" stroke="#F1E6C8" stroke-width="2.4"/>'}</svg>`}
+function sunIcon(down){return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><path d="M7 16a5 5 0 0 1 10 0" fill="#F3C04A" stroke="#F3C04A" stroke-width="1.5"/><path d="M3 16h18" stroke="#F1E6C8" stroke-width="2"/><path d="M12 3v4M9.5 5.5 12 ${down?7:3}l2.5 ${down?-1.5:2.5}" stroke="#F3C04A" stroke-width="2"/><path d="M5 20h14" stroke="#F1E6C8" stroke-width="1.5" opacity=".5"/></svg>`}
+const MOON_SHORT={"Nymåne":"Nymåne","Voksende månesigd":"Månesigd","Første kvarter":"1. kvarter","Voksende måne":"Voksende","Fullmåne":"Fullmåne","Minkende måne":"Minkende","Siste kvarter":"Siste kvarter","Minkende månesigd":"Månesigd"};
+S.hud={open:null,at:null,wx:null,td:null,seq:0};
+function hudPoint(){if(S.view==="site"){const st=getSite(S.sel);if(st&&st.lat!=null&&st.lon!=null)return{lat:st.lat,lon:st.lon,label:st.name,site:st}}
+  if(!S.lmap)return null;const c=S.lmap.getCenter();return{lat:Math.round(c.lat*10)/10,lon:Math.round(c.lng*5)/5,label:"kartets midte"}}
+async function loadHud(){const pt=hudPoint();if(!pt)return;const seq=++S.hud.seq;S.hud.at=pt;
+  const [fr,tr]=await Promise.allSettled([getForecast(pt.lat,pt.lon),getTide(pt.lat,pt.lon)]);if(seq!==S.hud.seq)return;
+  S.hud.wx=fr.status==="fulfilled"?fr.value:null;S.hud.td=tr.status==="fulfilled"?tr.value:null;renderHud()}
+let hudT=null;function hudSoon(){clearTimeout(hudT);hudT=setTimeout(()=>{loadHud().catch(()=>{})},700)}
+function hudSlackSite(){const pt=S.hud.at;const sel=S.view==="site"&&getSite(S.sel);if(sel&&hasSlack(sel))return sel;
+  const list=allSites().filter(hasSlack);if(!list.length||!pt)return null;let best=null,bd=1e9;
+  for(const st of list){const dy=st.lat-pt.lat,dx=(st.lon-pt.lon)*Math.cos(pt.lat*Math.PI/180),d=dx*dx+dy*dy;if(d<bd){bd=d;best=st}}return Math.sqrt(bd)<1.2?best:null}
+function hudItems(){const pt=S.hud.at;if(!pt)return[];const now=Date.now(),out=[];
+  const w=S.hud.wx?windAt(S.hud.wx,now):null;
+  if(w)out.push({k:"wx",ic:wxIcon(w[5]),tx:`${w[4]!=null?fnum(w[4],0)+"°":""} ${fnum(w[2],0)} m/s`,sx:w[4]!=null?fnum(w[4],0)+"°":`${fnum(w[2],0)} m/s`,ti:`${wxName(w[5])||"Vær"}, ${fnum(w[2],0)} m/s fra ${DIRS[Math.round(w[1]/45)%8]}`});
+  const td=S.hud.td;if(td&&td.ext){const prev=td.ext.filter(e=>e[0]<=now).pop(),next=td.ext.find(e=>e[0]>now);
+    if(next){const near=prev&&now-prev[0]<25*60e3?prev:next[0]-now<25*60e3?next:null;
+      const dir=near?0:next[2]==="high"?1:-1,lbl=near?(near[2]==="high"?"Flo nå":"Fjære nå"):`${next[2]==="high"?"Flo":"Fjære"} ${hm(next[0])}`;
+      out.push({k:"td",ic:tideIcon(dir),tx:lbl,sx:near?"nå":hm(next[0]),ti:near?`${near[2]==="high"?"Flo":"Fjære"} nå (${hm(near[0])}), strømmen snur`:`${next[2]==="high"?"Stigende":"Synkende"} vann, ${next[2]==="high"?"flo":"fjære"} kl ${hm(next[0])}`})}}
+  const m=moonInfo(now);out.push({k:"moon",ic:moonSVG(m.ph,20),tx:m.tide==="spring"?"Springflo":m.tide==="nipp"?"Nippflo":MOON_SHORT[m.name]||m.name,sx:m.tide==="spring"?"Spring":"",ti:`${m.name} (${Math.round(m.illum*100)} %)${m.tide==="spring"?" · springflo: sterk strøm":m.tide==="nipp"?" · nippflo: svak strøm":""}`,hi:m.name==="Fullmåne"||m.tide==="spring"});
+  const st=sunDay(now,pt.lat,pt.lon),sn=st.sun;
+  if(sn.never==="down")out.push({k:"sun",ic:sunIcon(false),tx:"Midnattssol",ti:"Sola går ikke ned i dag"});
+  else if(sn.never==="up")out.push({k:"sun",ic:sunIcon(true),tx:"Mørketid",ti:"Sola står ikke opp i dag"});
+  else if(now<sn.rise)out.push({k:"sun",ic:sunIcon(false),tx:`Opp ${hm(sn.rise)}`,sx:hm(sn.rise),ti:`Sola står opp ${hm(sn.rise)}`});
+  else if(now<sn.set)out.push({k:"sun",ic:sunIcon(true),tx:`Ned ${hm(sn.set)}`,sx:hm(sn.set),ti:`Sola går ned ${hm(sn.set)} (${durShort(sn.set-now)} dagslys igjen)`});
+  else{const tm=sunDay(now+864e5,pt.lat,pt.lon).sun;out.push({k:"sun",ic:sunIcon(false),tx:tm.rise?`Opp ${hm(tm.rise)}`:"Mørkt",sx:tm.rise?hm(tm.rise):"",ti:tm.rise?`Sola står opp ${hm(tm.rise)} i morgen`:"Mørkt"})}
+  const ss=hudSlackSite(),sv=ss&&S.slackEv[ss.id];
+  if(sv){const {cur,next}=slackNow(sv,now);out.push({k:"slack",site:ss,ic:SLACK_ICON,on:!!cur,tx:cur?"Stille nå":next?`Stille ${durTiny(next.a-now)}`:"–",sx:cur?"nå":next?durTiny(next.a-now).replace(" ",""):"",ti:`${ss.name}: ${cur?`strømstille nå, til ${hm(cur.b)}`:next?`strømstille ${hm(next.a)}–${hm(next.b)}`:"ingen strømstille i varselet"}`})}
+  return out}
+function hudDetail(k){const pt=S.hud.at,now=Date.now();if(!pt)return"";
+  if(k==="wx"&&S.hud.wx){const rows=S.hud.wx.series.filter(e=>e[0]>=now-1800e3).filter((e,i)=>i%3===0).slice(0,6);
+    return `<b>Vær ved ${esc(pt.label)}</b>${rows.map(e=>`<div class="hd-row"><span>${hm(e[0])}</span>${wxIcon(e[5])}<span>${e[4]!=null?fnum(e[4],0)+"°":""}</span><span>${fnum(e[2],0)} m/s ${DIRS[Math.round(e[1]/45)%8]}</span></div>`).join("")}<p class="hd-src">MET Norway</p>`}
+  if(k==="td"&&S.hud.td){const nx=S.hud.td.ext.filter(e=>e[0]>now-3600e3).slice(0,4);return `<b>Tidevann ved ${esc(pt.label)}</b>${nx.map(e=>`<div class="hd-row"><span>${e[2]==="high"?"Flo":"Fjære"}</span><span>${esc(dayLbl(e[0])==="i dag"?"":dayLbl(e[0])+" ")}${hm(e[0])}</span><span>${Math.round(e[1])} cm</span></div>`).join("")}<p class="hd-src">Kartverket${S.hud.td.station?" · "+esc(S.hud.td.station):""}</p>`}
+  if(k==="moon"){const m=moonInfo(now),d=x=>dayLbl(x)==="i dag"?"i dag":dayLbl(x);return `<b>${m.name} · ${Math.round(m.illum*100)} %</b><p>${m.tide==="spring"?"Springflo nå: sterk strøm og stor forskjell mellom flo og fjære.":m.tide==="nipp"?"Nippflo nå: svak strøm og liten forskjell mellom flo og fjære.":m.nextSpring<m.nextNeap?`Mot springflo (${esc(d(m.nextSpring))}).`:`Mot nippflo (${esc(d(m.nextNeap))}).`}</p>`}
+  if(k==="sun"){const st=sunDay(now,pt.lat,pt.lon).sun;return `<b>Sol ved ${esc(pt.label)}</b><p>${st.never==="down"?"Midnattssol i dag.":st.never==="up"?"Mørketid: sola står ikke opp i dag.":`Opp ${hm(st.rise)}, ned ${hm(st.set)} · ${durShort(st.set-st.rise)} dagslys.`}</p>`}
+  if(k==="slack"){const ss=hudSlackSite(),v=ss&&S.slackEv[ss.id];if(!v)return"";const up=v.ev.filter(e=>e.b>now).slice(0,4);
+    return `<b>Strømstille · ${esc(ss.name)}</b>${up.map(e=>`<div class="hd-row${e.a<=now?" on":""}"><span>${esc(dayLbl(e.a)==="i dag"?"":dayLbl(e.a)+" ")}${hm(e.a)}–${hm(e.b)}</span><span>${e.kind==="high"?"flo":"fjære"}</span></div>`).join("")}<button type="button" class="linkbtn" data-hsite="${esc(ss.id)}">Åpne ${esc(ss.name)} ›</button>`}
+  return ""}
+function renderHud(){const el=$("#hud");if(!el)return;if(!isLive()||!S.hud.at){el.hidden=true;return}
+  const items=hudItems();if(!items.length){el.hidden=true;return}el.hidden=false;
+  el.innerHTML=`<div class="hud-row">${items.map(it=>`<button type="button" class="hud-i${it.on?" on":""}${it.hi?" hi":""}${S.hud.open===it.k?" open":""}" data-k="${it.k}" title="${esc(it.ti)}" aria-label="${esc(it.ti)}">${it.ic}<span class="lg">${esc(it.tx)}</span>${it.sx!=null?`<span class="sm">${esc(it.sx)}</span>`:`<span class="sm">${esc(it.tx)}</span>`}</button>`).join("")}</div>
+    ${S.hud.open&&items.some(it=>it.k===S.hud.open)?`<div class="hud-pop">${hudDetail(S.hud.open)}</div>`:""}`;
+  el.querySelectorAll("[data-k]").forEach(b=>b.onclick=e=>{e.stopPropagation();S.hud.open=S.hud.open===b.dataset.k?null:b.dataset.k;renderHud()});
+  const hs=el.querySelector("[data-hsite]");if(hs)hs.onclick=e=>{e.stopPropagation();S.hud.open=null;openSite(hs.dataset.hsite);focusSite(hs.dataset.hsite)}}
+document.addEventListener("click",e=>{if(S.hud&&S.hud.open&&!e.target.closest("#hud")){S.hud.open=null;renderHud()}});
+
+/* ---------- extra map layers: plankton from satellite, NGU seabed maps, exploration fog ---------- */
+const OVL={};S.chlDate=null;
+function isoDay(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+const CHL_LAYERS=["MODIS_Aqua_L2_Chlorophyll_A","MODIS_Terra_L2_Chlorophyll_A","VIIRS_SNPP_L2_Chlorophyll_A"];
+const chlUrl=(id,day)=>`https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/${id}/default/${day}/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png`;
+const NGU_WMS="https://geo.ngu.no/mapserver/MarineGrunnkartWMS";
+function nguLayer(layers){const l=L.tileLayer.wms(NGU_WMS,{layers,format:"image/png",transparent:true,version:"1.3.0",opacity:.7,maxZoom:18,attribution:'Marine grunnkart: <a href="https://www.ngu.no/fagomrader/marin-kartlegging" target="_blank" rel="noopener">NGU</a>'});
+  l._ok=0;l._bad=0;l.on("tileload",()=>{l._ok++;ovlInfo()});l.on("tileerror",()=>{l._bad++;ovlInfo()});l._nguLayers=layers;return l}
+function makeOverlays(){
+  if(!S.chlDate){const d=new Date();d.setDate(d.getDate()-1);S.chlDate=isoDay(d)}
+  const chl=L.layerGroup(CHL_LAYERS.map(id=>L.tileLayer(chlUrl(id,S.chlDate),{maxNativeZoom:7,maxZoom:18,opacity:.8,className:"chltile",attribution:'Klorofyll: <a href="https://earthdata.nasa.gov/gibs" target="_blank" rel="noopener">NASA GIBS</a>'})));
+  OVL.chl=chl;OVL.nat=nguLayer("Naturtyper_Saltstraumen,Biotoper_Astafjord");OVL.sed=nguLayer("Kornstorrelse_Det,Sedimentkornstorrelse");OVL.slope=nguLayer("Helning_over_30");OVL.fog=makeFog();
+  return {"Plankton fra satellitt (klorofyll)":OVL.chl,"Naturtyper og tareskog (NGU)":OVL.nat,"Bunntype (NGU)":OVL.sed,"Bratte skråninger over 30° (NGU)":OVL.slope,"Utforskning (tåke der dere ikke har dykket)":OVL.fog}}
+const OVL_KEYS=["chl","nat","sed","slope","fog"];
+function initOverlays(){const on=lsGet("dk-ovl")||[];for(const k of on)if(OVL[k]&&!S.lmap.hasLayer(OVL[k]))OVL[k].addTo(S.lmap);
+  const save=()=>{lsSet("dk-ovl",OVL_KEYS.filter(k=>S.lmap.hasLayer(OVL[k])));ovlInfo()};
+  S.lmap.on("overlayadd overlayremove",save);ovlInfo()}
+function chlStep(n){const d=new Date(S.chlDate+"T12:00:00");d.setDate(d.getDate()+n);const y=new Date();y.setDate(y.getDate()-1);if(d>y)return;S.chlDate=isoDay(d);
+  let i=0;OVL.chl.eachLayer(l=>{l.setUrl(chlUrl(CHL_LAYERS[i++],S.chlDate))});ovlInfo()}
+function ovlInfo(){if(!S.lmap)return;let el=$("#ovlInfo");const act=OVL_KEYS.filter(k=>k!=="fog"&&OVL[k]&&S.lmap.hasLayer(OVL[k]));
+  if(!act.length){if(el)el.remove();return}
+  if(!el){el=document.createElement("div");el.id="ovlInfo";el.className="ovlinfo";$("#lmap").appendChild(el);L.DomEvent&&L.DomEvent.disableScrollPropagation(el);L.DomEvent&&L.DomEvent.disableClickPropagation(el)}
+  const c=S.lmap.getCenter(),m=new Date().getMonth(),dark=c.lat>65&&(m>=10||m===0);
+  let h="";
+  if(act.includes("chl")){const d=new Date(S.chlDate+"T12:00:00");
+    h+=`<div class="ovl-sec"><b>Plankton (klorofyll)</b><div class="chl-nav"><button type="button" data-chl="-1" aria-label="Dagen før">◀</button><span>${d.toLocaleDateString("nb-NO",{day:"numeric",month:"short",year:"numeric"})}</span><button type="button" data-chl="1" aria-label="Dagen etter"${S.chlDate>=isoDay(new Date(Date.now()-864e5))?" disabled":""}>▶</button></div>
+      <div class="chl-leg"><i></i><span>Lite plankton</span><span>Mye (grumsete)</span></div>
+      <small>${dark?"Mørketid nord for polarsirkelen: satellittene ser ikke havfargen nå. ":""}Skyer gir hull i kartet, bla noen dager tilbake for å finne et klart bilde. NASA GIBS (MODIS og VIIRS).</small></div>`}
+  for(const k of ["nat","sed","slope"]){if(!act.includes(k))continue;const l=OVL[k],nm={nat:"Naturtyper og tareskog",sed:"Bunntype",slope:"Bratte skråninger (over 30°)"}[k];
+    const failed=l._bad>0&&l._ok===0;
+    h+=`<div class="ovl-sec"><b>${nm} <small>NGU</small></b>${failed?`<small class="err">NGU-kartet svarte ikke. Prøv igjen senere.</small>`:`<img class="ovl-leg" alt="" src="${NGU_WMS}?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;FORMAT=image/png&amp;SLD_VERSION=1.1.0&amp;LAYER=${encodeURIComponent(l._nguLayers.split(",")[0])}" onerror="this.remove()">`}
+      <small>${k==="nat"?"Detaljert kartlagt bare noen steder, blant annet Saltstraumen.":k==="sed"?"Detaljerte bunnkart finnes bare noen steder. Ellers vises grove oversiktskart.":"Fra dybdedata der det er målt. Bratte kanter er ofte gode steder for kveite og breiflabb."} Zoom inn for detaljer.</small></div>`}
+  el.innerHTML=h;el.querySelectorAll("[data-chl]").forEach(b=>b.onclick=e=>{e.stopPropagation();chlStep(+b.dataset.chl)})}
+
+/* exploration fog: a soft dim over the map that clears around sites the group has dived */
+function makeFog(){return new (L.Layer.extend({
+  onAdd(map){this._map=map;let pane=map.getPane("fogPane");if(!pane){pane=map.createPane("fogPane");pane.style.zIndex=350;pane.style.pointerEvents="none"}
+    this._c=L.DomUtil.create("canvas","fogc",pane);map.on("moveend zoomend resize viewreset",this._draw,this);map.on("zoomstart",this._hide,this);this._draw()},
+  onRemove(map){L.DomUtil.remove(this._c);map.off("moveend zoomend resize viewreset",this._draw,this);map.off("zoomstart",this._hide,this)},
+  _hide(){if(this._c)this._c.style.opacity=0},
+  _draw(){const map=this._map,c=this._c;if(!map||!c)return;const sz=map.getSize(),dpr=window.devicePixelRatio||1;
+    c.width=sz.x*dpr;c.height=sz.y*dpr;c.style.width=sz.x+"px";c.style.height=sz.y+"px";c.style.opacity=1;L.DomUtil.setPosition(c,map.containerPointToLayerPoint([0,0]));
+    const g=c.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,sz.x,sz.y);g.fillStyle="rgba(6,16,30,.34)";g.fillRect(0,0,sz.x,sz.y);
+    g.globalCompositeOperation="destination-out";const z=map.getZoom();
+    for(const st of allSites()){if(st.lat==null||st.lon==null||!(st.logCount>0))continue;
+      const p=map.latLngToContainerPoint([st.lat,st.lon]),mpp=40075016.686*Math.cos(st.lat*Math.PI/180)/Math.pow(2,z+8),r=(700+220*Math.min(10,st.logCount))/mpp;
+      if(p.x<-r||p.y<-r||p.x>sz.x+r||p.y>sz.y+r)continue;
+      const gr=g.createRadialGradient(p.x,p.y,r*.3,p.x,p.y,r);gr.addColorStop(0,"rgba(0,0,0,1)");gr.addColorStop(1,"rgba(0,0,0,0)");g.fillStyle=gr;g.beginPath();g.arc(p.x,p.y,r,0,7);g.fill()}
+    g.globalCompositeOperation="source-over"}}))()}
+
+/* ---------- the dive year as a replay on the map ---------- */
+S.rp=null;
+function stopReplay(){document.body.classList.remove("replaying");const R=S.rp;if(!R)return;cancelAnimationFrame(R.raf);if(R.layer)R.layer.remove();const el=$("#rpBox");if(el)el.remove();S.rp=null}
+function playYear(logs,Y,label){stopReplay();document.body.classList.add("replaying");if(!isLive())switchChart("live");
+  const L2=logs.filter(l=>{const st=getSite(l.site_id);return st&&st.lat!=null&&l.date}).sort((a,b)=>String(a.date+(a.time_of_day||"")).localeCompare(String(b.date+(b.time_of_day||""))));
+  if(!L2.length){toast("Ingen dykk med posisjon å spille av.");return}
+  if(window.matchMedia&&window.matchMedia("(max-width:860px)").matches){try{$(".mapcol").scrollIntoView({behavior:"smooth",block:"start"})}catch(e){}}
+  const pts=L2.map(l=>{const st=getSite(l.site_id);return [st.lat,st.lon]});try{S.lmap.fitBounds(pts,{padding:[60,60],maxZoom:12})}catch(e){}
+  if(!S.lmap.getPane("rpPane")){S.lmap.createPane("rpPane").style.zIndex=640}
+  const layer=L.layerGroup().addTo(S.lmap),byLog={};for(const c of S.catches)(byLog[c.log_id]=byLog[c.log_id]||[]).push(c);
+  const firstEver={};for(const c of S.catches.slice().sort(catchSort))if(c.species&&!firstEver[c.species])firstEver[c.species]=c.id;
+  const t0=Date.parse(L2[0].date+"T00:00:00"),t1=Date.parse(L2[L2.length-1].date+"T23:59:00"),D=Math.max(12e3,Math.min(40e3,L2.length*700));
+  const R=S.rp={i:0,start:performance.now(),paused:false,pauseAt:0,layer,visits:{},spec:new Set(),n:0,best:null};
+  const box=document.createElement("div");box.id="rpBox";box.className="rp";$("#lmap").appendChild(box);L.DomEvent.disableClickPropagation(box);
+  box.innerHTML=`<div class="rp-top"><b>${esc(label)} dykkeår ${esc(Y)}</b><span id="rpDate"></span><button type="button" id="rpPause" aria-label="Pause">❚❚</button><button type="button" id="rpX" aria-label="Lukk">✕</button></div><div class="rp-bar"><i id="rpProg"></i></div><div class="rp-stats" id="rpStats">0 dykk · 0 arter</div>`;
+  $("#rpX").onclick=stopReplay;
+  $("#rpPause").onclick=()=>{if(!S.rp)return;if(R.paused){R.start+=performance.now()-R.pauseAt;R.paused=false;$("#rpPause").textContent="❚❚";R.raf=requestAnimationFrame(tick)}else{R.paused=true;R.pauseAt=performance.now();$("#rpPause").textContent="▶"}};
+  const show=l=>{const st=getSite(l.site_id),ll=[st.lat,st.lon],v=R.visits[st.id]=(R.visits[st.id]||0)+1;R.n++;
+    if(R.visits[st.id]===1)R.visits["_m"+st.id]=L.circleMarker(ll,{pane:"rpPane",radius:5,color:"#F1E6C8",weight:2,fillColor:"#4fd0d6",fillOpacity:.6,interactive:false}).addTo(layer);
+    else R.visits["_m"+st.id].setRadius(Math.min(14,5+v*1.2));
+    const pulse=L.marker(ll,{pane:"rpPane",interactive:false,icon:L.divIcon({className:"rp-pulse",html:"<i></i>",iconSize:[60,60],iconAnchor:[30,30]})}).addTo(layer);setTimeout(()=>layer.removeLayer(pulse),1600);
+    const cs=(byLog[l.id]||[]);cs.forEach(c=>R.spec.add(c.species));
+    const big=cs.filter(c=>c.kind==="fanget").sort((a,b)=>bigger(a,b)?-1:1)[0]||cs[0];
+    if(big){const isNew=firstEver[big.species]===big.id,im=spImg(big.species);if(big.kind==="fanget"&&(big.weight_kg!=null||big.size_cm!=null)&&(!R.best||bigger(big,R.best)))R.best=big;
+      const cp=S.lmap.latLngToContainerPoint(ll);R.bubs=(R.bubs||[]).filter(o=>{if(Math.abs(o.p.x-cp.x)<170&&Math.abs(o.p.y-cp.y)<52){layer.removeLayer(o.m);return false}return layer.hasLayer(o.m)});
+      const bub=L.marker(ll,{pane:"rpPane",interactive:false,icon:L.divIcon({className:"rp-bub"+(isNew?" new":""),html:`<div>${im?`<img src="${esc(im.src)}" alt="">`:""}<span><b>${esc(big.species)}</b>${measureTxt(big)?" "+esc(measureTxt(big)):""}${isNew?"<em>Ny art!</em>":""}</span></div>`,iconSize:[160,44],iconAnchor:[80,58]})}).addTo(layer);
+      R.bubs.push({p:cp,m:bub});setTimeout(()=>layer.removeLayer(bub),2300)}};
+  const fmtD=t=>new Date(t).toLocaleDateString("nb-NO",{day:"numeric",month:"long"});
+  function tick(now){if(!S.rp||R.paused)return;const f=Math.min(1,(now-R.start)/D),tt=t0+f*(t1-t0);
+    while(R.i<L2.length&&Date.parse(L2[R.i].date+"T12:00:00")<=tt+12*3600e3)show(L2[R.i++]);
+    const pr=$("#rpProg"),dt=$("#rpDate"),stt=$("#rpStats");if(pr)pr.style.width=(f*100).toFixed(1)+"%";if(dt)dt.textContent=fmtD(tt);if(stt)stt.textContent=`${R.n} dykk · ${R.spec.size} ${R.spec.size===1?"art":"arter"}`;
+    if(f<1){R.raf=requestAnimationFrame(tick);return}
+    while(R.i<L2.length)show(L2[R.i++]);
+    const sites=Object.keys(R.visits).filter(k=>!k.startsWith("_m")).length;
+    box.querySelector(".rp-stats").innerHTML=`<b>${R.n} dykk</b> på ${sites} ${sites===1?"sted":"steder"} · <b>${R.spec.size}</b> ${R.spec.size===1?"art":"arter"}${R.best?` · største: ${esc(R.best.species)} ${esc(measureTxt(R.best))}`:""}<div class="rp-end"><button type="button" class="btn" id="rpAgain">Spill igjen</button><button type="button" class="btn" id="rpClose">Lukk</button></div>`;
+    $("#rpAgain").onclick=()=>playYear(logs,Y,label);$("#rpClose").onclick=stopReplay;const pb=$("#rpPause");if(pb)pb.remove()}
+  const need=[...new Set(L2.flatMap(l=>(byLog[l.id]||[]).map(c=>c.species)))].filter(sp=>!(sp in S.spImg));if(need.length&&!S.spImgBusy)loadSpImages(need).catch(()=>{});
+  R.raf=requestAnimationFrame(tick)}
 
 /* map dots */
 function condTarget(v){const n=new Date();if(v==="now")return Date.now();if(/^\+\d+$/.test(v))return Date.now()+(+v.slice(1))*3600e3;
@@ -2860,6 +3126,53 @@ function renderDexDlg(){
   $("#dexF").onclick=e=>{const b=e.target.closest("[data-f]");if(!b)return;S.dexFilter=b.dataset.f;const st=$("#dexWrap").scrollTop;renderDexDlg();$("#dexWrap").scrollTop=st};
   $("#dexWrap").querySelectorAll(".dcard[data-sp]").forEach(b=>b.onclick=()=>showDexCard(b.dataset.sp));
 }
+/* ---------- catch patterns: when does the group catch this species, compared with all its dives ---------- */
+const PAT_MIN=8;
+const PAT_SENT=-99,PAT_TOP=999;
+const PATF=[
+ {k:"tide",name:"Timer fra flo",get:l=>l.tide_phase!=null&&l.tide_phase!==""?+l.tide_phase:null,
+  bins:[[-7.5,-4],[-4,-2],[-2,0],[0,2],[2,4],[4,7.5]],short:["−6","−4","−2","+2","+4","+6"],
+  say:(a,b)=>b<=0?`${-b}–${Math.min(6,-a)} timer før flo`:a>=0?`${a}–${Math.min(6,b)} timer etter flo`:`fra ${-a} timer før til ${b} timer etter flo`},
+ {k:"moon",name:"Månefase",get:l=>l.date?moonInfo(Date.parse(l.date+"T12:00:00")).tide:null,cat:["spring","mellom","nipp"],short:["Springflo","Mellom","Nippflo"],
+  sayCat:c=>c==="spring"?"rundt springflo (ny- og fullmåne)":c==="nipp"?"rundt nippflo (halvmåne)":"mellom spring- og nippflo"},
+ {k:"tod",name:"Tid på døgnet",get:l=>{if(!l.time_of_day)return null;let h=+String(l.time_of_day).slice(0,2)+(+String(l.time_of_day).slice(3,5)||0)/60;if(!isFinite(h))return null;return h<5?h+24:h},
+  bins:[[5,9],[9,12],[12,17],[17,21],[21,29]],short:["05–09","09–12","12–17","17–21","21–05"],say:(a,b)=>`mellom kl ${String(a%24).padStart(2,"0")} og ${String(b%24).padStart(2,"0")}`},
+ {k:"temp",name:"Vanntemperatur",get:l=>l.temp!=null&&l.temp!==""?+l.temp:null,
+  bins:[[PAT_SENT,4],[4,6],[6,8],[8,10],[10,12],[12,PAT_TOP]],short:["<4°","4–6°","6–8°","8–10°","10–12°","12°+"],
+  say:(a,b)=>a===PAT_SENT?`i vann kaldere enn ${b} °C`:b===PAT_TOP?`i vann varmere enn ${a} °C`:`i ${a}–${b} °C vann`,thr:[10,8,6,4],sayThr:t=>`i vann på ${t} °C eller mer`},
+ {k:"vis",name:"Sikt",get:l=>l.vis!=null&&l.vis!==""?+l.vis:null,
+  bins:[[0,4],[4,6],[6,8],[8,10],[10,15],[15,PAT_TOP]],short:["<4 m","4–6","6–8","8–10","10–15","15+"],
+  say:(a,b)=>a===0?`med under ${b} m sikt`:b===PAT_TOP?`med over ${a} m sikt`:`med ${a}–${b} m sikt`,thr:[10,8,6,4],sayThr:t=>`med ${t} m sikt eller mer`},
+ {k:"depth",name:"Maks dybde på dykket",get:l=>l.depth!=null&&l.depth!==""?+l.depth:null,
+  bins:[[0,5],[5,10],[10,15],[15,20],[20,PAT_TOP]],short:["<5 m","5–10","10–15","15–20","20+"],say:(a,b)=>a===0?`på dykk grunnere enn ${b} m`:b===PAT_TOP?`på dykk dypere enn ${a} m`:`på dykk ned til ${a}–${b} m`}];
+function binomTail(k,n,p){if(p<=0)return k>0?0:1;if(p>=1)return 1;let lp=Math.log(p),lq=Math.log(1-p),lc=0,sum=0;for(let i=0;i<=n;i++){if(i>0)lc+=Math.log((n-i+1)/i);if(i>=k)sum+=Math.exp(lc+i*lp+(n-i)*lq)}return Math.min(1,sum)}
+const PAT_P=.005;
+function patBin(f,v){if(v==null)return -1;if(f.cat)return f.cat.indexOf(v);for(let i=0;i<f.bins.length;i++){const [a,b]=f.bins[i];if(v>=a&&(v<b||(i===f.bins.length-1&&v<=b)))return i}return -1}
+function catchPatterns(sp){const logs=S.allLogs||[],byId={};for(const l of logs)byId[l.id]=l;
+  let regs=S.catches.filter(c=>c.species===sp&&byId[c.log_id]),caught=regs.filter(c=>c.kind==="fanget"),useCaught=caught.length>=PAT_MIN;
+  const set=useCaught?caught:regs,word=useCaught?"fangster":"registreringer",out={n:set.length,dives:logs.length,word,facs:[],sent:[]};
+  for(const f of PATF){const nb=f.cat?f.cat.length:f.bins.length,cc=Array(nb).fill(0),dc=Array(nb).fill(0);let n=0,nd=0;const cv=[],dv=[];
+    for(const c of set){const v=f.get(byId[c.log_id]),i=patBin(f,v);if(i<0)continue;cc[i]++;n++;cv.push(v)}
+    for(const l of logs){const v=f.get(l),i=patBin(f,v);if(i<0)continue;dc[i]++;nd++;dv.push(v)}
+    if(n<PAT_MIN)continue;
+    const cs=cc.map(x=>x/n),ds=nd>=5?dc.map(x=>x/nd):null;out.facs.push({f,cs,ds,n,nd});
+    let best=null;
+    if(f.thr&&ds){for(const t of f.thr){const fc=cv.filter(v=>v>=t).length/n,fd=dv.filter(v=>v>=t).length/nd;const kk=cv.filter(v=>v>=t).length;if(fc>=.9&&fd<=.75&&binomTail(kk,n,fd)<PAT_P){best={str:fc-fd+.05,text:`${fc===1?"Alle":"Nesten alle"} (${cv.filter(v=>v>=t).length} av ${n}) ${word} er tatt ${f.sayThr(t)}`,extra:`dere dykker under slike forhold ${Math.round(fd*100)} % av gangene`};break}}}
+    if(!best){const wins=[];for(let i=0;i<nb;i++){wins.push([i,i]);if(!f.cat&&i<nb-1)wins.push([i,i+1])}
+      for(const [a,b] of wins){let c2=0,d2=0;for(let i=a;i<=b;i++){c2+=cs[i];if(ds)d2+=ds[i]}
+        const ok=c2>=.6&&(ds?c2-d2>=.2&&binomTail(Math.round(c2*n),n,d2)<PAT_P:c2>=.75);if(!ok)continue;const str=ds?c2-d2:c2-.5;
+        if(!best||str>best.str+.02||(Math.abs(str-best.str)<=.02&&b-a<best.w)){const k=Math.round(c2*n);
+          best={str,w:b-a,text:`${k} av ${n} ${word} er tatt ${f.cat?f.sayCat(f.cat[a]):f.say(f.bins[a][0],f.bins[b][1])}`,extra:ds?`dere dykker da ${Math.round(d2*100)} % av gangene`:""}}}}
+    if(best)out.sent.push({...best,name:f.name})}
+  out.sent.sort((a,b)=>b.str-a.str);return out}
+function patHTML(sp){if(S.allLogs==null)return `<p class="dpat-wait">Henter loggene…</p>`;
+  const P=catchPatterns(sp);
+  if(P.n<PAT_MIN)return `<p class="dpat-few">For lite data ennå: ${P.n} ${P.n===1?"registrering":"registreringer"} med dykkelogg. Mønstre vises fra ${PAT_MIN}, så tilfeldigheter ikke ser ut som sannheter.</p><div class="dpat-prog"><i style="width:${Math.min(100,P.n/PAT_MIN*100)}%"></i></div>`;
+  const bars=P.facs.map(({f,cs,ds,n})=>{const mx=Math.max(...cs,...(ds||[0]),.01);
+    return `<div class="dpat-f"><div class="dpat-n">${esc(f.name)} <small>(${n})</small></div><div class="dpat-bars" style="grid-template-columns:repeat(${cs.length},1fr)">${cs.map((v,i)=>`<div class="dpat-b" title="${esc(f.short[i])}: ${Math.round(v*100)} % av ${P.word}${ds?`, ${Math.round(ds[i]*100)} % av dykkene`:""}"><i style="height:${(v/mx*100).toFixed(0)}%"></i>${ds?`<em style="bottom:${(ds[i]/mx*100).toFixed(0)}%"></em>`:""}<span>${esc(f.short[i])}</span></div>`).join("")}</div></div>`}).join("");
+  return `${P.sent.length?`<ul class="dpat-s">${P.sent.slice(0,3).map(x=>`<li><b>${esc(x.text)}</b>${x.extra?` <small>(${esc(x.extra)})</small>`:""}</li>`).join("")}</ul>`:`<p class="dpat-few">Ingen tydelige mønstre ennå. ${esc(sp)} tas under mange ulike forhold.</p>`}
+    <div class="dpat-grid">${bars}</div>
+    <p class="dpat-foot">Søyler: andel av ${P.word}. Strek: andel av alle gjengens dykk (${P.dives}). Bygger på ${P.n} ${P.word}. Et mønster vises bare når det er svært usannsynlig at det skyldes tilfeldigheter.</p>`}
 function showDexCard(sp){S.dexCard=sp;
   const d=dexData(),el=$("#dexDet");if(!el)return;const idx=dexIdx(d),miss=!d.by[sp];if(!(sp in idx))return;
   const o=d.by[sp]||{sp,n:0,caught:0,sites:new Set(),who:new Set(),first:null,best:null,photo:null};
@@ -2877,6 +3190,7 @@ function showDexCard(sp){S.dexCard=sp;
     ${photos.length?`<p style="margin:12px 0 0;font-weight:600;color:#F1E6C8">Gjengens bilder</p><div class="dphotos">${photos.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc([c.species,measureTxt(c),catcherName(c),getSite(c.site_id)?.name].filter(Boolean).join(" · "))}" aria-label="Vis bilde"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}
     <div class="dseason"><div class="ddhead"><b>Sesong <span class="dd-reg">· ${esc(REG(curRegion()).name)}</span></b><button class="linkbtn" id="ddSeaAll" type="button">Hele sesongkalenderen ›</button></div>${(()=>{const v=seaLevels(sp),t=seaTextHTML(sp,v),full=closedFull(rulesFor(sp)),bm=full?"":bestMonths(v.lv);return t||bm||full?`<div class="sc-dtxt dd">${full?`<p class="sc-dbest fr">Fredet hele året her</p>`:bm?`<p class="sc-dbest">Best: <b>${esc(bm)}</b></p>`:""}${t}</div>`:""})()}<div id="ddSeason">${seasonSVG(sp,(S.gbif[sp]||{}).months)}</div>
       <div class="ddleg"><span><i class="lg-bar sbx l4"></i>Topp</span><span><i class="lg-bar sbx l3"></i>Bra</span><span><i class="lg-bar sbx l2"></i>Mulig</span><span><i class="lg-bar sbx l1"></i>Vanskelig</span><span><i class="lg-bar" style="background:rgba(214,190,140,.5)"></i>Rapportert rundt ${esc(REG(curRegion()).short)}</span><span><i class="dotl"></i>Gjengens funn</span>${rulesFor(sp)&&rulesFor(sp).closed?`<span><i class="lg-bar sbx fr"></i>Fredet</span>`:""}</div></div>
+    ${miss?"":`<div class="dpat"><div class="ddhead"><b>Når tar dere den?</b></div><div id="ddPat">${patHTML(sp)}</div></div>`}
     ${rulesHTML(sp)}
     <div class="dexdist"><div class="ddhead"><b>Utbredelse</b><span class="chips" id="ddChips"><button class="chip on" data-v="lokal">${miss?"Rundt "+esc(REG(curRegion()).short):"Våre funn"}</button><button class="chip" data-v="norge">Hele Norge</button></span></div>
       <div class="dexminimap" id="dexMini"></div>
@@ -2889,6 +3203,7 @@ function showDexCard(sp){S.dexCard=sp;
   $("#dPickB").onclick=()=>openPhotoPicker(sp);
   const mini=initDexMini(sp,o);
   {const sa=$("#ddSeaAll");if(sa)sa.onclick=()=>{closeDex();openSeason()}}
+  if(!miss&&S.allLogs==null)cachedQ("alllogs",sb.from("logs").select("*")).then(a=>{if(!a.error)S.allLogs=a.data;else S.allLogs=[];const pe=$("#ddPat");if(pe&&S.dexCard===sp)pe.innerHTML=patHTML(sp)}).catch(()=>{});
   const close=()=>{try{mini&&mini.remove()}catch(e){}S.dexMini=null;el.hidden=true;el.innerHTML=""};
   $("#dexCX").onclick=close;el.onclick=e=>{if(e.target===el)close()};
   el.querySelectorAll(".rsite").forEach(x=>x.onclick=()=>{closeDex();S.siteFromNext=null;openSite(x.dataset.site);focusSite(x.dataset.site)});
@@ -3071,7 +3386,7 @@ function renderYear(){
     <div class="chips" id="yrW" style="margin-top:6px">${me?`<button class="chip ${isMe?"on":""}" data-w="${esc(me)}">Meg</button>`:""}<button class="chip ${grp?"on":""}" data-w="*">Gjengen</button>${others.map(n=>`<button class="chip ${W===n?"on":""}" data-w="${esc(n)}">${esc(n)}</button>`).join("")}</div>
     <div class="yrhero"><span class="small">${Y===cy?"Så langt i år":"Hele året"}</span><h3>${esc(whoLbl)} dykkeår ${Y}</h3>
       <div class="kpis"><div><b>${logs.length}</b><span>dykk</span></div><div><b>${sites.size}</b><span>steder</span></div><div><b>${species.size}</b><span>arter</span></div><div><b>${caught.reduce((n,c)=>n+(c.count||1),0)}</b><span>fanget</span></div></div>
-      ${logs.length?`<span class="small">Første dykk ${esc(fdate(logs[0].date))}${logs.length>1?`, siste ${esc(fdate(logs[logs.length-1].date))}`:""}</span>`:`<span class="small">Ingen dykk logget ${Y===cy?"ennå i år":"dette året"}.</span>`}</div>
+      ${logs.length?`<span class="small">Første dykk ${esc(fdate(logs[0].date))}${logs.length>1?`, siste ${esc(fdate(logs[logs.length-1].date))}`:""}</span><button type="button" class="btn yrplay" id="yrPlay">▶ Spill av året på kartet</button>`:`<span class="small">Ingen dykk logget ${Y===cy?"ennå i år":"dette året"}.</span>`}</div>
     ${best?`<div class="ycard wide" style="margin-bottom:8px">${best.photo_path?`<button class="thumb" data-img="${esc(best.photo_path)}" data-cap="${esc(best.species+" · "+measureTxt(best))}" aria-label="Vis bilde"><img src="${esc(photoURL(best.photo_path))}" alt=""></button>`:`<span class="thumb ph">${iconSVG(SPICON(best.species),28)}</span>`}<div><span class="yl">Årets største fangst</span><b>${esc(best.species)} ${esc(measureTxt(best))}</b><span class="small">${grp?esc(catcherName(best))+" · ":""}${esc(fdate(best.date))}${ws(best)}</span></div></div>`:""}
     <div class="ycards">
       ${favSite?card("Favorittsted",esc(favSite[0].name),`${favSite[1]} dykk`):""}
@@ -3088,6 +3403,7 @@ function renderYear(){
   wireRecHead();
   $("#yrY").onclick=e=>{const b=e.target.closest("[data-y]");if(!b)return;S.yrYear=b.dataset.y;renderYear()};
   $("#yrW").onclick=e=>{const b=e.target.closest("[data-w]");if(!b)return;S.yrWho=b.dataset.w;renderYear()};
+  {const yp=$("#yrPlay");if(yp)yp.onclick=()=>playYear(logs,Y,whoLbl)}
 }
 
 /* ---------- moon phase + spring/neap tide ---------- */
