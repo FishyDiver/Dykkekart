@@ -515,9 +515,10 @@ body.mapmax .maptools .seabtn{display:inline-flex;align-items:center;gap:6px}
 /* v41: season boxes in sea colours */
 .sc-boxes{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;align-self:center}
 .sbx{position:relative;display:block;height:26px;border:0;padding:0;border-radius:5px;background:rgba(159,195,224,.05);overflow:hidden;font:600 11px Barlow,sans-serif;color:#06121f;text-align:center;line-height:26px}
-.sbx.l1{background:linear-gradient(#21557a,#1b4868)}
-.sbx.l2{background:linear-gradient(#2f97b2,#257f99)}
-.sbx.l3{background:linear-gradient(#5fd0a4,#3cae86)}
+.sbx.l1{background:linear-gradient(#45566a,#3a4a5d)}
+.sbx.l2{background:linear-gradient(#3571bd,#2b62a8)}
+.sbx.l3{background:linear-gradient(#27bcc2,#1ea5ae)}
+.sbx.l4{background:linear-gradient(#93ebb0,#72dc98)}
 .sbx.now{box-shadow:0 0 0 2px #F1E6C8}
 .sbx.fr,.sbx .frp{background:repeating-linear-gradient(135deg,#E0533A 0 3px,rgba(224,83,58,.28) 3px 6px)}
 .sbx .frp{position:absolute;top:0;bottom:0}
@@ -531,7 +532,7 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .sc-leg i.sbx{width:18px;height:12px;border-radius:3px;display:inline-block}
 .dotl{display:inline-block;width:8px;height:8px;border-radius:50%;background:#F1E6C8}
 .sc-card .sc-boxes .sbx{height:30px}
-.sc-gbif{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;height:22px;margin-top:3px}.sc-gbif span{display:flex;align-items:flex-end}.sc-gbif i{display:block;width:100%;background:rgba(159,195,224,.42);border-radius:2px 2px 0 0}
+.sc-gbif{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;height:22px;margin-top:3px}.sc-gbif span{display:flex;align-items:flex-end}.sc-gbif i{display:block;width:100%;background:rgba(214,190,140,.5);border-radius:2px 2px 0 0}
 .lg-bar.sbx{display:inline-block;height:10px;width:14px}
 /* v42: readable season texts */
 .sc-lab .chev{margin-left:auto;font-style:normal;font-size:19px;line-height:1;color:#9fc3e0;opacity:.45;transition:transform .15s,opacity .15s}
@@ -551,6 +552,41 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .sc-dbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .sc-dbtns .chip{color:#F1E6C8;border-color:rgba(241,230,200,.55)}.sc-dbtns .chip:hover{background:rgba(241,230,200,.12)}
 .sc-dtxt.dd{margin:2px 0 10px}.sc-dtxt.dd p{font-size:14.5px}.sc-dbest{color:#9fc3e0}.sc-dbest b{color:#5fd0a4}
+/* v43: solid panel behind the calendar, five levels, curves, brush */
+.seadlg .dexin.sc{background:#0a1a2c;min-height:100%;box-sizing:border-box;padding:14px 26px 40px;box-shadow:0 0 0 1px rgba(159,195,224,.10),0 24px 70px rgba(0,0,0,.5)}
+.seadlg .dextop{background:#0a1a2c}
+.sc-head{background:linear-gradient(#0a1a2c 80%,rgba(10,26,44,0))}
+.sc{--lw:178px}
+.sc-lab b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sc-lab .lvnow{flex:none}
+.sc-row.z{background:rgba(159,195,224,.03)}
+.sc-lab .lvnow{background:rgba(127,227,160,.16);color:#93ebb0}.sc-lab .lvnow.l3{background:rgba(39,188,194,.18);color:#6fd9de}
+.sc-nowl .k.t{color:#93ebb0}.sc-nowl .k.g{color:#4fd0d6}
+.sc-dnow.l4{color:#93ebb0}.sc-dnow.l3{color:#4fd0d6}.sc-dnow.l2{color:#7fa8e0}.sc-dnow.l1,.sc-dnow.l0{color:#8a9bab}
+.sc-dbest b{color:#93ebb0}
+.sbx.now{box-shadow:0 0 0 2px #F1E6C8,0 0 0 3.5px rgba(10,26,44,.9)}
+.sc-legtop{margin:4px 0 10px;gap:6px 18px}
+.sc-foot{margin:16px 0 0;font-size:12.5px;color:#6f8fa8}
+.sc-brush{align-items:center}.sc-brush b{color:#F1E6C8;font-weight:600;margin-right:2px}
+.sc-brush button{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(241,230,200,.22);background:rgba(8,26,46,.6);color:#E3EDF4;border-radius:999px;padding:4px 11px 4px 6px;font:500 13px Barlow,sans-serif;cursor:pointer}
+.sc-brush button.on{border-color:#F1E6C8;background:rgba(241,230,200,.14);box-shadow:0 0 0 1px #F1E6C8}
+.sc-brush button i.sbx{width:18px;height:12px;border-radius:3px}.sc-brush button i.sbx.l0{background:rgba(159,195,224,.12)}
+.sc-editing .sc-boxes{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.sc-ecrow{align-items:stretch;margin:2px 0 4px;height:auto!important}
+.sc-curves{position:relative;height:132px;border-radius:8px;background:rgba(159,195,224,.035)}
+.sc-curves svg{position:absolute;inset:0;width:100%;height:100%}
+.ec-dot{position:absolute;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;box-shadow:0 0 0 2px #0a1a2c;pointer-events:none}
+.ec-dot.t{background:#FFAA5A}.ec-dot.v{background:#8fd3ec}.ec-dot.now{width:9px;height:9px;margin:-4.5px 0 0 -4.5px}
+.ec-dot em{position:absolute;left:50%;transform:translateX(-50%);font:600 10.5px Barlow,sans-serif;font-style:normal;white-space:nowrap;text-shadow:0 1px 2px #0a1a2c}
+.ec-dot.v em{bottom:8px;color:#bfe6f5}.ec-dot.t em{top:8px;color:#ffc58f}
+.ec-hov{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,minmax(0,1fr))}
+.sc-ecleg{display:flex;flex-direction:column;justify-content:space-around;gap:4px;padding-top:4px;padding-bottom:4px;font-size:13px;color:#9fc3e0;padding-right:14px}
+.sc-ecleg>span{display:flex;align-items:center;gap:7px}.sc-ecleg i{width:14px;height:3px;border-radius:2px;flex:none}
+.e-d i{background:#F1E6C8}.e-t i{background:#FFAA5A}.e-v i{background:#8fd3ec}
+.sc-ecleg b{margin-left:auto;color:#E3EDF4;font-weight:600}.sc-ecleg .ls{display:none}
+.ec-none{margin:2px 0 6px var(--lw);font-size:12px;color:#6f8fa8}
+@media (max-width:760px){.hdrbtn .kal{display:none}}
+@media (max-width:700px){.hdrbtn>span{display:none}.hdrbtn{padding:6px 9px}}
+@media (max-width:700px){.seadlg .dexin.sc{padding:14px 14px 40px;box-shadow:none}.sc{--lw:88px}.sc-curves{height:116px}.sc-ecleg{font-size:11px;gap:6px;padding-right:5px}.sc-ecleg .lf{display:none}.sc-ecleg .ls{display:inline}.sc-ecleg i{width:8px}.ec-dot em{font-size:9.5px}.ec-dot em small{display:none}.ec-none{margin-left:0}.sc-legtop{gap:6px 12px;font-size:11.5px}.sc-brush button{padding:3px 9px 3px 5px;font-size:12px}}
 @media (max-width:700px){.sc-lab .chev{display:none}.sc-det{padding:12px 12px 12px}.sc-dtxt p{font-size:14.5px}.sc-dmeta{font-size:12.5px;gap:4px 12px}}
 @media (max-width:700px){.sbx{height:24px;border-radius:4px}.sc-boxes{gap:2px}.sbx.ev{font-size:8.5px}.sc-row{min-height:30px}.sc-row .sc-lab{height:30px}}
 
@@ -742,7 +778,7 @@ body.mapmax .recbar{display:inline-flex}
   </div>
   <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
   <button id="dexHdr" class="hdrbtn dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span><b class="dexcnt" id="dexHdrCnt"></b></button>
-  <button id="seaHdr" class="hdrbtn seabtn" type="button" title="Sesongkalender: når er artene her?"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Sesong</span></button>
+  <button id="seaHdr" class="hdrbtn seabtn" type="button" title="Sesongkalender: når er artene her?"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Sesong<span class="kal">kalender</span></span></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
   <button id="menuBtn" class="btn ghost">Meny</button>
@@ -830,7 +866,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v42 (sesongtekster du kan lese)";
+const APP_VERSION="v43 (fem sesongnivåer og kurver for forhold)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2749,7 +2785,7 @@ function showDexCard(sp){S.dexCard=sp;
     ${miss?"":`<p style="color:#9fc3e0;font-size:14px">Sett av: ${esc([...o.who].join(", ")||"–")}</p>`}
     ${photos.length?`<p style="margin:12px 0 0;font-weight:600;color:#F1E6C8">Gjengens bilder</p><div class="dphotos">${photos.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc([c.species,measureTxt(c),catcherName(c),getSite(c.site_id)?.name].filter(Boolean).join(" · "))}" aria-label="Vis bilde"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}
     <div class="dseason"><div class="ddhead"><b>Sesong</b><button class="linkbtn" id="ddSeaAll" type="button">Hele sesongkalenderen ›</button></div>${(()=>{const v=seaLevels(sp),t=seaTextHTML(sp,v),bm=bestMonths(v.lv);return t||bm?`<div class="sc-dtxt dd">${bm?`<p class="sc-dbest">Best: <b>${esc(bm)}</b></p>`:""}${t}</div>`:""})()}<div id="ddSeason">${seasonSVG(sp,(S.gbif[sp]||{}).months)}</div>
-      <div class="ddleg"><span><i class="lg-bar sbx l3"></i>Topp</span><span><i class="lg-bar sbx l2"></i>Bra</span><span><i class="lg-bar sbx l1"></i>Mulig</span><span><i class="lg-bar" style="background:rgba(159,195,224,.42)"></i>Rapportert rundt Bodø</span><span><i class="dotl"></i>Gjengens funn</span>${RULES[sp]&&RULES[sp].closed?`<span><i class="lg-bar sbx fr"></i>Fredet</span>`:""}</div></div>
+      <div class="ddleg"><span><i class="lg-bar sbx l4"></i>Topp</span><span><i class="lg-bar sbx l3"></i>Bra</span><span><i class="lg-bar sbx l2"></i>Mulig</span><span><i class="lg-bar sbx l1"></i>Vanskelig</span><span><i class="lg-bar" style="background:rgba(214,190,140,.5)"></i>Rapportert rundt Bodø</span><span><i class="dotl"></i>Gjengens funn</span>${RULES[sp]&&RULES[sp].closed?`<span><i class="lg-bar sbx fr"></i>Fredet</span>`:""}</div></div>
     ${rulesHTML(sp)}
     <div class="dexdist"><div class="ddhead"><b>Utbredelse</b><span class="chips" id="ddChips"><button class="chip on" data-v="lokal">${miss?"Rundt Bodø":"Våre funn"}</button><button class="chip" data-v="norge">Hele Norge</button></span></div>
       <div class="dexminimap" id="dexMini"></div>
@@ -2776,6 +2812,30 @@ async function gbifInfo(sp){const c=S.gbif[sp];if(c&&Date.now()-(c.t||0)<14*864e
     const months=fetch(`https://api.gbif.org/v1/occurrence/search?taxonKey=${m.usageKey}&limit=0&facet=month&facetLimit=12${BOX}`).then(r=>r.json()).then(j=>{const a=Array(12).fill(0);const f=(j.facets||[])[0];if(f)for(const c of f.counts)a[(+c.name)-1]=c.count;return a}).catch(()=>null);
     const [no,bodo,mon]=await Promise.all([q("&country=NO"),q(BOX),months]);
     const v={key:m.usageKey,no,bodo,months:mon,t:Date.now()};S.gbif[sp]=v;lsSet("gbif:v2",S.gbif);return v}catch(e){return null}}
+/* conditions per month as curves: daylight (area), water temperature and visibility (lines with values) */
+function envCurvesHTML(dl,tv,vv,tn,vn,cm){const H=100,X=m=>50+100*m,cl=v=>Math.max(0,Math.min(1,v)),y=(v,mx)=>H-6-cl(v/mx)*(H-12),yV=v=>15+(1-cl(v/20))*30,yT=v=>60+(1-cl(v/15))*30;
+  const dp=[];for(let m=-1;m<=12;m++)dp.push([X(m),y(dl[(m+12)%12],24)]);
+  const dline=`M${dp[0][0]},${dp[0][1].toFixed(1)}${crSeg(dp)}`;
+  const series=(vals,yf)=>{const pts=vals.map((v,m)=>v==null?null:[X(m),yf(v),m]),segs=[];let cur=[];
+    for(const q of pts){if(q)cur.push(q);else if(cur.length){segs.push(cur);cur=[]}}if(cur.length)segs.push(cur);
+    let solid="",dash="";segs.forEach((g,k)=>{if(g.length>1)solid+=`M${g[0][0]},${g[0][1].toFixed(1)}${crSeg(g)}`;if(k>0){const a=segs[k-1][segs[k-1].length-1];dash+=`M${a[0]},${a[1].toFixed(1)}L${g[0][0]},${g[0][1].toFixed(1)}`}});
+    return {solid,dash,pts:pts.filter(Boolean)}};
+  const T=series(tv,yT),V=series(vv,yV);
+  const dots=(sr,cls,vals,fmt)=>sr.pts.map(q=>`<span class="ec-dot ${cls}${q[2]===cm?" now":""}" style="left:${((q[2]+.5)/12*100).toFixed(2)}%;top:${(q[1]/H*100).toFixed(1)}%"><em>${fmt(vals[q[2]])}</em></span>`).join("");
+  const line=(sr,col,w)=>`${sr.dash?`<path d="${sr.dash}" fill="none" stroke="${col}" stroke-opacity=".55" stroke-width="1.3" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>`:""}${sr.solid?`<path d="${sr.solid}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`:""}`;
+  return `<div class="sc-row sc-ecrow"><div class="sc-ecleg">
+      <span class="e-v"><i></i><span>Sikt</span><b>${vv[cm]==null?"–":fnum(vv[cm],0)+" m"}</b></span>
+      <span class="e-t"><i></i><span class="lf">Vanntemp</span><span class="ls">Vann</span><b>${tv[cm]==null?"–":fnum(tv[cm],0)+"°"}</b></span>
+      <span class="e-d"><i></i><span>Dagslys</span><b>${Math.round(dl[cm])} t</b></span></div>
+    <div class="sc-curves"><svg viewBox="0 0 1200 ${H}" preserveAspectRatio="none" aria-hidden="true">
+      <rect x="${cm*100}" y="0" width="100" height="${H}" fill="#F1E6C8" fill-opacity=".07"/>
+      ${[1,2,3,4,5,6,7,8,9,10,11].map(m=>`<line x1="${m*100}" x2="${m*100}" y1="0" y2="${H}" stroke="#9fc3e0" stroke-opacity=".08" vector-effect="non-scaling-stroke"/>`).join("")}
+      <path d="${dline}L1250,${H}L-50,${H}Z" fill="#F1E6C8" fill-opacity=".07"/><path d="${dline}" fill="none" stroke="#F1E6C8" stroke-opacity=".4" stroke-width="1.2" vector-effect="non-scaling-stroke"/>
+      <line x1="0" x2="1200" y1="52" y2="52" stroke="#9fc3e0" stroke-opacity=".12" stroke-dasharray="2 5" vector-effect="non-scaling-stroke"/>
+      ${line(T,"#FFAA5A",2.2)}${line(V,"#8fd3ec",2.6)}</svg>
+      ${dots(T,"t",tv,v=>fnum(v,0)+"°")}${dots(V,"v",vv,v=>fnum(v,0)+"<small> m</small>")}
+      <div class="ec-hov">${MNS.map((m,i)=>`<div title="${m}: ${Math.round(dl[i])} t dagslys${tv[i]!=null?` · vann ${fnum(tv[i],1)} °C (${tn[i]} ${tn[i]===1?"logg":"logger"})`:""}${vv[i]!=null?` · sikt ${fnum(vv[i],1)} m (${vn[i]} ${vn[i]===1?"måling":"målinger"})`:""}"></div>`).join("")}</div></div></div>
+    ${!T.pts.length&&!V.pts.length?`<p class="ec-none">Ingen logger med sikt eller vanntemperatur ennå. Kurvene fylles ut etter hvert som dere logger dykk.</p>`:`<p class="ec-none">Sikt og vanntemperatur er snitt fra gjengens logger. Stiplet linje = måneder uten data.</p>`}`}
 function seasonSVG(sp,gm){const v=seaLevels(sp),mx=gm?Math.max(1,...gm):1;
   return `<div class="sc sc-card">${scBoxes(v.lv,sp,{own:true})}${gm&&gm.some(x=>x>0)?`<div class="sc-gbif">${gm.map((x,m)=>`<span title="${MNS[m]}: ${x} rapporterte funn rundt Bodø"><i style="height:${x?Math.max(8,x/mx*100):0}%"></i></span>`).join("")}</div>`:""}<div class="sc-months sc-cm">${scMonthsHTML(true)}</div></div>`}
 function initDexMini(sp,o){const el=$("#dexMini");if(!el||typeof L==="undefined")return null;
@@ -2954,21 +3014,22 @@ function moonLine(T,td){
 
 
 /* ---------- season calendar ----------
-   Levels: 0 = lite sannsynlig, 1 = mulig, 2 = bra, 3 = topp (for spearfishing in shallow water around Bodø).
+   Levels: 0 = ikke aktuelt, 1 = vanskelig, 2 = mulig, 3 = bra, 4 = topp (for spearfishing in shallow water around Bodø).
+   Rows saved from v43 on carry a 13th value (SEA_SCALE) so older 0–3 rows can be told apart and converted.
    DEFAULT_SEASON is a starting suggestion; the group can adjust it in the app (stored in season_cal). */
 const DEFAULT_SEASON={
- "Torsk":[2,3,3,3,2,2,2,2,3,3,3,2,"Kysttorsk hele året. Skreien kommer inn for å gyte i februar–april."],
- "Sei":[1,1,1,1,2,3,3,3,3,3,2,1,"Stor sei trekker inn mot land og strømmer sommer–høst. Om vinteren står den dypere."],
- "Lyr":[0,0,0,1,1,2,2,2,2,1,1,0,"Mindre vanlig i nord. Mest i tareskogen sommer–høst."],
- "Makrell":[0,0,0,0,0,0,2,3,3,1,0,0,"Kommer nordover om sommeren, mest juli–september."],
- "Kveite":[0,0,0,1,2,3,3,3,3,2,1,1,"Står grunt om sommeren og dypere om vinteren. Fredet 20.12–20.04."],
- "Steinbit":[1,1,2,3,3,3,2,2,2,1,1,1,"Ofte grunnere vår og sommer."],
- "Breiflabb":[0,0,0,1,1,2,3,3,2,1,0,0,"Trekker inn på grunt vann om sommeren."],
- "Rognkjeks":[0,1,2,3,3,2,1,0,0,0,0,0,"Kommer inn på grunt vann for å gyte om våren. Hannen vokter eggene."],
- "Rødspette":[1,1,1,1,2,3,3,3,2,2,1,1,"På sandbunn, grunnere om sommeren."],
+ "Torsk":[3,4,4,4,3,3,3,3,4,4,4,3,"Kysttorsk hele året. Skreien kommer inn for å gyte i februar–april."],
+ "Sei":[2,1,1,2,3,4,4,4,4,4,3,2,"Stor sei trekker inn mot land og strømmer sommer–høst. Om vinteren står den dypere."],
+ "Lyr":[0,0,1,1,2,3,3,3,3,2,1,0,"Mindre vanlig i nord. Mest i tareskogen sommer–høst."],
+ "Makrell":[0,0,0,0,0,1,3,4,4,1,0,0,"Kommer nordover om sommeren, mest juli–september."],
+ "Kveite":[0,0,0,1,3,4,4,4,4,3,2,1,"Står grunt om sommeren og dypere om vinteren. Fredet 20.12–20.04."],
+ "Steinbit":[2,2,3,4,4,4,3,3,3,2,2,2,"Ofte grunnere vår og sommer."],
+ "Breiflabb":[0,0,0,1,2,3,4,4,3,2,1,0,"Trekker inn på grunt vann om sommeren."],
+ "Rognkjeks":[1,2,3,4,4,3,1,0,0,0,0,0,"Kommer inn på grunt vann for å gyte om våren. Hannen vokter eggene."],
+ "Rødspette":[1,1,1,2,3,4,4,4,3,3,2,1,"På sandbunn, grunnere om sommeren."],
  "Hyse":[1,1,1,1,1,1,1,1,1,1,1,1,"Står helst dypere enn vanlig dykkedybde."],
- "Kamskjell":[2,2,2,2,2,2,2,2,2,2,2,2,"Hele året. Ofte best sikt om vinteren."],
- "Taskekrabbe":[1,1,1,1,2,2,3,3,3,2,1,1,"Mest på grunt vann sommer–høst."]
+ "Kamskjell":[3,3,3,3,3,3,3,3,3,3,3,3,"Hele året. Ofte best sikt om vinteren."],
+ "Taskekrabbe":[1,1,1,2,3,3,4,4,4,3,2,1,"Mest på grunt vann sommer–høst."]
 };
 /* longer season texts, shown when a species is opened in the calendar and in the Artsdex card */
 const SEA_MORE={
@@ -2985,13 +3046,15 @@ const SEA_MORE={
  "Kamskjell":["Kamskjellet ligger på sand- og skjellsandbunn, ofte på 10–40 meters dyp, og kan plukkes hele året.","Om vinteren er sikten ofte best. Om våren blomstrer planktonet opp, og da blir vannet grumsete.","Rens bort den mørke fordøyelseskjertelen. Mattilsynet advarer mot å spise den."],
  "Taskekrabbe":["Taskekrabben står på ganske grunt vann i sommerhalvåret og trekker dypere om vinteren.","Voksne krabber skifter skall fra august til oktober. Rett etterpå er de lite fylt med kjøtt, så krabber med hardt, gammelt skall er best.","Arten har blitt vanligere nordover langs kysten de siste tiårene."]
 };
-function seaTextHTML(sp,d){let h="";
-  if(d.custom&&d.note)h+=`<p class="sc-cust">${esc(d.note)}<span class="who">Notat fra ${esc(d.who||"gjengen")}</span></p>`;
+/* the group's own note (empty when nothing custom is saved); used as the value of the note field in edit mode */
+function seaNoteVal(sp){const e=S.seaEdit&&S.seaEdit[sp];if(e&&e.note!=null)return e.note;const v=seaLevels(sp),def=DEFAULT_SEASON[sp];return v.custom&&v.note&&!(def&&def[12]===v.note)?v.note:""}
+function seaTextHTML(sp,d){let h="";const def=DEFAULT_SEASON[sp];
+  if(d.custom&&d.note&&!(def&&def[12]===d.note))h+=`<p class="sc-cust">${esc(d.note)}<span class="who">Notat fra ${esc(d.who||"gjengen")}</span></p>`;
   const more=SEA_MORE[sp];
   if(more)h+=more.map(x=>`<p>${esc(x)}</p>`).join("");
   else if(!d.custom&&d.note)h+=`<p>${esc(d.note)}</p>`;
   return h}
-function bestMonths(lv){const mx=Math.max(...lv);if(mx<2)return "";if(lv.every(x=>x===mx))return "hele året";
+function bestMonths(lv){const mx=Math.max(...lv);if(mx<3)return "";if(lv.every(x=>x===mx))return "hele året";
   const on=lv.map(x=>x===mx),runs=[];let start=-1;
   for(let i=0;i<12;i++){if(on[i]&&start<0)start=i;if(!on[i]&&start>=0){runs.push([start,i-1]);start=-1}}if(start>=0)runs.push([start,11]);
   if(runs.length>1&&runs[0][0]===0&&runs[runs.length-1][1]===11){const last=runs.pop();runs[0]=[last[0],runs[0][1]]}
@@ -3003,10 +3066,13 @@ function scDetailHTML(sp,d,cm,Mname){const l=d.lv[cm],best=bestMonths(d.lv),rs=r
     <div class="sc-dmeta"><span class="sc-dnow l${l}">${esc(Mname)}: ${LVL[l].toLocaleLowerCase("nb")}</span>${best?`<span>Best: <b>${esc(best)}</b></span>`:""}${rs?`<span class="sc-drule">${esc(rs)}</span>`:""}${tot?`<span>Gjengen: ${tot} reg., flest i ${MNS[top]}</span>`:""}</div>
     <div class="sc-dtxt">${txt||`<p class="sc-dnone">Ingen sesongtekst for ${esc(sp.toLocaleLowerCase("nb"))} ennå. Trykk «Rediger» for å skrive et notat til gjengen.</p>`}</div>
     <div class="sc-dbtns"><button class="chip" type="button" data-dex="${esc(sp)}">Åpne i Artsdex ›</button></div></div>`}
-const LVL=["Lite sannsynlig","Mulig","Bra","Topp"],MNS=["jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des"];
-S.seaDB=null;S.seaErr=null;S.seaEdit=null;S.seaOpenSp=null;S.seaFilter="alle";S.seaSort="gruppe";
+const LVL=["Ikke aktuelt","Vanskelig","Mulig","Bra","Topp"],SEA_SCALE=5,SEA_N=5,MNS=["jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des"];
+S.seaDB=null;S.seaErr=null;S.seaEdit=null;S.seaOpenSp=null;S.seaBrush=3;S.seaFilter="alle";S.seaSort="gruppe";
 async function loadSeason(){try{const {data,error}=await sb.from("season_cal").select("*");if(error){S.seaErr=tableErr(error,"season.sql");S.seaDB={};return}S.seaErr=null;S.seaDB={};for(const r of data||[])S.seaDB[r.species]=r}catch(e){S.seaErr="Kunne ikke hente sesongdata.";S.seaDB={}}}
-function seaLevels(sp){const r=S.seaDB&&S.seaDB[sp];if(r&&Array.isArray(r.levels)&&r.levels.length===12)return {lv:r.levels.map(Number),note:r.note||"",who:r.updated_name||"",custom:true};
+function seaLevels(sp){const r=S.seaDB&&S.seaDB[sp];
+  if(r&&Array.isArray(r.levels)){const a=r.levels.map(Number),base={note:r.note||"",who:r.updated_name||"",custom:true};
+    if(a.length===13&&a[12]===SEA_SCALE)return Object.assign({lv:a.slice(0,12).map(x=>Math.max(0,Math.min(4,x)))},base);
+    if(a.length===12)return Object.assign({lv:a.map(x=>x>0?Math.min(4,x+1):0)},base)} // old 0–3 scale: mulig/bra/topp move up one step
   const d=DEFAULT_SEASON[sp];return d?{lv:d.slice(0,12),note:d[12]||"",custom:false}:{lv:Array(12).fill(0),note:"",custom:false}}
 const HARVEST=new Set(["Torsk","Sei","Lyr","Hyse","Hvitting","Lysing","Lange","Brosme","Steinbit","Flekksteinbit","Breiflabb","Kveite","Rødspette","Skrubbe","Sandflyndre","Lomre","Piggvar","Uer","Makrell","Sild","Rognkjeks",
   "Kamskjell","Harpeskjell","Blåskjell","O-skjell","Hjerteskjell","Kuskjell","Sandskjell","Kongsnegl","Kongekrabbe","Taskekrabbe","Sjøkreps","Kråkebolle","Rød kråkebolle","Sjøpølse","Akkar",
@@ -3065,10 +3131,10 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   const now=new Date(),cm=now.getMonth(),ed=S.seaEdit,O=S.scOpt;
   const sps=seaSpecies(),data={};for(const sp of sps){const v=seaLevels(sp);data[sp]=ed&&ed[sp]?Object.assign({},v,ed[sp]):v}
   const grp=sp=>{for(const [g,L] of SPGROUPS)if(L.includes(sp))return g;return "Andre arter"};
-  let list=sps.slice();if(S.seaFilter==="naa")list=list.filter(sp=>data[sp].lv[cm]>=2);
+  let list=sps.slice();if(S.seaFilter==="naa")list=list.filter(sp=>data[sp].lv[cm]>=3);
   if(S.seaSort==="naa")list.sort((a,b)=>data[b].lv[cm]-data[a].lv[cm]||a.localeCompare(b,"nb"));
   else{const order=SPGROUPS.flatMap(g=>g[1]);list.sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return (ia<0?999:ia)-(ib<0?999:ib)||a.localeCompare(b,"nb")})}
-  const top=sps.filter(sp=>data[sp].lv[cm]===3),good=sps.filter(sp=>data[sp].lv[cm]===2);
+  const top=sps.filter(sp=>data[sp].lv[cm]===4),good=sps.filter(sp=>data[sp].lv[cm]===3);
   const kv=RULES["Kveite"];let kvTxt="";if(kv&&kv.closed){const inC=inClosed(kv,now.toISOString().slice(0,10));
     if(inC)kvTxt="Kveita er fredet til 20. april.";else{const y=now.getMonth()===11&&now.getDate()>20?now.getFullYear()+1:now.getFullYear(),dd=Math.ceil((new Date(y,11,20)-now)/864e5);if(dd<=75)kvTxt=`Kveita fredes om ${dd} ${dd===1?"dag":"dager"} (20. desember).`}}
   const dl=Array.from({length:12},(_,m)=>{const s2=sunTimes(new Date(now.getFullYear(),m,15,12),67.28,14.40);if(s2.sun.never==="down")return 24;if(s2.sun.never==="up")return 0;return (s2.sun.set-s2.sun.rise)/36e5});
@@ -3077,29 +3143,30 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   let env="";
   if(O.env){const logs=S.allLogs||[],vp=visPoints(logs,S.reports||[]),vs=Array(12).fill(0),vn=Array(12).fill(0);for(const q of vp){vs[q.month]+=q.vis;vn[q.month]++}
     const ts=Array(12).fill(0),tn=Array(12).fill(0);for(const l of logs)if(l.temp!=null&&l.date){const m=+l.date.slice(5,7)-1;ts[m]+=+l.temp;tn[m]++}
-    const row=(label,vals,fmt,mx,rgb)=>`<div class="sc-row sc-envrow"><div class="sc-lab sc-envlab"><b>${label}</b></div><div class="sc-boxes">${vals.map((v,m)=>{const has=v!=null,a2=has?Math.max(.12,Math.min(1,v/mx)):0;return `<div class="sbx ev${m===cm?" now":""}" style="${has?`background:rgba(${rgb},${a2.toFixed(2)});color:${a2<.55?"#dbe7f0":"#06121f"}`:""}" title="${MNS[m]}: ${has?fmt(v):"ingen data"}">${has?fmt(v):""}</div>`}).join("")}</div></div>`;
-    env=`<div class="sc-envblock">${row("Dagslys",dl,v=>Math.round(v)+"t",24,"241,230,200")}${row("Sikt",vs.map((s,i)=>vn[i]?s/vn[i]:null),v=>Math.round(v)+"m",15,"120,200,230")}${row("Vanntemp",ts.map((s,i)=>tn[i]?s/tn[i]:null),v=>Math.round(v)+"°",14,"110,200,170")}</div>`}
+    env=`<div class="sc-envblock">${envCurvesHTML(dl,ts.map((s2,i)=>tn[i]?s2/tn[i]:null),vs.map((s2,i)=>vn[i]?s2/vn[i]:null),tn,vn,cm)}</div>`}
   const mname=now.toLocaleDateString("nb-NO",{month:"long"}),Mname=mname[0].toUpperCase()+mname.slice(1);
   // species rows
   let rows="",lastG=null,zebra=0;
   for(const sp of list){const d=data[sp],l=d.lv[cm];
     if(S.seaSort!=="naa"){const g=grp(sp);if(g!==lastG){rows+=`<div class="sc-secfull">${esc(g)}</div>`;lastG=g;zebra=0}}
     const op=!ed&&S.seaOpenSp===sp;
-    rows+=`<div class="sc-row${zebra++%2?" z":""}${op?" open":""}"><button class="sc-lab" type="button" data-sp="${esc(sp)}" aria-expanded="${op}" title="${esc(op?"Trykk for å lukke":"Trykk for å lese mer om "+sp.toLocaleLowerCase("nb"))}"><b>${esc(sp)}</b>${l>=2?`<em class="lvnow l${l}">${l===3?"topp":"bra"}</em>`:""}<i class="chev" aria-hidden="true">›</i></button>${scBoxes(d.lv,sp,{own:O.own,edit:!!ed})}</div>`;
+    rows+=`<div class="sc-row${zebra++%2?" z":""}${op?" open":""}"><button class="sc-lab" type="button" data-sp="${esc(sp)}" aria-expanded="${op}" title="${esc(op?"Trykk for å lukke":"Trykk for å lese mer om "+sp.toLocaleLowerCase("nb"))}"><b>${esc(sp)}</b>${l>=3?`<em class="lvnow l${l}">${l===4?"topp":"bra"}</em>`:""}<i class="chev" aria-hidden="true">›</i></button>${scBoxes(d.lv,sp,{own:O.own,edit:!!ed})}</div>`;
     if(op)rows+=scDetailHTML(sp,d,cm,Mname);
-    if(ed)rows+=`<div class="sc-noteed"><input data-note="${esc(sp)}" value="${esc(d.note)}" placeholder="Notat om sesongen for ${esc(sp.toLocaleLowerCase("nb"))} (vises når man trykker på arten)"></div>`}
+    if(ed)rows+=`<div class="sc-noteed"><input data-note="${esc(sp)}" value="${esc(seaNoteVal(sp))}" placeholder="Eget notat om ${esc(sp.toLocaleLowerCase("nb"))} til gjengen (valgfritt)"></div>`}
   const nm=a=>a.map(sp=>`<button class="sc-chip" data-sp="${esc(sp)}">${esc(sp)}</button>`).join("");
-  wrap.innerHTML=`<div class="dexin sc">
+  wrap.innerHTML=`<div class="dexin sc${ed?" sc-editing":""}">
     <div class="dextop"><h2>Sesongkalender</h2><button class="dexclose" id="seaX" aria-label="Lukk">✕</button></div>
     <div class="sc-now"><div class="sc-nowm"><b>${esc(Mname)}</b><span>uke ${isoWeek(now)} · ${Math.round(dl[cm])} t dagslys</span></div>
       <div class="sc-nowl">${top.length?`<div><span class="k t">Topp</span>${nm(top)}</div>`:""}${good.length?`<div><span class="k g">Bra</span>${nm(good)}</div>`:""}${!top.length&&!good.length?`<div class="sc-quiet">Ingen arter i toppsesong nå.</div>`:""}${kvTxt?`<div class="sc-warn">⚠ ${esc(kvTxt)}</div>`:""}</div></div>
     <div class="sc-tools"><div class="chips" id="seaF"><button class="chip ${S.seaFilter==="alle"?"on":""}" data-f="alle">Alle</button><button class="chip ${S.seaFilter==="naa"?"on":""}" data-f="naa">I sesong nå</button><button class="chip ${S.seaSort==="naa"?"on":""}" data-s="naa">Best nå først</button></div>
       <div class="chips" id="seaO"><button class="chip ${O.own?"on":""}" data-o="own" title="Vis gjengens registreringer som prikker">Våre funn</button><button class="chip ${O.env?"on":""}" data-o="env" title="Vis dagslys, vanntemperatur og sikt">Forhold</button>${ed?`<button class="chip" id="seaCancel">Avbryt</button><button class="chip on" id="seaSave">Lagre</button>`:`<button class="chip" id="seaEditB">Rediger</button>`}</div></div>
-    ${ed?`<p class="sc-edithint">Trykk på en rute for å bytte nivå: lite sannsynlig → mulig → bra → topp. Lagres for hele gjengen.</p>`:""}
+    ${ed?`<p class="sc-edithint">Velg et nivå, og trykk på en måned eller dra bortover raden for å male. Trykk «Lagre» når du er ferdig. Endringene gjelder hele gjengen.</p>`:""}
+    ${ed?`<div class="sc-leg sc-legtop sc-brush" id="seaBrush"><b>Mal med:</b>${[4,3,2,1,0].map(k=>`<button type="button" class="${S.seaBrush===k?"on":""}" data-b="${k}" aria-pressed="${S.seaBrush===k}"><i class="sbx l${k}"></i>${LVL[k]}</button>`).join("")}</div>`
+      :`<div class="sc-leg sc-legtop"><span><i class="sbx l4"></i>Topp</span><span><i class="sbx l3"></i>Bra</span><span><i class="sbx l2"></i>Mulig</span><span><i class="sbx l1"></i>Vanskelig</span><span><i class="sbx fr"></i>Fredet</span>${O.own?`<span><i class="dotl"></i>Gjengens funn</span>`:""}</div>`}
     <div class="sc-head"><div></div><div class="sc-months">${scMonthsHTML(false)}</div></div>
     ${env}
     <div id="scRows">${rows||`<p class="emptytxt" style="color:#9fc3e0">Ingen arter er i sesong denne måneden.</p>`}</div>
-    <div class="sc-leg"><span><i class="sbx l3"></i>Topp</span><span><i class="sbx l2"></i>Bra</span><span><i class="sbx l1"></i>Mulig</span><span><i class="sbx fr"></i>Fredet</span>${O.own?`<span><i class="dotl"></i>Gjengens funn</span>`:""}<span class="sc-legnote">Startforslag for undervannsjakt rundt Bodø. Trykk på en art for å lese mer.</span></div>
+    <p class="sc-foot">Startforslag for undervannsjakt rundt Bodø. Trykk på en art for å lese mer, eller «Rediger» for å justere.</p>
   </div>`;
   wrap.scrollTop=stTop;
   $("#seaX").onclick=closeSeason;
@@ -3114,9 +3181,17 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   if(!ed)$("#scRows").onclick=e=>{const c=e.target.closest(".sbx[data-sp]");if(c)toggleSp(c.dataset.sp)};
   const eb=$("#seaEditB");if(eb)eb.onclick=()=>{if(S.seaErr){alert(S.seaErr);return}S.seaEdit={};renderSeason()};
   const cb=$("#seaCancel");if(cb)cb.onclick=()=>{S.seaEdit=null;renderSeason()};
-  if(ed){$("#scRows").onclick=e=>{const c=e.target.closest(".sbx[data-sp]");if(!c)return;const sp=c.dataset.sp,m=+c.dataset.m,cur2=S.seaEdit[sp]||{lv:data[sp].lv.slice(),note:data[sp].note};cur2.lv=cur2.lv.slice();cur2.lv[m]=(cur2.lv[m]+1)%4;S.seaEdit[sp]=cur2;renderSeason()};
-    wrap.querySelectorAll("input[data-note]").forEach(i=>i.oninput=()=>{const sp=i.dataset.note,cur2=S.seaEdit[sp]||{lv:data[sp].lv.slice(),note:data[sp].note};cur2.note=i.value;S.seaEdit[sp]=cur2});
-    $("#seaSave").onclick=async()=>{const rowsUp=Object.entries(S.seaEdit).map(([sp,v])=>({species:sp,levels:v.lv,note:(v.note||"").trim(),updated_name:S.me.name,updated_at:new Date().toISOString()}));
+  if(ed){const rowsEl=$("#scRows");let painting=false,changed=false;
+    const paint=c=>{if(!c||!c.matches||!c.matches("button.sbx[data-sp]"))return;const sp=c.dataset.sp,m=+c.dataset.m,b=S.seaBrush,cur2=S.seaEdit[sp]||{lv:data[sp].lv.slice(),note:seaNoteVal(sp)};
+      if(cur2.lv[m]===b)return;cur2.lv=cur2.lv.slice();cur2.lv[m]=b;S.seaEdit[sp]=cur2;changed=true;for(let k=0;k<SEA_N;k++)c.classList.remove("l"+k);c.classList.add("l"+b)};
+    const stop=()=>{if(!painting)return;painting=false;if(changed){changed=false;renderSeason()}};
+    rowsEl.onpointerdown=e=>{const c=e.target.closest("button.sbx[data-sp]");if(!c)return;e.preventDefault();painting=true;paint(c);try{c.releasePointerCapture(e.pointerId)}catch(_){}};
+    rowsEl.onpointermove=e=>{if(!painting)return;const el=document.elementFromPoint(e.clientX,e.clientY);paint(el&&el.closest&&el.closest("button.sbx[data-sp]"))};
+    rowsEl.onpointerup=stop;rowsEl.onpointercancel=stop;rowsEl.onpointerleave=stop;
+    rowsEl.onclick=e=>{const c=e.target.closest("button.sbx[data-sp]");if(c&&e.detail===0){paint(c);if(changed){changed=false;renderSeason()}}};
+    const br=$("#seaBrush");if(br)br.onclick=e=>{const b=e.target.closest("[data-b]");if(!b)return;S.seaBrush=+b.dataset.b;renderSeason()};
+    wrap.querySelectorAll("input[data-note]").forEach(i=>i.oninput=()=>{const sp=i.dataset.note,cur2=S.seaEdit[sp]||{lv:data[sp].lv.slice(),note:seaNoteVal(sp)};cur2.note=i.value;S.seaEdit[sp]=cur2});
+    $("#seaSave").onclick=async()=>{const rowsUp=Object.entries(S.seaEdit).map(([sp,v])=>({species:sp,levels:[...v.lv,SEA_SCALE],note:(v.note||"").trim(),updated_name:S.me.name,updated_at:new Date().toISOString()}));
       if(!rowsUp.length){S.seaEdit=null;renderSeason();return}
       const btn=$("#seaSave");btn.disabled=true;btn.textContent="Lagrer…";
       const {error}=await sb.from("season_cal").upsert(rowsUp);
