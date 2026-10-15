@@ -570,6 +570,48 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .sc-reg select{appearance:none;-webkit-appearance:none;background:#0d2238 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F1E6C8' stroke-width='2'/%3E%3C/svg%3E") right 12px center no-repeat;color:#F1E6C8;border:1px solid rgba(241,230,200,.4);border-radius:999px;padding:6px 34px 6px 14px;font:600 14px Barlow,sans-serif;letter-spacing:0;text-transform:none;cursor:pointer;max-width:100%}
 .sc-reg select:disabled{opacity:.5;cursor:not-allowed}.sc-reg select option{background:#0a1a2c;color:#E3EDF4}
 .sc-local{color:#cfe0ee}
+/* månedens fangst */
+.mndbtn{border:1px solid #c0764a!important;background:#3a1d0f!important;color:#FFD2B0!important;position:relative}
+.mndbtn:hover{background:#4d2714!important}.mndbtn{display:inline-flex;align-items:center;gap:6px}
+.mnddot{position:absolute;top:-3px;right:-3px;width:11px;height:11px;border-radius:50%;background:#E0533A;box-shadow:0 0 0 2px #0b1a2a}
+@media (max-width:1240px){.mndbtn .mf-l{display:none}}
+body.mapmax .maptools .mndbtn{display:inline-flex;align-items:center}
+.mf{max-width:980px}
+.mf-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin:4px 0 12px}
+.mf-nav>div{text-align:center;min-width:200px}.mf-nav b{display:block;font:700 26px Barlow,sans-serif;color:#F1E6C8}.mf-nav small{color:#9fc3e0;font-size:13px}
+.mf-nav button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(241,230,200,.3);background:rgba(8,26,46,.6);color:#F1E6C8;font-size:15px;cursor:pointer}.mf-nav button:disabled{opacity:.3;cursor:default}
+.mf-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}.mf-kpis div{background:rgba(8,26,46,.7);border:1px solid rgba(159,195,224,.15);border-radius:12px;padding:8px;text-align:center}
+.mf-kpis b{display:block;font:700 24px Barlow,sans-serif;color:#F1E6C8}.mf-kpis span{font-size:12px;color:#9fc3e0}
+.mf-sec{background:rgba(8,26,46,.82);border:1px solid rgba(159,195,224,.14);border-radius:16px;padding:14px 16px;margin:0 0 14px}
+.mf-sec h3{margin:0 0 8px;font:700 19px Barlow,sans-serif;color:#F1E6C8}
+.mf-note{color:#9fc3e0;font-size:13.5px;margin:4px 0 10px}.mf-note.err{color:#ffb3a3}.mf-empty{color:#7f9fb8;font-size:13px;margin:4px 0}
+.mf-rule{font-size:12px;color:#7f9fb8;margin:8px 0 0}
+.mf-tot{list-style:none;margin:0;padding:0}.mf-tot li{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:2px 8px;padding:7px 4px;border-bottom:1px solid rgba(241,230,200,.08)}
+.mf-tot li b{font-size:16px;color:#E3EDF4}.mf-tot li.p1 b{color:#F3D67E;font-size:18px}.mf-p{font:700 18px Barlow,sans-serif;color:#F1E6C8}
+.mf-tot small{grid-column:2/-1;color:#7f9fb8;font-size:11.5px}.mf-m{font-size:20px;text-align:center}
+.mf-cands{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.mf-cand{display:flex;flex-direction:column;background:rgba(17,64,106,.35);border:1px solid rgba(159,195,224,.18);border-radius:14px;overflow:hidden}
+.mf-cand.lead{border-color:#F3D67E;box-shadow:0 0 0 1px #F3D67E inset}.mf-cand.voted{border-color:#4fd0d6;box-shadow:0 0 0 2px #4fd0d6 inset}
+.mf-pic{position:relative;display:block;width:100%;aspect-ratio:4/3;border:0;padding:0;background:#0a2440;overflow:hidden;cursor:pointer}.mf-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.mf-pic.ill{cursor:default}.mf-pic.ill img{opacity:.55;filter:saturate(.7)}.mf-pic i{position:absolute;left:6px;bottom:6px;font-style:normal;font-size:10.5px;color:#cfe0ee;background:rgba(8,26,46,.75);padding:1px 6px;border-radius:6px}
+.mf-pic .ph{display:flex;width:100%;height:100%;align-items:center;justify-content:center;color:#9fc3e0}
+.mf-ci{padding:8px 10px 4px}.mf-ci b{display:block;color:#F1E6C8;font-size:15.5px}.mf-ci span{display:block;color:#E3EDF4;font-size:14px}.mf-ci small{display:block;color:#9fc3e0;font-size:12px;margin-top:2px}
+.mf-vb{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px 10px;margin-top:auto}.mf-n{font-size:12.5px;color:#9fc3e0}
+.mf-vote{border:1px solid #F1E6C8;background:#F1E6C8;color:#081a2e;border-radius:999px;padding:5px 14px;font:600 13.5px Barlow,sans-serif;cursor:pointer}
+.mf-vote.on{background:#1ea5ae;border-color:#1ea5ae;color:#fff}.mf-vote:disabled{opacity:.5}.mf-own{font-size:12px;color:#7f9fb8}
+.mf-winner{display:grid;gap:10px;margin:0 0 10px}.mf-winner>div{display:grid;grid-template-columns:140px 1fr;gap:12px;align-items:center;background:linear-gradient(120deg,rgba(243,214,126,.18),rgba(8,26,46,.2));border:1px solid #F3D67E;border-radius:14px;overflow:hidden}
+.mf-winner .mf-pic{aspect-ratio:1}.mf-winner small{display:block;color:#F3D67E;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:11px}.mf-winner b{display:block;font:700 20px Barlow,sans-serif;color:#F1E6C8}.mf-winner span{color:#cfe0ee;font-size:13.5px}
+.mf-ds{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.mf-d{background:rgba(17,64,106,.3);border:1px solid rgba(159,195,224,.14);border-radius:12px;padding:10px 12px}
+.mf-dh{display:flex;gap:10px;align-items:center;margin-bottom:6px}.mf-di{font-size:24px}.mf-dh b{display:block;color:#F1E6C8;font-size:15.5px}.mf-dh small{display:block;color:#7f9fb8;font-size:11.5px}
+.mf-pod{list-style:none;margin:0;padding:0}.mf-pod li{display:grid;grid-template-columns:26px auto 1fr auto;gap:6px;align-items:center;padding:3px 0;font-size:13.5px}
+.mf-pod li b{color:#E3EDF4}.mf-pod li span:not(.mf-m){color:#9fc3e0;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mf-pod .mf-m{font-size:16px}
+.mf-site{color:#8fd3ec;font-size:16px;padding:0 4px;margin:0}
+.mf-new{margin-top:10px;color:#cfe0ee;font-size:13.5px}.mf-new b{color:#F3D67E}.mf-new small{color:#7f9fb8}
+.mf-hist{display:grid;gap:6px}.mf-h{display:grid;grid-template-columns:150px 1fr auto;gap:8px;align-items:center;text-align:left;background:rgba(17,64,106,.25);border:1px solid rgba(159,195,224,.12);border-radius:10px;padding:8px 10px;color:#cfe0ee;font:inherit;font-size:13px;cursor:pointer}
+.mf-h b{color:#F1E6C8}.mf-h:hover{border-color:rgba(241,230,200,.4)}
+@media (max-width:700px){.mf-nav b{font-size:21px}.mf-nav>div{min-width:0}.mf-kpis b{font-size:20px}.mf-sec{padding:12px}.mf-cands{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.mf-ci b{font-size:14px}.mf-ci span{font-size:12.5px}.mf-vb{flex-direction:column;align-items:stretch}.mf-vote{width:100%}
+  .mf-winner>div{grid-template-columns:96px 1fr}.mf-h{grid-template-columns:1fr}.mf-ds{grid-template-columns:1fr}}
 /* layer panel */
 .lyrbtn{position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:2px solid rgba(0,0,0,.2);background:#fff;color:#0f2a3f;cursor:pointer;padding:0;background-clip:padding-box}
 .lyrbtn:hover{background:#f2f6f9}.lyrbtn.on{background:#0f2a3f;color:#F1E6C8}
@@ -587,6 +629,10 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .ly-err{display:block;color:#ffb3a3}.ly-hint{display:block;color:#F3D67E}
 .ly-leg{display:flex;flex-direction:column;gap:2px;margin-top:4px}.ly-leg span{display:flex;align-items:center;gap:6px;font-size:12px;color:#cfe0ee}.ly-leg img{width:18px;height:18px;object-fit:contain;flex:none}
 .ly-legimg{display:block;max-width:100%;margin-top:4px;background:#fff;border-radius:4px;padding:2px}
+.ly-cnt{font-size:13px;color:#cfe0ee;margin:4px 0}.ly-cnt b{color:#FFB877;font-size:15px}
+.ly-near{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:4px 0 2px;font-size:12.5px;color:#cfe0ee}
+.ly-near button{background:#ff9933;color:#2a1300;border:0;border-radius:6px;padding:5px 11px;font:600 13px Barlow,sans-serif;cursor:pointer}
+.ly-swatch{display:inline-block;width:16px;height:12px;border-radius:3px;background:rgba(255,153,51,.5);border:1.5px solid #ff9933;flex:none}
 .ly-foot{font-size:11.5px;color:#7f9fb8;margin:10px 0 0;line-height:1.4}
 .idfpop .leaflet-popup-content-wrapper{background:#0a1a2c;color:#E3EDF4;border:1px solid rgba(241,230,200,.25);border-radius:12px}.idfpop .leaflet-popup-tip{background:#0a1a2c}.idfpop .leaflet-popup-content{margin:10px 12px;max-height:260px;overflow:auto}
 .idfpop a.leaflet-popup-close-button{color:#9fc3e0}
@@ -711,7 +757,7 @@ body.replaying .zoomnote{display:none!important}
 .sc-ecleg b{margin-left:auto;color:#E3EDF4;font-weight:600}.sc-ecleg .ls{display:none}
 .ec-none{margin:2px 0 6px var(--lw);font-size:12px;color:#6f8fa8}
 @media (max-width:760px){.hdrbtn .kal{display:none}}
-@media (max-width:700px){.hdrbtn>span{display:none}.hdrbtn{padding:6px 9px}}
+@media (max-width:760px){.hdrbtn>span{display:none}.hdrbtn{padding:6px 9px}}
 @media (max-width:700px){.seadlg .dexin.sc{padding:14px 14px 40px;box-shadow:none}.sc{--lw:88px}.sc-curves{height:116px}.sc-ecleg{font-size:11px;gap:6px;padding-right:5px}.sc-ecleg .lf{display:none}.sc-ecleg .ls{display:inline}.sc-ecleg i{width:8px}.ec-dot em{font-size:9.5px}.ec-dot em small{display:none}.ec-none{margin-left:0}.sc-legtop{gap:6px 12px;font-size:11.5px}.sc-brush button{padding:3px 9px 3px 5px;font-size:12px}}
 @media (max-width:700px){.sc-lab .chev{display:none}.sc-det{padding:12px 12px 12px}.sc-dtxt p{font-size:14.5px}.sc-dmeta{font-size:12.5px;gap:4px 12px}}
 @media (max-width:700px){.sbx{height:24px;border-radius:4px}.sc-boxes{gap:2px}.sbx.ev{font-size:8.5px}.sc-row{min-height:30px}.sc-row .sc-lab{height:30px}}
@@ -852,8 +898,14 @@ body.mapmax .recbar{display:inline-flex}
 .recbar.on{background:#E3B341;color:#2B1D00}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hdrbtn,:root:not([data-theme="light"]) .recbar{background:#3A2E0E;color:#F5D27A;border-color:#8A6A1E}:root:not([data-theme="light"]) .hdrbtn.on,:root:not([data-theme="light"]) .recbar.on{background:#E3B341;color:#2B1D00}}
 @media (max-width:860px){#addChartBtn{display:none}.hdrbtn{padding:6px 10px}.top .ver{display:none}.top{gap:8px;padding:10px 12px}#menuBtn{padding:6px 8px}.brand{gap:7px}}
+@media (max-width:1180px){.hdrbtn .kal{display:none}.top .ver{display:none}}
+@media (max-width:1060px){#addChartBtn{display:none}}
+@media (max-width:940px){.mndbtn>span{display:none}}
+@media (max-width:440px){.brand h1{display:none}.brand svg{width:26px}}
 @media (max-width:480px){.dexbtn .dexcnt{display:none}}
-@media (max-width:420px){.hdrbtn span{display:none}.hdrbtn{padding:6px 7px}.top{gap:5px;padding:10px 8px}.brand h1{font-size:21px}.brand svg{width:22px}.tab{padding:6px 10px}#menuBtn{padding:6px 4px}}
+#menuBtn .mico{display:none}
+@media (max-width:520px){.top{gap:6px}.hdrbtn{padding:6px 7px}#menuBtn{padding:6px}#menuBtn .mlab{display:none}#menuBtn .mico{display:block}}
+@media (max-width:420px){.hdrbtn span{display:none}.hdrbtn{padding:6px 7px}.top{gap:5px;padding:10px 8px}.brand h1{display:none}.brand svg{width:26px}.tab{padding:6px 10px}#menuBtn{padding:6px 4px}}
 .crow .cWhoW{grid-column:span 12}
 .crow .cWho{font-size:13.5px}
 .unit.pre span{right:auto;left:10px}
@@ -905,9 +957,10 @@ body.mapmax .recbar{display:inline-flex}
   <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
   <button id="dexHdr" class="hdrbtn dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span><b class="dexcnt" id="dexHdrCnt"></b></button>
   <button id="seaHdr" class="hdrbtn seabtn" type="button" title="Sesongkalender: når er artene her?"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Sesong<span class="kal">kalender</span></span></button>
+  <button id="mndHdr" class="hdrbtn mndbtn" type="button" title="Månedens fangst: kåring og disipliner"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg><span>Månedens<span class="mf-l"> fangst</span></span><b class="mnddot" id="mndDot" hidden></b></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
-  <button id="menuBtn" class="btn ghost">Meny</button>
+  <button id="menuBtn" class="btn ghost" aria-label="Meny" title="Meny"><span class="mlab">Meny</span><svg class="mico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
 <main class="layout">
@@ -926,6 +979,7 @@ body.mapmax .recbar{display:inline-flex}
       <button id="recBar" class="btn maxonly recbar" type="button" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
       <button id="dexBar" class="btn maxonly dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span></button>
       <button id="seaBar" class="btn maxonly seabtn" type="button" title="Sesongkalender"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Sesong</span></button>
+      <button id="mndBar" class="btn maxonly mndbtn" type="button" title="Månedens fangst"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg></button>
       <button id="placeBtn" class="btn primary">Nytt dykkested</button>
       <button id="drawBtn" class="btn">Tegn</button>
       <select id="condSel" class="btn" aria-label="Vis vindforhold på kartet"><option value="off">Forhold: av</option><option value="now">Forhold nå</option><option value="+3">Om 3 timer</option><option value="+6">Om 6 timer</option><option value="d1h10">I morgen kl 10</option><option value="d1h15">I morgen kl 15</option><option value="d2h10">Overmorgen kl 10</option></select>
@@ -981,6 +1035,7 @@ body.mapmax .recbar{display:inline-flex}
 <div id="offBar" hidden>Offline: viser sist hentede data</div>
 <dialog id="dexDlg" class="dexdlg" aria-label="Artsdex"><div class="dexwrap" id="dexWrap"></div></dialog>
 <dialog id="seaDlg" class="dexdlg seadlg" aria-label="Sesongkalender"><div class="dexwrap" id="seaWrap"></div></dialog>
+<dialog id="mndDlg" class="dexdlg mnddlg" aria-label="Månedens fangst"><div class="dexwrap" id="mndWrap"></div></dialog>
 <div id="newSp" class="newsp" hidden role="status"></div>
 <dialog id="imgDlg" class="imgdlg"><div class="lbwrap"><img id="imgBig" alt=""><button type="button" class="lbnav lbprev" id="lbPrev" aria-label="Forrige bilde">‹</button><button type="button" class="lbnav lbnext" id="lbNext" aria-label="Neste bilde">›</button></div><div class="lbfoot"><p id="imgCap" class="small"></p><span class="lbcount" id="lbCount"></span><form method="dialog"><button class="btn">Lukk</button></form></div></dialog>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
@@ -992,7 +1047,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v51 (mobil, kamskjell og Saltstraumen-strømstille)";
+const APP_VERSION="v52 (månedens fangst og kamskjell)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1100,7 +1155,7 @@ async function onSession(session){
   $("#auth").hidden=true;start();
 }
 async function start(){
-  if(S.started)return;S.started=true;
+  if(S.started)return;S.started=true;setTimeout(()=>{loadVotes().then(syncMfDot).catch(()=>{})},2500);
   initLeaflet();
   await Promise.all([loadCharts(),loadSites(),loadAreas().catch(e=>showErr("områder: "+errMsg(e))),loadCatches().catch(()=>{}),loadReports().catch(()=>{})]);
   renderTabs();renderChart();renderPanel();
@@ -2198,8 +2253,10 @@ const LYR=[
   desc:"Fra dybdedata der det er målt. Bratte kanter er ofte gode steder for kveite og breiflabb."},
  {id:"nat",g:"Natur og bunn",name:"Detaljerte naturtyper (NGU)",src:"NGU",ngu:"Naturtyper_Saltstraumen,Biotoper_Astafjord",legend:"Naturtyper_Saltstraumen",
   desc:"Detaljert kartlagte naturtyper og biotoper. Finnes bare noen steder, blant annet Saltstraumen."},
- {id:"kamskjell",g:"Fisk og skjell",name:"Kamskjell",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"7",{"7":"art_norsk='Kamskjell' AND (status IS NULL OR status<>'S')"}]],
-  desc:"Kamskjellforekomster som fiskere og andre har meldt inn til Fiskeridirektoratet. Trykk i kartet for stedsnavn og merknad. Ikke alle forekomster er registrert, og noen kan være gamle."},
+ {id:"kamskjell",g:"Fisk og skjell",name:"Kamskjell",src:"Fiskeridirektoratet (Yggdrasil)",unit:"kamskjellforekomster",
+  feat:[FDIR("Kystnære_fiskeridata"),7,"art_norsk='Kamskjell' AND (status IS NULL OR status<>'S')"],featFields:"objectid,stedsnavn,merknad,dato,opphav",
+  fbAgs:[[FDIR("Kystnære_fiskeridata"),"7",{"7":"art_norsk='Kamskjell' AND (status IS NULL OR status<>'S')"}]],
+  desc:"Kamskjellforekomster som fiskere og andre har meldt inn til Fiskeridirektoratet. Når du har zoomet ut, vises hver forekomst som en prikk. Trykk på en forekomst for stedsnavn og merknad. Ikke alle forekomster er registrert, og noen registreringer er gamle."},
  {id:"gyte",g:"Fisk og skjell",name:"Gyteområder",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"1,11,0"]],
   desc:"Kjente gyteområder for torsk og andre arter, fra fiskere og Havforskningsinstituttet. Her kan det stå mye stor fisk i gytetida, men flere er stengt for fiske om vinteren og våren."},
  {id:"oppvekst",g:"Fisk og skjell",name:"Oppvekst- og beiteområder",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"2"]],
@@ -2215,6 +2272,7 @@ const LYR=[
 const LY={};for(const d of LYR)LY[d.id]=d;
 function lyrMake(d){if(d.layer)return d.layer;
   if(d.ags){const ls=d.ags.map(([b,ids,defs])=>agsLayer(b,ids,b===MDIR?ATT_M:d.id==="grunt"?'Kartverket, '+ATT_F:ATT_F,null,defs));d.layer=ls.length===1?ls[0]:grp(...ls)}
+  else if(d.feat)d.layer=featLayer(d);
   else if(d.ngu)d.layer=nguLayer(d.ngu);
   else if(d.id==="chl"){if(!S.chlDate){const x=new Date();x.setDate(x.getDate()-1);S.chlDate=isoDay(x)}
     d.layer=grp(...CHL_LAYERS.map(id=>L.tileLayer(chlUrl(id,S.chlDate),{maxNativeZoom:7,maxZoom:19,opacity:.6,attribution:'Klorofyll: <a href="https://earthdata.nasa.gov/gibs" target="_blank" rel="noopener">NASA GIBS</a>'})))}
@@ -2224,7 +2282,7 @@ const lyrOn=id=>!!(S.lmap&&LY[id]&&LY[id].layer&&S.lmap.hasLayer(LY[id].layer));
 function lyrSet(id,on){const d=LY[id];if(!d||!S.lmap)return;const l=lyrMake(d);if(on&&!S.lmap.hasLayer(l))l.addTo(S.lmap);if(!on&&S.lmap.hasLayer(l))S.lmap.removeLayer(l);
   lsSet("dk-lyr",LYR.filter(x=>lyrOn(x.id)).map(x=>x.id));renderLyr()}
 function lyrParts(d){const l=d.layer;return l?(l._parts||[l]):[]}
-function lyrStatus(d){const ps=lyrParts(d);if(!ps.length)return "";const ok=ps.some(p=>p._ok>0),bad=ps.some(p=>p._bad>0);
+function lyrStatus(d){if(d.feat)return featStatus(d);const ps=lyrParts(d);if(!ps.length)return "";const ok=ps.some(p=>p._ok>0),bad=ps.some(p=>p._bad>0);
   if(bad&&!ok)return `<small class="ly-err">Kartet svarte ikke. Prøv igjen senere.</small>`;
   if(d.minZ&&S.lmap&&S.lmap.getZoom()<d.minZ)return `<small class="ly-hint">Zoom inn for å se laget.</small>`;return ""}
 /* legends: ArcGIS legend JSON (cached per service), NGU legend image, colour bar for plankton */
@@ -2234,12 +2292,73 @@ function agsLegend(base,ids){const want=String(ids).split(",").map(Number);
   const j=S.lgd[base];if(!j||typeof j!=="object"||!j.layers)return "";
   const rows=[];for(const ly of j.layers){if(!want.includes(ly.layerId))continue;for(const e of (ly.legend||[]).slice(0,6))rows.push(`<span><img alt="" src="data:${esc(e.contentType||"image/png")};base64,${e.imageData}">${esc(e.label||ly.layerName||"")}</span>`)}
   return rows.slice(0,10).join("")}
-function lyrLegend(d){if(d.ags)return `<div class="ly-leg">${d.ags.map(([b,ids])=>agsLegend(b,ids)).join("")}</div>`;
+function lyrLegend(d){if(d.feat)return d._st==="fail"?"":`<div class="ly-leg"><span><i class="ly-swatch"></i>${esc(d.name)}forekomst</span></div>`;
+  if(d.ags)return `<div class="ly-leg">${d.ags.map(([b,ids])=>agsLegend(b,ids)).join("")}</div>`;
   if(d.ngu)return `<img class="ly-legimg" alt="" src="${NGU_WMS}?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;FORMAT=image/png&amp;SLD_VERSION=1.1.0&amp;LAYER=${encodeURIComponent(d.legend)}" onerror="this.remove()">`;
   if(d.id==="chl"){const dd=new Date(S.chlDate+"T12:00:00");return `<div class="chl-nav"><button type="button" data-chl="-1" aria-label="Dagen før">◀</button><span>${dd.toLocaleDateString("nb-NO",{day:"numeric",month:"short",year:"numeric"})}</span><button type="button" data-chl="1" aria-label="Dagen etter"${S.chlDate>=isoDay(new Date(Date.now()-864e5))?" disabled":""}>▶</button></div><div class="chl-leg"><i></i><span>Lite plankton</span><span>Mye (grumsete)</span></div>`}
   return ""}
 function chlStep(n){const d=new Date(S.chlDate+"T12:00:00");d.setDate(d.getDate()+n);const y=new Date();y.setDate(y.getDate()-1);if(d>y)return;S.chlDate=isoDay(d);
   const c=LY.chl.layer;if(c){let i=0;c.eachLayer(l=>{l.setUrl(chlUrl(CHL_LAYERS[i++],S.chlDate))})}renderLyr()}
+/* layers the app draws itself from an ArcGIS query: lets us count them, show dots when zoomed out and jump to the nearest */
+const FEAT_PAGE=2000;
+function featUrl(d,last){const [base,id,where]=d.feat;
+  return `${base}/${id}/query?where=${encodeURIComponent(where+(last!=null?` AND objectid>${last}`:""))}&outFields=${encodeURIComponent(d.featFields)}&returnGeometry=true&outSR=4326&geometryPrecision=5&maxAllowableOffset=0.0001&orderByFields=objectid&resultRecordCount=${FEAT_PAGE}&f=json`}
+/* JSONP is only used when the server does not allow a normal request from the browser (CORS) */
+function jsonp(url,ms){return new Promise((res,rej)=>{const cb="__jp"+Math.random().toString(36).slice(2),sc=document.createElement("script");let done=false;
+  const end=fn=>{if(done)return;done=true;clearTimeout(t);try{delete window[cb]}catch(x){window[cb]=undefined}sc.remove();fn()};
+  const t=setTimeout(()=>end(()=>rej(new Error("timeout"))),ms||25000);
+  window[cb]=j=>end(()=>res(j));sc.onerror=()=>end(()=>rej(new Error("load")));sc.src=url+"&callback="+cb;document.head.appendChild(sc)})}
+async function featGet(u){if(S.featJsonp)return await jsonp(u);let r;try{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),25000);r=await fetch(u,{signal:ac.signal});clearTimeout(t)}
+  catch(e){if(e&&e.name==="TypeError"){const j=await jsonp(u);S.featJsonp=true;return j}throw e}
+  if(!r.ok)throw new Error("http "+r.status);return await r.json()}
+async function featFetch(d){const out=[];let last=null;
+  for(let pg=0;pg<10;pg++){const j=await featGet(featUrl(d,last));if(!j||j.error)throw new Error(j&&j.error&&j.error.message||"feil");
+    const fs=j.features||[];
+    for(const f of fs){const g=f.geometry,a=f.attributes||{};if(!g||!g.rings||!g.rings.length)continue;
+      const rings=g.rings.map(r=>r.map(([x,y])=>[y,x]));out.push({a,rings,b:L.latLngBounds(rings.flat())})}
+    if(!(j.exceededTransferLimit&&fs.length))break;
+    last=Math.max(...fs.map(f=>+(f.attributes||{}).objectid||0));if(!last)break}
+  for(const f of out)f.c=f.b.getCenter();return out}
+const FEAT_STYLE={color:"#ff9933",weight:1.5,opacity:.95,fillColor:"#ff9933",fillOpacity:.42,interactive:false};
+function featLayer(d){const g=L.featureGroup();g.on("add",()=>{featLoad(d);featZoom(d)});return g}
+async function featLoad(d){if(d._st)return;d._st="load";renderLyr();
+  try{const fs=await featFetch(d),rd=L.canvas({padding:.4});d._feats=fs;d._st="ok";
+    d._poly=L.layerGroup(fs.map(f=>L.polygon(f.rings,{...FEAT_STYLE,renderer:rd})),{attribution:ATT_F});
+    d._dots=L.layerGroup(fs.map(f=>L.circleMarker(f.c,{radius:5,color:"#5a2a00",weight:1.2,opacity:1,fillColor:"#ff9933",fillOpacity:.95,interactive:false,renderer:rd})));
+    d.layer.addLayer(d._poly);featZoom(d)}
+  catch(e){console.warn("kartlag",d.id,e&&e.message);d._st="fail";d._fb=d.fbAgs;const [b,ids,defs]=d.fbAgs[0];d._fbLayer=agsLayer(b,ids,ATT_F,null,defs);d.layer.addLayer(d._fbLayer)}
+  renderLyr()}
+/* dots when zoomed out, so small areas do not disappear */
+function featZoom(d){if(!d._dots||!d.layer||!S.lmap)return;const show=S.lmap.getZoom()<12,has=d.layer.hasLayer(d._dots);
+  if(show&&!has)d.layer.addLayer(d._dots);if(!show&&has)d.layer.removeLayer(d._dots)}
+function featStats(d){const m=S.lmap,fs=d._feats||[],b=m.getBounds();let n=0;for(const f of fs)if(b.intersects(f.b))n++;
+  let near=null;if(!n&&fs.length){const c=m.getCenter();let best=Infinity;for(const f of fs){const k=c.distanceTo(f.c);if(k<best){best=k;near=f}}near={f:near,km:best/1000}}
+  return {all:fs.length,inView:n,near}}
+const kmTxt=km=>km<10?km.toFixed(1).replace(".",","):String(Math.round(km));
+function featStatus(d){if(!lyrOn(d.id))return "";
+  if(d._st==="fail"){const t=d._fbLayer,ok=t&&t._ok>0,bad=t&&t._bad>0;
+    return `<small class="ly-err">Fikk ikke hentet forekomstene direkte fra Fiskeridirektoratet${bad&&!ok?", og kartbildet svarte heller ikke. Prøv igjen senere.":". Viser kartbildet deres i stedet, uten telling. Trykk i kartet for detaljer."}</small>`}
+  if(d._st!=="ok")return `<small class="ly-hint">Henter forekomstene…</small>`;
+  const st=featStats(d);if(!st.all)return `<small class="ly-hint">Fiskeridirektoratet har ingen ${esc(d.unit)} registrert.</small>`;
+  let h=`<div class="ly-cnt"><b>${st.inView}</b> i kartutsnittet · ${st.all} registrert langs kysten</div>`;
+  if(!st.inView&&st.near){const nm=st.near.f.a.stedsnavn;
+    h+=`<div class="ly-near"><span>Nærmeste: ${nm?esc(nm)+", ":""}${kmTxt(st.near.km)} km unna</span><button type="button" data-near="${d.id}">Vis nærmeste</button></div>`}
+  return h}
+function featRow(d,f){const a=f.a,dt=a.dato!=null&&a.dato!==""?new Date(+a.dato):null,when=dt&&!isNaN(dt)?dt.toLocaleDateString("nb-NO",{month:"long",year:"numeric"}):"";
+  return `<div class="idf-r"><small>${esc(d.name)}</small><b>${esc(a.stedsnavn||"Uten stedsnavn")}</b>${a.merknad?`<span class="idf-main">${esc(a.merknad)}</span>`:""}${when?`<span><i>Registrert:</i> ${esc(when)}</span>`:""}${a.opphav?`<span><i>Kilde:</i> ${esc(a.opphav)}</span>`:""}</div>`}
+function featPip(lat,lng,rings){let ins=false;for(const r of rings)for(let i=0,j=r.length-1;i<r.length;j=i++){const [yi,xi]=r[i],[yj,xj]=r[j];if((yi>lat)!==(yj>lat)&&lng<(xj-xi)*(lat-yi)/(yj-yi)+xi)ins=!ins}return ins}
+function featHits(d,ll){const m=S.lmap,p=m.latLngToContainerPoint(ll),tol=L.Browser.mobile?14:8,out=[];
+  for(const f of d._feats||[]){const a=m.latLngToContainerPoint(f.b.getNorthWest()),b=m.latLngToContainerPoint(f.b.getSouthEast());
+    if(p.x<a.x-tol||p.x>b.x+tol||p.y<a.y-tol||p.y>b.y+tol)continue;
+    if((b.x-a.x<tol*2&&b.y-a.y<tol*2)||featPip(ll.lat,ll.lng,f.rings))out.push(f)}
+  return out}
+function popTop(){try{const h=$("#hud"),m=$("#lmap");if(h&&m&&!h.hidden&&h.offsetParent){const v=h.getBoundingClientRect().bottom-m.getBoundingClientRect().top+12;if(v>70&&v<260)return v}}catch(e){}return 70}
+function featNear(id){const d=LY[id];if(!d||!d._feats)return;const st=featStats(d);if(!st.near)return;const f=st.near.f,m=S.lmap;
+  /* keep the layer panel open on wide screens, but put the target beside it */
+  const el=$("#lyrPanel"),pw=el?el.offsetWidth+24:0;if(S.lyrOpen&&(window.innerWidth<=700||m.getSize().x-pw<300)){S.lyrOpen=false;renderLyr()}
+  const side=S.lyrOpen?pw:0;
+  m.once("moveend",()=>setTimeout(()=>{L.popup({className:"idfpop",maxWidth:300,minWidth:220,autoPanPaddingTopLeft:[20,popTop()],autoPanPaddingBottomRight:[side+20,20]}).setLatLng(f.c).setContent(`<div class="idf">${featRow(d,f)}</div>`).openOn(m)},60));
+  m.flyToBounds(f.b.pad(1.5),{maxZoom:14,duration:1.2,paddingBottomRight:[side,0]})}
 S.lyrOpen=false;
 function renderLyr(){const btn=$("#lyrBtn"),n=LYR.filter(d=>lyrOn(d.id)).length;if(btn){btn.classList.toggle("on",S.lyrOpen);const c=btn.querySelector("b");c.textContent=n||"";c.hidden=!n}
   let el=$("#lyrPanel");if(!S.lyrOpen){if(el)el.remove();return}
@@ -2248,10 +2367,11 @@ function renderLyr(){const btn=$("#lyrBtn"),n=LYR.filter(d=>lyrOn(d.id)).length;
   for(const d of LYR){if(d.g!==g0){h+=`<div class="ly-g">${esc(d.g)}</div>`;g0=d.g}const on=lyrOn(d.id);
     h+=`<div class="ly-row${on?" on":""}"><button type="button" class="ly-sw" role="switch" aria-checked="${on}" data-ly="${d.id}" aria-label="${esc(d.name)}"><i></i></button>
       <div class="ly-tx"><button type="button" class="ly-name" data-ly="${d.id}">${esc(d.name)}</button><small>${esc(d.src)}</small>${on?`<p>${esc(d.desc)}</p>${lyrStatus(d)}${lyrLegend(d)}`:""}</div></div>`}
-  h+=`<p class="ly-foot">${LYR.some(d=>d.ags&&lyrOn(d.id))?"Trykk i kartet for å se hva som er registrert der. ":""}Data fra Fiskeridirektoratet (Yggdrasil), Miljødirektoratet, NGU, Kartverket og NASA. Valgene huskes på denne enheten.</p>`;
+  h+=`<p class="ly-foot">${LYR.some(d=>(d.ags||d.feat)&&lyrOn(d.id))?"Trykk i kartet for å se hva som er registrert der. ":""}Data fra Fiskeridirektoratet (Yggdrasil), Miljødirektoratet, NGU, Kartverket og NASA. Valgene huskes på denne enheten.</p>`;
   el.innerHTML=h;el.scrollTop=st;
   el.querySelectorAll("[data-ly]").forEach(b=>b.onclick=()=>lyrSet(b.dataset.ly,!lyrOn(b.dataset.ly)));
   el.querySelectorAll("[data-chl]").forEach(b=>b.onclick=()=>chlStep(+b.dataset.chl));
+  el.querySelectorAll("[data-near]").forEach(b=>b.onclick=()=>featNear(b.dataset.near));
   el.querySelector(".ly-x").onclick=()=>{S.lyrOpen=false;renderLyr()}}
 function initLayers(){
   const Ctl=L.Control.extend({options:{position:"topright"},onAdd(){const b=L.DomUtil.create("button","lyrbtn");b.id="lyrBtn";b.type="button";b.title="Kartlag: tare, bunntype, gyteområder, verneområder og mer";b.setAttribute("aria-label","Kartlag");
@@ -2260,14 +2380,15 @@ function initLayers(){
   new Ctl().addTo(S.lmap);
   let saved=lsGet("dk-lyr");if(!saved){const old=lsGet("dk-ovl")||[];saved=old.filter(k=>LY[k])}
   for(const id of saved)if(LY[id])lyrMake(LY[id]).addTo(S.lmap);
-  S.lmap.on("zoomend",()=>{if(S.lyrOpen)renderLyr()});renderLyr()}
+  S.lmap.on("zoomend",()=>{for(const d of LYR)if(d.feat)featZoom(d)});S.lmap.on("moveend",()=>{if(S.lyrOpen)renderLyr()});renderLyr()}
 /* tap the map: what is registered here in the active ArcGIS layers */
 const IDF_SKIP=/^(systemnr|status|kommune|objectid|fid|shape|shape[._ ]?(area|length|leng)|globalid|st_area|st_length|se_anno.*|id|lokalid|navnerom|versjonid|oppdateringsdato|datafangstdato|kartid|.*_id)$/i;
-async function identifyAt(ll){const act=LYR.filter(d=>d.ags&&lyrOn(d.id));if(!act.length)return false;
+async function identifyAt(ll){const act=LYR.filter(d=>(d.ags||d._fb)&&lyrOn(d.id)),fe=LYR.filter(d=>d.feat&&d._feats&&lyrOn(d.id));if(!act.length&&!fe.length)return false;
   const m=S.lmap,b=m.getBounds(),sz=m.getSize(),ext=`${b.getWest()},${b.getSouth()},${b.getEast()},${b.getNorth()}`;
-  const pop=L.popup({className:"idfpop",maxWidth:300,minWidth:220,autoPanPaddingTopLeft:[20,70]}).setLatLng(ll).setContent(`<p class="idf-wait">Henter…</p>`).openOn(m);
+  const pop=L.popup({className:"idfpop",maxWidth:300,minWidth:220,autoPanPaddingTopLeft:[20,popTop()]}).setLatLng(ll).setContent(`<p class="idf-wait">Henter…</p>`).openOn(m);
   let any=false,errs=0;const parts=[];
-  await Promise.all(act.flatMap(d=>d.ags.map(async([base,ids,defs])=>{try{
+  for(const d of fe)for(const f of featHits(d,ll).slice(0,4)){any=true;parts.push(featRow(d,f))}
+  await Promise.all(act.flatMap(d=>(d.ags||d._fb).map(async([base,ids,defs])=>{try{
     const u=`${base}/identify?geometry=${ll.lng},${ll.lat}&geometryType=esriGeometryPoint&sr=4326&layers=visible:${ids}&tolerance=${L.Browser.mobile?10:6}&mapExtent=${ext}&imageDisplay=${sz.x},${sz.y},96${agsDefs(defs)}&returnGeometry=false&f=json`;
     const j=await (await fetch(u)).json();if(j.error)throw 0;
     for(const r of (j.results||[]).slice(0,4)){any=true;const a=r.attributes||{},main=r.value&&!/^null$/i.test(r.value)?r.value:"";
@@ -2444,7 +2565,7 @@ function ago(t){const d=(Date.now()-Date.parse(t))/60e3;if(d<2)return"nå nettop
 async function loadCatches(){const {data,error}=await cachedQ("catches",sb.from("catches").select("*"));if(error){S.catchErr=tableErr(error,"catch.sql");return}S.catchErr=null;S.catches=data;afterCatchData()}
 async function loadReports(){const since=new Date(Date.now()-14*864e5).toISOString();const {data,error}=await cachedQ("reports",sb.from("vis_reports").select("*").gte("created_at",since));
   if(error){S.visErr=tableErr(error,"catch.sql");return}S.visErr=null;S.reports=data.sort((a,b)=>b.created_at.localeCompare(a.created_at));afterVisData()}
-function afterCatchData(){if(S.dexOpen)renderDexDlg();syncDexBtn();if(S.view==="list")renderList();else if(S.view==="site"){renderLogs();renderSpecies();renderSiteHero()}if(S.sp)renderPins()}
+function afterCatchData(){try{syncMfDot();if(S.mf&&S.mf.open)renderMf()}catch(e){}if(S.dexOpen)renderDexDlg();syncDexBtn();if(S.view==="list")renderList();else if(S.view==="site"){renderLogs();renderSpecies();renderSiteHero()}if(S.sp)renderPins()}
 function afterVisData(){renderPins();if(S.view==="list")renderList();else if(S.view==="site"){const s=getSite(S.sel);if(s)renderVis(s)}}
 function latestReport(siteId,maxH=48){const r=S.reports.find(x=>x.site_id===siteId);return r&&(Date.now()-Date.parse(r.created_at))<maxH*3600e3?r:null}
 function visBadge(s){const r=latestReport(s.id);return r?`<span class="vbadge" title="Sikt rapportert ${esc(ago(r.created_at))}">${fnum(r.vis,1)} m</span>`:""}
@@ -2715,7 +2836,7 @@ function catchesHTML(logId){const L=S.catches.filter(c=>c.log_id===logId);if(!L.
   return `<div class="m">${a?`Fanget: ${a}`:""}${a&&b?"<br>":""}${b?`Sett: ${b}`:""}</div>${ph.length?`<div class="thumbs">${ph.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+(measureTxt(c)?" · "+measureTxt(c):"")+(c.caught_by?" · "+c.caught_by:""))}" aria-label="Vis bilde av ${esc(c.species)}"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}`}
 /* lightbox: open a photo and browse the others in the same section (arrow keys, buttons, swipe) */
 S.lb={list:[],i:0};
-function openLightbox(b){const scope=b.closest(".dexcard")||b.closest("#dexWrap")||b.closest("#panel")||document,seen=new Set(),list=[];
+function openLightbox(b){const scope=b.closest(".dexcard")||b.closest("#dexWrap")||b.closest("#mndWrap")||b.closest("#panel")||document,seen=new Set(),list=[];
   for(const x of scope.querySelectorAll("[data-img]")){const k=x.dataset.img;if(!k||seen.has(k))continue;seen.add(k);list.push({img:k,cap:x.dataset.cap||""})}
   S.lb={list,i:Math.max(0,list.findIndex(x=>x.img===b.dataset.img))};showLb();const d=$("#imgDlg");if(!d.open)d.showModal()}
 function showLb(){const {list,i}=S.lb,it=list[i];if(!it)return;$("#imgBig").src=photoURL(it.img);$("#imgCap").textContent=it.cap;
@@ -2736,12 +2857,12 @@ function recRow(c,i,medal){const s=getSite(c.site_id);
     <span class="rb"><b>${medal?"🥇 ":""}${esc(c.species)}</b> <span class="rm">${esc(measureTxt(c)||"–")}</span><br><span class="small">${s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button> · `:""}${esc(catcherName(c))}${c.date?" · "+esc(fdate(c.date)):""}</span></span></div>`}
 function SPICON(sp){const k=sp.toLowerCase();if(/tare|tang|søl|krusflik|salat/.test(k))return "tare";if(/akkar|blekksprut|nise|spekkhogger|havert/.test(k))return "dyr";if(/snegl/.test(k))return "skjell";return /skjell|musling/.test(k)?(/blå|o-|hjerte/.test(k)?"musling":"skjell"):/krabbe|hummer|kreps/.test(k)?"dyr":/kråkebolle/.test(k)?"kraakebolle":/sel|oter/.test(k)?"dyr":"fisk"}
 S.recTab="rek";
-function recHead(){return `<button class="btn ghost back" id="back">Alle steder</button><h2>${S.recTab==="aar"?"Dykkeåret":S.recTab==="mnd"?"Månedens fangst":"Rekorder og statistikk"}</h2>
-  <div class="rtabs" id="recTabs" role="tablist">${[["rek","Rekorder"],["mnd","Måneden"],["aar","Dykkeåret"]].map(([k,l])=>`<button role="tab" data-tab="${k}" class="${S.recTab===k?"on":""}" aria-selected="${S.recTab===k}">${l}</button>`).join("")}</div>`}
+function recHead(){return `<button class="btn ghost back" id="back">Alle steder</button><h2>${S.recTab==="aar"?"Dykkeåret":"Rekorder og statistikk"}</h2>
+  <div class="rtabs" id="recTabs" role="tablist">${[["rek","Rekorder"],["aar","Dykkeåret"]].map(([k,l])=>`<button role="tab" data-tab="${k}" class="${S.recTab===k?"on":""}" aria-selected="${S.recTab===k}">${l}</button>`).join("")}</div>`}
 function wireRecHead(){$("#back").onclick=()=>{S.view="list";renderPanel()};
   $("#recTabs").onclick=e=>{const b=e.target.closest("[data-tab]");if(!b||b.dataset.tab===S.recTab)return;S.recTab=b.dataset.tab;panel.scrollTop=0;renderRecords()}}
 function renderRecords(){
-  if(S.recTab==="arter")S.recTab="rek";if(S.recTab==="aar")return renderYear();if(S.recTab==="mnd")return renderMonth();
+  if(S.recTab==="arter"||S.recTab==="mnd")S.recTab="rek";if(S.recTab==="aar")return renderYear();
   const years=[...new Set(S.catches.map(c=>(c.date||"").slice(0,4)).filter(Boolean))].sort().reverse();
   const cy=String(new Date().getFullYear());if(S.recYear==null)S.recYear=years.includes(cy)?cy:"alle";
   const inYear=c=>S.recYear==="alle"||(c.date||"").startsWith(S.recYear);
@@ -3461,6 +3582,100 @@ function renderMonth(){
   $("#mndChips").onclick=e=>{const b=e.target.closest("[data-m]");if(!b)return;S.mnd=b.dataset.m;renderMonth()};
   panel.querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{S.siteFromNext="records";openSite(b.dataset.site);focusSite(b.dataset.site)});
 }
+
+/* ---------- månedens fangst: vote for the fish of the month + automatic disciplines + overall points ---------- */
+S.mf={open:false,month:null,votes:null,vErr:null,busy:false};
+const MF_SHELL=new Set([...(SPGROUPS.find(g=>g[0]==="Skjell og snegler")||[0,[]])[1],...(SPGROUPS.find(g=>g[0]==="Krepsdyr")||[0,[]])[1],...(SPGROUPS.find(g=>g[0]==="Pigghuder")||[0,[]])[1]]);
+const mfKey=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+const mfLabel=m=>{const [y,mm]=m.split("-");const t=new Date(+y,+mm-1,15).toLocaleDateString("nb-NO",{month:"long",year:"numeric"});return t[0].toUpperCase()+t.slice(1)};
+function mfClose(m){const [y,mm]=m.split("-").map(Number);return new Date(y,mm,5,23,59,59)} // voting for a month closes on the 5th of the next month
+const mfOpenVote=m=>Date.now()<=mfClose(m).getTime();
+async function loadVotes(){try{const {data,error}=await sb.from("catch_votes").select("*");if(error){S.mf.vErr=tableErr(error,"vote.sql");S.mf.votes=[];return}S.mf.vErr=null;S.mf.votes=data||[]}catch(e){S.mf.vErr="Kunne ikke hente stemmene.";S.mf.votes=[]}}
+function mfMonths(){const cur=mfKey(new Date());return [...new Set([cur,...S.catches.map(c=>(c.date||"").slice(0,7)).filter(x=>/^\d{4}-\d{2}$/.test(x))])].sort()}
+function mfCands(M){const cs=S.catches.filter(c=>(c.date||"").startsWith(M));
+  return cs.filter(c=>c.photo_path||(c.kind==="fanget"&&(c.weight_kg!=null||c.size_cm!=null))).sort((a,b)=>(b.photo_path?1:0)-(a.photo_path?1:0)||(bigger(a,b)?-1:bigger(b,a)?1:0))}
+function mfTally(M){const v=(S.mf.votes||[]).filter(x=>x.month===M),t={};for(const x of v)(t[x.catch_id]=t[x.catch_id]||[]).push(x.voter_name||"?");return {list:v,t,mine:v.find(x=>x.voter===S.user.id)}}
+function mfVoteWinners(M){const {t}=mfTally(M),ids=Object.keys(t);if(!ids.length)return [];const mx=Math.max(...ids.map(k=>t[k].length));return ids.filter(k=>t[k].length===mx).map(k=>({c:S.catches.find(c=>c.id===k),n:mx})).filter(x=>x.c)}
+/* automatic disciplines; for catch-based ones each person only counts with their best catch */
+function mfDisciplines(M){const inM=x=>(x.date||"").startsWith(M),cs=S.catches.filter(inM),caught=cs.filter(c=>c.kind==="fanget");
+  const who=c=>catcherName(c)||"Ukjent";
+  const bestPer=(arr,score)=>{const m={};for(const c of arr){const v=score(c);if(v==null||!(v>0))continue;const k=who(c);if(!m[k]||v>m[k].v)m[k]={c,v,who:k}}return Object.values(m).sort((a,b)=>b.v-a.v)};
+  const before=S.catches.filter(c=>c.kind==="fanget"&&(c.date||"")<M+"-01");
+  const prevBest={},prevN={};for(const c of before){const v=c.weight_kg!=null?+c.weight_kg:null;const l=c.size_cm!=null?+c.size_cm:null;const k=c.species;prevN[k]=(prevN[k]||0)+1;const pb=prevBest[k]||(prevBest[k]={w:0,l:0});if(v>pb.w)pb.w=v;if(l>pb.l)pb.l=l}
+  const rel=c=>{const pb=prevBest[c.species];if(!pb||(prevN[c.species]||0)<2)return null;if(c.weight_kg!=null&&pb.w>0)return +c.weight_kg/pb.w;if(c.size_cm!=null&&pb.l>0)return +c.size_cm/pb.l;return null};
+  const per=(f)=>{const m={};f(m);return Object.entries(m).map(([k,v])=>({who:k,v})).sort((a,b)=>b.v-a.v)};
+  const logs=(S.allLogs||[]).filter(inM);
+  const firstEver={};for(const c of S.catches.slice().sort(catchSort))if(c.species&&!firstEver[c.species])firstEver[c.species]=c;
+  const newSp=Object.values(firstEver).filter(inM);
+  const D=[
+   {k:"tung",icon:"🏋️",name:"Tungvekteren",what:"Tyngste fisk",rows:bestPer(caught.filter(c=>!MF_SHELL.has(c.species)),c=>c.weight_kg!=null?+c.weight_kg:null),fmt:r=>`${fnum(r.v,2)} kg ${r.c.species.toLocaleLowerCase("nb")}`},
+   {k:"lang",icon:"📏",name:"Lengst",what:"Lengste fisk",rows:bestPer(caught.filter(c=>!MF_SHELL.has(c.species)),c=>c.size_cm!=null?+c.size_cm:null),fmt:r=>`${fnum(r.v)} cm ${r.c.species.toLocaleLowerCase("nb")}`},
+   {k:"rek",icon:"🎯",name:"Rekordjegeren",what:"Nærmest gjengens rekord for arten (fra før denne måneden)",rows:bestPer(caught,rel),fmt:r=>`${Math.round(r.v*100)} % av rekorden · ${r.c.species.toLocaleLowerCase("nb")} ${measureTxt(r.c)}${r.v>1?" · ny rekord!":""}`},
+   {k:"arter",icon:"🧭",name:"Allsidig",what:"Flest arter (sett eller fanget)",rows:per(m=>{const s={};for(const c of cs){const k=who(c);(s[k]=s[k]||new Set()).add(c.species)}for(const k in s)m[k]=s[k].size}),fmt:r=>`${r.v} ${r.v===1?"art":"arter"}`},
+   {k:"dykk",icon:"🤿",name:"Flittigst",what:"Flest dykk",rows:S.allLogs==null?null:per(m=>{for(const l of logs)for(const n of new Set([l.author_name,...(l.buddies||[])].filter(Boolean)))m[n]=(m[n]||0)+1}),fmt:r=>`${r.v} dykk`},
+   {k:"skjell",icon:"🐚",name:"Høstekongen",what:"Flest skjell, krabber og kråkeboller høstet",rows:per(m=>{for(const c of caught)if(MF_SHELL.has(c.species)){const k=who(c);m[k]=(m[k]||0)+(+c.count||1)}}),fmt:r=>`${r.v} stk`}];
+  return {D,newSp,cs,caught,logs}}
+function mfPoints(M){const {D,newSp}=mfDisciplines(M),pts={},why={};const add=(n,p,w)=>{if(!n)return;pts[n]=(pts[n]||0)+p;(why[n]=why[n]||[]).push(w)};
+  for(const d of D){if(!d.rows)continue;let place=0,last=null;d.rows.slice(0,6).forEach((r,i)=>{if(last==null||r.v!==last){place=i;last=r.v}if(place<3)add(r.who,3-place,`${d.name} (${place+1}.)`)})}
+  for(const c of newSp)add(catcherName(c)||"Ukjent",2,`Ny art: ${c.species}`);
+  for(const w of mfVoteWinners(M))add(catcherName(w.c)||"Ukjent",5,"Månedens fisk (kåring)");
+  return Object.entries(pts).map(([who,p])=>({who,p,why:why[who]})).sort((a,b)=>b.p-a.p||a.who.localeCompare(b.who,"nb"))}
+function mfPic(c){const own=c.photo_path,st=spImg(c.species),cap=[c.species,measureTxt(c),catcherName(c),getSite(c.site_id)?.name].filter(Boolean).join(" · ");
+  if(own)return `<button type="button" class="mf-pic" data-img="${esc(own)}" data-cap="${esc(cap)}" aria-label="Vis bilde"><img src="${esc(photoURL(own))}" alt="" loading="lazy"></button>`;
+  return `<span class="mf-pic ill">${st?`<img src="${esc(st.src)}" alt="" loading="lazy"><i>Illustrasjon</i>`:`<span class="ph">${iconSVG(SPICON(c.species),34)}</span>`}</span>`}
+function renderMf(){const wrap=$("#mndWrap");if(!wrap)return;const st=wrap.scrollTop;
+  const months=mfMonths();if(!S.mf.month||!months.includes(S.mf.month))S.mf.month=months[months.length-1];const M=S.mf.month,mi=months.indexOf(M);
+  const open=mfOpenVote(M),cands=mfCands(M),{t,mine,list}=mfTally(M),winners=open?[]:mfVoteWinners(M),closeD=mfClose(M);
+  const lead=Object.keys(t).length?Math.max(...Object.values(t).map(a=>a.length)):0;
+  const now=new Date(),isCur=M===mfKey(now),daysLeft=Math.ceil((closeD-now)/864e5);
+  const pts=mfPoints(M),{D,newSp,cs,caught,logs}=mfDisciplines(M);
+  const voteHTML=S.mf.votes==null?`<p class="mf-note">Henter stemmer…</p>`:S.mf.vErr?`<p class="mf-note err">${esc(S.mf.vErr)} Til da vises bare disiplinene.</p>`:
+    !cands.length?`<p class="mf-note">Ingen kandidater ennå. Logg en fangst med bilde, vekt eller lengde i ${esc(mfLabel(M).toLocaleLowerCase("nb"))}, så kan gjengen stemme på den.</p>`:
+    `${winners.length?`<div class="mf-winner">${winners.map(w=>`<div>${mfPic(w.c)}<span><small>${winners.length>1?"Delt seier":"Månedens fisk"} · ${w.n} ${w.n===1?"stemme":"stemmer"}</small><b>${esc(w.c.species)} ${esc(measureTxt(w.c))}</b>${esc(catcherName(w.c)||"")}${getSite(w.c.site_id)?" · "+esc(getSite(w.c.site_id).name):""}</span></div>`).join("")}</div>`:""}
+     <p class="mf-note">${open?`Én stemme hver. Du kan ikke stemme på din egen fangst, men du kan bytte stemme helt til kåringen avsluttes ${esc(closeD.toLocaleDateString("nb-NO",{day:"numeric",month:"long"}))}${daysLeft<=7?` (om ${daysLeft} ${daysLeft===1?"dag":"dager"})`:""}.`:`Kåringen er avsluttet. ${list.length} ${list.length===1?"stemme":"stemmer"} totalt.`}</p>
+     <div class="mf-cands">${cands.map(c=>{const n=(t[c.id]||[]).length,mineC=mine&&mine.catch_id===c.id,own=catcherName(c)===S.me.name||(!c.caught_by&&c.author===S.user.id),s2=getSite(c.site_id);
+       return `<div class="mf-cand${mineC?" voted":""}${n&&n===lead?" lead":""}">${mfPic(c)}<div class="mf-ci"><b>${n&&n===lead?"👑 ":""}${esc(c.species)}</b><span>${esc(measureTxt(c)||(c.kind==="sett"?"sett":""))}</span><small>${esc(catcherName(c)||"ukjent")}${s2?" · "+esc(s2.name):""}${c.date?" · "+esc(fdate(c.date,true)):""}</small></div>
+         <div class="mf-vb"><span class="mf-n" title="${esc((t[c.id]||[]).join(", "))}">${n} ${n===1?"stemme":"stemmer"}</span>${open?(own?`<span class="mf-own">Din fangst</span>`:`<button type="button" class="mf-vote${mineC?" on":""}" data-vote="${esc(c.id)}"${S.mf.busy?" disabled":""}>${mineC?"✓ Din stemme":"Stem"}</button>`):""}</div></div>`}).join("")}</div>`;
+  const dHTML=D.map(d=>{const rows=d.rows;
+    return `<div class="mf-d"><div class="mf-dh"><span class="mf-di">${d.icon}</span><div><b>${esc(d.name)}</b><small>${esc(d.what)}</small></div></div>
+      ${rows==null?`<p class="mf-note">Henter dykk…</p>`:rows.length?`<ol class="mf-pod">${rows.slice(0,3).map((r,i)=>`<li class="p${i+1}"><span class="mf-m">${["🥇","🥈","🥉"][i]}</span><b>${esc(r.who)}</b><span>${esc(d.fmt(r))}</span>${r.c?`<button type="button" class="linkbtn mf-site" data-site="${esc(r.c.site_id)}" title="Vis stedet">›</button>`:""}</li>`).join("")}</ol>`:`<p class="mf-empty">Ingen ennå</p>`}</div>`}).join("");
+  const hist=months.slice().reverse().filter(m=>m!==M&&!mfOpenVote(m)).slice(0,12).map(m=>{const w=mfVoteWinners(m),p=mfPoints(m)[0];return `<button type="button" class="mf-h" data-m="${m}"><b>${esc(mfLabel(m))}</b><span>${w.length?`🐟 ${esc(w.map(x=>`${x.c.species} (${catcherName(x.c)||"?"})`).join(", "))}`:"Ingen kåring"}</span><span>${p?`🏆 ${esc(p.who)} · ${p.p} poeng`:""}</span></button>`}).join("");
+  wrap.innerHTML=`<div class="dexin mf">
+    <div class="dextop"><h2>Månedens fangst</h2><button class="dexclose" id="mndX" aria-label="Lukk">✕</button></div>
+    <div class="mf-nav"><button type="button" id="mfPrev" aria-label="Forrige måned"${mi<=0?" disabled":""}>◀</button><div><b>${esc(mfLabel(M))}</b><small>${isCur?`${Math.max(0,new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate())} dager igjen av måneden`:open?"Kåringen pågår fortsatt":"Avsluttet"}</small></div><button type="button" id="mfNext" aria-label="Neste måned"${mi>=months.length-1?" disabled":""}>▶</button></div>
+    <div class="mf-kpis"><div><b>${S.allLogs==null?"…":logs.length}</b><span>dykk</span></div><div><b>${new Set(cs.map(c=>c.species)).size}</b><span>arter</span></div><div><b>${caught.reduce((n,c)=>n+(+c.count||1),0)}</b><span>fanget</span></div><div><b>${newSp.length}</b><span>nye arter</span></div></div>
+    <section class="mf-sec"><h3>🏆 Sammenlagt</h3>${pts.length?`<ol class="mf-tot">${pts.slice(0,6).map((r,i)=>`<li${i<3?` class="p${i+1}"`:""}><span class="mf-m">${["🥇","🥈","🥉"][i]||i+1+"."}</span><b>${esc(r.who)}</b><span class="mf-p">${r.p} p</span><small>${esc(r.why.join(" · "))}</small></li>`).join("")}</ol>`:`<p class="mf-empty">Ingen poeng ennå denne måneden.</p>`}
+      <p class="mf-rule">3, 2 og 1 poeng for plass 1–3 i hver disiplin, 2 poeng per ny art for gjengen og 5 poeng for å vinne kåringen.</p></section>
+    <section class="mf-sec"><h3>🐟 Kåring: månedens fisk</h3>${voteHTML}</section>
+    <section class="mf-sec"><h3>Disipliner</h3><div class="mf-ds">${dHTML}</div>
+      ${newSp.length?`<div class="mf-new"><b>✨ Nye arter for gjengen:</b> ${newSp.map(c=>`${esc(c.species)} <small>(${esc(catcherName(c)||"ukjent")})</small>`).join(", ")}</div>`:""}</section>
+    ${hist?`<section class="mf-sec"><h3>Tidligere måneder</h3><div class="mf-hist">${hist}</div></section>`:""}
+  </div>`;
+  wrap.scrollTop=st;
+  $("#mndX").onclick=closeMf;
+  $("#mfPrev").onclick=()=>{if(mi>0){S.mf.month=months[mi-1];wrap.scrollTop=0;renderMf()}};
+  $("#mfNext").onclick=()=>{if(mi<months.length-1){S.mf.month=months[mi+1];wrap.scrollTop=0;renderMf()}};
+  wrap.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{S.mf.month=b.dataset.m;wrap.scrollTop=0;renderMf()});
+  wrap.querySelectorAll("[data-vote]").forEach(b=>b.onclick=()=>mfVote(M,b.dataset.vote));
+  wrap.querySelectorAll(".mf-site[data-site]").forEach(b=>b.onclick=()=>{closeMf();openSite(b.dataset.site);focusSite(b.dataset.site)});
+  syncMfDot()}
+async function mfVote(M,id){if(S.mf.busy)return;const {mine}=mfTally(M);S.mf.busy=true;renderMf();
+  let error=null;
+  if(mine&&mine.catch_id===id)({error}=await sb.from("catch_votes").delete().eq("month",M).eq("voter",S.user.id));
+  else ({error}=await sb.from("catch_votes").upsert({month:M,voter:S.user.id,voter_name:S.me.name||"",catch_id:id,created_at:new Date().toISOString()},{onConflict:"month,voter"}));
+  S.mf.busy=false;if(error){alert("Kunne ikke lagre stemmen: "+tableErr(error,"vote.sql"));renderMf();return}
+  await loadVotes();renderMf();toast(mine&&mine.catch_id===id?"Stemmen er trukket":"Stemmen er lagret")}
+function syncMfDot(){const d=$("#mndDot");if(!d)return;const M=mfKey(new Date());
+  const show=!!(S.mf.votes&&!S.mf.vErr&&!mfTally(M).mine&&mfCands(M).some(c=>catcherName(c)!==S.me.name));d.hidden=!show;
+  const b=$("#mndHdr");if(b)b.title=show?"Månedens fangst: du har ikke stemt ennå denne måneden":"Månedens fangst: kåring og disipliner"}
+function openMf(){const dlg=$("#mndDlg");if(!dlg)return;S.mf.open=true;S.mf.month=mfKey(new Date());renderMf();if(!dlg.open)dlg.showModal();
+  const jobs=[loadVotes()];if(S.allLogs==null)jobs.push(cachedQ("alllogs",sb.from("logs").select("*")).then(a=>{if(!a.error)S.allLogs=a.data}));
+  Promise.all(jobs).then(()=>{if(S.mf.open)renderMf()});
+  const sps=[...new Set(S.catches.map(c=>c.species))];if(sps.some(sp=>!(sp in S.spImg))&&!S.spImgBusy)loadSpImages(sps).then(()=>{if(S.mf.open)renderMf()}).catch(()=>{})}
+function closeMf(){S.mf.open=false;const d=$("#mndDlg");if(d&&d.open)d.close()}
+$("#mndHdr").onclick=openMf;$("#mndBar").onclick=openMf;
+$("#mndDlg").addEventListener("close",()=>{S.mf.open=false});
+$("#mndDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();openLightbox(b)});
 
 /* ---------- year in diving (dykkeåret) ---------- */
 S.yrYear=null;S.yrWho=null;
