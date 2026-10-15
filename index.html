@@ -607,6 +607,11 @@ body.mapmax .maptools .mndbtn{display:inline-flex;align-items:center}
 .mf-pod{list-style:none;margin:0;padding:0}.mf-pod li{display:grid;grid-template-columns:26px auto 1fr auto;gap:6px;align-items:center;padding:3px 0;font-size:13.5px}
 .mf-pod li b{color:#E3EDF4}.mf-pod li span:not(.mf-m){color:#9fc3e0;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mf-pod .mf-m{font-size:16px}
 .mf-site{color:#8fd3ec;font-size:16px;padding:0 4px;margin:0}
+.mf-wide{grid-column:1/-1}.mf-sps{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.mf-spr{background:rgba(8,26,46,.35);border:1px solid rgba(159,195,224,.1);border-radius:10px;padding:7px 10px}
+.mf-solo{margin:8px 0 0;color:#9fc3e0;font-size:13px;line-height:1.6}.mf-solo>b{color:#cfe0ee;font-weight:600}.mf-solob{padding:0;margin:0;font:inherit;color:#9fc3e0;background:none;border:0;cursor:pointer;text-align:left}.mf-solob b{color:#E3EDF4}.mf-solob:hover{color:#E3EDF4}
+.mf-spn{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:2px}.mf-spn b{color:#F1E6C8;font-size:14.5px}.mf-spn small{color:#7f9fb8;font-size:11.5px;text-align:right}
+
 .mf-new{margin-top:10px;color:#cfe0ee;font-size:13.5px}.mf-new b{color:#F3D67E}.mf-new small{color:#7f9fb8}
 .mf-hist{display:grid;gap:6px}.mf-h{display:grid;grid-template-columns:150px 1fr auto;gap:8px;align-items:center;text-align:left;background:rgba(17,64,106,.25);border:1px solid rgba(159,195,224,.12);border-radius:10px;padding:8px 10px;color:#cfe0ee;font:inherit;font-size:13px;cursor:pointer}
 .mf-h b{color:#F1E6C8}.mf-h:hover{border-color:rgba(241,230,200,.4)}
@@ -1047,7 +1052,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v53 (nytt app-ikon)";
+const APP_VERSION="v54 (størst per art)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -3607,16 +3612,25 @@ function mfDisciplines(M){const inM=x=>(x.date||"").startsWith(M),cs=S.catches.f
   const logs=(S.allLogs||[]).filter(inM);
   const firstEver={};for(const c of S.catches.slice().sort(catchSort))if(c.species&&!firstEver[c.species])firstEver[c.species]=c;
   const newSp=Object.values(firstEver).filter(inM);
+  /* biggest per species: weight when both have it, otherwise length; each person counts with their best catch of the species */
+  const big=(a,b)=>{const aw=a.weight_kg!=null?+a.weight_kg:null,bw=b.weight_kg!=null?+b.weight_kg:null,al=a.size_cm!=null?+a.size_cm:null,bl=b.size_cm!=null?+b.size_cm:null;
+    if(aw!=null&&bw!=null&&aw!==bw)return bw-aw;if(al!=null&&bl!=null&&al!==bl)return bl-al;
+    if((aw!=null)!==(bw!=null))return aw!=null?-1:1;if((al!=null)!==(bl!=null))return al!=null?-1:1;return 0};
+  const spG={};for(const c of caught){if(c.weight_kg==null&&c.size_cm==null)continue;(spG[c.species]=spG[c.species]||[]).push(c)}
+  const perSp=Object.entries(spG).map(([sp,arr])=>{const best={};for(const c of arr){const k=who(c);if(!best[k]||big(c,best[k])<0)best[k]=c}
+    const rows=Object.entries(best).map(([w,c])=>({who:w,c})).sort((x,y)=>big(x.c,y.c));
+    rows.forEach((r,i)=>{r.place=i>0&&big(rows[i-1].c,r.c)===0?rows[i-1].place:i});
+    return {sp,rows,n:rows.length}}).sort((a,b)=>(b.n>1)-(a.n>1)||b.n-a.n||a.sp.localeCompare(b.sp,"nb"));
   const D=[
-   {k:"tung",icon:"🏋️",name:"Tungvekteren",what:"Tyngste fisk",rows:bestPer(caught.filter(c=>!MF_SHELL.has(c.species)),c=>c.weight_kg!=null?+c.weight_kg:null),fmt:r=>`${fnum(r.v,2)} kg ${r.c.species.toLocaleLowerCase("nb")}`},
-   {k:"lang",icon:"📏",name:"Lengst",what:"Lengste fisk",rows:bestPer(caught.filter(c=>!MF_SHELL.has(c.species)),c=>c.size_cm!=null?+c.size_cm:null),fmt:r=>`${fnum(r.v)} cm ${r.c.species.toLocaleLowerCase("nb")}`},
+   {k:"art",icon:"⚖️",name:"Størst per art",what:"Største fangst av hver art (vekt, ellers lengde). Gir poeng når minst to har fanget arten.",sp:perSp},
    {k:"rek",icon:"🎯",name:"Rekordjegeren",what:"Nærmest gjengens rekord for arten (fra før denne måneden)",rows:bestPer(caught,rel),fmt:r=>`${Math.round(r.v*100)} % av rekorden · ${r.c.species.toLocaleLowerCase("nb")} ${measureTxt(r.c)}${r.v>1?" · ny rekord!":""}`},
    {k:"arter",icon:"🧭",name:"Allsidig",what:"Flest arter (sett eller fanget)",rows:per(m=>{const s={};for(const c of cs){const k=who(c);(s[k]=s[k]||new Set()).add(c.species)}for(const k in s)m[k]=s[k].size}),fmt:r=>`${r.v} ${r.v===1?"art":"arter"}`},
    {k:"dykk",icon:"🤿",name:"Flittigst",what:"Flest dykk",rows:S.allLogs==null?null:per(m=>{for(const l of logs)for(const n of new Set([l.author_name,...(l.buddies||[])].filter(Boolean)))m[n]=(m[n]||0)+1}),fmt:r=>`${r.v} dykk`},
    {k:"skjell",icon:"🐚",name:"Høstekongen",what:"Flest skjell, krabber og kråkeboller høstet",rows:per(m=>{for(const c of caught)if(MF_SHELL.has(c.species)){const k=who(c);m[k]=(m[k]||0)+(+c.count||1)}}),fmt:r=>`${r.v} stk`}];
   return {D,newSp,cs,caught,logs}}
 function mfPoints(M){const {D,newSp}=mfDisciplines(M),pts={},why={};const add=(n,p,w)=>{if(!n)return;pts[n]=(pts[n]||0)+p;(why[n]=why[n]||[]).push(w)};
-  for(const d of D){if(!d.rows)continue;let place=0,last=null;d.rows.slice(0,6).forEach((r,i)=>{if(last==null||r.v!==last){place=i;last=r.v}if(place<3)add(r.who,3-place,`${d.name} (${place+1}.)`)})}
+  for(const d of D){if(d.sp){for(const x of d.sp){if(x.n<2)continue;for(const r of x.rows)if(r.place<2)add(r.who,2-r.place,`Størst ${x.sp.toLocaleLowerCase("nb")} (${r.place+1}.)`)}continue}
+    if(!d.rows)continue;let place=0,last=null;d.rows.slice(0,6).forEach((r,i)=>{if(last==null||r.v!==last){place=i;last=r.v}if(place<3)add(r.who,3-place,`${d.name} (${place+1}.)`)})}
   for(const c of newSp)add(catcherName(c)||"Ukjent",2,`Ny art: ${c.species}`);
   for(const w of mfVoteWinners(M))add(catcherName(w.c)||"Ukjent",5,"Månedens fisk (kåring)");
   return Object.entries(pts).map(([who,p])=>({who,p,why:why[who]})).sort((a,b)=>b.p-a.p||a.who.localeCompare(b.who,"nb"))}
@@ -3636,7 +3650,12 @@ function renderMf(){const wrap=$("#mndWrap");if(!wrap)return;const st=wrap.scrol
      <div class="mf-cands">${cands.map(c=>{const n=(t[c.id]||[]).length,mineC=mine&&mine.catch_id===c.id,own=catcherName(c)===S.me.name||(!c.caught_by&&c.author===S.user.id),s2=getSite(c.site_id);
        return `<div class="mf-cand${mineC?" voted":""}${n&&n===lead?" lead":""}">${mfPic(c)}<div class="mf-ci"><b>${n&&n===lead?"👑 ":""}${esc(c.species)}</b><span>${esc(measureTxt(c)||(c.kind==="sett"?"sett":""))}</span><small>${esc(catcherName(c)||"ukjent")}${s2?" · "+esc(s2.name):""}${c.date?" · "+esc(fdate(c.date,true)):""}</small></div>
          <div class="mf-vb"><span class="mf-n" title="${esc((t[c.id]||[]).join(", "))}">${n} ${n===1?"stemme":"stemmer"}</span>${open?(own?`<span class="mf-own">Din fangst</span>`:`<button type="button" class="mf-vote${mineC?" on":""}" data-vote="${esc(c.id)}"${S.mf.busy?" disabled":""}>${mineC?"✓ Din stemme":"Stem"}</button>`):""}</div></div>`}).join("")}</div>`;
-  const dHTML=D.map(d=>{const rows=d.rows;
+  const spCard=d=>`<div class="mf-d mf-wide"><div class="mf-dh"><span class="mf-di">${d.icon}</span><div><b>${esc(d.name)}</b><small>${esc(d.what)}</small></div></div>
+      ${d.sp.length?(()=>{const con=d.sp.filter(x=>x.n>1),solo=d.sp.filter(x=>x.n<2);
+        return `${con.length?`<div class="mf-sps">${con.map(x=>`<div class="mf-spr"><div class="mf-spn"><b>${esc(x.sp)}</b><small>${x.n} har fanget den</small></div>
+        <ol class="mf-pod">${x.rows.slice(0,3).map(r=>`<li class="p${r.place+1}"><span class="mf-m">${["🥇","🥈","🥉"][r.place]||""}</span><b>${esc(r.who)}</b><span>${esc(measureTxt(r.c))}</span><button type="button" class="linkbtn mf-site" data-site="${esc(r.c.site_id)}" title="Vis stedet">›</button></li>`).join("")}</ol></div>`).join("")}</div>`:`<p class="mf-empty">Ingen art er fanget av mer enn én person ennå denne måneden.</p>`}
+        ${solo.length?`<p class="mf-solo"><b>Uten konkurranse (ingen poeng):</b> ${solo.map(x=>`<button type="button" class="linkbtn mf-solob" data-site="${esc(x.rows[0].c.site_id)}" title="Vis stedet"><b>${esc(x.sp)}</b> ${esc(x.rows[0].who)} ${esc(measureTxt(x.rows[0].c))}</button>`).join(", ")}</p>`:""}`})():`<p class="mf-empty">Ingen fangster med vekt eller lengde ennå</p>`}</div>`;
+  const dHTML=D.map(d=>{if(d.sp)return spCard(d);const rows=d.rows;
     return `<div class="mf-d"><div class="mf-dh"><span class="mf-di">${d.icon}</span><div><b>${esc(d.name)}</b><small>${esc(d.what)}</small></div></div>
       ${rows==null?`<p class="mf-note">Henter dykk…</p>`:rows.length?`<ol class="mf-pod">${rows.slice(0,3).map((r,i)=>`<li class="p${i+1}"><span class="mf-m">${["🥇","🥈","🥉"][i]}</span><b>${esc(r.who)}</b><span>${esc(d.fmt(r))}</span>${r.c?`<button type="button" class="linkbtn mf-site" data-site="${esc(r.c.site_id)}" title="Vis stedet">›</button>`:""}</li>`).join("")}</ol>`:`<p class="mf-empty">Ingen ennå</p>`}</div>`}).join("");
   const hist=months.slice().reverse().filter(m=>m!==M&&!mfOpenVote(m)).slice(0,12).map(m=>{const w=mfVoteWinners(m),p=mfPoints(m)[0];return `<button type="button" class="mf-h" data-m="${m}"><b>${esc(mfLabel(m))}</b><span>${w.length?`🐟 ${esc(w.map(x=>`${x.c.species} (${catcherName(x.c)||"?"})`).join(", "))}`:"Ingen kåring"}</span><span>${p?`🏆 ${esc(p.who)} · ${p.p} poeng`:""}</span></button>`}).join("");
@@ -3645,7 +3664,7 @@ function renderMf(){const wrap=$("#mndWrap");if(!wrap)return;const st=wrap.scrol
     <div class="mf-nav"><button type="button" id="mfPrev" aria-label="Forrige måned"${mi<=0?" disabled":""}>◀</button><div><b>${esc(mfLabel(M))}</b><small>${isCur?`${Math.max(0,new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate())} dager igjen av måneden`:open?"Kåringen pågår fortsatt":"Avsluttet"}</small></div><button type="button" id="mfNext" aria-label="Neste måned"${mi>=months.length-1?" disabled":""}>▶</button></div>
     <div class="mf-kpis"><div><b>${S.allLogs==null?"…":logs.length}</b><span>dykk</span></div><div><b>${new Set(cs.map(c=>c.species)).size}</b><span>arter</span></div><div><b>${caught.reduce((n,c)=>n+(+c.count||1),0)}</b><span>fanget</span></div><div><b>${newSp.length}</b><span>nye arter</span></div></div>
     <section class="mf-sec"><h3>🏆 Sammenlagt</h3>${pts.length?`<ol class="mf-tot">${pts.slice(0,6).map((r,i)=>`<li${i<3?` class="p${i+1}"`:""}><span class="mf-m">${["🥇","🥈","🥉"][i]||i+1+"."}</span><b>${esc(r.who)}</b><span class="mf-p">${r.p} p</span><small>${esc(r.why.join(" · "))}</small></li>`).join("")}</ol>`:`<p class="mf-empty">Ingen poeng ennå denne måneden.</p>`}
-      <p class="mf-rule">3, 2 og 1 poeng for plass 1–3 i hver disiplin, 2 poeng per ny art for gjengen og 5 poeng for å vinne kåringen.</p></section>
+      <p class="mf-rule">3, 2 og 1 poeng for plass 1–3 i hver disiplin. I «Størst per art» gir hver art 2 poeng til den største og 1 til nest største, men bare når minst to har fanget arten. 2 poeng per ny art for gjengen og 5 poeng for å vinne kåringen.</p></section>
     <section class="mf-sec"><h3>🐟 Kåring: månedens fisk</h3>${voteHTML}</section>
     <section class="mf-sec"><h3>Disipliner</h3><div class="mf-ds">${dHTML}</div>
       ${newSp.length?`<div class="mf-new"><b>✨ Nye arter for gjengen:</b> ${newSp.map(c=>`${esc(c.species)} <small>(${esc(catcherName(c)||"ukjent")})</small>`).join(", ")}</div>`:""}</section>
@@ -3657,7 +3676,7 @@ function renderMf(){const wrap=$("#mndWrap");if(!wrap)return;const st=wrap.scrol
   $("#mfNext").onclick=()=>{if(mi<months.length-1){S.mf.month=months[mi+1];wrap.scrollTop=0;renderMf()}};
   wrap.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{S.mf.month=b.dataset.m;wrap.scrollTop=0;renderMf()});
   wrap.querySelectorAll("[data-vote]").forEach(b=>b.onclick=()=>mfVote(M,b.dataset.vote));
-  wrap.querySelectorAll(".mf-site[data-site]").forEach(b=>b.onclick=()=>{closeMf();openSite(b.dataset.site);focusSite(b.dataset.site)});
+  wrap.querySelectorAll(".mf-site[data-site],.mf-solob[data-site]").forEach(b=>b.onclick=()=>{closeMf();openSite(b.dataset.site);focusSite(b.dataset.site)});
   syncMfDot()}
 async function mfVote(M,id){if(S.mf.busy)return;const {mine}=mfTally(M);S.mf.busy=true;renderMf();
   let error=null;
