@@ -387,6 +387,11 @@ body:not(.mapmax) .mapcol.mini>.minibar,body:not(.mapmax) .side.mini>.minibar{di
 body.resizing #lmap{pointer-events:none}
 body:not(.mapmax) .mapcol{border-radius:14px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.45)}
 body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-shadow:0 8px 28px rgba(0,0,0,.45)}
+/* phones: the panel must grow with its content so the page can scroll (overflow:hidden made it a scroll container with zero minimum height) */
+@media (max-width:860px){body:not(.mapmax) .side{overflow:visible;overflow:clip;min-height:auto}}
+/* phones: compact map toolbar so the map itself gets the space */
+@media (max-width:700px){.maptools{gap:6px;padding:6px 8px}.maptools .btn,.maptools select.btn{padding:6px 10px;font-size:14px;min-height:0;height:34px}
+  #coord{display:none}#hint:empty{display:none}#hint{flex:1 0 100%;font-size:13px}}
 @media (max-width:860px){body:not(.mapmax) .layout{padding:8px;gap:0;grid-template-columns:1fr}body:not(.mapmax) .splitter{cursor:row-resize;height:14px}body:not(.mapmax) .splitter span{width:46px;height:5px}body.pcollapsed:not(.mapmax) .side{display:flex}body:not(.mapmax) .mapcol,body:not(.mapmax) .side{border-radius:12px}}
 
 .seabtn{border:1px solid #3f8f6a!important;background:#0d3326!important;color:#BDEBD3!important}.seabtn:hover{background:#13493a!important}
@@ -635,6 +640,8 @@ body.replaying .zoomnote{display:none!important}
 .sl-sub{font-size:13px;color:var(--muted);margin:2px 0 6px}
 .slbar text{font-size:10px;fill:var(--muted)}
 .sl-list{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;margin-top:2px}.sl-list span.on{color:var(--kelp);font-weight:700}.sl-list small{color:var(--muted)}
+.sldiff{font-size:11.5px;font-weight:700;padding:0 4px;border-radius:5px;margin-left:2px}.sldiff.s-sterk{background:rgba(224,83,58,.18);color:#e0533a}.sldiff.s-middels{background:rgba(224,176,32,.2);color:#b38600}.sldiff.s-svak{background:rgba(47,163,107,.18);color:#2fa36b}
+.hud-pop .sldiff.s-middels{color:#F3D67E}.sl-legend{margin:4px 0 0!important}.slpre{color:var(--kelp)!important;font-weight:600}
 .slgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:end}.slgrid input{width:100%;box-sizing:border-box}
 .slackset{margin:8px 0;padding:8px 10px;border:1px solid var(--line);border-radius:10px}.slackset summary{cursor:pointer;font-weight:600;display:flex;align-items:center;gap:6px}
 .slbadge{position:absolute;left:16px;top:-7px;background:#0a1a2c;color:#F1E6C8;border:1px solid rgba(241,230,200,.5);font-size:10.5px;font-weight:700;padding:0 5px;border-radius:8px;white-space:nowrap;pointer-events:none;line-height:15px}
@@ -985,7 +992,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v50 (kartlag fra Yggdrasil)";
+const APP_VERSION="v51 (mobil, kamskjell og Saltstraumen-strømstille)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1032,9 +1039,13 @@ async function uploadImage(file){if(file.size>45*1024*1024)throw{message:"Bildet
   const {error}=await sb.storage.from(BUCKET).upload(path,file,{contentType:file.type||"image/jpeg",upsert:false});if(error)throw error;return path}
 
 /* ---------- mapping db <-> app ---------- */
-function rowToSite(r){return{id:r.id,chartId:r.chart_id,x:r.x,y:r.y,lat:r.lat,lon:r.lon,name:r.name,access:r.access,maxDepth:r.max_depth,bottom:r.bottom,tide:r.tide,season:r.season,
+/* known slack-water timings: applied to sites in the strait until the group enters its own numbers */
+const SLACK_PRESETS=[{name:"Saltstraumen",lat:67.2340,lon:14.6200,km:2,hw:101,lw:101,len:30,src:"tidevannstabellen for Saltstraumen: strømmen snur 1 t 41 min etter flo og fjære i Bodø"}];
+function slackPreset(lat,lon){if(lat==null||lon==null)return null;for(const p of SLACK_PRESETS){const dy=(lat-p.lat)*111.2,dx=(lon-p.lon)*111.2*Math.cos(lat*Math.PI/180);if(Math.hypot(dx,dy)<=p.km)return p}return null}
+function withPreset(o){if(o.slackHw==null&&o.slackLw==null){const p=slackPreset(o.lat,o.lon);if(p){o.slackHw=p.hw;o.slackLw=p.lw;o.slackLen=p.len;o.slackPreset=p}}return o}
+function rowToSite(r){return withPreset({id:r.id,chartId:r.chart_id,x:r.x,y:r.y,lat:r.lat,lon:r.lon,name:r.name,access:r.access,maxDepth:r.max_depth,bottom:r.bottom,tide:r.tide,season:r.season,
   wind:r.wind||[],hazards:r.hazards,rules:r.rules,species:r.species,notes:r.notes,rating:r.rating,photoPath:r.photo_path,_priv:r.private,createdBy:r.created_by,
-  createdAt:r.created_at||null,logCount:r.log_count||0,lastDive:r.last_dive,visAvg:r.vis_avg,tideMode:r.tide_mode||"none",tideOffset:r.tide_offset||0,tideWidth:r.tide_width||60,slackHw:r.slack_hw??null,slackLw:r.slack_lw??null,slackLen:r.slack_len??30,icon:r.icon||null,color:r.color||null}}
+  createdAt:r.created_at||null,logCount:r.log_count||0,lastDive:r.last_dive,visAvg:r.vis_avg,tideMode:r.tide_mode||"none",tideOffset:r.tide_offset||0,tideWidth:r.tide_width||60,slackHw:r.slack_hw??null,slackLw:r.slack_lw??null,slackLen:r.slack_len??30,icon:r.icon||null,color:r.color||null})}
 function rowToChart(r){return{id:r.id,name:r.name,imagePath:r.image_path,w:r.w,h:r.h,geo:r.geo,createdBy:r.created_by}}
 
 /* ---------- projections ---------- */
@@ -1408,7 +1419,7 @@ function renderEdit(s){
   <label for="fTmode">Dykkevindu (tidevann)</label><select id="fTmode">${[["none","Ikke satt"],["high","Rundt flo"],["low","Rundt fjære"],["both","Rundt både flo og fjære"]].map(([k,t])=>`<option value="${k}" ${(v.tideMode||"none")===k?"selected":""}>${t}</option>`).join("")}</select>
   <div class="two"><div><label for="fToff">Forskyvning (min)</label><input type="number" id="fToff" step="5" value="${v.tideOffset??0}"></div><div><label for="fTwid">Varighet (min)</label><input type="number" id="fTwid" min="10" step="5" value="${v.tideWidth??60}"></div></div>
   <p class="small">Forskyvning er minutter etter flo eller fjære der vinduet er midt i (negativt tall = før). Der strømmen snur senere enn flo og fjære, setter du forskyvningen til hvor mye senere.</p>
-  <details class="slackset"${v.slackHw!=null||v.slackLw!=null?" open":""}><summary>${SLACK_ICON} Strømstille (for strømsteder)</summary>
+  <details class="slackset"${v.slackHw!=null||v.slackLw!=null?" open":""}><summary>${SLACK_ICON} Strømstille (for strømsteder)</summary>${v.slackPreset?`<p class="small slpre">Forhåndsutfylt med standard for ${esc(v.slackPreset.name)} (${esc(v.slackPreset.src)}). Lagre for å beholde, eller endre tallene.</p>`:""}
     <p class="small">For steder der strømmen styrer dykket, som Saltstraumen. Skriv hvor mange minutter etter høyvann og lavvann i ${esc((v.lat!=null&&v.lon!=null?regionOf(v.lat,v.lon):REG(curRegion())).short)} strømmen står stille (negativt tall = før), og hvor lenge det varer. Alt i minutter. La feltene stå tomme hvis det ikke gjelder.</p>
     <div class="slgrid"><div><label for="fSlH">Etter høyvann</label><input type="number" id="fSlH" step="1" value="${v.slackHw??""}"></div><div><label for="fSlL">Etter lavvann</label><input type="number" id="fSlL" step="1" value="${v.slackLw??""}"></div><div><label for="fSlD">Varer</label><input type="number" id="fSlD" min="5" step="5" value="${v.slackLen??30}"></div></div>
   </details>
@@ -2039,8 +2050,13 @@ function slackRef(s){return regionOf(s.lat,s.lon)||REG("nordland")}
 S.slackEv={};S.slackErr={};
 async function slackFor(s){if(!hasSlack(s))return null;const g=slackRef(s);
   const td=await getTide(g.lat,g.lon),len=Math.max(5,s.slackLen||30)*60e3,ev=[];
-  for(const e of td.ext){const off=e[2]==="high"?s.slackHw:s.slackLw;if(off==null)continue;const c=e[0]+off*60e3;ev.push({t:c,a:c-len/2,b:c+len/2,kind:e[2],ref:e[0]})}
+  td.ext.forEach((e,i)=>{const off=e[2]==="high"?s.slackHw:s.slackLw;if(off==null)return;const c=e[0]+off*60e3,pr=td.ext[i-1];ev.push({t:c,a:c-len/2,b:c+len/2,kind:e[2],ref:e[0],diff:pr?Math.round(e[1]-pr[1]):null})});
   ev.sort((a,b)=>a.t-b.t);const v={ev,ref:g,station:td.station||g.short};S.slackEv[s.id]=v;return v}
+function minTxt(m){const a=Math.abs(m),h=Math.floor(a/60),mm=a%60;return (h?`${h} t${mm?" "+mm+" min":""}`:`${mm} min`)+(m<0?" før":" etter")}
+function slackRuleTxt(s){const g=slackRef(s).short;if(s.slackHw!=null&&s.slackHw===s.slackLw)return `Snur ${minTxt(s.slackHw)} flo og fjære i ${esc(g)}`;
+  return `Snur ${[s.slackHw!=null?minTxt(s.slackHw)+" flo":"",s.slackLw!=null?minTxt(s.slackLw)+" fjære":""].filter(Boolean).join(" og ")} i ${esc(g)}`}
+function slackStrength(d){if(d==null)return "";const a=Math.abs(d);return a>=160?"sterk":a>=110?"middels":"svak"}
+function slackDiffHTML(e){if(e.diff==null)return "";const st=slackStrength(e.diff);return ` <span class="sldiff s-${st}" title="Forskjell fra forrige ${e.kind==="high"?"fjære":"flo"}: ${e.diff>0?"+":""}${e.diff} cm (${st} strøm før strømstille)">${e.diff>0?"+":"−"}${Math.abs(e.diff)}</span>`}
 function slackNow(v,now=Date.now()){if(!v)return{};return{cur:v.ev.find(x=>x.a<=now&&x.b>=now),next:v.ev.find(x=>x.a>now)}}
 function durShort(ms){const m=Math.max(0,Math.round(ms/60e3)),h=Math.floor(m/60),mm=m%60;return h?`${h} t ${mm} min`:`${mm} min`}
 function durTiny(ms){const m=Math.max(0,Math.round(ms/60e3)),h=Math.floor(m/60),mm=m%60;return h?`${h}t ${mm}m`:`${mm}m`}
@@ -2071,8 +2087,9 @@ async function renderSlackBox(s){const el=$("#slackBox");if(!el)return;if(!hasSl
   const sub=cur?`Til kl ${hm(cur.b)} · ${hm(cur.ref)} var ${nm(cur)} i ${esc(v.ref.short)}`:next?`${dayLbl(next.a)==="i dag"?"":esc(dayLbl(next.a))+" "}kl ${hm(next.a)}–${hm(next.b)} · etter ${nm(next)} i ${esc(v.ref.short)} kl ${hm(next.ref)}`:"";
   el.innerHTML=`<div class="slack${cur?" on":""}"><div class="sl-h">${SLACK_ICON}<b>Strømstille</b><span>regnet fra tidevannet i ${esc(v.ref.short)}</span></div>
     <div class="sl-big">${big}</div><div class="sl-sub">${sub}</div>${slackBar(v,now)}
-    <div class="sl-list">${up.map(e=>`<span${e===cur?' class="on"':""}>${esc(dayLbl(e.a)==="i dag"?"":dayLbl(e.a)+" ")}${hm(e.a)}–${hm(e.b)} <small>${e.kind==="high"?"flo":"fjære"}</small></span>`).join("")}</div>
-    <p class="small" style="margin:6px 0 0">${s.slackHw!=null?`${s.slackHw>=0?s.slackHw+" min etter":(-s.slackHw)+" min før"} høyvann`:""}${s.slackHw!=null&&s.slackLw!=null?" og ":""}${s.slackLw!=null?`${s.slackLw>=0?s.slackLw+" min etter":(-s.slackLw)+" min før"} lavvann`:""}, varer ${s.slackLen||30} min (fra Rediger). Tidene blir aldri bedre enn tallene, og vind og springflo kan forskyve strømmen. Sjekk alltid selv før du hopper i.</p></div>`}
+    <div class="sl-list">${up.map(e=>`<span${e===cur?' class="on"':""}>${esc(dayLbl(e.a)==="i dag"?"":dayLbl(e.a)+" ")}${hm(e.a)}–${hm(e.b)} <small>${e.kind==="high"?"flo":"fjære"}</small>${slackDiffHTML(e)}</span>`).join("")}</div>
+    <p class="small sl-legend">Tallet etter hvert tidspunkt er forskjellen i vannstand fra forrige flo eller fjære (cm). Stor forskjell gir sterk strøm før og etter strømstille.</p>
+    <p class="small" style="margin:6px 0 0">${slackRuleTxt(s)}, varer ${s.slackLen||30} min. ${s.slackPreset?`Standard for ${esc(s.slackPreset.name)} fra tidevannstabellen. Varigheten er et anslag, juster under Rediger. `:""}Vind og lufttrykk kan forskyve strømmen. Sjekk alltid selv før du hopper i.</p></div>`}
 
 /* ---------- icon strip on the map: weather, tide, moon, sun and slack at a glance ---------- */
 function wxIcon(code){const c=String(code||""),night=/_night/.test(c),b=c.replace(/_(day|night|polartwilight)$/,"");
@@ -2134,7 +2151,7 @@ function hudDetail(k){const pt=S.hud.at,now=Date.now();if(!pt)return"";
     if(!v){if(ss)return `<b>Strømstille · ${esc(ss.name)}</b><p>${S.slackErr[ss.id]?esc(S.slackErr[ss.id]):"Henter tidevann…"}</p>`;
       const cur=S.view==="site"&&getSite(S.sel);
       return `<b>Strømstille</b><p>Ingen strømsteder er satt opp ennå. Åpne et strømsted, for eksempel Saltstraumen, trykk <b style="display:inline;color:inherit;font-size:inherit">Rediger</b> og fyll inn «Strømstille»: hvor mange minutter etter høyvann og lavvann i ${esc((cur&&cur.lat!=null?regionOf(cur.lat,cur.lon):REG(curRegion())).short)} strømmen står stille, og hvor lenge.</p><p class="hd-src">Krever at slack.sql er kjørt i Supabase.</p>${cur?`<button type="button" class="linkbtn" data-hslack="${esc(cur.id)}">Sett opp for ${esc(cur.name)} ›</button>`:""}`}const up=v.ev.filter(e=>e.b>now).slice(0,4);
-    return `<b>Strømstille · ${esc(ss.name)}</b>${up.map(e=>`<div class="hd-row${e.a<=now?" on":""}"><span>${esc(dayLbl(e.a)==="i dag"?"":dayLbl(e.a)+" ")}${hm(e.a)}–${hm(e.b)}</span><span>${e.kind==="high"?"flo":"fjære"}</span></div>`).join("")}<button type="button" class="linkbtn" data-hsite="${esc(ss.id)}">Åpne ${esc(ss.name)} ›</button>`}
+    return `<b>Strømstille · ${esc(ss.name)}</b>${up.map(e=>`<div class="hd-row${e.a<=now?" on":""}"><span>${esc(dayLbl(e.a)==="i dag"?"":dayLbl(e.a)+" ")}${hm(e.a)}–${hm(e.b)}</span><span>${e.kind==="high"?"flo":"fjære"}</span><span>${slackDiffHTML(e)}</span></div>`).join("")}<button type="button" class="linkbtn" data-hsite="${esc(ss.id)}">Åpne ${esc(ss.name)} ›</button>`}
   return ""}
 function renderHud(){const el=$("#hud");if(!el)return;if(!isLive()||!S.hud.at){el.hidden=true;return}
   const items=hudItems();if(!items.length){el.hidden=true;return}el.hidden=false;
@@ -2155,9 +2172,10 @@ const FDIR=n=>`https://gis.fiskeridir.no/server/rest/services/Yggdrasil/${encode
 const MDIR="https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_marine_hb19/MapServer";
 const ATT_F='<a href="https://portal.fiskeridir.no/portal/apps/sites/#/yggdrasil" target="_blank" rel="noopener">Fiskeridir.</a>',ATT_M='<a href="https://kartkatalog.miljodirektoratet.no/MapService/Details/naturtyper_marine_hb19" target="_blank" rel="noopener">Miljødir.</a>';
 /* ArcGIS MapServer "export" as map tiles (works for any service, whatever projection it is stored in) */
-function agsLayer(base,ids,att,opts){const T=L.TileLayer.extend({getTileUrl(c){const m=this._map,ts=this.getTileSize(),nw=c.scaleBy(ts),se=nw.add(ts),
+const agsDefs=defs=>defs?`&layerDefs=${encodeURIComponent(JSON.stringify(defs))}`:"";
+function agsLayer(base,ids,att,opts,defs){const T=L.TileLayer.extend({getTileUrl(c){const m=this._map,ts=this.getTileSize(),nw=c.scaleBy(ts),se=nw.add(ts),
     a=L.CRS.EPSG3857.project(m.unproject(nw,c.z)),b=L.CRS.EPSG3857.project(m.unproject(se,c.z)),r=L.Browser.retina?2:1;
-    return `${base}/export?bbox=${a.x.toFixed(1)},${b.y.toFixed(1)},${b.x.toFixed(1)},${a.y.toFixed(1)}&bboxSR=3857&imageSR=3857&size=${ts.x*r},${ts.y*r}&dpi=${96*r}&format=png32&transparent=true&layers=show:${ids}&f=image`}});
+    return `${base}/export?bbox=${a.x.toFixed(1)},${b.y.toFixed(1)},${b.x.toFixed(1)},${a.y.toFixed(1)}&bboxSR=3857&imageSR=3857&size=${ts.x*r},${ts.y*r}&dpi=${96*r}&format=png32&transparent=true&layers=show:${ids}${agsDefs(defs)}&f=image`}});
   const l=new T("",Object.assign({opacity:.72,maxZoom:19,attribution:att},opts||{}));watchLayer(l);return l}
 function nguLayer(layers){const l=L.tileLayer.wms(NGU_WMS,{layers,format:"image/png",transparent:true,version:"1.3.0",opacity:.7,maxZoom:19,attribution:'Marine grunnkart: <a href="https://www.ngu.no/fagomrader/marin-kartlegging" target="_blank" rel="noopener">NGU</a>'});watchLayer(l);return l}
 function watchLayer(l){l._ok=0;l._bad=0;l.on("tileload",()=>{if(!l._ok++)renderLyr()});l.on("tileerror",()=>{if(!l._bad++)renderLyr()});return l}
@@ -2168,8 +2186,8 @@ const LYR=[
   desc:"Store tareskogforekomster fra det nasjonale programmet for kartlegging av marine naturtyper. Tareskogen er gode steder for torsk, sei, lyr og berggylt."},
  {id:"strom",g:"Natur og bunn",name:"Sterke tidevannsstrømmer",src:"Miljødirektoratet",minZ:9,ags:[[MDIR,"2"]],
   desc:"Steder med sterk tidevannsstrøm, som Saltstraumen. Rikt liv og ofte stor fisk, men dykk bare rundt strømstille."},
- {id:"skjell",g:"Natur og bunn",name:"Skjellsand og skjellforekomster",src:"Miljødirektoratet og Fiskeridirektoratet",minZ:9,ags:[[MDIR,"8"],[FDIR("Kystnære_fiskeridata"),"7"]],
-  desc:"Skjellsand (Miljødirektoratet) og skjellforekomster som fiskere har meldt inn (Fiskeridirektoratet). Gode steder å lete etter kamskjell."},
+ {id:"skjell",g:"Natur og bunn",name:"Skjellsand og andre skjell",src:"Miljødirektoratet og Fiskeridirektoratet",ags:[[MDIR,"8"],[FDIR("Kystnære_fiskeridata"),"7",{"7":"art_norsk<>'Kamskjell' AND (status IS NULL OR status<>'S')"}]],
+  desc:"Skjellsand (Miljødirektoratet) og forekomster av andre skjell enn kamskjell, som haneskjell og blåskjell (Fiskeridirektoratet). Skjellsand vises først når du har zoomet inn."},
  {id:"alegras",g:"Natur og bunn",name:"Ålegrasenger",src:"Miljødirektoratet",minZ:9,ags:[[MDIR,"7"]],
   desc:"Ålegras på grunt vann er barnehage for småfisk. Ikke ankre i engene."},
  {id:"grunt",g:"Natur og bunn",name:"Grunt vann (under 20 m)",src:"Kartverket, via Yggdrasil",ags:[[FDIR("Dybdedata_kystnære_0_50m"),"4,0"]],
@@ -2180,9 +2198,11 @@ const LYR=[
   desc:"Fra dybdedata der det er målt. Bratte kanter er ofte gode steder for kveite og breiflabb."},
  {id:"nat",g:"Natur og bunn",name:"Detaljerte naturtyper (NGU)",src:"NGU",ngu:"Naturtyper_Saltstraumen,Biotoper_Astafjord",legend:"Naturtyper_Saltstraumen",
   desc:"Detaljert kartlagte naturtyper og biotoper. Finnes bare noen steder, blant annet Saltstraumen."},
- {id:"gyte",g:"Fisk",name:"Gyteområder",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"1,11,0"]],
+ {id:"kamskjell",g:"Fisk og skjell",name:"Kamskjell",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"7",{"7":"art_norsk='Kamskjell' AND (status IS NULL OR status<>'S')"}]],
+  desc:"Kamskjellforekomster som fiskere og andre har meldt inn til Fiskeridirektoratet. Trykk i kartet for stedsnavn og merknad. Ikke alle forekomster er registrert, og noen kan være gamle."},
+ {id:"gyte",g:"Fisk og skjell",name:"Gyteområder",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"1,11,0"]],
   desc:"Kjente gyteområder for torsk og andre arter, fra fiskere og Havforskningsinstituttet. Her kan det stå mye stor fisk i gytetida, men flere er stengt for fiske om vinteren og våren."},
- {id:"oppvekst",g:"Fisk",name:"Oppvekst- og beiteområder",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"2"]],
+ {id:"oppvekst",g:"Fisk og skjell",name:"Oppvekst- og beiteområder",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"2"]],
   desc:"Områder der ungfisk vokser opp og fisk beiter. Ofte mye liv på grunt vann."},
  {id:"vern",g:"Regler og vern",name:"Marine verneområder",src:"Yggdrasil",ags:[[FDIR("Marine_verneområder"),"0,2"]],
   desc:"Marine verneområder og nasjonalparker i sjø, som Saltstraumen marine verneområde. Egne regler kan gjelde, sjekk verneforskriften før du jakter."},
@@ -2194,7 +2214,7 @@ const LYR=[
   desc:"Svak tåke over kartet som letter rundt steder dere har logget dykk. Jo flere dykk, jo større klart område."}];
 const LY={};for(const d of LYR)LY[d.id]=d;
 function lyrMake(d){if(d.layer)return d.layer;
-  if(d.ags){const ls=d.ags.map(([b,ids])=>agsLayer(b,ids,b===MDIR?ATT_M:d.id==="grunt"?'Kartverket, '+ATT_F:ATT_F));d.layer=ls.length===1?ls[0]:grp(...ls)}
+  if(d.ags){const ls=d.ags.map(([b,ids,defs])=>agsLayer(b,ids,b===MDIR?ATT_M:d.id==="grunt"?'Kartverket, '+ATT_F:ATT_F,null,defs));d.layer=ls.length===1?ls[0]:grp(...ls)}
   else if(d.ngu)d.layer=nguLayer(d.ngu);
   else if(d.id==="chl"){if(!S.chlDate){const x=new Date();x.setDate(x.getDate()-1);S.chlDate=isoDay(x)}
     d.layer=grp(...CHL_LAYERS.map(id=>L.tileLayer(chlUrl(id,S.chlDate),{maxNativeZoom:7,maxZoom:19,opacity:.6,attribution:'Klorofyll: <a href="https://earthdata.nasa.gov/gibs" target="_blank" rel="noopener">NASA GIBS</a>'})))}
@@ -2242,13 +2262,13 @@ function initLayers(){
   for(const id of saved)if(LY[id])lyrMake(LY[id]).addTo(S.lmap);
   S.lmap.on("zoomend",()=>{if(S.lyrOpen)renderLyr()});renderLyr()}
 /* tap the map: what is registered here in the active ArcGIS layers */
-const IDF_SKIP=/^(objectid|fid|shape|shape[._ ]?(area|length|leng)|globalid|st_area|st_length|se_anno.*|id|lokalid|navnerom|versjonid|oppdateringsdato|datafangstdato|kartid|.*_id)$/i;
+const IDF_SKIP=/^(systemnr|status|kommune|objectid|fid|shape|shape[._ ]?(area|length|leng)|globalid|st_area|st_length|se_anno.*|id|lokalid|navnerom|versjonid|oppdateringsdato|datafangstdato|kartid|.*_id)$/i;
 async function identifyAt(ll){const act=LYR.filter(d=>d.ags&&lyrOn(d.id));if(!act.length)return false;
   const m=S.lmap,b=m.getBounds(),sz=m.getSize(),ext=`${b.getWest()},${b.getSouth()},${b.getEast()},${b.getNorth()}`;
   const pop=L.popup({className:"idfpop",maxWidth:300,minWidth:220,autoPanPaddingTopLeft:[20,70]}).setLatLng(ll).setContent(`<p class="idf-wait">Henter…</p>`).openOn(m);
   let any=false,errs=0;const parts=[];
-  await Promise.all(act.flatMap(d=>d.ags.map(async([base,ids])=>{try{
-    const u=`${base}/identify?geometry=${ll.lng},${ll.lat}&geometryType=esriGeometryPoint&sr=4326&layers=visible:${ids}&tolerance=${L.Browser.mobile?10:6}&mapExtent=${ext}&imageDisplay=${sz.x},${sz.y},96&returnGeometry=false&f=json`;
+  await Promise.all(act.flatMap(d=>d.ags.map(async([base,ids,defs])=>{try{
+    const u=`${base}/identify?geometry=${ll.lng},${ll.lat}&geometryType=esriGeometryPoint&sr=4326&layers=visible:${ids}&tolerance=${L.Browser.mobile?10:6}&mapExtent=${ext}&imageDisplay=${sz.x},${sz.y},96${agsDefs(defs)}&returnGeometry=false&f=json`;
     const j=await (await fetch(u)).json();if(j.error)throw 0;
     for(const r of (j.results||[]).slice(0,4)){any=true;const a=r.attributes||{},main=r.value&&!/^null$/i.test(r.value)?r.value:"";
       const rows=Object.entries(a).filter(([k,v])=>v!=null&&v!==""&&!/^(null|<null>|0)$/i.test(String(v))&&!IDF_SKIP.test(k)&&String(v)!==main&&String(v).length<160).slice(0,5);
