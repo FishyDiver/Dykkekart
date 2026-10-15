@@ -565,6 +565,30 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .sc-reg select{appearance:none;-webkit-appearance:none;background:#0d2238 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F1E6C8' stroke-width='2'/%3E%3C/svg%3E") right 12px center no-repeat;color:#F1E6C8;border:1px solid rgba(241,230,200,.4);border-radius:999px;padding:6px 34px 6px 14px;font:600 14px Barlow,sans-serif;letter-spacing:0;text-transform:none;cursor:pointer;max-width:100%}
 .sc-reg select:disabled{opacity:.5;cursor:not-allowed}.sc-reg select option{background:#0a1a2c;color:#E3EDF4}
 .sc-local{color:#cfe0ee}
+/* layer panel */
+.lyrbtn{position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:2px solid rgba(0,0,0,.2);background:#fff;color:#0f2a3f;cursor:pointer;padding:0;background-clip:padding-box}
+.lyrbtn:hover{background:#f2f6f9}.lyrbtn.on{background:#0f2a3f;color:#F1E6C8}
+.lyrbtn b{position:absolute;top:-6px;right:-6px;min-width:17px;height:17px;border-radius:9px;background:#1ea5ae;color:#fff;font:700 10.5px/17px Barlow,sans-serif;text-align:center;padding:0 4px;box-sizing:border-box}
+.lyrpanel{position:absolute;top:10px;right:56px;z-index:1350;width:min(330px,calc(100% - 76px));max-height:calc(100% - 30px);overflow:auto;background:rgba(8,26,46,.96);color:#E3EDF4;border:1px solid rgba(241,230,200,.2);border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,.45);padding:4px 12px 10px;font-size:13px}
+.ly-head{display:flex;align-items:center;position:sticky;top:-4px;background:rgba(8,26,46,.98);padding:8px 0 6px;z-index:1}.ly-head b{flex:1;font:700 17px Barlow,sans-serif;color:#F1E6C8}
+.ly-x{background:none;border:0;color:#9fc3e0;font-size:16px;cursor:pointer;padding:4px 6px}
+.ly-g{font:700 11px Barlow,sans-serif;letter-spacing:1.6px;text-transform:uppercase;color:#7f9fb8;margin:10px 0 4px;padding-bottom:3px;border-bottom:1px solid rgba(241,230,200,.1)}
+.ly-row{display:flex;gap:10px;align-items:flex-start;padding:6px 0}
+.ly-sw{flex:none;width:34px;height:20px;border-radius:10px;border:0;background:rgba(159,195,224,.25);position:relative;cursor:pointer;margin-top:1px;padding:0}
+.ly-sw i{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#cfe0ee;transition:left .15s}
+.ly-row.on .ly-sw{background:#1ea5ae}.ly-row.on .ly-sw i{left:16px;background:#fff}
+.ly-tx{min-width:0;flex:1}.ly-name{background:none;border:0;padding:0;color:#E3EDF4;font:600 14px Barlow,sans-serif;text-align:left;cursor:pointer}.ly-row.on .ly-name{color:#F1E6C8}
+.ly-tx>small{display:block;color:#7f9fb8;font-size:11.5px}.ly-tx p{margin:4px 0;color:#cfe0ee;line-height:1.4}
+.ly-err{display:block;color:#ffb3a3}.ly-hint{display:block;color:#F3D67E}
+.ly-leg{display:flex;flex-direction:column;gap:2px;margin-top:4px}.ly-leg span{display:flex;align-items:center;gap:6px;font-size:12px;color:#cfe0ee}.ly-leg img{width:18px;height:18px;object-fit:contain;flex:none}
+.ly-legimg{display:block;max-width:100%;margin-top:4px;background:#fff;border-radius:4px;padding:2px}
+.ly-foot{font-size:11.5px;color:#7f9fb8;margin:10px 0 0;line-height:1.4}
+.idfpop .leaflet-popup-content-wrapper{background:#0a1a2c;color:#E3EDF4;border:1px solid rgba(241,230,200,.25);border-radius:12px}.idfpop .leaflet-popup-tip{background:#0a1a2c}.idfpop .leaflet-popup-content{margin:10px 12px;max-height:260px;overflow:auto}
+.idfpop a.leaflet-popup-close-button{color:#9fc3e0}
+.idf-r+.idf-r{margin-top:8px;padding-top:8px;border-top:1px solid rgba(241,230,200,.12)}.idf-r small{display:block;color:#7f9fb8;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.idf-r b{display:block;color:#F1E6C8;font-size:14px}.idf-r span{display:block;font-size:12.5px;color:#cfe0ee}.idf-r .idf-main{font-weight:600;color:#E3EDF4}.idf-r i{color:#9fc3e0;font-style:normal}
+.idf-wait,.idf-none{margin:0;color:#9fc3e0;font-size:13px}
+@media (max-width:700px){.lyrpanel{right:8px;left:8px;width:auto;top:52px;max-height:calc(100% - 64px)}}
 /* extra layers: info box */
 .ovlinfo{position:absolute;right:10px;top:62px;z-index:999;width:min(270px,calc(100% - 20px));max-height:calc(100% - 180px);overflow:auto;background:rgba(8,26,46,.9);color:#E3EDF4;border:1px solid rgba(241,230,200,.2);border-radius:12px;padding:8px 10px;font-size:12.5px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
 .ovl-sec+.ovl-sec{margin-top:8px;padding-top:8px;border-top:1px solid rgba(241,230,200,.12)}
@@ -623,7 +647,7 @@ body.replaying .zoomnote{display:none!important}
 .hud-row::-webkit-scrollbar{display:none}
 .hud-i{display:flex;align-items:center;gap:5px;background:none;border:0;color:#F1E6C8;font:600 12.5px Barlow,sans-serif;padding:3px 9px 3px 6px;border-radius:999px;white-space:nowrap;cursor:pointer;flex:none}
 .hud-i:hover,.hud-i.open{background:rgba(241,230,200,.14)}
-.hud-i .sm{display:none}.hud-i.hi span{color:#F3D67E}.hud-i.on{background:#2fa36b;color:#fff}.hud-i.on .ic-slack{color:#fff}.hud-i .ic-slack{color:#8fd3ec}
+.hud-i .sm{display:none}.hud-i.dim{opacity:.6}.hud-i.dim .ic-slack{color:#9fc3e0}.hud-i.hi span{color:#F3D67E}.hud-i.on{background:#2fa36b;color:#fff}.hud-i.on .ic-slack{color:#fff}.hud-i .ic-slack{color:#8fd3ec}
 .hud-pop{margin-top:6px;width:min(280px,calc(100vw - 90px));background:rgba(8,26,46,.95);color:#E3EDF4;border:1px solid rgba(241,230,200,.2);border-radius:12px;padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:13px}
 .hud-pop b{display:block;color:#F1E6C8;font-size:14px;margin-bottom:4px}.hud-pop p{margin:2px 0}
 .hd-row{display:grid;grid-template-columns:auto auto 1fr auto;gap:8px;align-items:center;padding:2px 0;border-bottom:1px solid rgba(241,230,200,.08)}.hd-row.on{color:#7fe3a0}
@@ -961,7 +985,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v49 (strømstille, ikonlinje, mønstre og nye kartlag)";
+const APP_VERSION="v50 (kartlag fra Yggdrasil)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1112,7 +1136,7 @@ function initLeaflet(){
   S.lmap=L.map(lmapEl,{zoomControl:true,renderer:L.svg({padding:.5})}).setView([67.28,14.40],10);S.lmap.addLayer(S.lmap.options.renderer);
   S.lmap.createPane("heatPane").style.zIndex=390;S.heatLayer=L.layerGroup().addTo(S.lmap);
   sea.addTo(S.lmap);
-  L.control.layers({"Sjøkart":sea,"Topografisk":topo,"Gråtone":grey},makeOverlays(),{position:"topright"}).addTo(S.lmap);initOverlays();
+  L.control.layers({"Sjøkart":sea,"Topografisk":topo,"Gråtone":grey},null,{position:"topright"}).addTo(S.lmap);initLayers();
   L.control.scale({imperial:false}).addTo(S.lmap);
   S.fLayer=L.layerGroup().addTo(S.lmap);S.aLayer=L.layerGroup().addTo(S.lmap);S.apLayer=makeAreaPointLayer().addTo(S.lmap);S.prLayer=makeAreaPointLayer();S.pkLayer=makeAreaPointLayer();S.bdLayer=L.layerGroup();S.lmap.on("zoomend",applyZoomLayers);{const zn=$("#zoomNote");if(zn)lmapEl.appendChild(zn)}S.dLayer=L.layerGroup().addTo(S.lmap);S.lLayer=makeSiteLayer().addTo(S.lmap);S.sdLayer=L.layerGroup().addTo(S.lmap);if(L.Draw)hookDrawEvents();else showErr("tegneverktøyet lastet ikke");
   S.lmap.on("click",e=>liveClick(e.latlng));
@@ -1132,7 +1156,7 @@ function renderLive(){
      .bindTooltip(c.name,{permanent:true,direction:"center",className:"ftip"}).on("click",()=>switchChart(c.id)).addTo(S.fLayer)}
 }
 async function liveClick(ll){
-  if(S.mode==="view")return;
+  if(S.mode==="view"){if(!S.drawer&&!S.editingArea&&!S.rp)identifyAt(ll).catch(()=>{});return}
   const lat=+ll.lat.toFixed(6),lon=+ll.lng.toFixed(6);
   if(S.mode==="place"){setMode("view");S.draft={live:true,lat,lon,chartId:null};S.sel=null;S.view="edit";renderLive();renderEdit(null)}
   else if(S.mode==="move"){const s=getSite(S.sel);setMode("view");if(!s)return;const {error}=await sb.from("sites").update({lat,lon,updated_at:new Date().toISOString()}).eq("id",s.id);if(error)alert("Kunne ikke flytte: "+errMsg(error));else loadSites()}
@@ -2097,6 +2121,7 @@ function hudItems(){const pt=S.hud.at;if(!pt)return[];const now=Date.now(),out=[
   else if(now<sn.set)out.push({k:"sun",ic:sunIcon(true),tx:`Ned ${hm(sn.set)}`,sx:hm(sn.set),ti:`Sola går ned ${hm(sn.set)} (${durShort(sn.set-now)} dagslys igjen)`});
   else{const tm=sunDay(now+864e5,pt.lat,pt.lon).sun;out.push({k:"sun",ic:sunIcon(false),tx:tm.rise?`Opp ${hm(tm.rise)}`:"Mørkt",sx:tm.rise?hm(tm.rise):"",ti:tm.rise?`Sola står opp ${hm(tm.rise)} i morgen`:"Mørkt"})}
   const ss=hudSlackSite(),sv=ss&&S.slackEv[ss.id];
+  if(!sv)out.push({k:"slack",ic:SLACK_ICON,dim:true,tx:ss?"Strømstille …":"Strømstille",sx:"",ti:ss?(S.slackErr[ss.id]?`${ss.name}: tidevann kunne ikke hentes`:`${ss.name}: henter tidevann`):"Strømstille er ikke satt opp for noen steder ennå. Trykk for å se hvordan."});
   if(sv){const {cur,next}=slackNow(sv,now);out.push({k:"slack",site:ss,ic:SLACK_ICON,on:!!cur,tx:cur?"Stille nå":next?`Stille ${durTiny(next.a-now)}`:"–",sx:cur?"nå":next?durTiny(next.a-now).replace(" ",""):"",ti:`${ss.name}: ${cur?`strømstille nå, til ${hm(cur.b)}`:next?`strømstille ${hm(next.a)}–${hm(next.b)}`:"ingen strømstille i varselet"}`})}
   return out}
 function hudDetail(k){const pt=S.hud.at,now=Date.now();if(!pt)return"";
@@ -2105,50 +2130,133 @@ function hudDetail(k){const pt=S.hud.at,now=Date.now();if(!pt)return"";
   if(k==="td"&&S.hud.td){const nx=S.hud.td.ext.filter(e=>e[0]>now-3600e3).slice(0,4);return `<b>Tidevann ved ${esc(pt.label)}</b>${nx.map(e=>`<div class="hd-row"><span>${e[2]==="high"?"Flo":"Fjære"}</span><span>${esc(dayLbl(e[0])==="i dag"?"":dayLbl(e[0])+" ")}${hm(e[0])}</span><span>${Math.round(e[1])} cm</span></div>`).join("")}<p class="hd-src">Kartverket${S.hud.td.station?" · "+esc(S.hud.td.station):""}</p>`}
   if(k==="moon"){const m=moonInfo(now),d=x=>dayLbl(x)==="i dag"?"i dag":dayLbl(x);return `<b>${m.name} · ${Math.round(m.illum*100)} %</b><p>${m.tide==="spring"?"Springflo nå: sterk strøm og stor forskjell mellom flo og fjære.":m.tide==="nipp"?"Nippflo nå: svak strøm og liten forskjell mellom flo og fjære.":m.nextSpring<m.nextNeap?`Mot springflo (${esc(d(m.nextSpring))}).`:`Mot nippflo (${esc(d(m.nextNeap))}).`}</p>`}
   if(k==="sun"){const st=sunDay(now,pt.lat,pt.lon).sun;return `<b>Sol ved ${esc(pt.label)}</b><p>${st.never==="down"?"Midnattssol i dag.":st.never==="up"?"Mørketid: sola står ikke opp i dag.":`Opp ${hm(st.rise)}, ned ${hm(st.set)} · ${durShort(st.set-st.rise)} dagslys.`}</p>`}
-  if(k==="slack"){const ss=hudSlackSite(),v=ss&&S.slackEv[ss.id];if(!v)return"";const up=v.ev.filter(e=>e.b>now).slice(0,4);
+  if(k==="slack"){const ss=hudSlackSite(),v=ss&&S.slackEv[ss.id];
+    if(!v){if(ss)return `<b>Strømstille · ${esc(ss.name)}</b><p>${S.slackErr[ss.id]?esc(S.slackErr[ss.id]):"Henter tidevann…"}</p>`;
+      const cur=S.view==="site"&&getSite(S.sel);
+      return `<b>Strømstille</b><p>Ingen strømsteder er satt opp ennå. Åpne et strømsted, for eksempel Saltstraumen, trykk <b style="display:inline;color:inherit;font-size:inherit">Rediger</b> og fyll inn «Strømstille»: hvor mange minutter etter høyvann og lavvann i ${esc((cur&&cur.lat!=null?regionOf(cur.lat,cur.lon):REG(curRegion())).short)} strømmen står stille, og hvor lenge.</p><p class="hd-src">Krever at slack.sql er kjørt i Supabase.</p>${cur?`<button type="button" class="linkbtn" data-hslack="${esc(cur.id)}">Sett opp for ${esc(cur.name)} ›</button>`:""}`}const up=v.ev.filter(e=>e.b>now).slice(0,4);
     return `<b>Strømstille · ${esc(ss.name)}</b>${up.map(e=>`<div class="hd-row${e.a<=now?" on":""}"><span>${esc(dayLbl(e.a)==="i dag"?"":dayLbl(e.a)+" ")}${hm(e.a)}–${hm(e.b)}</span><span>${e.kind==="high"?"flo":"fjære"}</span></div>`).join("")}<button type="button" class="linkbtn" data-hsite="${esc(ss.id)}">Åpne ${esc(ss.name)} ›</button>`}
   return ""}
 function renderHud(){const el=$("#hud");if(!el)return;if(!isLive()||!S.hud.at){el.hidden=true;return}
   const items=hudItems();if(!items.length){el.hidden=true;return}el.hidden=false;
-  el.innerHTML=`<div class="hud-row">${items.map(it=>`<button type="button" class="hud-i${it.on?" on":""}${it.hi?" hi":""}${S.hud.open===it.k?" open":""}" data-k="${it.k}" title="${esc(it.ti)}" aria-label="${esc(it.ti)}">${it.ic}<span class="lg">${esc(it.tx)}</span>${it.sx!=null?`<span class="sm">${esc(it.sx)}</span>`:`<span class="sm">${esc(it.tx)}</span>`}</button>`).join("")}</div>
+  el.innerHTML=`<div class="hud-row">${items.map(it=>`<button type="button" class="hud-i${it.on?" on":""}${it.hi?" hi":""}${it.dim?" dim":""}${S.hud.open===it.k?" open":""}" data-k="${it.k}" title="${esc(it.ti)}" aria-label="${esc(it.ti)}">${it.ic}<span class="lg">${esc(it.tx)}</span>${it.sx!=null?`<span class="sm">${esc(it.sx)}</span>`:`<span class="sm">${esc(it.tx)}</span>`}</button>`).join("")}</div>
     ${S.hud.open&&items.some(it=>it.k===S.hud.open)?`<div class="hud-pop">${hudDetail(S.hud.open)}</div>`:""}`;
   el.querySelectorAll("[data-k]").forEach(b=>b.onclick=e=>{e.stopPropagation();S.hud.open=S.hud.open===b.dataset.k?null:b.dataset.k;renderHud()});
+  const hq=el.querySelector("[data-hslack]");if(hq)hq.onclick=e=>{e.stopPropagation();S.hud.open=null;renderHud();const st=getSite(hq.dataset.hslack);if(!st)return;S.view="edit";renderEdit(st);setTimeout(()=>{const d=document.querySelector(".slackset");if(d){d.open=true;d.scrollIntoView({block:"center",behavior:"smooth"});const i=$("#fSlH");if(i)i.focus()}},80)};
   const hs=el.querySelector("[data-hsite]");if(hs)hs.onclick=e=>{e.stopPropagation();S.hud.open=null;openSite(hs.dataset.hsite);focusSite(hs.dataset.hsite)}}
 document.addEventListener("click",e=>{if(S.hud&&S.hud.open&&!e.target.closest("#hud")){S.hud.open=null;renderHud()}});
 
-/* ---------- extra map layers: plankton from satellite, NGU seabed maps, exploration fog ---------- */
-const OVL={};S.chlDate=null;
+/* ---------- extra map layers: Yggdrasil (Fiskeridirektoratet), Miljødirektoratet, NGU, Kartverket, NASA ---------- */
+S.chlDate=null;
 function isoDay(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 const CHL_LAYERS=["MODIS_Aqua_L2_Chlorophyll_A","MODIS_Terra_L2_Chlorophyll_A","VIIRS_SNPP_L2_Chlorophyll_A"];
 const chlUrl=(id,day)=>`https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/${id}/default/${day}/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png`;
 const NGU_WMS="https://geo.ngu.no/mapserver/MarineGrunnkartWMS";
-function nguLayer(layers){const l=L.tileLayer.wms(NGU_WMS,{layers,format:"image/png",transparent:true,version:"1.3.0",opacity:.7,maxZoom:18,attribution:'Marine grunnkart: <a href="https://www.ngu.no/fagomrader/marin-kartlegging" target="_blank" rel="noopener">NGU</a>'});
-  l._ok=0;l._bad=0;l.on("tileload",()=>{l._ok++;ovlInfo()});l.on("tileerror",()=>{l._bad++;ovlInfo()});l._nguLayers=layers;return l}
-function makeOverlays(){
-  if(!S.chlDate){const d=new Date();d.setDate(d.getDate()-1);S.chlDate=isoDay(d)}
-  const chl=L.layerGroup(CHL_LAYERS.map(id=>L.tileLayer(chlUrl(id,S.chlDate),{maxNativeZoom:7,maxZoom:18,opacity:.8,className:"chltile",attribution:'Klorofyll: <a href="https://earthdata.nasa.gov/gibs" target="_blank" rel="noopener">NASA GIBS</a>'})));
-  OVL.chl=chl;OVL.nat=nguLayer("Naturtyper_Saltstraumen,Biotoper_Astafjord");OVL.sed=nguLayer("Kornstorrelse_Det,Sedimentkornstorrelse");OVL.slope=nguLayer("Helning_over_30");OVL.fog=makeFog();
-  return {"Plankton fra satellitt (klorofyll)":OVL.chl,"Naturtyper og tareskog (NGU)":OVL.nat,"Bunntype (NGU)":OVL.sed,"Bratte skråninger over 30° (NGU)":OVL.slope,"Utforskning (tåke der dere ikke har dykket)":OVL.fog}}
-const OVL_KEYS=["chl","nat","sed","slope","fog"];
-function initOverlays(){const on=lsGet("dk-ovl")||[];for(const k of on)if(OVL[k]&&!S.lmap.hasLayer(OVL[k]))OVL[k].addTo(S.lmap);
-  const save=()=>{lsSet("dk-ovl",OVL_KEYS.filter(k=>S.lmap.hasLayer(OVL[k])));ovlInfo()};
-  S.lmap.on("overlayadd overlayremove",save);ovlInfo()}
+const FDIR=n=>`https://gis.fiskeridir.no/server/rest/services/Yggdrasil/${encodeURIComponent(n)}/MapServer`;
+const MDIR="https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_marine_hb19/MapServer";
+const ATT_F='<a href="https://portal.fiskeridir.no/portal/apps/sites/#/yggdrasil" target="_blank" rel="noopener">Fiskeridir.</a>',ATT_M='<a href="https://kartkatalog.miljodirektoratet.no/MapService/Details/naturtyper_marine_hb19" target="_blank" rel="noopener">Miljødir.</a>';
+/* ArcGIS MapServer "export" as map tiles (works for any service, whatever projection it is stored in) */
+function agsLayer(base,ids,att,opts){const T=L.TileLayer.extend({getTileUrl(c){const m=this._map,ts=this.getTileSize(),nw=c.scaleBy(ts),se=nw.add(ts),
+    a=L.CRS.EPSG3857.project(m.unproject(nw,c.z)),b=L.CRS.EPSG3857.project(m.unproject(se,c.z)),r=L.Browser.retina?2:1;
+    return `${base}/export?bbox=${a.x.toFixed(1)},${b.y.toFixed(1)},${b.x.toFixed(1)},${a.y.toFixed(1)}&bboxSR=3857&imageSR=3857&size=${ts.x*r},${ts.y*r}&dpi=${96*r}&format=png32&transparent=true&layers=show:${ids}&f=image`}});
+  const l=new T("",Object.assign({opacity:.72,maxZoom:19,attribution:att},opts||{}));watchLayer(l);return l}
+function nguLayer(layers){const l=L.tileLayer.wms(NGU_WMS,{layers,format:"image/png",transparent:true,version:"1.3.0",opacity:.7,maxZoom:19,attribution:'Marine grunnkart: <a href="https://www.ngu.no/fagomrader/marin-kartlegging" target="_blank" rel="noopener">NGU</a>'});watchLayer(l);return l}
+function watchLayer(l){l._ok=0;l._bad=0;l.on("tileload",()=>{if(!l._ok++)renderLyr()});l.on("tileerror",()=>{if(!l._bad++)renderLyr()});return l}
+const grp=(...ls)=>{const g=L.layerGroup(ls);g._parts=ls;return g};
+/* the layer list: grouped, with a short explanation, a source and (for ArcGIS services) tap-to-identify */
+const LYR=[
+ {id:"tare",g:"Natur og bunn",name:"Tareskog",src:"Miljødirektoratet",minZ:9,ags:[[MDIR,"1"]],
+  desc:"Store tareskogforekomster fra det nasjonale programmet for kartlegging av marine naturtyper. Tareskogen er gode steder for torsk, sei, lyr og berggylt."},
+ {id:"strom",g:"Natur og bunn",name:"Sterke tidevannsstrømmer",src:"Miljødirektoratet",minZ:9,ags:[[MDIR,"2"]],
+  desc:"Steder med sterk tidevannsstrøm, som Saltstraumen. Rikt liv og ofte stor fisk, men dykk bare rundt strømstille."},
+ {id:"skjell",g:"Natur og bunn",name:"Skjellsand og skjellforekomster",src:"Miljødirektoratet og Fiskeridirektoratet",minZ:9,ags:[[MDIR,"8"],[FDIR("Kystnære_fiskeridata"),"7"]],
+  desc:"Skjellsand (Miljødirektoratet) og skjellforekomster som fiskere har meldt inn (Fiskeridirektoratet). Gode steder å lete etter kamskjell."},
+ {id:"alegras",g:"Natur og bunn",name:"Ålegrasenger",src:"Miljødirektoratet",minZ:9,ags:[[MDIR,"7"]],
+  desc:"Ålegras på grunt vann er barnehage for småfisk. Ikke ankre i engene."},
+ {id:"grunt",g:"Natur og bunn",name:"Grunt vann (under 20 m)",src:"Kartverket, via Yggdrasil",ags:[[FDIR("Dybdedata_kystnære_0_50m"),"4,0"]],
+  desc:"Område grunnere enn 20 m og 20-meterskurven, fra Kartverkets dybdedata (50 m rutenett). Grovt, men fint for å finne grunner og rygger. Ikke for navigasjon."},
+ {id:"sed",g:"Natur og bunn",name:"Bunntype",src:"NGU",ngu:"Kornstorrelse_Det,Sedimentkornstorrelse",legend:"Kornstorrelse_Det",
+  desc:"Sand, grus, stein og fjell der NGU har kartlagt havbunnen. Detaljerte kart finnes bare noen steder, ellers vises grove oversiktskart."},
+ {id:"slope",g:"Natur og bunn",name:"Bratte skråninger (over 30°)",src:"NGU",ngu:"Helning_over_30",legend:"Helning_over_30",
+  desc:"Fra dybdedata der det er målt. Bratte kanter er ofte gode steder for kveite og breiflabb."},
+ {id:"nat",g:"Natur og bunn",name:"Detaljerte naturtyper (NGU)",src:"NGU",ngu:"Naturtyper_Saltstraumen,Biotoper_Astafjord",legend:"Naturtyper_Saltstraumen",
+  desc:"Detaljert kartlagte naturtyper og biotoper. Finnes bare noen steder, blant annet Saltstraumen."},
+ {id:"gyte",g:"Fisk",name:"Gyteområder",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"1,11,0"]],
+  desc:"Kjente gyteområder for torsk og andre arter, fra fiskere og Havforskningsinstituttet. Her kan det stå mye stor fisk i gytetida, men flere er stengt for fiske om vinteren og våren."},
+ {id:"oppvekst",g:"Fisk",name:"Oppvekst- og beiteområder",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Kystnære_fiskeridata"),"2"]],
+  desc:"Områder der ungfisk vokser opp og fisk beiter. Ofte mye liv på grunt vann."},
+ {id:"vern",g:"Regler og vern",name:"Marine verneområder",src:"Yggdrasil",ags:[[FDIR("Marine_verneområder"),"0,2"]],
+  desc:"Marine verneområder og nasjonalparker i sjø, som Saltstraumen marine verneområde. Egne regler kan gjelde, sjekk verneforskriften før du jakter."},
+ {id:"forbud",g:"Regler og vern",name:"Forbuds- og fredningsområder",src:"Fiskeridirektoratet (Yggdrasil)",ags:[[FDIR("Fiskerireguleringer"),"7,9,16,18,19,24,32,34,37,39,40"]],
+  desc:"Hummerfredning, stengte gytefelt for kysttorsk (januar–april), forbud mot steinbit i Saltstraumen, nullfiskeområder i Oslofjorden og andre forbudsområder. Trykk i kartet for å se hva som gjelder akkurat der."},
+ {id:"chl",g:"Satellitt og annet",name:"Plankton fra satellitt (klorofyll)",src:"NASA",
+  desc:"Mye plankton gir grumsete vann. Hver rute er omtrent 1 × 1 km, så laget viser store trekk ute i fjordene, ikke enkeltviker. Nær land kan verdiene bli for høye på grunn av bunn og elvevann. Skyer gir hull, så bla noen dager tilbake for å finne et klart bilde. Ingen data i mørketida nord for polarsirkelen."},
+ {id:"fog",g:"Satellitt og annet",name:"Utforskning",src:"Gjengens logger",
+  desc:"Svak tåke over kartet som letter rundt steder dere har logget dykk. Jo flere dykk, jo større klart område."}];
+const LY={};for(const d of LYR)LY[d.id]=d;
+function lyrMake(d){if(d.layer)return d.layer;
+  if(d.ags){const ls=d.ags.map(([b,ids])=>agsLayer(b,ids,b===MDIR?ATT_M:d.id==="grunt"?'Kartverket, '+ATT_F:ATT_F));d.layer=ls.length===1?ls[0]:grp(...ls)}
+  else if(d.ngu)d.layer=nguLayer(d.ngu);
+  else if(d.id==="chl"){if(!S.chlDate){const x=new Date();x.setDate(x.getDate()-1);S.chlDate=isoDay(x)}
+    d.layer=grp(...CHL_LAYERS.map(id=>L.tileLayer(chlUrl(id,S.chlDate),{maxNativeZoom:7,maxZoom:19,opacity:.6,attribution:'Klorofyll: <a href="https://earthdata.nasa.gov/gibs" target="_blank" rel="noopener">NASA GIBS</a>'})))}
+  else if(d.id==="fog")d.layer=makeFog();
+  return d.layer}
+const lyrOn=id=>!!(S.lmap&&LY[id]&&LY[id].layer&&S.lmap.hasLayer(LY[id].layer));
+function lyrSet(id,on){const d=LY[id];if(!d||!S.lmap)return;const l=lyrMake(d);if(on&&!S.lmap.hasLayer(l))l.addTo(S.lmap);if(!on&&S.lmap.hasLayer(l))S.lmap.removeLayer(l);
+  lsSet("dk-lyr",LYR.filter(x=>lyrOn(x.id)).map(x=>x.id));renderLyr()}
+function lyrParts(d){const l=d.layer;return l?(l._parts||[l]):[]}
+function lyrStatus(d){const ps=lyrParts(d);if(!ps.length)return "";const ok=ps.some(p=>p._ok>0),bad=ps.some(p=>p._bad>0);
+  if(bad&&!ok)return `<small class="ly-err">Kartet svarte ikke. Prøv igjen senere.</small>`;
+  if(d.minZ&&S.lmap&&S.lmap.getZoom()<d.minZ)return `<small class="ly-hint">Zoom inn for å se laget.</small>`;return ""}
+/* legends: ArcGIS legend JSON (cached per service), NGU legend image, colour bar for plankton */
+S.lgd={};
+function agsLegend(base,ids){const want=String(ids).split(",").map(Number);
+  if(!S.lgd[base]){S.lgd[base]="loading";fetch(base+"/legend?f=json").then(r=>r.json()).then(j=>{S.lgd[base]=j;renderLyr()}).catch(()=>{S.lgd[base]="err"})}
+  const j=S.lgd[base];if(!j||typeof j!=="object"||!j.layers)return "";
+  const rows=[];for(const ly of j.layers){if(!want.includes(ly.layerId))continue;for(const e of (ly.legend||[]).slice(0,6))rows.push(`<span><img alt="" src="data:${esc(e.contentType||"image/png")};base64,${e.imageData}">${esc(e.label||ly.layerName||"")}</span>`)}
+  return rows.slice(0,10).join("")}
+function lyrLegend(d){if(d.ags)return `<div class="ly-leg">${d.ags.map(([b,ids])=>agsLegend(b,ids)).join("")}</div>`;
+  if(d.ngu)return `<img class="ly-legimg" alt="" src="${NGU_WMS}?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;FORMAT=image/png&amp;SLD_VERSION=1.1.0&amp;LAYER=${encodeURIComponent(d.legend)}" onerror="this.remove()">`;
+  if(d.id==="chl"){const dd=new Date(S.chlDate+"T12:00:00");return `<div class="chl-nav"><button type="button" data-chl="-1" aria-label="Dagen før">◀</button><span>${dd.toLocaleDateString("nb-NO",{day:"numeric",month:"short",year:"numeric"})}</span><button type="button" data-chl="1" aria-label="Dagen etter"${S.chlDate>=isoDay(new Date(Date.now()-864e5))?" disabled":""}>▶</button></div><div class="chl-leg"><i></i><span>Lite plankton</span><span>Mye (grumsete)</span></div>`}
+  return ""}
 function chlStep(n){const d=new Date(S.chlDate+"T12:00:00");d.setDate(d.getDate()+n);const y=new Date();y.setDate(y.getDate()-1);if(d>y)return;S.chlDate=isoDay(d);
-  let i=0;OVL.chl.eachLayer(l=>{l.setUrl(chlUrl(CHL_LAYERS[i++],S.chlDate))});ovlInfo()}
-function ovlInfo(){if(!S.lmap)return;let el=$("#ovlInfo");const act=OVL_KEYS.filter(k=>k!=="fog"&&OVL[k]&&S.lmap.hasLayer(OVL[k]));
-  if(!act.length){if(el)el.remove();return}
-  if(!el){el=document.createElement("div");el.id="ovlInfo";el.className="ovlinfo";$("#lmap").appendChild(el);L.DomEvent&&L.DomEvent.disableScrollPropagation(el);L.DomEvent&&L.DomEvent.disableClickPropagation(el)}
-  const c=S.lmap.getCenter(),m=new Date().getMonth(),dark=c.lat>65&&(m>=10||m===0);
-  let h="";
-  if(act.includes("chl")){const d=new Date(S.chlDate+"T12:00:00");
-    h+=`<div class="ovl-sec"><b>Plankton (klorofyll)</b><div class="chl-nav"><button type="button" data-chl="-1" aria-label="Dagen før">◀</button><span>${d.toLocaleDateString("nb-NO",{day:"numeric",month:"short",year:"numeric"})}</span><button type="button" data-chl="1" aria-label="Dagen etter"${S.chlDate>=isoDay(new Date(Date.now()-864e5))?" disabled":""}>▶</button></div>
-      <div class="chl-leg"><i></i><span>Lite plankton</span><span>Mye (grumsete)</span></div>
-      <small>${dark?"Mørketid nord for polarsirkelen: satellittene ser ikke havfargen nå. ":""}Skyer gir hull i kartet, bla noen dager tilbake for å finne et klart bilde. NASA GIBS (MODIS og VIIRS).</small></div>`}
-  for(const k of ["nat","sed","slope"]){if(!act.includes(k))continue;const l=OVL[k],nm={nat:"Naturtyper og tareskog",sed:"Bunntype",slope:"Bratte skråninger (over 30°)"}[k];
-    const failed=l._bad>0&&l._ok===0;
-    h+=`<div class="ovl-sec"><b>${nm} <small>NGU</small></b>${failed?`<small class="err">NGU-kartet svarte ikke. Prøv igjen senere.</small>`:`<img class="ovl-leg" alt="" src="${NGU_WMS}?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;FORMAT=image/png&amp;SLD_VERSION=1.1.0&amp;LAYER=${encodeURIComponent(l._nguLayers.split(",")[0])}" onerror="this.remove()">`}
-      <small>${k==="nat"?"Detaljert kartlagt bare noen steder, blant annet Saltstraumen.":k==="sed"?"Detaljerte bunnkart finnes bare noen steder. Ellers vises grove oversiktskart.":"Fra dybdedata der det er målt. Bratte kanter er ofte gode steder for kveite og breiflabb."} Zoom inn for detaljer.</small></div>`}
-  el.innerHTML=h;el.querySelectorAll("[data-chl]").forEach(b=>b.onclick=e=>{e.stopPropagation();chlStep(+b.dataset.chl)})}
+  const c=LY.chl.layer;if(c){let i=0;c.eachLayer(l=>{l.setUrl(chlUrl(CHL_LAYERS[i++],S.chlDate))})}renderLyr()}
+S.lyrOpen=false;
+function renderLyr(){const btn=$("#lyrBtn"),n=LYR.filter(d=>lyrOn(d.id)).length;if(btn){btn.classList.toggle("on",S.lyrOpen);const c=btn.querySelector("b");c.textContent=n||"";c.hidden=!n}
+  let el=$("#lyrPanel");if(!S.lyrOpen){if(el)el.remove();return}
+  if(!el){el=document.createElement("div");el.id="lyrPanel";el.className="lyrpanel";$(".mapcol").appendChild(el);L.DomEvent.disableClickPropagation(el);L.DomEvent.disableScrollPropagation(el)}
+  const st=el.scrollTop;let h=`<div class="ly-head"><b>Kartlag</b><button type="button" class="ly-x" aria-label="Lukk">✕</button></div>`,g0=null;
+  for(const d of LYR){if(d.g!==g0){h+=`<div class="ly-g">${esc(d.g)}</div>`;g0=d.g}const on=lyrOn(d.id);
+    h+=`<div class="ly-row${on?" on":""}"><button type="button" class="ly-sw" role="switch" aria-checked="${on}" data-ly="${d.id}" aria-label="${esc(d.name)}"><i></i></button>
+      <div class="ly-tx"><button type="button" class="ly-name" data-ly="${d.id}">${esc(d.name)}</button><small>${esc(d.src)}</small>${on?`<p>${esc(d.desc)}</p>${lyrStatus(d)}${lyrLegend(d)}`:""}</div></div>`}
+  h+=`<p class="ly-foot">${LYR.some(d=>d.ags&&lyrOn(d.id))?"Trykk i kartet for å se hva som er registrert der. ":""}Data fra Fiskeridirektoratet (Yggdrasil), Miljødirektoratet, NGU, Kartverket og NASA. Valgene huskes på denne enheten.</p>`;
+  el.innerHTML=h;el.scrollTop=st;
+  el.querySelectorAll("[data-ly]").forEach(b=>b.onclick=()=>lyrSet(b.dataset.ly,!lyrOn(b.dataset.ly)));
+  el.querySelectorAll("[data-chl]").forEach(b=>b.onclick=()=>chlStep(+b.dataset.chl));
+  el.querySelector(".ly-x").onclick=()=>{S.lyrOpen=false;renderLyr()}}
+function initLayers(){
+  const Ctl=L.Control.extend({options:{position:"topright"},onAdd(){const b=L.DomUtil.create("button","lyrbtn");b.id="lyrBtn";b.type="button";b.title="Kartlag: tare, bunntype, gyteområder, verneområder og mer";b.setAttribute("aria-label","Kartlag");
+      b.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 8.5 12 14l10-5.5z"/><path d="m2 13 10 5.5L22 13"/><path d="m2 17.5 10 5.5 10-5.5" opacity=".55"/></svg><b hidden></b>';
+      L.DomEvent.disableClickPropagation(b);b.onclick=()=>{S.lyrOpen=!S.lyrOpen;renderLyr()};return b}});
+  new Ctl().addTo(S.lmap);
+  let saved=lsGet("dk-lyr");if(!saved){const old=lsGet("dk-ovl")||[];saved=old.filter(k=>LY[k])}
+  for(const id of saved)if(LY[id])lyrMake(LY[id]).addTo(S.lmap);
+  S.lmap.on("zoomend",()=>{if(S.lyrOpen)renderLyr()});renderLyr()}
+/* tap the map: what is registered here in the active ArcGIS layers */
+const IDF_SKIP=/^(objectid|fid|shape|shape[._ ]?(area|length|leng)|globalid|st_area|st_length|se_anno.*|id|lokalid|navnerom|versjonid|oppdateringsdato|datafangstdato|kartid|.*_id)$/i;
+async function identifyAt(ll){const act=LYR.filter(d=>d.ags&&lyrOn(d.id));if(!act.length)return false;
+  const m=S.lmap,b=m.getBounds(),sz=m.getSize(),ext=`${b.getWest()},${b.getSouth()},${b.getEast()},${b.getNorth()}`;
+  const pop=L.popup({className:"idfpop",maxWidth:300,minWidth:220,autoPanPaddingTopLeft:[20,70]}).setLatLng(ll).setContent(`<p class="idf-wait">Henter…</p>`).openOn(m);
+  let any=false,errs=0;const parts=[];
+  await Promise.all(act.flatMap(d=>d.ags.map(async([base,ids])=>{try{
+    const u=`${base}/identify?geometry=${ll.lng},${ll.lat}&geometryType=esriGeometryPoint&sr=4326&layers=visible:${ids}&tolerance=${L.Browser.mobile?10:6}&mapExtent=${ext}&imageDisplay=${sz.x},${sz.y},96&returnGeometry=false&f=json`;
+    const j=await (await fetch(u)).json();if(j.error)throw 0;
+    for(const r of (j.results||[]).slice(0,4)){any=true;const a=r.attributes||{},main=r.value&&!/^null$/i.test(r.value)?r.value:"";
+      const rows=Object.entries(a).filter(([k,v])=>v!=null&&v!==""&&!/^(null|<null>|0)$/i.test(String(v))&&!IDF_SKIP.test(k)&&String(v)!==main&&String(v).length<160).slice(0,5);
+      const ln=r.layerName&&!/^[a-z0-9]+(_[a-z0-9]+)+$/.test(r.layerName)&&r.layerName!==d.name?r.layerName:"";
+      parts.push(`<div class="idf-r"><small>${esc(d.name)}</small>${ln?`<b>${esc(ln)}</b>`:""}${main?`<span class="idf-main">${esc(main)}</span>`:""}${rows.map(([k,v])=>`<span><i>${esc(k)}:</i> ${esc(String(v))}</span>`).join("")}</div>`)}
+  }catch(e){errs++}})));
+  if(!m.hasLayer(pop))return true;
+  pop.setContent(any?`<div class="idf">${parts.join("")}</div>`:`<p class="idf-none">${errs?"Kunne ikke hente informasjon fra kartlaget.":"Ingenting registrert akkurat her i lagene du har slått på."}</p>`);return true}
 
 /* exploration fog: a soft dim over the map that clears around sites the group has dived */
 function makeFog(){return new (L.Layer.extend({
