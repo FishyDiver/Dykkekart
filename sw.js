@@ -1,7 +1,7 @@
 /* Jaktkart (formerly Dykkekart) service worker: keeps the app on the phone and caches map tiles you have viewed. */
-const V = "dk-app-v7";
+const V = "dk-app-v8";
 const TILES = "dk-tiles-2", TILE_MAX = 2500; // new name: drops tiles cached by older versions (some were error responses)
-const SHELL = ["./", "./index.html", "./config.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./favicon.png"];
+const SHELL = ["./", "./index.html", "./config.js", "./manifest.webmanifest", "./icon-192.png?v=53", "./icon-512.png?v=53", "./favicon.png?v=53"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -23,7 +23,8 @@ self.addEventListener("fetch", e => {
   if (u.hostname === "cache.kartverket.no") { e.respondWith(tile(r)); return; }
   // The app itself: always try the newest version first
   if (u.origin === location.origin) {
-    if (r.mode === "navigate" || /\/(index\.html|config\.js)?$/.test(u.pathname)) { e.respondWith(networkFirst(r)); return; }
+    // The page, settings, manifest and app icons: newest first, so a new icon or name reaches installed apps
+    if (r.mode === "navigate" || /\/(index\.html|config\.js|manifest\.webmanifest|(icon|favicon)[^/]*\.png)?$/.test(u.pathname)) { e.respondWith(networkFirst(r)); return; }
     e.respondWith(staleWhileRevalidate(r)); return;
   }
   // Libraries, fonts and uploaded images
