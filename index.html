@@ -959,6 +959,33 @@ body.mapmax .recbar{display:inline-flex}
 .herostrip .thumb{width:58px;height:58px}
 .hmore{white-space:nowrap;margin:0 4px}
 @media (max-width:480px){.hero{height:160px}}
+/* v56: season calendar colour theme. Flat, professional colours; change the variables to change the whole look (boxes, legend, Artsdex card, chart) */
+:root{--sc-bg:#0e1116;
+  --lv0:rgba(255,255,255,.035);--lv1:#323b47;--lv2:#c58a1e;--lv3:#2a9257;--lv4:#3fcf7a;
+  --lvfr:repeating-linear-gradient(135deg,#d9473a 0 3px,rgba(217,71,58,.18) 3px 6px);
+  --sc-ring:#f2f4f7;--sc-now:#f2f4f7;--sc-nowtx:#0f1218;--sc-k4:var(--lv4);--sc-k3:#5bc28a;
+  --sc-b4bg:rgba(255,255,255,.07);--sc-b4tx:var(--lv4);--sc-b3bg:rgba(255,255,255,.07);--sc-b3tx:#5bc28a;--sc-line:#3fcf7a}
+.sbx{border-radius:4px;background:var(--lv0)}.sbx.l1{background:var(--lv1)}.sbx.l2{background:var(--lv2)}.sbx.l3{background:var(--lv3)}.sbx.l4{background:var(--lv4)}
+.sbx.l1,.sbx.l2,.sbx.l3,.sbx.l4{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(0,0,0,.18)}
+.sbx.fr,.sbx .frp{background:var(--lvfr)}
+.sbx.now,.sbx.l1.now,.sbx.l2.now,.sbx.l3.now,.sbx.l4.now{box-shadow:inset 0 1px 0 rgba(255,255,255,.12);outline:1.5px solid var(--sc-ring);outline-offset:1.5px}
+.seadlg .dexin.sc{background:var(--sc-bg)}.seadlg .dextop{background:var(--sc-bg)}.sc-head{background:linear-gradient(var(--sc-bg) 78%,transparent)}
+.sc-months>span.now{background:var(--sc-now);color:var(--sc-nowtx)}
+.sc-nowl .k.t{color:var(--sc-k4)}.sc-nowl .k.g{color:var(--sc-k3)}
+.sc-lab .lvnow{background:var(--sc-b4bg);color:var(--sc-b4tx)}.sc-lab .lvnow.l3{background:var(--sc-b3bg);color:var(--sc-b3tx)}
+.sc-row.z{background:rgba(255,255,255,.022)}.sc-secfull{color:#8b97a6;border-bottom-color:rgba(255,255,255,.07)}
+/* "Våre funn": simple columns per month, same scale for every species */
+.sc-fbars{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;align-items:end;height:46px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.08)}
+.sc-frow{min-height:50px}.sc-frow .sc-lab{height:50px}
+.sc-fb{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;border-radius:4px 4px 0 0}
+.sc-fb.now{background:rgba(255,255,255,.04)}
+.sc-fb i{display:block;width:62%;max-width:34px;background:#c9d3de;border-radius:3px 3px 0 0}
+.sc-fb.now i{background:#eef2f6}
+.sc-fb b{font:600 10.5px Barlow,sans-serif;color:#aeb9c6;line-height:1;margin-bottom:3px}
+.sc-fnone{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#5f6b7a}
+.sc-lab .fcnt{flex:none;font:600 10.5px Barlow,sans-serif;font-style:normal;padding:1px 0 0;color:#8b97a6}
+.sc-lgbar{display:inline-block;width:14px;height:12px;background:linear-gradient(to right,#c9d3de 0 4px,transparent 4px 5px,#c9d3de 5px 9px,transparent 9px 10px,#c9d3de 10px);clip-path:polygon(0 50%,4px 50%,4px 20%,9px 20%,9px 0,14px 0,14px 100%,0 100%)}
+@media (max-width:700px){.sc-fbars{gap:2px}.sc-fb i{width:72%}.sc-fb b{font-size:9px}.sc-fnone{font-size:11px}.sc-lab .fcnt{display:none}}
 </style>
 </head>
 <body>
@@ -1065,7 +1092,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v55 (aktivitet i toppen og dybde fra–til)";
+const APP_VERSION="v56 (ny sesongkalender)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -3972,6 +3999,13 @@ function scBoxes(lv,sp,{own=false,edit=false}={}){const r=rulesFor(sp),ow=own?ow
   return `<div class="sc-boxes">${lv.map((l,m)=>{const fr=closedSpan(r,m),full=fr&&fr[1]>.97;
     const tip=`${sp}, ${MNS[m]}: ${LVL[l]}${fr?" · fredet"+(full?"":" deler av måneden"):""}${ow&&ow[m]?` · gjengen: ${ow[m]} reg.`:""}${edit?" (trykk for å endre)":""}`;
     return `<${edit?"button type=\"button\"":"div"} class="sbx l${l}${m===cm?" now":""}${full?" fr":""}" data-sp="${esc(sp)}" data-m="${m}" title="${esc(tip)}">${fr&&!full?`<span class="frp" style="left:${(fr[0]*100).toFixed(1)}%;width:${(fr[1]*100).toFixed(1)}%"></span>`:""}${ow&&ow[m]?`<span class="od" style="width:${Math.min(10,5+ow[m])}px;height:${Math.min(10,5+ow[m])}px"></span>`:""}</${edit?"button":"div"}>`}).join("")}</div>`}
+/* the group's finds per month, for the "Våre funn" columns */
+function ownSplit(sp,rid){rid=rid||curRegion();const all=Array(12).fill(0),got=Array(12).fill(0);
+  for(const c of S.catches)if(c.species===sp&&c.date&&siteRegionId(c.site_id)===rid){const m=+String(c.date).slice(5,7)-1;if(m<0||m>11)continue;all[m]++;if(c.kind==="fanget")got[m]++}
+  return {all,got,n:all.reduce((a,b)=>a+b,0)}}
+function scFindChart(lv,sp,gmax){const o=ownSplit(sp),cm=new Date().getMonth(),mx=Math.max(1,gmax||Math.max(...o.all)),BH=30;
+  const cols=o.all.map((v,m)=>`<div class="sc-fb${m===cm?" now":""}" title="${esc(`${sp}, ${MNS[m]}: ${v?`${v} ${v===1?"registrering":"registreringer"}${o.got[m]?` (${o.got[m]} fanget)`:""}`:"ingen funn"}`)}">${v?`<b>${v}</b><i style="height:${Math.max(3,Math.round(v/mx*BH))}px"></i>`:""}</div>`).join("");
+  return `<div class="sc-fbars${o.n?"":" none"}" data-sp="${esc(sp)}">${cols}${o.n?"":`<span class="sc-fnone">Ingen funn registrert ennå</span>`}</div>`}
 S.scOpt=Object.assign({own:false,env:false},lsGet("dk-sc")||{});
 function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wrap.scrollTop;
   const now=new Date(),cm=now.getMonth(),ed=S.seaEdit,O=S.scOpt;
@@ -3993,11 +4027,12 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
     env=`<div class="sc-envblock">${envCurvesHTML(dl,ts.map((s2,i)=>tn[i]?s2/tn[i]:null),vs.map((s2,i)=>vn[i]?s2/vn[i]:null),tn,vn,cm)}</div>`}
   const mname=now.toLocaleDateString("nb-NO",{month:"long"}),Mname=mname[0].toUpperCase()+mname.slice(1);
   // species rows
-  let rows="",lastG=null,zebra=0;
+  let rows="",lastG=null,zebra=0,gmax=null;
   for(const sp of list){const d=data[sp],l=d.lv[cm];
     if(S.seaSort!=="naa"){const g=grp(sp);if(g!==lastG){rows+=`<div class="sc-secfull">${esc(g)}</div>`;lastG=g;zebra=0}}
     const op=!ed&&S.seaOpenSp===sp;
-    rows+=`<div class="sc-row${zebra++%2?" z":""}${op?" open":""}"><button class="sc-lab" type="button" data-sp="${esc(sp)}" aria-expanded="${op}" title="${esc(op?"Trykk for å lukke":"Trykk for å lese mer om "+sp.toLocaleLowerCase("nb"))}"><b>${esc(sp)}</b>${l>=3?`<em class="lvnow l${l}">${l===4?"topp":"bra"}</em>`:""}<i class="chev" aria-hidden="true">›</i></button>${scBoxes(d.lv,sp,{own:O.own,edit:!!ed})}</div>`;
+    const fm=O.own&&!ed,fn=fm?ownSplit(sp).n:0;if(fm&&gmax==null)gmax=Math.max(1,...list.flatMap(x=>ownSplit(x).all));
+    rows+=`<div class="sc-row${zebra++%2?" z":""}${op?" open":""}${fm?" sc-frow":""}"><button class="sc-lab" type="button" data-sp="${esc(sp)}" aria-expanded="${op}" title="${esc(op?"Trykk for å lukke":"Trykk for å lese mer om "+sp.toLocaleLowerCase("nb"))}"><b>${esc(sp)}</b>${fm?(fn?`<em class="fcnt">${fn} funn</em>`:""):l>=3?`<em class="lvnow l${l}">${l===4?"topp":"bra"}</em>`:""}<i class="chev" aria-hidden="true">›</i></button>${fm?scFindChart(d.lv,sp,gmax):scBoxes(d.lv,sp,{edit:!!ed})}</div>`;
     if(op)rows+=scDetailHTML(sp,d,cm,Mname);
     if(ed)rows+=`<div class="sc-noteed"><input data-note="${esc(sp)}" value="${esc(seaNoteVal(sp))}" placeholder="Eget notat om ${esc(sp.toLocaleLowerCase("nb"))} til gjengen (valgfritt)"></div>`}
   const nm=a=>a.map(sp=>`<button class="sc-chip" data-sp="${esc(sp)}">${esc(sp)}</button>`).join("");
@@ -4007,10 +4042,11 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
       <label class="sc-reg" title="${ed?"Lagre eller avbryt redigeringen før du bytter område":"Velg område"}"><span>Område</span><select id="seaReg"${ed?" disabled":""}>${REGIONS.map(g=>`<option value="${g.id}"${g.id===rid?" selected":""}>${esc(g.name)}</option>`).join("")}</select></label></div>
       <div class="sc-nowl">${top.length?`<div><span class="k t">Topp</span>${nm(top)}</div>`:""}${good.length?`<div><span class="k g">Bra</span>${nm(good)}</div>`:""}${!top.length&&!good.length?`<div class="sc-quiet">Ingen arter i toppsesong nå.</div>`:""}${kvTxt?`<div class="sc-warn">⚠ ${esc(kvTxt)}</div>`:""}</div></div>
     <div class="sc-tools"><div class="chips" id="seaF"><button class="chip ${S.seaFilter==="alle"?"on":""}" data-f="alle">Alle</button><button class="chip ${S.seaFilter==="naa"?"on":""}" data-f="naa">I sesong nå</button><button class="chip ${S.seaSort==="naa"?"on":""}" data-s="naa">Best nå først</button></div>
-      <div class="chips" id="seaO"><button class="chip ${O.own?"on":""}" data-o="own" title="Vis gjengens registreringer som prikker">Våre funn</button><button class="chip ${O.env?"on":""}" data-o="env" title="Vis dagslys, vanntemperatur og sikt">Forhold</button>${ed?`<button class="chip" id="seaCancel">Avbryt</button><button class="chip on" id="seaSave">Lagre</button>`:`<button class="chip" id="seaEditB">Rediger</button>`}</div></div>
+      <div class="chips" id="seaO"><button class="chip ${O.own?"on":""}" data-o="own" title="Bytt til kurver over når gjengen har registrert hver art">Våre funn</button><button class="chip ${O.env?"on":""}" data-o="env" title="Vis dagslys, vanntemperatur og sikt">Forhold</button>${ed?`<button class="chip" id="seaCancel">Avbryt</button><button class="chip on" id="seaSave">Lagre</button>`:`<button class="chip" id="seaEditB">Rediger</button>`}</div></div>
     ${ed?`<p class="sc-edithint">Velg et nivå, og trykk på en måned eller dra bortover raden for å male. Trykk «Lagre» når du er ferdig. Endringene gjelder hele gjengen.</p>`:""}
     ${ed?`<div class="sc-leg sc-legtop sc-brush" id="seaBrush"><b>Mal med:</b>${[4,3,2,1,0].map(k=>`<button type="button" class="${S.seaBrush===k?"on":""}" data-b="${k}" aria-pressed="${S.seaBrush===k}"><i class="sbx l${k}"></i>${LVL[k]}</button>`).join("")}</div>`
-      :`<div class="sc-leg sc-legtop"><span><i class="sbx l4"></i>Topp</span><span><i class="sbx l3"></i>Bra</span><span><i class="sbx l2"></i>Mulig</span><span><i class="sbx l1"></i>Vanskelig</span><span><i class="sbx fr"></i>Fredet</span>${O.own?`<span><i class="dotl"></i>Gjengens funn</span>`:""}</div>`}
+      :O.own?`<div class="sc-leg sc-legtop"><span><i class="sc-lgbar"></i>Gjengens registreringer per måned (sett og fanget), alle år samlet. Samme skala for alle arter.</span></div>`
+      :`<div class="sc-leg sc-legtop"><span><i class="sbx l4"></i>Topp</span><span><i class="sbx l3"></i>Bra</span><span><i class="sbx l2"></i>Mulig</span><span><i class="sbx l1"></i>Vanskelig</span><span><i class="sbx fr"></i>Fredet</span></div>`}
     <div class="sc-head"><div></div><div class="sc-months">${scMonthsHTML(false)}</div></div>
     ${env}
     <div id="scRows">${rows||`<p class="emptytxt" style="color:#9fc3e0">Ingen arter er i sesong denne måneden.</p>`}</div>
@@ -4028,7 +4064,7 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   wrap.querySelectorAll(".sc-lab[data-sp]").forEach(b=>b.onclick=()=>toggleSp(b.dataset.sp));
   wrap.querySelectorAll(".sc-chip[data-sp]").forEach(b=>b.onclick=()=>toggleSp(b.dataset.sp,true));
   wrap.querySelectorAll("[data-dex]").forEach(b=>b.onclick=()=>{closeSeason();openDex(b.dataset.dex)});
-  if(!ed)$("#scRows").onclick=e=>{const c=e.target.closest(".sbx[data-sp]");if(c)toggleSp(c.dataset.sp)};
+  if(!ed)$("#scRows").onclick=e=>{const c=e.target.closest(".sbx[data-sp],.sc-fbars[data-sp]");if(c)toggleSp(c.dataset.sp)};
   const eb=$("#seaEditB");if(eb)eb.onclick=()=>{if(S.seaErr){alert(S.seaErr);return}S.seaEdit={};renderSeason()};
   const cb=$("#seaCancel");if(cb)cb.onclick=()=>{S.seaEdit=null;renderSeason()};
   if(ed){const rowsEl=$("#scRows");let painting=false,changed=false;
