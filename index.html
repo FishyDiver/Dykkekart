@@ -574,7 +574,7 @@ button.sbx{cursor:pointer}button.sbx:hover{outline:2px dashed #F1E6C8;outline-of
 .mndbtn{border:1px solid #c0764a!important;background:#3a1d0f!important;color:#FFD2B0!important;position:relative}
 .mndbtn:hover{background:#4d2714!important}.mndbtn{display:inline-flex;align-items:center;gap:6px}
 .mnddot{position:absolute;top:-3px;right:-3px;width:11px;height:11px;border-radius:50%;background:#E0533A;box-shadow:0 0 0 2px #0b1a2a}
-@media (max-width:1240px){.mndbtn .mf-l{display:none}}
+@media (max-width:1300px){.mndbtn .mf-l{display:none}}
 body.mapmax .maptools .mndbtn{display:inline-flex;align-items:center}
 .mf{max-width:980px}
 .mf-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin:4px 0 12px}
@@ -607,6 +607,8 @@ body.mapmax .maptools .mndbtn{display:inline-flex;align-items:center}
 .mf-pod{list-style:none;margin:0;padding:0}.mf-pod li{display:grid;grid-template-columns:26px auto 1fr auto;gap:6px;align-items:center;padding:3px 0;font-size:13.5px}
 .mf-pod li b{color:#E3EDF4}.mf-pod li span:not(.mf-m){color:#9fc3e0;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mf-pod .mf-m{font-size:16px}
 .mf-site{color:#8fd3ec;font-size:16px;padding:0 4px;margin:0}
+.drange{display:flex;align-items:center;gap:6px}.drange input{flex:1 1 0;min-width:0;width:auto}.drange span{color:var(--muted);flex:none}
+.f .fhint{margin:4px 0 2px;line-height:1.4}
 .mf-wide{grid-column:1/-1}.mf-sps{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
 .mf-spr{background:rgba(8,26,46,.35);border:1px solid rgba(159,195,224,.1);border-radius:10px;padding:7px 10px}
 .mf-solo{margin:8px 0 0;color:#9fc3e0;font-size:13px;line-height:1.6}.mf-solo>b{color:#cfe0ee;font-weight:600}.mf-solob{padding:0;margin:0;font:inherit;color:#9fc3e0;background:none;border:0;cursor:pointer;text-align:left}.mf-solob b{color:#E3EDF4}.mf-solob:hover{color:#E3EDF4}
@@ -714,10 +716,18 @@ body.replaying .zoomnote{display:none!important}
 /* list title row with the activity bell (theme colours, works in light and dark mode) */
 .lhead{position:relative;display:flex;align-items:flex-start;gap:10px}.lhead-t{flex:1;min-width:0}
 .lvis{margin:3px 0 0;font-size:13px;color:var(--muted)}.lvis .linkbtn{margin:0 2px;padding:0;font-size:13px;color:var(--alpha)}.lvis .linkbtn b{color:var(--alpha)}
-.actbtn{position:relative;flex:none;width:42px;height:42px;margin-top:4px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
-.actbtn:hover{border-color:var(--alpha)}.actbtn.on{background:var(--ink);color:var(--panel);border-color:var(--ink)}
-.actcnt{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;box-sizing:border-box;border-radius:9px;background:#E0533A;color:#fff;font:700 11px/18px Barlow,sans-serif;text-align:center;padding:0 4px;box-shadow:0 0 0 2px var(--panel)}
-.actpop{position:absolute;right:0;top:54px;z-index:40;width:min(420px,100%);max-height:min(72vh,600px);overflow:auto;box-sizing:border-box;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.35);padding:8px 12px 10px}
+/* activity bell in the header: own colour, red count, glows when something is new */
+.actbtn{position:relative;gap:7px;cursor:pointer;border:1px solid #5fb8d6!important;background:#0d3550!important;color:#D4F1FF!important}
+.actbtn:hover{background:#13486c!important}
+.actbtn.has{border-color:#ff8a73!important;background:#4a1d17!important;color:#FFE4DC!important;box-shadow:0 0 0 3px rgba(224,83,58,.28)}
+.actbtn.on{background:#D4F1FF!important;color:#081a2e!important;border-color:#D4F1FF!important;box-shadow:none}
+.actbtn .act-l{display:none}@media (min-width:1380px){.actbtn .act-l{display:inline}}
+.actbar{position:relative;align-items:center;justify-content:center;padding:6px 10px}.actbar.has{border-color:#E0533A;color:#E0533A}.actbar.on{background:var(--ink);color:var(--panel)}
+.actcnt{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;box-sizing:border-box;border-radius:10px;background:#E0533A;color:#fff;font:700 11.5px/20px Barlow,sans-serif;text-align:center;padding:0 5px;box-shadow:0 0 0 2px #081a2e;pointer-events:none}
+.actbtn.ring .act-bell,.actbar.ring .act-bell{animation:actRing 1.4s ease-in-out 1;transform-origin:50% 8%}
+@keyframes actRing{0%,72%,100%{transform:rotate(0)}8%{transform:rotate(18deg)}18%{transform:rotate(-15deg)}28%{transform:rotate(12deg)}38%{transform:rotate(-9deg)}48%{transform:rotate(6deg)}58%{transform:rotate(-3deg)}}
+@media (prefers-reduced-motion:reduce){.actbtn.ring .act-bell,.actbar.ring .act-bell{animation:none}}
+.actpop{position:fixed;z-index:3000;width:420px;max-height:600px;overflow:auto;box-sizing:border-box;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.35);padding:8px 12px 10px}
 .actpop[hidden]{display:none}
 .actph{display:flex;align-items:center;gap:10px;position:sticky;top:-8px;background:var(--panel);padding:6px 0 8px;margin-top:-2px;z-index:1;border-bottom:1px solid var(--line)}
 .actph>b{font-size:17px;color:var(--ink);flex:1}.actph .chips{margin:0;flex-wrap:nowrap}.actph .chip{padding:3px 11px;font-size:13px}
@@ -762,7 +772,7 @@ body.replaying .zoomnote{display:none!important}
 .sc-ecleg b{margin-left:auto;color:#E3EDF4;font-weight:600}.sc-ecleg .ls{display:none}
 .ec-none{margin:2px 0 6px var(--lw);font-size:12px;color:#6f8fa8}
 @media (max-width:760px){.hdrbtn .kal{display:none}}
-@media (max-width:760px){.hdrbtn>span{display:none}.hdrbtn{padding:6px 9px}}
+@media (max-width:780px){.hdrbtn>span{display:none}.hdrbtn{padding:6px 9px}}
 @media (max-width:700px){.seadlg .dexin.sc{padding:14px 14px 40px;box-shadow:none}.sc{--lw:88px}.sc-curves{height:116px}.sc-ecleg{font-size:11px;gap:6px;padding-right:5px}.sc-ecleg .lf{display:none}.sc-ecleg .ls{display:inline}.sc-ecleg i{width:8px}.ec-dot em{font-size:9.5px}.ec-dot em small{display:none}.ec-none{margin-left:0}.sc-legtop{gap:6px 12px;font-size:11.5px}.sc-brush button{padding:3px 9px 3px 5px;font-size:12px}}
 @media (max-width:700px){.sc-lab .chev{display:none}.sc-det{padding:12px 12px 12px}.sc-dtxt p{font-size:14.5px}.sc-dmeta{font-size:12.5px;gap:4px 12px}}
 @media (max-width:700px){.sbx{height:24px;border-radius:4px}.sc-boxes{gap:2px}.sbx.ev{font-size:8.5px}.sc-row{min-height:30px}.sc-row .sc-lab{height:30px}}
@@ -902,14 +912,14 @@ body.replaying .zoomnote{display:none!important}
 body.mapmax .recbar{display:inline-flex}
 .recbar.on{background:#E3B341;color:#2B1D00}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hdrbtn,:root:not([data-theme="light"]) .recbar{background:#3A2E0E;color:#F5D27A;border-color:#8A6A1E}:root:not([data-theme="light"]) .hdrbtn.on,:root:not([data-theme="light"]) .recbar.on{background:#E3B341;color:#2B1D00}}
-@media (max-width:860px){#addChartBtn{display:none}.hdrbtn{padding:6px 10px}.top .ver{display:none}.top{gap:8px;padding:10px 12px}#menuBtn{padding:6px 8px}.brand{gap:7px}}
-@media (max-width:1180px){.hdrbtn .kal{display:none}.top .ver{display:none}}
-@media (max-width:1060px){#addChartBtn{display:none}}
-@media (max-width:940px){.mndbtn>span{display:none}}
-@media (max-width:440px){.brand h1{display:none}.brand svg{width:26px}}
+@media (max-width:900px){#addChartBtn{display:none}.hdrbtn{padding:6px 10px}.top .ver{display:none}.top{gap:8px;padding:10px 12px}#menuBtn{padding:6px 8px}.brand{gap:7px}}
+@media (max-width:1240px){.hdrbtn .kal{display:none}.top .ver{display:none}}
+@media (max-width:1120px){#addChartBtn{display:none}}
+@media (max-width:1000px){.mndbtn>span{display:none}}
+@media (max-width:510px){.brand h1{display:none}.brand svg{width:26px}}
 @media (max-width:480px){.dexbtn .dexcnt{display:none}}
 #menuBtn .mico{display:none}
-@media (max-width:520px){.top{gap:6px}.hdrbtn{padding:6px 7px}#menuBtn{padding:6px}#menuBtn .mlab{display:none}#menuBtn .mico{display:block}}
+@media (max-width:580px){.top{gap:6px}.hdrbtn{padding:6px 7px}#menuBtn{padding:6px}#menuBtn .mlab{display:none}#menuBtn .mico{display:block}}
 @media (max-width:420px){.hdrbtn span{display:none}.hdrbtn{padding:6px 7px}.top{gap:5px;padding:10px 8px}.brand h1{display:none}.brand svg{width:26px}.tab{padding:6px 10px}#menuBtn{padding:6px 4px}}
 .crow .cWhoW{grid-column:span 12}
 .crow .cWho{font-size:13.5px}
@@ -965,8 +975,10 @@ body.mapmax .recbar{display:inline-flex}
   <button id="mndHdr" class="hdrbtn mndbtn" type="button" title="Månedens fangst: kåring og disipliner"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg><span>Månedens<span class="mf-l"> fangst</span></span><b class="mnddot" id="mndDot" hidden></b></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
+  <button id="actBtn" class="hdrbtn actbtn" type="button" aria-haspopup="true" aria-expanded="false" title="Siste aktivitet: dykk, logger og nye steder"><svg class="act-bell" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="act-l">Aktivitet</span><b class="actcnt" id="actCnt" hidden></b></button>
   <button id="menuBtn" class="btn ghost" aria-label="Meny" title="Meny"><span class="mlab">Meny</span><svg class="mico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
+<div class="actpop" id="actPop" hidden></div>
 
 <main class="layout">
   <section class="mapcol">
@@ -984,6 +996,7 @@ body.mapmax .recbar{display:inline-flex}
       <button id="recBar" class="btn maxonly recbar" type="button" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
       <button id="dexBar" class="btn maxonly dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span></button>
       <button id="seaBar" class="btn maxonly seabtn" type="button" title="Sesongkalender"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Sesong</span></button>
+      <button id="actBar" class="btn maxonly actbar" type="button" title="Siste aktivitet" aria-label="Siste aktivitet" aria-haspopup="true" aria-expanded="false"><svg class="act-bell" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><b class="actcnt" id="actCntBar" hidden></b></button>
       <button id="mndBar" class="btn maxonly mndbtn" type="button" title="Månedens fangst"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg></button>
       <button id="placeBtn" class="btn primary">Nytt dykkested</button>
       <button id="drawBtn" class="btn">Tegn</button>
@@ -1052,7 +1065,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v54 (størst per art)";
+const APP_VERSION="v55 (aktivitet i toppen og dybde fra–til)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1103,7 +1116,10 @@ async function uploadImage(file){if(file.size>45*1024*1024)throw{message:"Bildet
 const SLACK_PRESETS=[{name:"Saltstraumen",lat:67.2340,lon:14.6200,km:2,hw:101,lw:101,len:30,src:"tidevannstabellen for Saltstraumen: strømmen snur 1 t 41 min etter flo og fjære i Bodø"}];
 function slackPreset(lat,lon){if(lat==null||lon==null)return null;for(const p of SLACK_PRESETS){const dy=(lat-p.lat)*111.2,dx=(lon-p.lon)*111.2*Math.cos(lat*Math.PI/180);if(Math.hypot(dx,dy)<=p.km)return p}return null}
 function withPreset(o){if(o.slackHw==null&&o.slackLw==null){const p=slackPreset(o.lat,o.lon);if(p){o.slackHw=p.hw;o.slackLw=p.lw;o.slackLen=p.len;o.slackPreset=p}}return o}
-function rowToSite(r){return withPreset({id:r.id,chartId:r.chart_id,x:r.x,y:r.y,lat:r.lat,lon:r.lon,name:r.name,access:r.access,maxDepth:r.max_depth,bottom:r.bottom,tide:r.tide,season:r.season,
+/* depth of the spot itself (the terrain), not how deep anyone dives */
+function depthTxt(s){const a=s.minDepth!=null&&s.minDepth!==""?+s.minDepth:null,b=s.maxDepth!=null&&s.maxDepth!==""?+s.maxDepth:null;
+  return a!=null&&b!=null?`${fnum(a)}–${fnum(b)} m`:b!=null?`ned til ${fnum(b)} m`:a!=null?`fra ${fnum(a)} m`:""}
+function rowToSite(r){return withPreset({id:r.id,chartId:r.chart_id,x:r.x,y:r.y,lat:r.lat,lon:r.lon,name:r.name,access:r.access,maxDepth:r.max_depth,minDepth:r.min_depth,bottom:r.bottom,tide:r.tide,season:r.season,
   wind:r.wind||[],hazards:r.hazards,rules:r.rules,species:r.species,notes:r.notes,rating:r.rating,photoPath:r.photo_path,_priv:r.private,createdBy:r.created_by,
   createdAt:r.created_at||null,logCount:r.log_count||0,lastDive:r.last_dive,visAvg:r.vis_avg,tideMode:r.tide_mode||"none",tideOffset:r.tide_offset||0,tideWidth:r.tide_width||60,slackHw:r.slack_hw??null,slackLw:r.slack_lw??null,slackLen:r.slack_len??30,icon:r.icon||null,color:r.color||null})}
 function rowToChart(r){return{id:r.id,name:r.name,imagePath:r.image_path,w:r.w,h:r.h,geo:r.geo,createdBy:r.created_by}}
@@ -1326,19 +1342,17 @@ function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="sit
 function renderListView(){
   panel.innerHTML=`<div id="highlights"></div><div id="dexTeaser"></div>
     <div class="lhead"><div class="lhead-t"><h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="lvis" id="lVis"></p></div>
-      <button type="button" class="actbtn" id="actBtn" aria-haspopup="true" aria-expanded="false" title="Siste aktivitet: dykk, logger og nye steder"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><b class="actcnt" id="actCnt" hidden></b></button>
-      <div class="actpop" id="actPop" hidden></div></div>
+</div>
     <p class="small" id="condNote" style="margin:4px 0 0"></p>
     <input class="search" id="q" type="search" placeholder="Søk i navn, arter, bunn, notater" value="${esc(S.q)}" aria-label="Søk">
     <div class="chips">${["alle","land","bat"].map(a=>`<button class="chip ${S.acc===a?"on":""}" data-a="${a}">${a==="alle"?"Alle":ACCESS[a]}</button>`).join("")}</div>
     <div id="spWrap"></div><div id="siteList"></div><div id="unpos"></div><div id="areaList"></div><div id="chartActions"></div>`;
   $("#q").oninput=e=>{S.q=e.target.value;renderList();renderPins();renderAreas()};
   panel.querySelector(".chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;S.acc=b.dataset.a;panel.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));renderList();renderPins()};
-  $("#actBtn").onclick=e=>{e.stopPropagation();toggleAct()};
   renderList();try{hudSoon()}catch(e){}
 }
 function siteRow(s,showHome){
-  const meta=[ACCESS[s.access],s.maxDepth!=null?`maks ${fnum(s.maxDepth)} m`:"",s.bottom].filter(Boolean).join(", ");
+  const meta=[ACCESS[s.access],depthTxt(s),s.bottom].filter(Boolean).join(", ");
   const home=showHome&&s.chartId&&s.chartId!==S.active?S.charts.find(x=>x.id===s.chartId):null;
   return `<button class="row" data-id="${esc(s.id)}"><span class="flagdot">${siteMarkerHTML(s,16)}${condDot(s)}</span><span><span class="nm">${esc(s.name)}</span><br><span class="mt">${esc(meta)}</span>${home?`<br><span class="home">Kartblad: ${esc(home.name)}</span>`:""}</span>
     <span class="rt">${dots(s.rating)}${latestReport(s.id)?` <b class="vtxt">${fnum(latestReport(s.id).vis,1)} m</b>`:""}<br>${s.lastDive?"Sist "+esc(fdate(s.lastDive,true)):"Ikke logget"}</span></button>`}
@@ -1384,7 +1398,7 @@ function renderSiteView(){
 }
 function renderSiteBody(){
   const s=getSite(S.sel);if(!s||!$("#siteBody"))return;
-  const facts=[["Maks dybde",s.maxDepth!=null?fnum(s.maxDepth)+" m":""],["Bunn",s.bottom],["Tidevann og strøm",s.tide],["Beste sesong",s.season]].filter(f=>f[1]);
+  const facts=[["Dybde",depthTxt(s)],["Bunn",s.bottom],["Tidevann og strøm",s.tide],["Beste sesong",s.season]].filter(f=>f[1]);
   const secs=[["Farer",s.hazards,"warn"],["Regler og vern",s.rules,""],["Arter",s.species,""],["Notater",s.notes,""]].filter(x=>x[1]);
   const wind=s.wind&&s.wind.length?s.wind.join(", "):null;
   const others=[LIVE,...S.charts].filter(c=>c.id!==S.active&&sitePos(s,c));
@@ -1469,7 +1483,8 @@ function renderEdit(s){
   panel.innerHTML=`<form class="f" id="ef"><h2>${isNew?"Nytt dykkested":"Rediger "+esc(v.name)}</h2>
   <label for="fName">Navn</label><input type="text" id="fName" required value="${esc(v.name)}" placeholder="F.eks. Langholmen sørvegg">
   <div class="two"><div><label for="fAcc">Tilgang</label><select id="fAcc">${Object.entries(ACCESS).map(([k,t])=>`<option value="${k}" ${v.access===k?"selected":""}>${t}</option>`).join("")}</select></div>
-  <div><label for="fDepth">Maks dybde (m)</label><input type="number" id="fDepth" step="0.5" min="0" value="${v.maxDepth??""}"></div></div>
+  <div><label for="fDepthMin">Dybde på plassen (m)</label><div class="drange"><input type="number" id="fDepthMin" step="0.5" min="0" inputmode="decimal" placeholder="fra" aria-label="Dybde fra (m)" value="${v.minDepth??""}"><span>–</span><input type="number" id="fDepth" step="0.5" min="0" inputmode="decimal" placeholder="til" aria-label="Dybde til (m)" value="${v.maxDepth??""}"></div></div></div>
+  <p class="small fhint">Hvor grunt og hvor dypt det er der man jakter, ikke hvor dypt du selv dykker. Går plassen fra 2 m og bratt ned, skriv f.eks. 2 til 30. Hvor dypt du dykket, logger du på hvert dykk.</p>
   <details class="geo"><summary>Symbol og farge på kartet</summary>
   <label>Symbol</label>${iconPickerHTML("fIc",sIcon,"Flagg")}
   <label>Farge</label>${colorPickerHTML("fCol",sColor,"Standard")}
@@ -1507,16 +1522,17 @@ function renderEdit(s){
   $("#ef").onsubmit=async e=>{
     e.preventDefault();const btn=$("#fSave");btn.disabled=true;$("#fErr").textContent="";
     const lat=num($("#fLat").value),lon=num($("#fLon").value),both=lat!=null&&lon!=null;
-    const row={name:$("#fName").value.trim(),access:$("#fAcc").value,max_depth:num($("#fDepth").value),bottom:$("#fBottom").value.trim(),tide:$("#fTide").value.trim(),tide_mode:$("#fTmode").value,tide_offset:Math.round(num($("#fToff").value)??0),tide_width:Math.max(10,Math.round(num($("#fTwid").value)??60)),slack_hw:num($("#fSlH").value)==null?null:Math.round(num($("#fSlH").value)),slack_lw:num($("#fSlL").value)==null?null:Math.round(num($("#fSlL").value)),slack_len:Math.max(5,Math.round(num($("#fSlD").value)??30)),season:$("#fSeason").value.trim(),
+    const row={name:$("#fName").value.trim(),access:$("#fAcc").value,max_depth:num($("#fDepth").value),min_depth:num($("#fDepthMin").value),bottom:$("#fBottom").value.trim(),tide:$("#fTide").value.trim(),tide_mode:$("#fTmode").value,tide_offset:Math.round(num($("#fToff").value)??0),tide_width:Math.max(10,Math.round(num($("#fTwid").value)??60)),slack_hw:num($("#fSlH").value)==null?null:Math.round(num($("#fSlH").value)),slack_lw:num($("#fSlL").value)==null?null:Math.round(num($("#fSlL").value)),slack_len:Math.max(5,Math.round(num($("#fSlD").value)??30)),season:$("#fSeason").value.trim(),
       wind:DIRS.filter(d=>wind.includes(d)),hazards:$("#fHaz").value.trim(),rules:$("#fRules").value.trim(),species:$("#fSpecies").value.trim(),notes:$("#fNotes").value.trim(),rating:rating||null,
       lat:both?lat:null,lon:both?lon:null,icon:sIcon,color:sColor,updated_at:new Date().toISOString()};
+    if(row.min_depth!=null&&row.max_depth!=null&&row.min_depth>row.max_depth)[row.min_depth,row.max_depth]=[row.max_depth,row.min_depth];
     try{
       const f=$("#fPhoto").files[0];if(f)row.photo_path=await uploadImage(f);
       if(isNew){row.private=panel.querySelector('input[name="vis"]:checked')?.value==="priv";row.created_by=S.user.id;
         row.chart_id=S.draft.live?null:S.draft.chartId;row.x=S.draft.live?null:S.draft.x;row.y=S.draft.live?null:S.draft.y;
-        const {data,error}=await tideSafe(r=>colSafe(x=>sb.from("sites").insert(x).select().single(),r,["icon","color","slack_hw","slack_lw","slack_len"],"style.sql"),row);if(error)throw error;
+        const {data,error}=await tideSafe(r=>colSafe(x=>sb.from("sites").insert(x).select().single(),r,["icon","color","slack_hw","slack_lw","slack_len","min_depth"],"style.sql"),row);if(error)throw error;
         S.draft=null;S.sites.push(rowToSite(data));openSite(data.id);loadSites()}
-      else{const {error}=await tideSafe(r=>colSafe(x=>sb.from("sites").update(x).eq("id",s.id),r,["icon","color","slack_hw","slack_lw","slack_len"],"style.sql"),row);if(error)throw error;await loadSites();S.view="site";renderSiteView()}
+      else{const {error}=await tideSafe(r=>colSafe(x=>sb.from("sites").update(x).eq("id",s.id),r,["icon","color","slack_hw","slack_lw","slack_len","min_depth"],"style.sql"),row);if(error)throw error;await loadSites();S.view="site";renderSiteView()}
     }catch(err){$("#fErr").textContent="Kunne ikke lagre: "+errMsg(err);btn.disabled=false}
   };
   $("#fName").focus();
@@ -1619,7 +1635,7 @@ function renderMenu(){
 }
 function downloadGpx(){
   const x=v=>esc(v||"");const pts=allSites().filter(s=>s.lat!=null&&s.lon!=null);
-  const body=pts.map(s=>{const d=[s.maxDepth!=null?`Maks dybde ${s.maxDepth} m`:"",s.bottom&&`Bunn: ${s.bottom}`,s.tide&&`Tidevann/strøm: ${s.tide}`,s.wind?.length&&`Tåler vind fra: ${s.wind.join(", ")}`,s.hazards&&`Farer: ${s.hazards}`,s.species&&`Arter: ${s.species}`,s.notes].filter(Boolean).join("\n");
+  const body=pts.map(s=>{const d=[depthTxt(s)?`Dybde ${depthTxt(s)}`:"",s.bottom&&`Bunn: ${s.bottom}`,s.tide&&`Tidevann/strøm: ${s.tide}`,s.wind?.length&&`Tåler vind fra: ${s.wind.join(", ")}`,s.hazards&&`Farer: ${s.hazards}`,s.species&&`Arter: ${s.species}`,s.notes].filter(Boolean).join("\n");
     return `  <wpt lat="${s.lat}" lon="${s.lon}"><name>${x(s.name)}</name><desc>${x(d)}</desc><sym>Scuba Flag</sym></wpt>`}).join("\n");
   const gpx=`<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="Jaktkart" xmlns="http://www.topografix.com/GPX/1/1">\n${body}\n</gpx>\n`;
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([gpx],{type:"application/gpx+xml"}));a.download="dykkesteder.gpx";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
@@ -1670,7 +1686,7 @@ function wireColorPicker(id,onPick){const el=$("#"+id);if(!el)return;const inp=e
   el.onclick=e=>{const b=e.target.closest("button[data-c]");if(!b)return;inp._custom=false;mark(b.dataset.c);onPick(b.dataset.c||null)};
   inp.oninput=()=>{inp._custom=true;el.querySelectorAll("button").forEach(x=>x.classList.remove("on"));onPick(inp.value)}}
 const COLFILE={photo_path:["stats.sql","bilde og vekt"],weight_kg:["stats.sql","bilde og vekt"],time_of_day:["stats.sql","klokkeslett og forhold"],wind_dir:["stats.sql","vind og tidevann"],wind_speed:["stats.sql","vind og tidevann"],tide_phase:["stats.sql","vind og tidevann"],buddies:["buddy.sql","hvem du dykket med"],
-  caught_by:["assign.sql","hvem som fikk fangsten"],color:["style.sql","farge og symbol"],icon:["style.sql","farge og symbol"],pattern:["style.sql","farge og symbol"],dash:["style.sql","farge og symbol"],slack_hw:["slack.sql","strømstille"],slack_lw:["slack.sql","strømstille"],slack_len:["slack.sql","strømstille"]};
+  caught_by:["assign.sql","hvem som fikk fangsten"],color:["style.sql","farge og symbol"],icon:["style.sql","farge og symbol"],pattern:["style.sql","farge og symbol"],dash:["style.sql","farge og symbol"],slack_hw:["slack.sql","strømstille"],slack_lw:["slack.sql","strømstille"],slack_len:["slack.sql","strømstille"],min_depth:["depth.sql","dybde fra"]};
 async function colSafe(fn,row,cols,file,what="farge og symbol"){
   let res=await fn(row);const stripped=[];
   for(let n=0;n<=cols.length&&res&&res.error;n++){
@@ -2009,7 +2025,7 @@ function download(name,text,type){const a=document.createElement("a");a.href=URL
 function downloadGeoJSON(){
   const feats=[];
   for(const s of S.sites)if(s.lat!=null&&s.lon!=null)feats.push({type:"Feature",geometry:{type:"Point",coordinates:[s.lon,s.lat]},
-    properties:{layer:"dykkested",name:s.name,access:ACCESS[s.access]||s.access,max_depth:s.maxDepth,bottom:s.bottom,tide:s.tide,season:s.season,wind:(s.wind||[]).join(","),hazards:s.hazards,rules:s.rules,species:s.species,notes:s.notes,rating:s.rating,log_count:s.logCount,last_dive:s.lastDive,icon:s.icon,color:s.color,private:s._priv}});
+    properties:{layer:"dykkested",name:s.name,access:ACCESS[s.access]||s.access,min_depth:s.minDepth??null,max_depth:s.maxDepth,bottom:s.bottom,tide:s.tide,season:s.season,wind:(s.wind||[]).join(","),hazards:s.hazards,rules:s.rules,species:s.species,notes:s.notes,rating:s.rating,log_count:s.logCount,last_dive:s.lastDive,icon:s.icon,color:s.color,private:s._priv}});
   for(const a of S.areas)feats.push({type:"Feature",geometry:a.geom,properties:{layer:isPoint(a.geom)?"markor":"omrade",name:a.name,kind:a.kind,kind_name:AREA_TYPES[a.kind]?.name,value:a.value,value_name:areaLabel(a),color:colorOf(a),icon:a.icon,pattern:a.pattern,dash:a.dash,notes:a.notes,site:a.siteId?(getSite(a.siteId)?.name||""):"",private:a._priv}});
   download("jaktkart.geojson",JSON.stringify({type:"FeatureCollection",features:feats},null,1),"application/geo+json");
 }
@@ -3036,7 +3052,7 @@ S.feedLogs=[];S.feedMore=false;
 async function loadFeed(){
   const d=new Date(Date.now()-45*864e5),since=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
   const {data,error}=await cachedQ("feed",sb.from("logs").select("*").gte("date",since).order("date",{ascending:false}).limit(60));
-  if(error)return;S.feedLogs=data;if(S.view==="list")renderFeed();
+  if(error)return;S.feedLogs=data;renderFeed();
 }
 function feedItems(){
   const items=[];
@@ -3058,17 +3074,28 @@ function diveWhen(l){
   if(diff<0)return d.toLocaleDateString("nb-NO",{day:"numeric",month:"short"});if(diff===0)return "i dag"+tm;if(diff===1)return "i går"+tm;if(diff<7)return diff+" dager siden";
   return d.toLocaleDateString("nb-NO",{day:"numeric",month:"short"});
 }
-/* activity lives behind the bell next to the list title: dives and logs first, "Alt" adds new sites and visibility reports */
-S.actOpen=false;S.actAll=false;S.actSeen=+(lsGet("dk-actseen")||0)||Date.now()-7*864e5;S.actSeenPrev=S.actSeen;
+/* activity lives behind the bell in the header (and in the map tools when the map is maximised): dives and logs first, "Alt" adds new sites and visibility reports */
+S.actOpen=false;S.actAll=false;S.actAnchor="hdr";S.actFresh=-1;S.actSeen=+(lsGet("dk-actseen")||0)||Date.now()-7*864e5;S.actSeenPrev=S.actSeen;
 function toggleAct(force){S.actOpen=force!=null?force:!S.actOpen;if(S.actOpen){S.actSeenPrev=S.actSeen;S.actSeen=Date.now();lsSet("dk-actseen",S.actSeen)}else S.feedMore=false;renderFeed()}
-document.addEventListener("click",e=>{if(!S.actOpen)return;if(e.target.closest("#actPop")||e.target.closest("#actBtn"))return;toggleAct(false)});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.actOpen){toggleAct(false);const b=$("#actBtn");if(b)b.focus()}});
+document.addEventListener("click",e=>{if(!S.actOpen)return;if(e.target.closest("#actPop")||e.target.closest("#actBtn")||e.target.closest("#actBar"))return;toggleAct(false)});
+$("#actBtn").onclick=e=>{e.stopPropagation();S.actAnchor="hdr";toggleAct()};
+$("#actBar").onclick=e=>{e.stopPropagation();S.actAnchor="bar";toggleAct()};
+window.addEventListener("resize",()=>{if(S.actOpen)placeActPop()});
+function placeActPop(){const pop=$("#actPop");if(!pop||pop.hidden)return;
+  const a=S.actAnchor==="bar"||document.body.classList.contains("mapmax")?$("#actBar"):$("#actBtn"),r=a&&a.offsetParent?a.getBoundingClientRect():null,W=innerWidth,H=innerHeight,w=Math.min(420,W-16);
+  pop.style.width=w+"px";pop.style.left=(r?Math.min(W-w-8,Math.max(8,r.right-w)):W-w-8)+"px";
+  if(r&&r.top>H/2){pop.style.top="";pop.style.bottom=(H-r.top+8)+"px";pop.style.maxHeight=Math.max(220,r.top-16)+"px"}
+  else{const t=r?r.bottom+8:64;pop.style.bottom="";pop.style.top=t+"px";pop.style.maxHeight=Math.min(640,Math.max(220,H-t-12))+"px"}}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.actOpen){toggleAct(false);const b=S.actAnchor==="bar"?$("#actBar"):$("#actBtn");if(b)b.focus()}});
 function renderFeed(){
-  const btn=$("#actBtn"),cnt=$("#actCnt"),pop=$("#actPop");if(!btn)return;const all=feedItems();
-  const fresh=all.filter(it=>!it.mine&&it.ct>S.actSeen).length;
-  if(cnt){cnt.hidden=!fresh;cnt.textContent=fresh>9?"9+":String(fresh)}
-  btn.classList.toggle("on",S.actOpen);btn.setAttribute("aria-expanded",String(S.actOpen));
-  btn.title=fresh?`Siste aktivitet: ${fresh} ${fresh===1?"ny hendelse":"nye hendelser"} siden sist`:"Siste aktivitet: dykk, logger og nye steder";
+  const btn=$("#actBtn"),pop=$("#actPop");if(!btn)return;const all=feedItems();
+  const fresh=all.filter(it=>!it.mine&&it.ct>S.actSeen).length,grew=fresh>0&&fresh>S.actFresh;S.actFresh=fresh;
+  for(const [b,c] of [[btn,$("#actCnt")],[$("#actBar"),$("#actCntBar")]]){if(!b)continue;
+    if(c){c.hidden=!fresh;c.textContent=fresh>9?"9+":String(fresh)}
+    b.classList.toggle("has",!!fresh);b.classList.toggle("on",S.actOpen);b.setAttribute("aria-expanded",String(S.actOpen));
+    b.title=fresh?`Siste aktivitet: ${fresh} ${fresh===1?"ny hendelse":"nye hendelser"} siden sist`:"Siste aktivitet: dykk, logger og nye steder";
+    /* a short ring of the bell when something new has arrived */
+    if(grew&&!S.actOpen){b.classList.remove("ring");void b.offsetWidth;b.classList.add("ring");setTimeout(()=>b.classList.remove("ring"),1600)}}
   if(!pop)return;pop.hidden=!S.actOpen;if(!S.actOpen){pop.innerHTML="";return}
   pop.onclick=e=>e.stopPropagation(); // clicks inside re-render the panel; don't let them count as "outside"
   const items=S.actAll?all:all.filter(it=>it.kind==="dive"),N=S.feedMore?30:10,show=items.slice(0,N);
@@ -3082,6 +3109,7 @@ function renderFeed(){
   pop.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{S.actAll=b.dataset.act==="all";S.feedMore=false;renderFeed()});
   pop.querySelector(".actx").onclick=()=>toggleAct(false);
   const fm=$("#feedMore");if(fm)fm.onclick=()=>{S.feedMore=!S.feedMore;renderFeed()};
+  placeActPop();
 }
 
 /* ---------- place-name search on the map ---------- */
