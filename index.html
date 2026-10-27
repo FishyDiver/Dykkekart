@@ -619,6 +619,25 @@ body.mapmax .maptools .mndbtn{display:inline-flex;align-items:center}
 .mf-h b{color:#F1E6C8}.mf-h:hover{border-color:rgba(241,230,200,.4)}
 @media (max-width:700px){.mf-nav b{font-size:21px}.mf-nav>div{min-width:0}.mf-kpis b{font-size:20px}.mf-sec{padding:12px}.mf-cands{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.mf-ci b{font-size:14px}.mf-ci span{font-size:12.5px}.mf-vb{flex-direction:column;align-items:stretch}.mf-vote{width:100%}
   .mf-winner>div{grid-template-columns:96px 1fr}.mf-h{grid-template-columns:1fr}.mf-ds{grid-template-columns:1fr}}
+/* "Hvor dykker vi?" card and expected visibility */
+.bd{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:12px 14px 10px;margin:26px 0 14px}
+.bd-h{display:flex;align-items:flex-start;gap:10px}.bd-h>div{flex:1;min-width:0}
+.bd-h h3{margin:0;font:700 22px/1.1 "Barlow Condensed",sans-serif;color:var(--ink)}.bd-h p{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+.bd-re{flex:none;border:1px solid var(--line);background:none;color:var(--muted);border-radius:8px;width:32px;height:32px;font-size:16px;cursor:pointer}.bd-re:disabled{opacity:.4}
+.bd-f{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:10px 0 6px}.bd-f .chips{margin:0}
+.bd-f select{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 10px;font:inherit;font-size:13px;max-width:100%}
+.bd-l{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:6px}
+.bd-r{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:8px 10px;cursor:pointer;font:inherit}
+.bd-r:hover{border-color:var(--alpha)}
+.bd-n{font:700 15px Barlow,sans-serif;color:var(--muted);text-align:center}
+.bd-m{min-width:0}.bd-m b{display:block;font-size:15.5px}.bd-when{display:block;font-size:13px;color:var(--ink);opacity:.85}
+.bd-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}.bd-tags i{font-style:normal;font-size:11.5px;line-height:1.3;color:var(--muted);background:var(--soft);border-radius:6px;padding:1px 7px}
+.bd-sc{min-width:40px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 15px Barlow,sans-serif;color:#0b0f14}
+.bd-sc.l4{background:var(--lv4)}.bd-sc.l3{background:var(--lv3);color:#fff}.bd-sc.l2{background:var(--lv2)}.bd-sc.l1{background:var(--lv1);color:#e6ebf0}
+.bd-wait,.bd-none{margin:8px 0 2px;font-size:13.5px;color:var(--muted)}
+.bd-foot{margin:8px 0 0;font-size:11.5px;color:var(--muted);line-height:1.4}.bd-more{margin:6px 0 0;font-size:13px}
+.cvis-b{display:flex;gap:10px;align-items:flex-start;margin:8px 0 4px}.cvis-b svg{flex:none;margin-top:1px;color:var(--alpha)}.cvis-b strong{display:block}.cvis-b .small{display:block;margin:1px 0 0}
+.cvis-n{margin:6px 0 2px}
 /* layer panel */
 .lyrbtn{position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:2px solid rgba(0,0,0,.2);background:#fff;color:#0f2a3f;cursor:pointer;padding:0;background-clip:padding-box}
 .lyrbtn:hover{background:#f2f6f9}.lyrbtn.on{background:#0f2a3f;color:#F1E6C8}
@@ -712,7 +731,7 @@ body.replaying .zoomnote{display:none!important}
 .hud-pop b{display:block;color:#F1E6C8;font-size:14px;margin-bottom:4px}.hud-pop p{margin:2px 0}
 .hd-row{display:grid;grid-template-columns:auto auto 1fr auto;gap:8px;align-items:center;padding:2px 0;border-bottom:1px solid rgba(241,230,200,.08)}.hd-row.on{color:#7fe3a0}
 .hd-src{font-size:11px;color:#7f9fb8!important;margin-top:4px!important}.hud-pop .linkbtn{color:#8fd3ec;margin-top:6px}
-@media (max-width:700px){.hud-i .lg{display:none}.hud-i .sm{display:inline}.hud-i .sm:empty{display:none}.hud{top:52px;left:52px;max-width:calc(100% - 64px)}.hud-i{font-size:11.5px;padding:3px 7px 3px 5px;gap:4px}.hud-i svg{width:17px;height:17px}}
+@media (max-width:700px){.hud-i .lg{display:none}.hud-i .sm{display:inline}.hud-i .sm:empty{display:none}.hud{top:52px;left:52px;max-width:calc(100% - 64px)}.hud-i{font-size:11.5px;padding:3px 4px 3px 3px;gap:3px}.hud-i[data-k="moon"] .sm{display:none}.hud-i svg{width:17px;height:17px}}
 /* list title row with the activity bell (theme colours, works in light and dark mode) */
 .lhead{position:relative;display:flex;align-items:flex-start;gap:10px}.lhead-t{flex:1;min-width:0}
 .lvis{margin:3px 0 0;font-size:13px;color:var(--muted)}.lvis .linkbtn{margin:0 2px;padding:0;font-size:13px;color:var(--alpha)}.lvis .linkbtn b{color:var(--alpha)}
@@ -1092,7 +1111,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v56 (ny sesongkalender)";
+const APP_VERSION="v57 (hvor dykker vi, sikt og hav)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1214,9 +1233,9 @@ async function start(){
     .on("postgres_changes",{event:"*",schema:"public",table:"sites"},()=>debounced("sites",loadSites))
     .on("postgres_changes",{event:"*",schema:"public",table:"charts"},()=>debounced("charts",async()=>{await loadCharts();renderTabs();renderChart();if(S.view==="list")renderList()}))
     .on("postgres_changes",{event:"*",schema:"public",table:"catches"},()=>debounced("catches",loadCatches))
-    .on("postgres_changes",{event:"*",schema:"public",table:"vis_reports"},()=>debounced("vis",loadReports))
+    .on("postgres_changes",{event:"*",schema:"public",table:"vis_reports"},()=>debounced("vis",()=>{loadReports();S.allReports=null;VM.at=0;S.bd.at=0;bdSoon()}))
     .on("postgres_changes",{event:"*",schema:"public",table:"areas"},()=>debounced("areas",loadAreas))
-    .on("postgres_changes",{event:"*",schema:"public",table:"logs"},()=>debounced("logs",()=>{if(S.sel)loadLogs(S.sel);loadFeed()}))
+    .on("postgres_changes",{event:"*",schema:"public",table:"logs"},()=>debounced("logs",()=>{if(S.sel)loadLogs(S.sel);loadFeed();if(S.allLogs!=null)cachedQ("alllogs",sb.from("logs").select("*")).then(a=>{if(!a.error)S.allLogs=a.data;VM.at=0}).catch(()=>{})}))
     .subscribe();
   window.addEventListener("focus",()=>debounced("focus",async()=>{await loadSites();if(S.sel)loadLogs(S.sel)}));
 }
@@ -1236,7 +1255,7 @@ function sitePos(s,c){
   if(s.chartId===c.id&&s.x!=null)return[s.x,s.y];return null}
 function chartSites(){const c=activeChart();return allSites().map(s=>({s,p:sitePos(s,c)})).filter(o=>o.p)}
 function getSite(id){return allSites().find(s=>s.id===id)}
-function onSites(){if(S.condSel&&S.condSel!=="off")debounced("cond",refreshCond);renderPins();if(S.view==="list")renderList();else if(S.view==="site"){if(!getSite(S.sel)){S.view="list";S.sel=null;renderPanel()}else renderSiteBody()}}
+function onSites(){S.bd.at=0;bdSoon();if(S.condSel&&S.condSel!=="off")debounced("cond",refreshCond);renderPins();if(S.view==="list")renderList();else if(S.view==="site"){if(!getSite(S.sel)){S.view="list";S.sel=null;renderPanel()}else renderSiteBody()}}
 function overlay(t,p,btn){const o=$("#overlay");if(!t){o.hidden=true;return}o.hidden=false;o.innerHTML=`<div><h2>${esc(t)}</h2><p>${esc(p)}</p>${btn||""}</div>`}
 
 /* ---------- live sea chart (Leaflet) ---------- */
@@ -1367,7 +1386,7 @@ function renderFrames(){
 /* ---------- panel ---------- */
 function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="site")renderSiteView();else if(S.view==="area")renderAreaView();else if(S.view==="records")renderRecords()}
 function renderListView(){
-  panel.innerHTML=`<div id="highlights"></div><div id="dexTeaser"></div>
+  panel.innerHTML=`<div id="bestDive"></div><div id="highlights"></div><div id="dexTeaser"></div>
     <div class="lhead"><div class="lhead-t"><h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="lvis" id="lVis"></p></div>
 </div>
     <p class="small" id="condNote" style="margin:4px 0 0"></p>
@@ -1376,7 +1395,7 @@ function renderListView(){
     <div id="spWrap"></div><div id="siteList"></div><div id="unpos"></div><div id="areaList"></div><div id="chartActions"></div>`;
   $("#q").oninput=e=>{S.q=e.target.value;renderList();renderPins();renderAreas()};
   panel.querySelector(".chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;S.acc=b.dataset.a;panel.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));renderList();renderPins()};
-  renderList();try{hudSoon()}catch(e){}
+  renderList();renderBestDive();bdSoon();try{hudSoon()}catch(e){}
 }
 function siteRow(s,showHome){
   const meta=[ACCESS[s.access],depthTxt(s),s.bottom].filter(Boolean).join(", ");
@@ -2214,21 +2233,26 @@ function wxIcon(code){const c=String(code||""),night=/_night/.test(c),b=c.replac
 const WXNAME={clearsky:"Klarvær",fair:"Lettskyet",partlycloudy:"Delvis skyet",cloudy:"Skyet",fog:"Tåke",lightrain:"Lett regn",rain:"Regn",heavyrain:"Kraftig regn",lightrainshowers:"Lette regnbyger",rainshowers:"Regnbyger",heavyrainshowers:"Kraftige regnbyger",lightsnow:"Lett snø",snow:"Snø",heavysnow:"Kraftig snø",snowshowers:"Snøbyger",lightsleet:"Lett sludd",sleet:"Sludd",sleetshowers:"Sluddbyger",rainandthunder:"Regn og torden"};
 function wxName(code){const b=String(code||"").replace(/_(day|night|polartwilight)$/,"");return WXNAME[b]||(/thunder/.test(b)?"Torden":/snow/.test(b)?"Snø":/sleet/.test(b)?"Sludd":/rain/.test(b)?"Regn":"")}
 function tideIcon(dir){return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17c2.5-2 5-2 7.5 0s5 2 7.5 0 3.5-1.2 5 0" stroke="#4fd0d6" stroke-width="2"/><path d="M2 21c2.5-2 5-2 7.5 0s5 2 7.5 0 3.5-1.2 5 0" stroke="#4fd0d6" stroke-width="2" opacity=".5"/>${dir>0?'<path d="M12 12V3M8.5 6.5 12 3l3.5 3.5" stroke="#F1E6C8" stroke-width="2"/>':dir<0?'<path d="M12 3v9M8.5 8.5 12 12l3.5-3.5" stroke="#F1E6C8" stroke-width="2"/>':'<path d="M7 8h10" stroke="#F1E6C8" stroke-width="2.4"/>'}</svg>`}
+function seaIcon(){return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><path d="M2 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0" stroke="#8fd3ec" stroke-width="2"/><path d="M2 13c2-2 4-2 6 0s4 2 6 0 4-2 6 0" stroke="#4fd0d6" stroke-width="2"/><path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0" stroke="#4fd0d6" stroke-width="2" opacity=".5"/></svg>`}
 function sunIcon(down){return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><path d="M7 16a5 5 0 0 1 10 0" fill="#F3C04A" stroke="#F3C04A" stroke-width="1.5"/><path d="M3 16h18" stroke="#F1E6C8" stroke-width="2"/><path d="M12 3v4M9.5 5.5 12 ${down?7:3}l2.5 ${down?-1.5:2.5}" stroke="#F3C04A" stroke-width="2"/><path d="M5 20h14" stroke="#F1E6C8" stroke-width="1.5" opacity=".5"/></svg>`}
 const MOON_SHORT={"Nymåne":"Nymåne","Voksende månesigd":"Månesigd","Første kvarter":"1. kvarter","Voksende måne":"Voksende","Fullmåne":"Fullmåne","Minkende måne":"Minkende","Siste kvarter":"Siste kvarter","Minkende månesigd":"Månesigd"};
 S.hud={open:null,at:null,wx:null,td:null,seq:0};
 function hudPoint(){if(S.view==="site"){const st=getSite(S.sel);if(st&&st.lat!=null&&st.lon!=null)return{lat:st.lat,lon:st.lon,label:st.name,site:st}}
   if(!S.lmap)return null;const c=S.lmap.getCenter();return{lat:Math.round(c.lat*10)/10,lon:Math.round(c.lng*5)/5,label:"kartets midte"}}
 async function loadHud(){const pt=hudPoint();if(!pt)return;const seq=++S.hud.seq;S.hud.at=pt;
-  const [fr,tr]=await Promise.allSettled([getForecast(pt.lat,pt.lon),getTide(pt.lat,pt.lon)]);if(seq!==S.hud.seq)return;
-  S.hud.wx=fr.status==="fulfilled"?fr.value:null;S.hud.td=tr.status==="fulfilled"?tr.value:null;renderHud()}
+  const [fr,tr,orr]=await Promise.allSettled([getForecast(pt.lat,pt.lon),getTide(pt.lat,pt.lon),getOcean(pt.lat,pt.lon)]);if(seq!==S.hud.seq)return;
+  S.hud.wx=fr.status==="fulfilled"?fr.value:null;S.hud.td=tr.status==="fulfilled"?tr.value:null;S.hud.oc=orr.status==="fulfilled"?orr.value:null;renderHud()}
 let hudT=null;function hudSoon(){clearTimeout(hudT);hudT=setTimeout(()=>{loadHud().catch(()=>{})},700)}
 function hudSlackSite(){const pt=S.hud.at;const sel=S.view==="site"&&getSite(S.sel);if(sel&&hasSlack(sel))return sel;
   const list=allSites().filter(hasSlack);if(!list.length||!pt)return null;let best=null,bd=1e9;
   for(const st of list){const dy=st.lat-pt.lat,dx=(st.lon-pt.lon)*Math.cos(pt.lat*Math.PI/180),d=dx*dx+dy*dy;if(d<bd){bd=d;best=st}}return Math.sqrt(bd)<1.2?best:null}
 function hudItems(){const pt=S.hud.at;if(!pt)return[];const now=Date.now(),out=[];
   const w=S.hud.wx?windAt(S.hud.wx,now):null;
+  const sea=S.hud.oc?oceanAt(S.hud.oc,now):null;
   if(w)out.push({k:"wx",ic:wxIcon(w[5]),tx:`${w[4]!=null?fnum(w[4],0)+"°":""} ${fnum(w[2],0)} m/s`,sx:w[4]!=null?fnum(w[4],0)+"°":`${fnum(w[2],0)} m/s`,ti:`${wxName(w[5])||"Vær"}, ${fnum(w[2],0)} m/s fra ${DIRS[Math.round(w[1]/45)%8]}`});
+  if(sea&&(sea[1]!=null||sea[3]!=null)){const sec=sea[2]!=null?DIRS[Math.round(sea[2]/45)%8]:"";
+    out.push({k:"sea",ic:seaIcon(),tx:[sea[1]!=null?fnum(sea[1],1)+" m":"",sea[3]!=null?fnum(sea[3],0)+"°":""].filter(Boolean).join(" · "),sx:sea[1]!=null?fnum(sea[1],1)+"m":fnum(sea[3],0)+"°",
+      ti:`Hav: ${[sea[1]!=null?`bølger ${fnum(sea[1],1)} m${sec?" fra "+sec:""}`:"",sea[3]!=null?`sjø ${fnum(sea[3],1)} °C`:""].filter(Boolean).join(", ")}`})}
   const td=S.hud.td;if(td&&td.ext){const prev=td.ext.filter(e=>e[0]<=now).pop(),next=td.ext.find(e=>e[0]>now);
     if(next){const near=prev&&now-prev[0]<25*60e3?prev:next[0]-now<25*60e3?next:null;
       const dir=near?0:next[2]==="high"?1:-1,lbl=near?(near[2]==="high"?"Flo nå":"Fjære nå"):`${next[2]==="high"?"Flo":"Fjære"} ${hm(next[0])}`;
@@ -2247,6 +2271,8 @@ function hudItems(){const pt=S.hud.at;if(!pt)return[];const now=Date.now(),out=[
 function hudDetail(k){const pt=S.hud.at,now=Date.now();if(!pt)return"";
   if(k==="wx"&&S.hud.wx){const rows=S.hud.wx.series.filter(e=>e[0]>=now-1800e3).filter((e,i)=>i%3===0).slice(0,6);
     return `<b>Vær ved ${esc(pt.label)}</b>${rows.map(e=>`<div class="hd-row"><span>${hm(e[0])}</span>${wxIcon(e[5])}<span>${e[4]!=null?fnum(e[4],0)+"°":""}</span><span>${fnum(e[2],0)} m/s ${DIRS[Math.round(e[1]/45)%8]}</span></div>`).join("")}<p class="hd-src">MET Norway</p>`}
+  if(k==="sea"&&S.hud.oc&&S.hud.oc.series){const rows=S.hud.oc.series.filter(e=>e[0]>=now-1800e3).filter((e,i)=>i%3===0).slice(0,6);
+    return `<b>Hav ved ${esc(pt.label)}</b>${rows.map(e=>`<div class="hd-row"><span>${hm(e[0])}</span><span>${e[1]!=null?fnum(e[1],1)+" m":"–"}${e[2]!=null?" "+DIRS[Math.round(e[2]/45)%8]:""}</span><span>${e[3]!=null?fnum(e[3],1)+" °C":""}</span></div>`).join("")}<p class="hd-src">Bølger og sjøtemperatur · MET Norway</p>`}
   if(k==="td"&&S.hud.td){const nx=S.hud.td.ext.filter(e=>e[0]>now-3600e3).slice(0,4);return `<b>Tidevann ved ${esc(pt.label)}</b>${nx.map(e=>`<div class="hd-row"><span>${e[2]==="high"?"Flo":"Fjære"}</span><span>${esc(dayLbl(e[0])==="i dag"?"":dayLbl(e[0])+" ")}${hm(e[0])}</span><span>${Math.round(e[1])} cm</span></div>`).join("")}<p class="hd-src">Kartverket${S.hud.td.station?" · "+esc(S.hud.td.station):""}</p>`}
   if(k==="moon"){const m=moonInfo(now),d=x=>dayLbl(x)==="i dag"?"i dag":dayLbl(x);return `<b>${m.name} · ${Math.round(m.illum*100)} %</b><p>${m.tide==="spring"?"Springflo nå: sterk strøm og stor forskjell mellom flo og fjære.":m.tide==="nipp"?"Nippflo nå: svak strøm og liten forskjell mellom flo og fjære.":m.nextSpring<m.nextNeap?`Mot springflo (${esc(d(m.nextSpring))}).`:`Mot nippflo (${esc(d(m.nextNeap))}).`}</p>`}
   if(k==="sun"){const st=sunDay(now,pt.lat,pt.lon).sun;return `<b>Sol ved ${esc(pt.label)}</b><p>${st.never==="down"?"Midnattssol i dag.":st.never==="up"?"Mørketid: sola står ikke opp i dag.":`Opp ${hm(st.rise)}, ned ${hm(st.set)} · ${durShort(st.set-st.rise)} dagslys.`}</p>`}
@@ -2503,7 +2529,7 @@ function playYear(logs,Y,label){stopReplay();document.body.classList.add("replay
   R.raf=requestAnimationFrame(tick)}
 
 /* map dots */
-function condTarget(v){const n=new Date();if(v==="now")return Date.now();if(/^\+\d+$/.test(v))return Date.now()+(+v.slice(1))*3600e3;
+function condTarget(v){const n=new Date();if(v==="now")return Date.now();if(/^t\d+$/.test(v))return +v.slice(1);if(/^\+\d+$/.test(v))return Date.now()+(+v.slice(1))*3600e3;
   const m=v.match(/^d(\d)h(\d+)$/);if(m){const d=new Date(n.getFullYear(),n.getMonth(),n.getDate()+(+m[1]),+m[2]);return d.getTime()}return null}
 function condDot(s){if(S.condSel==="off"||s.lat==null)return"";const st=S.cond[s.id];if(!st)return"";
   return `<span class="cdot" style="background:${LV[st.lvl][1]}" title="${esc(LV[st.lvl][0])}"></span>`}
@@ -2542,7 +2568,8 @@ async function renderCond(s){
   const el=$("#condBox");if(!el)return;
   if(s.lat==null||s.lon==null){el.innerHTML=`<div class="cond"><p class="small" style="margin:0">Legg inn posisjon (eller plasser stedet på sjøkartet) for å få vær og tidevann.</p></div>`;return}
   const now=Date.now(),T=condTarget(S.siteT)||now,fut=T-now>20*60e3,when=whenTxt(T);
-  const chips=`<div class="ctimes" role="group" aria-label="Vis forhold for">${CTIMES.map(([v,l])=>`<button type="button" class="chip${S.siteT===v?" on":""}" data-t="${v}" aria-pressed="${S.siteT===v}">${l}</button>`).join("")}</div>`;
+  const ctl=/^t\d+$/.test(S.siteT)?[[S.siteT,(d=>d[0].toUpperCase()+d.slice(1))(dayLbl(T))+" "+hm(T)]]:[];
+  const chips=`<div class="ctimes" role="group" aria-label="Vis forhold for">${[...ctl,...CTIMES].map(([v,l])=>`<button type="button" class="chip${S.siteT===v?" on":""}" data-t="${v}" aria-pressed="${S.siteT===v}">${l}</button>`).join("")}</div>`;
   const wire=()=>{const c=el.querySelector(".ctimes");if(c)c.onclick=e=>{const b=e.target.closest("[data-t]");if(!b||b.dataset.t===S.siteT)return;S.siteT=b.dataset.t;
     if(S.condSel!=="off"){const sel=$("#condSel");if(sel){sel.value=S.siteT;S.condSel=S.siteT;lsSet("dk-cond",S.condSel);refreshCond()}}renderCond(s)}};
   if(!el.querySelector(".ctimes")){el.innerHTML=`<div class="cond">${chips}<p class="small" style="margin:0">Henter vær og tidevann…</p></div>`;wire()}
@@ -2561,6 +2588,7 @@ async function renderCond(s){
     }else if(fut)h+=`<p class="small" style="margin:0 0 6px">Vindvarselet rekker ikke til ${esc(when)}.</p>`;
     h+=windStrip(s,fc,now,T,hz)+waveStrip(s,oc,now,T,hz);
   }else{h+=`<p class="small err" style="margin:0 0 8px">Vær: ${esc(fr.reason?.message||"kunne ikke hentes")}</p>`;if(vT)h+=`<p style="margin:0 0 4px">Hav ${esc(when)}: ${esc(oceanLine(vT))}</p>`+waveStrip(s,oc,now,T,hz)}
+  h+=`<div class="cvis" id="cVis"></div>`;
   h+=sunLine(s.lat,s.lon,T,fut)+moonLine(T,tr.status==="fulfilled"?tr.value:null);
   if(tr.status==="fulfilled"){
     const td=tr.value,from=fut?T-6.5*3600e3:now,next=td.ext.filter(e=>e[0]>from).slice(0,4);
@@ -2575,8 +2603,8 @@ async function renderCond(s){
     else if((s.tideMode||"none")==="none")winTxt=`<p class="small" style="margin:4px 0 0">Sett dykkevindu under Rediger for å få «neste gode tidspunkt».</p>`;
     h+=tideCurve(td,wins,now,T,Math.max(36*3600e3,T-now+8*3600e3))+winTxt;
   }else h+=`<p class="small" style="margin:6px 0 0">Tidevann: ${esc(tr.reason?.message||"kunne ikke hentes")}. <a href="https://kartverket.no/til-sjos/se-havniva" target="_blank" rel="noopener">Se havnivå hos Kartverket</a></p>`;
-  h+=`<p class="small" style="margin:8px 0 0">Vær og havvarsel fra MET Norway, tidevann fra Kartverket (CC BY 4.0). Varsel, ikke garanti: sjekk forholdene selv.</p>`;
-  el.innerHTML=`<div class="cond">${chips}${h}</div>`;wire();
+  h+=`<p class="small" style="margin:8px 0 0">Vær og havvarsel fra MET Norway, tidevann fra Kartverket (CC BY 4.0), nedbør til siktprognosen fra Open-Meteo. Varsel, ikke garanti: sjekk forholdene selv.</p>`;
+  el.innerHTML=`<div class="cond">${chips}${h}</div>`;wire();fillVis(s,T);
 }
 function tMark(x,T,now,t0,t1,H){return T-now>20*60e3&&T>=t0&&T<=t1?`<line x1="${x(T).toFixed(1)}" x2="${x(T).toFixed(1)}" y1="-2" y2="${H+2}" stroke="var(--magenta)" stroke-width="2"/>`:""}
 function windStrip(s,fc,now,T=now,hz=48*3600e3){
@@ -3048,6 +3076,178 @@ function waveStrip(s,oc,now,T=now,hz=48*3600e3){
     bars+=`<rect x="${x0.toFixed(1)}" y="${(H-h).toFixed(1)}" width="${Math.max(1,x1-x0-1).toFixed(1)}" height="${h.toFixed(1)}" fill="${LV[st.lvl][1]}"><title>${esc(dayLbl(p[0]))} ${hm(p[0])}: bølger ${fnum(p[1],1)} m${st.sec?" fra "+st.sec:""}</title></rect>`});
   return `<p class="small" style="margin:6px 0 2px">Bølger fremover</p><svg class="spark" viewBox="0 -2 ${W} ${H+4}" width="100%" role="img" aria-label="Bølgehøyde fremover">${bars}${tMark(x,T,now,t0,t1,H)}</svg>`;
 }
+
+/* ---------- visibility forecast: learns from the group's own visibility reports ----------
+   expected visibility = group average + season (month) + the site's own level + effect of rain the last 3 days and strong wind the last 2 days.
+   The rain/wind effects start from a rough rule of thumb and are adjusted by the group's reports. A fresh report nearby weighs most. */
+const VIS_MIN=6,VM={model:null,at:0,busy:null},OMW={},OMP={};
+const omGrid=(lat,lon)=>[Math.round(lat/0.2)*0.2,Math.round(lon/0.4)*0.4];
+const omKey=g=>g[0].toFixed(1)+","+g[1].toFixed(1);
+async function omFetch(url){const r=await fetch(url);if(!r.ok)throw new Error("Open-Meteo "+r.status);const j=await r.json();const d=j&&j.daily;if(!d||!d.time)throw new Error("Open-Meteo: tomt svar");
+  const out={};d.time.forEach((t,i)=>{const p=d.precipitation_sum?d.precipitation_sum[i]:null,w=d.wind_speed_10m_max?d.wind_speed_10m_max[i]:null;if(p!=null||w!=null)out[t]=[p,w]});return out}
+/* daily rain (mm) and max wind (m/s) for a ~20 km grid cell: recent 3 months + 4 days ahead, older days from the archive when needed */
+async function omDays(g,fromDate){const k=omKey(g),base=`latitude=${g[0].toFixed(2)}&longitude=${g[1].toFixed(2)}&daily=precipitation_sum,wind_speed_10m_max&timezone=Europe%2FOslo&wind_speed_unit=ms`;
+  const pk=k+"|"+(fromDate||"");if(OMP[pk])return OMP[pk];
+  OMP[pk]=(async()=>{let f=OMW["f"+k]||lsGet("omf:"+k);
+    if(!f||f.exp<Date.now()){f={exp:Date.now()+3*3600e3,days:await omFetch(`https://api.open-meteo.com/v1/forecast?${base}&past_days=92&forecast_days=4`)};OMW["f"+k]=f;lsSet("omf:"+k,f)}
+    const days=Object.assign({},f.days),cut=isoDay(new Date(Date.now()-88*864e5));
+    if(fromDate&&fromDate<cut){let a=OMW["a"+k]||lsGet("oma:"+k);
+      if(!a||a.exp<Date.now()||a.from>fromDate){try{a={exp:Date.now()+14*864e5,from:fromDate,days:await omFetch(`https://archive-api.open-meteo.com/v1/archive?${base}&start_date=${fromDate}&end_date=${isoDay(new Date(Date.now()-86*864e5))}`)};OMW["a"+k]=a;lsSet("oma:"+k,a)}catch(e){a=null}}
+      if(a)for(const [d,v] of Object.entries(a.days))if(!(d in days))days[d]=v}
+    return days})().finally(()=>{delete OMP[pk]});
+  return OMP[pk]}
+function wxFeat(days,t){if(!days)return null;const d=new Date(t),h=d.getHours()+d.getMinutes()/60,at=i=>{const x=new Date(d);x.setDate(x.getDate()+i);return days[isoDay(x)]};
+  const p=[at(-3),at(-2),at(-1),at(0)];if(p.slice(0,3).some(v=>!v||v[0]==null))return null;
+  const r3=p[0][0]+p[1][0]+p[2][0]+(p[3]&&p[3][0]!=null?p[3][0]*h/24:0),w2=Math.max(p[1][1]??0,p[2][1]??0);
+  return {r3,w2,x1:r3,x2:Math.max(0,w2-8)}}
+function visObs(){const out=[];
+  for(const l of S.allLogs||[])if(l.vis!=null&&l.vis!==""&&l.date){const t=Date.parse(l.date+"T"+(l.time_of_day?String(l.time_of_day).slice(0,5):"12:00")+":00");if(isFinite(t))out.push({t,vis:+l.vis,site:l.site_id})}
+  for(const r of S.allReports||[])if(r.vis!=null&&r.note!=="Fra dykkelogg"){const t=Date.parse(r.created_at);if(isFinite(t))out.push({t,vis:+r.vis,site:r.site_id})}
+  return out.filter(o=>o.vis>0&&o.vis<60&&o.t<=Date.now()+36e5)}
+function fitVis(obs){const n=obs.length,mu=obs.reduce((a,o)=>a+o.vis,0)/n,A0=-0.06,C0=-0.25,W=obs.filter(o=>o.f);
+  const c1=W.length?W.reduce((a,o)=>a+o.f.x1,0)/W.length:6,c2=W.length?W.reduce((a,o)=>a+o.f.x2,0)/W.length:0.5;
+  let a=A0,c=C0,b=Array(12).fill(0),off={};const wx=o=>o.f?a*(o.f.x1-c1)+c*(o.f.x2-c2):0,mon=o=>new Date(o.t).getMonth();
+  for(let it=0;it<3;it++){
+    const sw=Array(12).fill(0),sr=Array(12).fill(0);
+    for(const o of obs){const m=mon(o),r=o.vis-mu-(off[o.site]||0)-wx(o);for(const [dm,w] of [[0,1],[1,.5],[-1,.5]]){const k=(m+dm+12)%12;sw[k]+=w;sr[k]+=w*r}}
+    b=sr.map((v,k)=>v/(sw[k]+4));
+    const ss={},sn={};for(const o of obs){const r=o.vis-mu-b[mon(o)]-wx(o);ss[o.site]=(ss[o.site]||0)+r;sn[o.site]=(sn[o.site]||0)+1}
+    off={};for(const k in ss)off[k]=ss[k]/(sn[k]+3);
+    if(W.length){let s11=0,s12=0,s22=0,s1e=0,s2e=0;
+      for(const o of W){const x1=o.f.x1-c1,x2=o.f.x2-c2,e=o.vis-mu-b[mon(o)]-(off[o.site]||0);s11+=x1*x1;s12+=x1*x2;s22+=x2*x2;s1e+=x1*e;s2e+=x2*e}
+      const l1=6*Math.max(s11/W.length,1e-3),l2=6*Math.max(s22/W.length,1e-3),M11=s11+l1,M22=s22+l2,det=M11*M22-s12*s12;
+      if(Math.abs(det)>1e-9){a=((s1e+l1*A0)*M22-(s2e+l2*C0)*s12)/det;c=(M11*(s2e+l2*C0)-s12*(s1e+l1*A0))/det}
+      a=Math.max(-0.4,Math.min(0.05,a));c=Math.max(-1.2,Math.min(0.1,c))}}
+  const res=obs.map(o=>Math.abs(o.vis-mu-b[mon(o)]-(off[o.site]||0)-wx(o))).sort((x,y)=>x-y),mad=res[Math.floor(res.length/2)]||1;
+  const siteN={};for(const o of obs)siteN[o.site]=(siteN[o.site]||0)+1;
+  return {ok:true,n,nW:W.length,mu,b,off,a,c,c1,c2,sd:Math.max(1.5,1.4826*mad)*(1+2/Math.sqrt(n)),siteN,obs}}
+async function visModel(force){
+  if(VM.model&&!force&&Date.now()-VM.at<30*60e3)return VM.model;
+  if(VM.busy)return VM.busy;
+  VM.busy=(async()=>{
+    const jobs=[];if(S.allLogs==null)jobs.push(cachedQ("alllogs",sb.from("logs").select("*")).then(a=>{if(!a.error)S.allLogs=a.data}));
+    if(S.allReports==null)jobs.push(cachedQ("allreports",sb.from("vis_reports").select("*")).then(a=>{S.allReports=a.error?[]:a.data}));
+    await Promise.all(jobs);
+    const obs=visObs();if(obs.length<VIS_MIN){VM.model={ok:false,n:obs.length};VM.at=Date.now();return VM.model}
+    const grids={};for(const o of obs){const st=getSite(o.site);if(!st||st.lat==null||st.lon==null)continue;const g=omGrid(st.lat,st.lon),k=omKey(g);o.g=k;
+      const G=grids[k]||(grids[k]={g,from:"9999"}),d=isoDay(new Date(o.t-4*864e5));if(d<G.from)G.from=d}
+    await Promise.all(Object.values(grids).map(G=>omDays(G.g,G.from).then(d=>{G.days=d}).catch(()=>{})));
+    for(const o of obs){const G=o.g&&grids[o.g];o.f=G&&G.days?wxFeat(G.days,o.t):null}
+    const m=fitVis(obs);m.wxOk=Object.values(grids).some(G=>G.days);VM.model=m;VM.at=Date.now();return m})().finally(()=>{VM.busy=null});
+  return VM.busy}
+function recentVis(m,s,t){const now=Date.now();let best=null;
+  for(const o of m.obs){if(o.t>now||o.t>t+36e5||t-o.t>72*3600e3)continue;
+    let near=o.site===s.id;if(!near){const q=getSite(o.site);if(q&&q.lat!=null&&s.lat!=null){const dy=(q.lat-s.lat)*111,dx=(q.lon-s.lon)*111*Math.cos(s.lat*Math.PI/180);near=dx*dx+dy*dy<9}}
+    if(near&&(!best||o.t>best.t))best=o}
+  return best}
+function visPredict(m,s,t,days){if(!m||!m.ok)return null;const f=wxFeat(days,t);
+  let v=m.mu+m.b[new Date(t).getMonth()]+(m.off[s.id]||0)+(f?m.a*(f.x1-m.c1)+m.c*(f.x2-m.c2):0);
+  const rr=recentVis(m,s,t);let w=0;if(rr){w=0.7*Math.exp(-Math.max(0,(t-rr.t)/3600e3)/30);v=w*rr.vis+(1-w)*v}
+  v=Math.max(0.5,Math.min(30,v));const sd=m.sd*(1-0.5*w);
+  return {v,lo:Math.max(0.5,v-0.8*sd),hi:Math.min(35,v+0.8*sd),f,rr,wx:!!m.wxOk,n:m.n,siteN:m.siteN[s.id]||0,conf:m.n>=40?"god":m.n>=15?"middels":"lav",rain:f?m.a*(f.x1-m.c1):0}}
+async function visFor(s,t){const m=await visModel();if(!m.ok)return {none:true,n:m.n};
+  let days=null;try{days=await omDays(omGrid(s.lat,s.lon))}catch(e){}
+  return visPredict(m,s,t,days)}
+function visRange(p){const lo=Math.round(p.lo),hi=Math.round(p.hi);return lo===hi?`ca. ${lo} m`:`${lo}–${hi} m`}
+function visWhy(p){const bits=[`${p.conf} sikkerhet: ${p.n} siktmålinger${p.siteN?`, ${p.siteN} herfra`:", ingen herfra ennå"}`];
+  if(p.f)bits.push(`regn siste 3 døgn ${fnum(p.f.r3,0)} mm${Math.abs(p.rain)>=0.5?` (${p.rain<0?"trekker ned":"hever"} ca. ${fnum(Math.abs(p.rain),0)} m)`:""}`);
+  if(!p.f&&!p.wx)bits.push("uten nedbørsdata akkurat nå");
+  if(p.rr)bits.push(`siste rapport ${fnum(p.rr.vis,0)} m ${ago(new Date(p.rr.t).toISOString())}`);
+  return bits.join(" · ")}
+function visHTML(p){if(!p)return "";
+  if(p.none)return `<p class="small cvis-n">Siktprognose: kommer når gjengen har ${VIS_MIN} siktmålinger (har ${p.n}). Fyll inn sikt når dere logger dykk.</p>`;
+  return `<div class="cvis-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><div><strong>Ventet sikt ${visRange(p)}</strong><span class="small">${esc(visWhy(p))}</span></div></div>`}
+async function fillVis(s,T){const el=$("#cVis");if(!el)return;el.innerHTML=`<p class="small cvis-n">Ventet sikt: regner ut …</p>`;
+  let p=null;try{p=await visFor(s,T)}catch(e){p=null}
+  const e2=$("#cVis");if(!e2||S.sel!==s.id)return;e2.innerHTML=visHTML(p)}
+
+/* ---------- "Hvor dykker vi?": the best time at every site, ranked ---------- */
+S.bd={res:null,at:0,busy:false,key:"",when:lsGet("dk-bdw")||"48",sp:lsGet("dk-bdsp")||"",all:false,prog:[0,0],m:null};
+function bdRange(when){const now=Date.now(),d0=new Date();d0.setHours(0,0,0,0);
+  if(when==="idag")return [now,d0.getTime()+864e5];if(when==="imorgen")return [d0.getTime()+864e5,d0.getTime()+2*864e5];return [now,now+48*3600e3]}
+async function bdPool(items,n,fn){let i=0;await Promise.all(Array.from({length:Math.min(n,items.length)},async()=>{while(i<items.length){await fn(items[i++])}}))}
+function bdSpecies(s,mo,sp,rid){const here=new Set(S.catches.filter(c=>c.site_id===s.id).map(c=>c.species)),txt=String(s.species||"").toLocaleLowerCase("nb");
+  if(sp){if(!here.has(sp)&&!txt.includes(sp.toLocaleLowerCase("nb")))return {ok:false};const lv=seaLevels(sp,rid).lv[mo];return {ok:true,bonus:[-20,-10,0,5,10][lv]||0,names:lv>=3?[sp]:[]}}
+  const L=[...here].map(x=>[x,seaLevels(x,rid).lv[mo]]).filter(x=>x[1]>=3).sort((a,b)=>b[1]-a[1]);
+  return {ok:true,bonus:Math.min(6,2*L.length),names:L.slice(0,2).map(x=>x[0])}}
+async function bdSite(s,m,T0,T1,sp){
+  const tideOn=(s.tideMode||"none")!=="none",sl=hasSlack(s);
+  const [fr,orr,tr,svr,wr]=await Promise.allSettled([getForecast(s.lat,s.lon),getOcean(s.lat,s.lon),tideOn?getTide(s.lat,s.lon):null,sl?slackFor(s):null,m&&m.ok?omDays(omGrid(s.lat,s.lon)):null]);
+  const fc=fr.status==="fulfilled"?fr.value:null;if(!fc||!fc.series||!fc.series.length)return {s,err:"værvarsel mangler"};
+  const oc=orr.status==="fulfilled"?orr.value:null,td=tr.status==="fulfilled"?tr.value:null,sv=svr.status==="fulfilled"?svr.value:null,days=wr.status==="fulfilled"?wr.value:null;
+  if(sl&&!sv)return {s,err:"tidevann mangler"};
+  const rid=siteRegionId(s.id),wins=td?tideWindows(s,td):[],fcEnd=fc.series[fc.series.length-1][0];
+  let ts=[];
+  if(sv)ts=sv.ev.filter(e=>e.t>=T0&&e.t<=T1).map(e=>e.t);
+  else{for(let t=Math.ceil(T0/3600e3)*3600e3;t<=T1;t+=3600e3)ts.push(t);for(const w of wins){const c=(w[0]+w[1])/2;if(c>=T0&&c<=T1)ts.push(c)}}
+  ts=ts.filter(t=>t<=fcEnd+1800e3).sort((a,b)=>a-b);
+  const spc={},slots=[];let closed=false;
+  for(const t of ts){
+    const light=lightAt(t,s.lat,s.lon);if(light==="mørkt")continue;
+    const st=combinedStatus(s,fc,oc,t);if(!st||st.lvl===2)continue;
+    const mo=new Date(t).getMonth(),spi=spc[mo]||(spc[mo]=bdSpecies(s,mo,sp,rid));if(!spi.ok)return {s,skip:true};
+    if(sp){const r=rulesFor(sp,rid);if(r&&inClosed(r,isoDay(new Date(t)))){closed=true;continue}}
+    let sc=100,win=null;
+    if(st.lvl===1)sc-=30;
+    if(st.sp!=null)sc-=Math.max(0,st.sp-2)*(st.lee?2:3.5);
+    if(st.wave&&st.wave.wh!=null)sc-=st.wave.wh*(st.wave.lee?15:28);
+    if(light==="skumring")sc-=20;
+    if(sv){const e=sv.ev.find(e=>t>=e.a-60e3&&t<=e.b+60e3);if(!e)continue;win={a:e.a,b:e.b,slack:true}}
+    else if(wins.length){const w=wins.find(w=>t>=w[0]&&t<=w[1]);if(w)win={a:w[0],b:w[1]};else sc-=25}
+    const vp=m&&m.ok?visPredict(m,s,t,days):null;if(vp)sc+=Math.max(-15,Math.min(8,(vp.v-7)*2.5));
+    sc+=spi.bonus;
+    slots.push({t,sc:Math.max(0,Math.min(100,Math.round(sc))),st,light,win,vp,spi})}
+  if(!slots.length)return {s,none:true,closed};
+  let bi=0;slots.forEach((x,i)=>{if(x.sc>slots[bi].sc)bi=i});const best=slots[bi];let a=best.t,b=best.t+3600e3;
+  if(best.win){a=best.win.a;b=best.win.b}
+  else{const hr=slots.filter(x=>!x.win||!wins.length);let i=hr.indexOf(best),j=i;
+    while(i>0&&hr[i].t-hr[i-1].t<=3600e3+1&&hr[i-1].sc>=best.sc-8)i--;while(j<hr.length-1&&hr[j+1].t-hr[j].t<=3600e3+1&&hr[j+1].sc>=best.sc-8)j++;
+    if(i>=0&&j>=0){a=hr[i].t;b=hr[j].t+3600e3}}
+  return {s,best,a,b,closed}}
+let bdT=null;function bdSoon(){clearTimeout(bdT);bdT=setTimeout(()=>{if(S.view==="list")bdCompute().catch(()=>{})},400)}
+async function bdCompute(force){const key=S.bd.when+"|"+S.bd.sp;if(S.bd.busy)return;
+  if(!force&&S.bd.res&&S.bd.key===key&&Date.now()-S.bd.at<20*60e3)return;
+  const list=allSites().filter(s=>s.lat!=null&&s.lon!=null);if(!list.length){S.bd.res=[];S.bd.at=Date.now();renderBestDive();return}
+  if(S.bd.key!==key)S.bd.res=null;S.bd.busy=true;S.bd.key=key;S.bd.prog=[0,list.length];renderBestDive();
+  let m=null;try{m=await visModel()}catch(e){}
+  const [T0,T1]=bdRange(S.bd.when),out=[];
+  await bdPool(list,4,async s=>{try{out.push(await bdSite(s,m,T0,T1,S.bd.sp))}catch(e){out.push({s,err:"feil"})}S.bd.prog[0]++;if(!S.bd.res&&S.bd.prog[0]%3===0)renderBestDive()});
+  out.sort((x,y)=>(y.best?y.best.sc:-1)-(x.best?x.best.sc:-1)||(x.best&&y.best?x.a-y.a:0)||x.s.name.localeCompare(y.s.name,"nb"));
+  S.bd.res=out;S.bd.m=m;S.bd.at=Date.now();S.bd.busy=false;renderBestDive();
+  if(S.bd.key!==S.bd.when+"|"+S.bd.sp)bdCompute()}
+function bdLvl(sc){return sc>=80?4:sc>=62?3:sc>=40?2:1}
+function bdWhen(r){const d=dayLbl(r.a);return `${d[0].toUpperCase()+d.slice(1)} ${hm(r.a)}–${hm(r.b)}`}
+function bdTags(r){const x=r.best,st=x.st,t=[];
+  if(st.sp!=null)t.push(`${fnum(st.sp,0)} m/s fra ${st.sec}${st.lee?" (le)":""}`);
+  if(st.wave&&st.wave.wh!=null)t.push(`bølger ${fnum(st.wave.wh,1)} m`);
+  if(x.win)t.push(x.win.slack?`strømstille ${hm(x.win.a)}–${hm(x.win.b)}`:"i dykkevinduet");
+  if(x.vp)t.push(`sikt ${visRange(x.vp)}`);
+  if(x.light==="skumring")t.push("skumring");
+  if(x.spi.names&&x.spi.names.length)t.push(`${joinNames(x.spi.names.map(n=>n.toLocaleLowerCase("nb")))} i sesong`);
+  return t}
+function renderBestDive(){const el=$("#bestDive");if(!el)return;const B=S.bd,cm=new Date().getMonth(),rid=curRegion();
+  const chips=[["48","48 timer"],["idag","I dag"],["imorgen","I morgen"]].map(([k,l])=>`<button type="button" class="chip${B.when===k?" on":""}" data-bw="${k}">${l}</button>`).join("");
+  const sps=seaSpecies(rid).map(x=>[x,seaLevels(x,rid).lv[cm]]).filter(x=>x[1]>=2).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],"nb")).map(x=>x[0]);
+  if(B.sp&&!sps.includes(B.sp))sps.unshift(B.sp);
+  let body="";
+  if(!B.res)body=`<p class="bd-wait">Regner ut${B.busy&&B.prog[1]?` … ${B.prog[0]} av ${B.prog[1]} steder`:" …"}</p>`;
+  else{const ok=B.res.filter(r=>r.best),none=B.res.filter(r=>r.none),err=B.res.filter(r=>r.err),skip=B.res.filter(r=>r.skip),show=B.all?ok:ok.slice(0,3),spl=B.sp?B.sp.toLocaleLowerCase("nb"):"";
+    body=ok.length?`<ol class="bd-l">${show.map((r,i)=>`<li><button type="button" class="bd-r" data-bs="${esc(r.s.id)}" data-bt="${r.best.t}"><span class="bd-n">${i+1}</span><span class="bd-m"><b>${esc(r.s.name)}</b><span class="bd-when">${esc(bdWhen(r))}</span><span class="bd-tags">${bdTags(r).map(t=>`<i>${esc(t)}</i>`).join("")}</span></span><span class="bd-sc l${bdLvl(r.best.sc)}" title="Poeng av 100">${r.best.sc}</span></button></li>`).join("")}</ol>${ok.length>3?`<button type="button" class="linkbtn bd-more" id="bdMore">${B.all?"Vis færre":`Vis alle ${ok.length}`}</button>`:""}`
+      :`<p class="bd-none">${B.sp&&skip.length===B.res.length?`Ingen steder har registrert ${esc(spl)} ennå. Logg fangsten, eller skriv arten under «Arter» på stedet.`:`Ingen steder ser dykkbare ut ${B.when==="idag"?"resten av dagen":B.when==="imorgen"?"i morgen":"de neste 48 timene"}${B.sp?` for ${esc(spl)}`:""}.`}</p>`;
+    const notes=[];
+    if(none.length)notes.push(`${none.length} ${none.length===1?"sted er":"steder er"} ikke dykkbare i perioden`);
+    if(B.sp&&skip.length&&ok.length)notes.push(`${skip.length} steder uten registrert ${spl} er skjult`);
+    if(B.res.some(r=>r.closed))notes.push(`${B.sp} er fredet deler av perioden`);
+    if(err.length)notes.push(`varsel mangler for ${err.length} ${err.length===1?"sted":"steder"}`);
+    if(B.m&&!B.m.ok)notes.push(`siktprognosen kommer når dere har ${VIS_MIN} siktmålinger (har ${B.m.n})`);
+    body+=`<p class="bd-foot">${notes.length?esc(notes.join(" · "))+". ":""}Vind og bølger fra MET, tidevann fra Kartverket, dagslys, siktprognose og sesong. Et forslag, ikke en garanti.</p>`}
+  el.innerHTML=`<section class="bd"><div class="bd-h"><div><h3>Hvor dykker vi?</h3><p>Beste tidspunkt på hvert sted</p></div><button type="button" class="bd-re" id="bdRe" title="Regn ut på nytt" aria-label="Regn ut på nytt"${B.busy?" disabled":""}>↻</button></div>
+    <div class="bd-f"><span class="chips">${chips}</span><select id="bdSp" aria-label="Art du vil jakte på"><option value="">Alle arter</option>${sps.map(x=>`<option value="${esc(x)}"${x===B.sp?" selected":""}>${esc(x)}</option>`).join("")}</select></div>${body}</section>`;
+  el.querySelectorAll("[data-bw]").forEach(b=>b.onclick=()=>{if(B.when===b.dataset.bw)return;B.when=b.dataset.bw;lsSet("dk-bdw",B.when);B.all=false;renderBestDive();bdCompute()});
+  const sel=$("#bdSp");if(sel)sel.onchange=()=>{B.sp=sel.value;lsSet("dk-bdsp",B.sp);B.all=false;renderBestDive();bdCompute()};
+  const re=$("#bdRe");if(re)re.onclick=()=>{VM.at=0;bdCompute(true)};
+  const mo=$("#bdMore");if(mo)mo.onclick=()=>{B.all=!B.all;renderBestDive()};
+  el.querySelectorAll("[data-bs]").forEach(b=>b.onclick=()=>{S.siteT="t"+b.dataset.bt;openSite(b.dataset.bs);focusSite(b.dataset.bs)})}
 
 /* ---------- toast ---------- */
 function toast(msg){let t=$("#toast");if(!t){t=document.createElement("div");t.id="toast";t.setAttribute("role","status");document.body.appendChild(t)}
