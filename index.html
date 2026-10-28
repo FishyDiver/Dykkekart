@@ -394,7 +394,8 @@ body:not(.mapmax) .side{border-radius:14px;overflow:hidden;border-left:0;box-sha
   #coord{display:none}#hint:empty{display:none}#hint{flex:1 0 100%;font-size:13px}}
 @media (max-width:860px){body:not(.mapmax) .layout{padding:8px;gap:0;grid-template-columns:1fr}body:not(.mapmax) .splitter{cursor:row-resize;height:14px}body:not(.mapmax) .splitter span{width:46px;height:5px}body.pcollapsed:not(.mapmax) .side{display:flex}body:not(.mapmax) .mapcol,body:not(.mapmax) .side{border-radius:12px}}
 
-.seabtn{border:1px solid #3f8f6a!important;background:#0d3326!important;color:#BDEBD3!important}.seabtn:hover{background:#13493a!important}
+.seabtn{border:1px solid #3f8f6a!important;background:#0d3326!important;color:#BDEBD3!important}
+.gamebtn{border:1px solid #38c6d4!important;background:linear-gradient(135deg,#0f6283,#093a55)!important;color:#E6FBFF!important;letter-spacing:.2px}.gamebtn:hover{filter:brightness(1.15)}.gamebtn span{font-weight:700}.seabtn:hover{background:#13493a!important}
 body.mapmax .maptools .seabtn{display:inline-flex;align-items:center;gap:6px}
 .sea-in{max-width:1180px}
 .seasum{display:grid;grid-template-columns:1fr;gap:8px;background:rgba(15,53,87,.55);border:1px solid rgba(159,195,224,.18);border-radius:14px;padding:12px 14px;margin:4px 0 12px}
@@ -643,7 +644,14 @@ body.mapmax .maptools .mndbtn{display:inline-flex;align-items:center}
 .gamedlg::backdrop{background:rgba(2,8,14,.7)}
 #fgCv{display:block;width:100%;height:100%;touch-action:none;cursor:none;outline:none}
 .fg-x{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(241,230,200,.35);background:rgba(4,22,36,.6);color:#F1E6C8;font-size:16px;cursor:pointer;z-index:3}
-.fg-fs{right:54px;font-size:18px;line-height:1}.gamedlg:fullscreen{width:100vw;height:100vh;max-width:none;max-height:none;border-radius:0}
+.fg-title{display:flex;align-items:center;gap:10px}
+.fg-gobtns{display:flex;gap:8px;flex-wrap:wrap}.fg-bbtn{background:transparent!important;color:#F1E6C8!important;border:1px solid rgba(227,179,65,.6)!important}
+.fg-board{list-style:none;margin:8px 0 4px;padding:0}.fg-board li{display:grid;grid-template-columns:26px 1fr auto;gap:0 10px;align-items:baseline;padding:6px 8px;border-radius:8px;color:#E3EDF4}
+.fg-board li:nth-child(odd){background:rgba(255,255,255,.045)}.fg-board li.me{background:rgba(56,198,212,.2);box-shadow:inset 0 0 0 1px rgba(56,198,212,.5)}
+.fg-board b{color:#9fc3e0;font-weight:700;text-align:right}.fg-board b.r1{color:#ffd54a}.fg-board b.r2{color:#d9e2e8}.fg-board b.r3{color:#e3a36b}
+.fg-board span{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fg-board em{font-style:normal;font-weight:700;color:#F1E6C8}
+.fg-board small{grid-column:2/4;color:#9fc3e0;font-size:12px}.fg-big em{font-weight:600;color:#cfe0ee}.fg-h3{margin:12px 0 0;font:700 17px/1.2 "Barlow Condensed",sans-serif;color:#F1E6C8}
+.fg-rank{margin:8px 0 2px;padding:8px 10px;border-radius:10px;background:rgba(227,179,65,.08);border:1px solid rgba(227,179,65,.3)}.fg-rank p{margin:0 0 4px}.fg-fs{right:54px;font-size:18px;line-height:1}.gamedlg:fullscreen{width:100vw;height:100vh;max-width:none;max-height:none;border-radius:0}
 .fg-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;z-index:2;pointer-events:none}.fg-ov[hidden]{display:none}
 .fg-card{pointer-events:auto;max-width:440px;background:rgba(4,20,34,.88);border:1px solid rgba(241,230,200,.22);border-radius:16px;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.5);backdrop-filter:blur(4px)}
 .fg-card h2{margin:0 0 8px;font:700 34px/1 "Barlow Condensed",sans-serif;color:#F1E6C8}
@@ -1025,6 +1033,11 @@ body.mapmax .recbar{display:inline-flex}
 .sc-lab .fcnt{flex:none;font:600 10.5px Barlow,sans-serif;font-style:normal;padding:1px 0 0;color:#8b97a6}
 .sc-lgbar{display:inline-block;width:14px;height:12px;background:linear-gradient(to right,#c9d3de 0 4px,transparent 4px 5px,#c9d3de 5px 9px,transparent 9px 10px,#c9d3de 10px);clip-path:polygon(0 50%,4px 50%,4px 20%,9px 20%,9px 0,14px 0,14px 100%,0 100%)}
 @media (max-width:700px){.sc-fbars{gap:2px}.sc-fb i{width:72%}.sc-fb b{font-size:9px}.sc-fnone{font-size:11px}.sc-lab .fcnt{display:none}}
+/* SeaHunter button in the header: label only on wide screens, icon below that, in the menu on the smallest phones */
+@media (max-width:1560px){.gamebtn>span{display:none}.gamebtn{padding:6px 9px!important}}
+@media (min-width:781px) and (max-width:830px){.hdrbtn>span{display:none}.hdrbtn{padding:6px 9px}}
+@media (min-width:581px) and (max-width:640px){.hdrbtn{padding:6px 7px}.top{gap:6px}}
+@media (max-width:412px){#gameHdr{display:none}}
 </style>
 </head>
 <body>
@@ -1039,6 +1052,7 @@ body.mapmax .recbar{display:inline-flex}
   <button id="dexHdr" class="hdrbtn dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span><b class="dexcnt" id="dexHdrCnt"></b></button>
   <button id="seaHdr" class="hdrbtn seabtn" type="button" title="Sesongkalender: når er artene her?"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Sesong<span class="kal">kalender</span></span></button>
   <button id="mndHdr" class="hdrbtn mndbtn" type="button" title="Månedens fangst: kåring og disipliner"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg><span>Månedens<span class="mf-l"> fangst</span></span><b class="mnddot" id="mndDot" hidden></b></button>
+  <button id="gameHdr" class="hdrbtn gamebtn" type="button" title="SeaHunter – fridykkerspillet"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="currentColor" stroke="none"/><path d="M8.4 12.1L6.2 10.2v3.8z" fill="currentColor" stroke="none"/></svg><span>SeaHunter</span></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">Nytt kartblad</button>
   <button id="actBtn" class="hdrbtn actbtn" type="button" aria-haspopup="true" aria-expanded="false" title="Siste aktivitet: dykk, logger og nye steder"><svg class="act-bell" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="act-l">Aktivitet</span><b class="actcnt" id="actCnt" hidden></b></button>
@@ -1123,7 +1137,7 @@ body.mapmax .recbar{display:inline-flex}
 <div id="newSp" class="newsp" hidden role="status"></div>
 <dialog id="imgDlg" class="imgdlg"><div class="lbwrap"><img id="imgBig" alt=""><button type="button" class="lbnav lbprev" id="lbPrev" aria-label="Forrige bilde">‹</button><button type="button" class="lbnav lbnext" id="lbNext" aria-label="Neste bilde">›</button></div><div class="lbfoot"><p id="imgCap" class="small"></p><span class="lbcount" id="lbCount"></span><form method="dialog"><button class="btn">Lukk</button></form></div></dialog>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
-<dialog id="gameDlg" class="gamedlg" aria-label="Fiskejakt"><canvas id="fgCv"></canvas><div id="fgOv" class="fg-ov"></div><button type="button" class="fg-x fg-fs" id="fgFs" aria-label="Fullskjerm" title="Fullskjerm">⛶</button><button type="button" class="fg-x" id="fgX" aria-label="Lukk spillet">✕</button></dialog>
+<dialog id="gameDlg" class="gamedlg" aria-label="SeaHunter"><canvas id="fgCv"></canvas><div id="fgOv" class="fg-ov"></div><button type="button" class="fg-x fg-fs" id="fgFs" aria-label="Fullskjerm" title="Fullskjerm">⛶</button><button type="button" class="fg-x" id="fgX" aria-label="Lukk spillet">✕</button></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
@@ -1132,7 +1146,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v66 (fiskejakt: storstup, dykketid, skudd i overflaten)";
+const APP_VERSION="v68 (SeaHunter: toppliste og siktekorn-ikon)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1671,7 +1685,7 @@ $("#menuBtn").onclick=async()=>{await loadMembers();renderMenu();mdlg.showModal(
 function renderMenu(){
   const admin=S.me.role==="admin";
   $("#menuBody").innerHTML=`<h2>Meny</h2><p class="small" style="margin:0">Versjon ${APP_VERSION}</p><p>Innlogget som <b>${esc(S.me.name)}</b> (${esc(S.user.email)})</p>
-  <div class="menu-sec fg-menu"><h3>Fiskejakt</h3><p class="small" style="margin:0 0 8px">Et lite fridykkerspill: svøm rundt fra tareskogen til sandbunnen og let etter fisken. Fire nivåer.${typeof fgBestTxt==="function"&&fgBestTxt()?` Rekorder: <b>${esc(fgBestTxt())}</b>.`:""}</p><button class="btn primary" id="mGame">Spill</button></div>
+  <div class="menu-sec fg-menu"><h3>SeaHunter</h3><p class="small" style="margin:0 0 8px">Et lite fridykkerspill: svøm rundt fra tareskogen til sandbunnen og let etter fisken. Fire nivåer.${typeof fgBestTxt==="function"&&fgBestTxt()?` Rekorder: <b>${esc(fgBestTxt())}</b>.`:""}</p><button class="btn primary" id="mGame">Spill</button></div>
   <div class="menu-sec"><h3>Ditt navn</h3><form class="f" id="mName" style="display:flex;gap:8px"><input type="text" id="mNameIn" value="${esc(S.me.name)}" required><button class="btn">Lagre</button></form></div>
   <div class="menu-sec"><h3>Medlemmer</h3>${S.members.map(m=>`<div class="mrow"><span>${esc(m.name||"(uten navn)")}<br><small>${esc(m.email)}${m.role==="admin"?", administrator":""}</small></span>${admin&&m.email.toLowerCase()!==S.user.email.toLowerCase()?`<button class="btn ghost danger" data-rm="${esc(m.email)}">Fjern</button>`:""}</div>`).join("")}
   ${admin?`<form class="f" id="mAdd"><label for="mEmail">Inviter en dykkekompis (e-post)</label><div style="display:flex;gap:8px"><input type="text" id="mEmail" inputmode="email" required placeholder="kompis@epost.no"><button class="btn primary">Legg til</button></div></form>
@@ -3377,7 +3391,7 @@ function fjPopulate(){FJ.fish=[];FJ.jel=[];if(!FJ.popN)FJ.popN=fjPopN();
     const x=Math.max(d.zone[0]+20,Math.min(d.zone[1]-20,B.x+B.w*.6+fjR(20,600)));const f=fjSpawn(k,{x,noSmall:true,big:fjR(.5,.97)});if(!d.bottom)f.y=fjBed(x)-f.len*.6-fjR(15,120)}}
   for(let i=0;i<7;i++)FJ.jel.push({x:fjR(400,5800),y:fjR(80,700),r:fjR(14,26),ph:fjR(0,6),vx:fjR(-6,6),stung:0})}
 /* ----- start / stop ----- */
-function openGame(){const d=$("#gameDlg");if(!d)return;if(!d.open)d.showModal();fjResize();FJ.st="title";if(!FJ.bed)fjWorld();FJ.dv=FJ.dv||{x:900,y:20,vx:0,vy:0,face:1,kick:0};if(!FJ.fish.length)fjPopulate();
+function openGame(){const d=$("#gameDlg");if(!d)return;if(!d.open)d.showModal();fjBoardLoad().then(()=>{if(FJ.st==="board")fjOverlay()});fjResize();FJ.st="title";if(!FJ.bed)fjWorld();FJ.dv=FJ.dv||{x:900,y:20,vx:0,vy:0,face:1,kick:0};if(!FJ.fish.length)fjPopulate();
   fjOverlay();cancelAnimationFrame(FJ.raf);FJ.last=performance.now();FJ.raf=requestAnimationFrame(fjLoop)}
 function closeGame(){cancelAnimationFrame(FJ.raf);FJ.raf=0;FJ.keys={};FJ.joy=null;const d=$("#gameDlg");if(d&&d.open)d.close()}
 function fjResize(){const cv=$("#fgCv");if(!cv)return;const r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);
@@ -3554,9 +3568,25 @@ function fjDiveEvent(){const r=Math.random();
   if(r<.18){const f=fjSpawn("kveite",{away:true});f.rest=false;f.tt=fjR(15,30);f.x=Math.max(2200,Math.min(5900,FJ.dv.x+(Math.random()<.5?-1:1)*fjR(700,1400)));f.y=Math.min(fjBed(f.x)-80,fjR(500,1500))}
   else if(r<.4){const lead=fjSpawn("sei",{noSmall:true,away:true,big:fjR(.02,.4)});const m=Math.floor(fjR(10,16));for(let j=1;j<m;j++){const ox=fjR(-130,130),oy=fjR(-60,60);fjSpawn("sei",{x:lead.x+ox,y:lead.y+oy,leader:lead,ox,oy,noSmall:true,big:fjR(.02,.4)})}}
   else if(r<.45){const f=fjSpawn("torsk",{away:true,noSmall:true});const cm=fjR(FJ_SP.torsk.cm[1]*.9,FJ_SP.torsk.cm[1]);f.cm=Math.round(cm);f.len=fjLen(cm,1);f.rel=1;f.trophy=true;f.kg=Math.round(FJ_SP.torsk.k*Math.pow(cm/100,3))}}
+/* ----- toppliste: shared with the group in Supabase (seahunter.sql) ----- */
+const FJB={rows:null,err:null,loading:false,lv:null,nd:null,per:"all",saving:false};
+const fjMe=()=>typeof S!=="undefined"&&S.user?S.user.id:null;
+async function fjBoardLoad(){if(typeof sb==="undefined"||!fjMe())return;FJB.loading=true;
+  try{const {data,error}=await sb.from("game_scores").select("*").order("score",{ascending:false}).limit(2000);if(error){FJB.err=tableErr(error,"seahunter.sql");FJB.rows=[]}else{FJB.err=null;FJB.rows=data||[]}}catch(e){FJB.err="Kunne ikke hente topplista.";FJB.rows=FJB.rows||[]}
+  FJB.loading=false}
+async function fjBoardSave(){if(typeof sb==="undefined"||!fjMe()||FJ.score<=0)return;FJB.saving=true;
+  const row={player_name:(S.me&&S.me.name)||String(S.user.email||"").split("@")[0],level:FJ.lvl,dives:FJ.nDives,score:FJ.score,fish:FJ.hits,best_species:FJ.big?FJ.big.sp:"",best_kg:FJ.big?+FJ.big.kg||0:0,max_depth:+(+FJ.maxDepth||0).toFixed(1)};
+  try{const {error}=await sb.from("game_scores").insert(row);if(error)FJB.err=tableErr(error,"seahunter.sql");else await fjBoardLoad()}catch(e){FJB.err="Kunne ikke lagre på topplista (ingen nett?)."}
+  FJB.saving=false}
+/* best score per player for one level and dive count, optionally this month only */
+function fjBoardList(lv,nd,per){const mk=new Date().toISOString().slice(0,7),best=new Map();
+  for(const r of FJB.rows||[]){if(r.level!==lv||r.dives!==nd||(per==="month"&&String(r.created_at).slice(0,7)!==mk))continue;const k=r.player||r.player_name;if(!best.has(k)||best.get(k).score<r.score)best.set(k,r)}
+  return [...best.values()].sort((a,b)=>b.score-a.score)}
+function fjBoardRows(list,n){const me=fjMe();return list.length?`<ol class="fg-board">${list.slice(0,n).map((r,i)=>`<li class="${r.player===me?"me":""}"><b class="r${i<3?i+1:""}">${i+1}</b><span>${esc(r.player_name||"?")}</span><em>${r.score}</em><small>${r.fish||0} fisk${r.best_species?` · største ${esc(String(r.best_species).toLocaleLowerCase("nb"))} ${String(r.best_kg).replace(".",",")} kg`:""} · ${new Date(r.created_at).toLocaleDateString("nb",{day:"numeric",month:"short"})}</small></li>`).join("")}</ol>`:`<p class="fg-best">Ingen resultater her ennå. Bli den første!</p>`}
 function fjEnd(why){FJ.st="over";FJ.why=why;FJ.spear=null;FJ.joy=null;if(why==="blackout"){FJ.lost=FJ.hand.reduce((a,c)=>a+c.pts,0);FJ.hand=[]}else FJ.lost=0;
   if(why==="blackout"&&FJ.diving)FJ.diveScores.push(0);
-  const b=fjBest(FJ.lvl),rec=FJ.score>b&&FJ.score>0;if(rec)lsSet(`dk-fj-best-${FJ.lvl}-${FJ.nDives}`,FJ.score);FJ.best=Math.max(b,FJ.score);FJ.rec=rec;fjOverlay()}
+  const b=fjBest(FJ.lvl),rec=FJ.score>b&&FJ.score>0;if(rec)lsSet(`dk-fj-best-${FJ.lvl}-${FJ.nDives}`,FJ.score);FJ.best=Math.max(b,FJ.score);FJ.rec=rec;fjOverlay();
+  fjBoardSave().then(()=>{if(FJ.st==="over")fjOverlay()})}
 /* ----- drawing: fish that look like their real counterparts ----- */
 function fjBy(L,H,x){const u=(x+L/2)/L;return -H*(.1+.42*Math.sin(Math.PI*Math.max(0,Math.min(1,(u-.1)/.88))))}
 function fjBodyPath(g,L,H,o={}){const x0=-L/2,x1=L/2,tp=x0+L*.12,n=(o.nose||0)*H,hd=o.head||.22;g.beginPath();g.moveTo(x1,n);
@@ -3750,21 +3780,35 @@ function fjLoop(now){const d=$("#gameDlg");if(!d||!d.open){FJ.raf=0;return}const
   if(FJ.st==="play")fjUpdate(dt);
   else{for(const f of FJ.fish)fjFish(f,dt);FJ.cam.x+=dt*25;if(FJ.cam.x>FJ_WW-FJ.vw)FJ.cam.x=0;FJ.cam.y+=((FJ.st==="title"?260:FJ.cam.y)-FJ.cam.y)*dt}
   fjDraw();FJ.raf=requestAnimationFrame(fjLoop)}
+function fjRankHTML(){if(!fjMe()||FJ.score<=0)return "";if(FJB.saving)return `<p class="fg-best">Lagrer på topplista …</p>`;if(FJB.err)return `<p class="fg-warn">${esc(FJB.err)}</p>`;
+  const list=fjBoardList(FJ.lvl,FJ.nDives,"all"),me=fjMe(),i=list.findIndex(r=>r.player===me);if(i<0)return "";
+  const mine=list[i],now=mine.score===FJ.score;return `<div class="fg-rank"><p><b>${i===0?"Du leder topplista!":`Du er nr. ${i+1} av ${list.length}`}</b> på ${esc(fjL().name.toLocaleLowerCase("nb"))}, ${FJ.nDives} dykk${now?"":` (din beste: ${mine.score})`}.</p>${fjBoardRows(list,3)}</div>`}
 function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
   if(FJ.st==="play"&&!FJ.paused){ov.hidden=true;ov.innerHTML="";return}ov.hidden=false;
   if(FJ.paused){ov.innerHTML=`<div class="fg-card"><h2>Pause</h2><button type="button" class="btn primary" id="fgGo">Fortsett</button></div>`;$("#fgGo").onclick=()=>{FJ.paused=false;FJ.last=performance.now();fjOverlay()};return}
   const lvBtns=`<div class="fg-lv">${Object.entries(FJ_LV).map(([k,v])=>`<button type="button" class="fg-lvb${k===FJ.lvl?" on":""}" data-lv="${k}"><b>${v.name}</b><small>${esc(v.d)}</small><i>×${v.mult}${fjBest(k)?` · rekord ${fjBest(k)} (${FJ.nDives} dykk)`:""}</i></button>`).join("")}</div>`;
   const wireLv=()=>ov.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{FJ.lvl=b.dataset.lv;lsSet("dk-fj-lvl",FJ.lvl);fjOverlay()});
   const ctl=FJ.touch||(window.matchMedia&&matchMedia("(pointer:coarse)").matches)?"<b>Venstre tommel</b> svømmer (dra langt for å svømme fort, dra ned i overflaten for duck-dive). <b>Trykk</b> der du vil skyte.":"<b>WASD</b> svømmer, <b>Shift</b> svømmer fort, <b>S</b> i overflaten tar et duck-dive. Sikt med <b>musa</b> eller <b>piltastene</b>, skyt med <b>klikk</b> eller <b>mellomrom</b>.";
-  if(FJ.st==="title"){ov.innerHTML=`<div class="fg-card fg-wide"><h2>Fiskejakt</h2><p>${ctl}</p>
+  if(FJ.st==="title"){ov.innerHTML=`<div class="fg-card fg-wide"><h2 class="fg-title"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#38c6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="#38c6d4" stroke="none"/><path d="M8.4 12.1L6.2 10.2v3.8z" fill="#38c6d4" stroke="none"/></svg>SeaHunter</h2><p>${ctl}</p>
     <ul><li><b>Ett pust om gangen.</b> Fangsten er bare sikret når du er oppe ved bøya. Går lufta tom under vann, er det blackout.</li>
     <li><b>Tareskogen</b> (til venstre) har lyr, torsk og berggylt. <b>Dypere ute</b>: rødspette, flyndre, pigghvar, lange, hyse, steinbit, kveite, uer helt nede og den kamuflerte <b>breiflabben</b>. Jo dypere, jo større fisk og flere poeng.</li>
     <li><b>Ligg rolig</b>: fisken kommer nærmere, og du bruker under halvparten så mye luft. Jo fortere du svømmer (Shift) eller svinger harpunen, jo mer skremmes den. Sikt på hodet, og pass på minstemålet.</li>
     <li><b>De største</b> er skyest. Er du rolig lenge uten å skyte, øker sjansen for storfisk (ingen garanti). Ligg stille på bunnen (<b>ventejakt</b>) eller gjem deg i taren, bak en stein eller under berget, så tør de å komme nær.</li>
     <li><b>Strøm</b> fra normal og opp. Fisken blir skyere for hvert dykk, og ingen økt er lik.</li></ul>
     ${lvBtns}<div class="fg-go"><div class="fg-dives"><span>Antall dykk</span>${[3,5,10].map(n=>`<button type="button" class="chip${FJ.nDives===n?" on":""}" data-nd="${n}">${n}</button>`).join("")}</div>
-    <button type="button" class="btn primary fg-start" id="fgGo">Start (${esc(fjL().name)}, ${FJ.nDives} dykk)</button></div></div>`;wireLv();
+    <span class="fg-gobtns"><button type="button" class="btn fg-bbtn" id="fgBoard">Toppliste</button><button type="button" class="btn primary fg-start" id="fgGo">Start (${esc(fjL().name)}, ${FJ.nDives} dykk)</button></span></div></div>`;wireLv();
+    $("#fgBoard").onclick=()=>{FJ.boardFrom="title";FJB.lv=FJ.lvl;FJB.nd=FJ.nDives;FJ.st="board";fjOverlay();fjBoardLoad().then(()=>{if(FJ.st==="board")fjOverlay()})};
     ov.querySelectorAll("[data-nd]").forEach(b=>b.onclick=()=>{FJ.nDives=+b.dataset.nd;lsSet("dk-fj-dives",FJ.nDives);fjOverlay()});$("#fgGo").onclick=fjStart;return}
+  if(FJ.st==="board"){const lv=FJB.lv||FJ.lvl,nd=FJB.nd||FJ.nDives,per=FJB.per,list=fjBoardList(lv,nd,per);
+    const big=[...(FJB.rows||[])].filter(r=>r.best_kg>0).sort((a,b)=>b.best_kg-a.best_kg).slice(0,5);
+    const chips=(name,opts,cur)=>`<div class="fg-dives"><span>${name}</span>${opts.map(([v,l])=>`<button type="button" class="chip${String(cur)===String(v)?" on":""}" data-b${{"N":"n","D":"d","P":"p"}[name[0]]}="${v}">${l}</button>`).join("")}</div>`;
+    ov.innerHTML=`<div class="fg-card fg-wide"><h2 class="fg-title"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10M17 4v8a5 5 0 0 1-10 0V4"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0-4 0M17 9a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/></svg> Toppliste</h2>
+      ${chips("Nivå",Object.entries(FJ_LV).map(([k,v])=>[k,v.name]),lv)}${chips("Dykk",[[3,3],[5,5],[10,10]],nd)}${chips("Periode",[["all","Alltid"],["month","Denne måneden"]],per)}
+      ${FJB.err?`<p class="fg-warn">${esc(FJB.err)}</p>`:!fjMe()?`<p class="fg-best">Logg inn for å se topplista.</p>`:FJB.rows==null||FJB.loading&&!FJB.rows.length?`<p class="fg-best">Henter topplista …</p>`:fjBoardRows(list,10)}
+      ${big.length?`<h3 class="fg-h3">Største fisk i SeaHunter</h3><ol class="fg-board fg-big">${big.map((r,i)=>`<li><b class="r${i<3?i+1:""}">${i+1}</b><span>${esc(r.best_species)} ${String(r.best_kg).replace(".",",")} kg</span><em>${esc(r.player_name||"?")}</em><small>${esc(FJ_LV[r.level]?FJ_LV[r.level].name:r.level)}, ${r.dives} dykk · ${new Date(r.created_at).toLocaleDateString("nb",{day:"numeric",month:"short"})}</small></li>`).join("")}</ol>`:""}
+      <div class="fg-btns"><button type="button" class="btn primary" id="fgBack">Tilbake</button></div></div>`;
+    ov.querySelectorAll("[data-bn]").forEach(b=>b.onclick=()=>{FJB.lv=b.dataset.bn;fjOverlay()});ov.querySelectorAll("[data-bd]").forEach(b=>b.onclick=()=>{FJB.nd=+b.dataset.bd;fjOverlay()});ov.querySelectorAll("[data-bp]").forEach(b=>b.onclick=()=>{FJB.per=b.dataset.bp;fjOverlay()});
+    $("#fgBack").onclick=()=>{FJ.st=FJ.boardFrom||"title";fjOverlay()};return}
   const acc=FJ.shots?Math.round(FJ.hits/FJ.shots*100):0,list=Object.entries(FJ.caught).map(([n,c])=>`${c} ${n.toLocaleLowerCase("nb")}`).join(", ");
   const extra=[FJ.nPerf?`${FJ.nPerf} hodeskudd`:"",FJ.nTorn?`${FJ.nTorn} rev seg løs`:"",FJ.nSmall?`${FJ.nSmall} under minstemål`:""].filter(Boolean).join(" · ");
   const bo=FJ.why==="blackout";
@@ -3773,7 +3817,8 @@ function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
     <p>${FJ.hits} fisk${list?`: ${esc(list)}`:""} · treff ${acc} % (${FJ.hits} av ${FJ.shots} skudd)${FJ.big?` · største: ${esc(FJ.big.sp.toLocaleLowerCase("nb"))} ${String(FJ.big.kg).replace(".",",")} kg`:""}</p>
     <p>Poeng per dykk: ${FJ.diveScores.map(x=>x||"0").join(" · ")||"–"}</p>
     <p>Dypeste dykk ${fnum(FJ.maxDepth,1)} m · lengste dykk ${Math.round(FJ.maxDive)} s${extra?` · ${esc(extra)}`:""}</p>
-    <p class="fg-best">Rekord på ${esc(fjL().name.toLocaleLowerCase("nb"))} med ${FJ.nDives} dykk: <b>${FJ.best}</b></p><div class="fg-btns"><button type="button" class="btn primary" id="fgGo">Ny økt</button><button type="button" class="btn" id="fgLv">Bytt nivå</button><button type="button" class="btn" id="fgClose">Lukk</button></div></div>`;
+    <p class="fg-best">Din rekord på ${esc(fjL().name.toLocaleLowerCase("nb"))} med ${FJ.nDives} dykk: <b>${FJ.best}</b></p>${fjRankHTML()}<div class="fg-btns"><button type="button" class="btn primary" id="fgGo">Ny økt</button><button type="button" class="btn" id="fgBoard">Toppliste</button><button type="button" class="btn" id="fgLv">Bytt nivå</button><button type="button" class="btn" id="fgClose">Lukk</button></div></div>`;
+  $("#fgBoard").onclick=()=>{FJ.boardFrom="over";FJB.lv=FJ.lvl;FJB.nd=FJ.nDives;FJ.st="board";fjOverlay()};
   $("#fgGo").onclick=fjStart;$("#fgLv").onclick=()=>{FJ.st="title";fjOverlay()};$("#fgClose").onclick=closeGame}
 /* ----- input ----- */
 {const cv=$("#fgCv"),d=$("#gameDlg");
@@ -4497,7 +4542,7 @@ function openMf(){const dlg=$("#mndDlg");if(!dlg)return;S.mf.open=true;S.mf.mont
   Promise.all(jobs).then(()=>{if(S.mf.open)renderMf()});
   const sps=[...new Set(S.catches.map(c=>c.species))];if(sps.some(sp=>!(sp in S.spImg))&&!S.spImgBusy)loadSpImages(sps).then(()=>{if(S.mf.open)renderMf()}).catch(()=>{})}
 function closeMf(){S.mf.open=false;const d=$("#mndDlg");if(d&&d.open)d.close()}
-$("#mndHdr").onclick=openMf;$("#mndBar").onclick=openMf;
+$("#mndHdr").onclick=openMf;{const gb=$("#gameHdr");if(gb)gb.onclick=()=>openGame()}$("#mndBar").onclick=openMf;
 $("#mndDlg").addEventListener("close",()=>{S.mf.open=false});
 $("#mndDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();openLightbox(b)});
 
