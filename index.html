@@ -645,20 +645,35 @@ body.mapmax .maptools .mndbtn{display:inline-flex;align-items:center}
 #fgCv{display:block;width:100%;height:100%;touch-action:none;cursor:none;outline:none}
 .fg-x{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(241,230,200,.35);background:rgba(4,22,36,.6);color:#F1E6C8;font-size:16px;cursor:pointer;z-index:3}
 .fg-title{display:flex;align-items:center;gap:10px}
-.fg-gobtns{display:flex;gap:8px;flex-wrap:wrap}.fg-bbtn{background:transparent!important;color:#F1E6C8!important;border:1px solid rgba(227,179,65,.6)!important}
+.fg-gobtns{display:flex;gap:8px;flex-wrap:wrap}
+.fg-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-right:0}.fg-shells{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:999px;background:rgba(227,179,65,.14);border:1px solid rgba(227,179,65,.45);color:#ffe7a3;font-weight:700;font-size:14px;white-space:nowrap}
+.fg-ctl{font-size:13px!important;color:#9fc3e0!important}.fg-day{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0 4px;padding:10px 12px;border-radius:12px;background:linear-gradient(135deg,rgba(56,198,212,.18),rgba(56,198,212,.06));border:1px solid rgba(56,198,212,.45)}
+.fg-day b{color:#F1E6C8;font-size:15px}.fg-day span{color:#9fc3e0;font-size:13px}.fg-day small{display:block;color:#cfe0ee;font-size:12.5px;margin-top:2px}.fg-day small b{font-size:12.5px}.fg-day .btn{flex:none}
+.fg-sub{margin:12px 0 0;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.4px;color:#F1E6C8;text-transform:uppercase}.fg-sub small{font:500 12px Barlow,sans-serif;letter-spacing:0;text-transform:none;color:#9fc3e0}
+.fg-nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(241,230,200,.15)}.fg-nav .btn{padding:6px 11px;font-size:13.5px}
+.fg-cnt{font:600 14px Barlow,sans-serif;color:#9fc3e0;margin-left:4px}
+.fg-shop{display:grid;gap:8px;margin:10px 0}.fg-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(241,230,200,.14)}
+.fg-item b{color:#F1E6C8}.fg-item small{display:block;color:#9fc3e0;font-size:12.5px;margin-top:2px}.fg-item small b{color:#cfe0ee}.fg-tier{color:#38c6d4;letter-spacing:2px;font-size:12px}.fg-item .btn{flex:none;display:inline-flex;align-items:center;gap:5px}.fg-item .btn[disabled]{opacity:.45;cursor:not-allowed}
+.fg-badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin:10px 0}.fg-badge{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.035);border:1px dashed rgba(241,230,200,.18);opacity:.62}
+.fg-badge.got{opacity:1;border:1px solid rgba(227,179,65,.6);background:linear-gradient(135deg,rgba(227,179,65,.18),rgba(227,179,65,.05))}.fg-badge b{display:block;color:#F1E6C8;font-size:13.5px}.fg-badge small{display:block;color:#9fc3e0;font-size:11.5px;line-height:1.3;margin-top:2px}.fg-badge i{display:block;font-style:normal;font-size:11px;color:#ffe7a3;margin-top:4px}
+.fg-dex{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin:10px 0}.fg-dexi{padding:6px 8px 8px;border-radius:10px;background:rgba(255,255,255,.035);border:1px solid rgba(241,230,200,.12);text-align:center}.fg-dexi.got{border-color:rgba(56,198,212,.45)}
+.fg-dexi canvas{width:100%;max-width:150px;height:auto;aspect-ratio:300/132;display:block;margin:0 auto}.fg-dexi b{display:block;color:#F1E6C8;font-size:13.5px}.fg-dexi small{display:block;color:#9fc3e0;font-size:11.5px}
+.fg-earn{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:999px;background:rgba(227,179,65,.16);color:#ffe7a3;font-size:13px;font-weight:700;vertical-align:middle}.fg-newb{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:4px 0}.fg-newb b{color:#ffd54a;font-size:13.5px}.fg-newb span{padding:3px 9px;border-radius:999px;background:rgba(227,179,65,.12);border:1px solid rgba(227,179,65,.45);color:#ffe7a3;font-size:13px}.fg-newb i{font-style:normal;opacity:.8}
+.aico.agame{color:#38c6d4}
+@media (max-width:700px){.fg-day{flex-direction:column;align-items:stretch}.fg-day .btn{width:100%}.fg-ov{padding-top:58px}}.fg-bbtn{background:transparent!important;color:#F1E6C8!important;border:1px solid rgba(227,179,65,.6)!important}
 .fg-board{list-style:none;margin:8px 0 4px;padding:0}.fg-board li{display:grid;grid-template-columns:26px 1fr auto;gap:0 10px;align-items:baseline;padding:6px 8px;border-radius:8px;color:#E3EDF4}
 .fg-board li:nth-child(odd){background:rgba(255,255,255,.045)}.fg-board li.me{background:rgba(56,198,212,.2);box-shadow:inset 0 0 0 1px rgba(56,198,212,.5)}
 .fg-board b{color:#9fc3e0;font-weight:700;text-align:right}.fg-board b.r1{color:#ffd54a}.fg-board b.r2{color:#d9e2e8}.fg-board b.r3{color:#e3a36b}
 .fg-board span{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fg-board em{font-style:normal;font-weight:700;color:#F1E6C8}
 .fg-board small{grid-column:2/4;color:#9fc3e0;font-size:12px}.fg-big em{font-weight:600;color:#cfe0ee}.fg-h3{margin:12px 0 0;font:700 17px/1.2 "Barlow Condensed",sans-serif;color:#F1E6C8}
-.fg-rank{margin:8px 0 2px;padding:8px 10px;border-radius:10px;background:rgba(227,179,65,.08);border:1px solid rgba(227,179,65,.3)}.fg-rank p{margin:0 0 4px}.fg-fs{right:54px;font-size:18px;line-height:1}.gamedlg:fullscreen{width:100vw;height:100vh;max-width:none;max-height:none;border-radius:0}
+.fg-rank{margin:8px 0 2px;padding:8px 10px;border-radius:10px;background:rgba(227,179,65,.08);border:1px solid rgba(227,179,65,.3)}.fg-rank p{margin:0 0 4px}.fg-fs{right:54px;font-size:18px;line-height:1}.fg-snd{right:98px;display:inline-flex;align-items:center;justify-content:center}.gamedlg:fullscreen{width:100vw;height:100vh;max-width:none;max-height:none;border-radius:0}
 .fg-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;z-index:2;pointer-events:none}.fg-ov[hidden]{display:none}
 .fg-card{pointer-events:auto;max-width:440px;background:rgba(4,20,34,.88);border:1px solid rgba(241,230,200,.22);border-radius:16px;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.5);backdrop-filter:blur(4px)}
 .fg-card h2{margin:0 0 8px;font:700 34px/1 "Barlow Condensed",sans-serif;color:#F1E6C8}
 .fg-card p{margin:6px 0;font-size:14.5px;line-height:1.45;color:#cfe0ee}.fg-card ul{margin:8px 0 10px;padding-left:18px;font-size:14px;color:#cfe0ee;line-height:1.55}
 .fg-gold{color:#ffd54a}.fg-red{color:#ff8f7a}.fg-best{color:#9fc3e0!important}.fg-rec{color:#ffd54a!important;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:13px!important}
 .fg-score{font-size:16px!important}.fg-score b{font:700 48px/1 "Barlow Condensed",sans-serif;color:#F1E6C8;margin-right:6px}
-.fg-start{margin-top:10px;min-width:160px}.fg-wide{max-width:660px}.fg-card{max-height:100%;overflow:auto;box-sizing:border-box}.fg-wide .fg-lv{grid-template-columns:repeat(4,minmax(0,1fr))}
+.fg-start{margin-top:10px;min-width:160px}.fg-wide{max-width:660px;width:100%}.fg-card{max-height:100%;overflow:auto;box-sizing:border-box}.fg-wide .fg-lv{grid-template-columns:repeat(4,minmax(0,1fr))}
 .fg-go{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;margin-top:12px}.fg-go .fg-dives{margin:0}.fg-go .fg-start{margin:0}
 .fg-lv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:10px 0 2px}
 .fg-lvb{display:flex;flex-direction:column;gap:2px;text-align:left;border:1px solid rgba(241,230,200,.25);background:rgba(255,255,255,.04);color:#E3EDF4;border-radius:10px;padding:8px 10px;cursor:pointer;font:inherit}
@@ -1137,7 +1152,7 @@ body.mapmax .recbar{display:inline-flex}
 <div id="newSp" class="newsp" hidden role="status"></div>
 <dialog id="imgDlg" class="imgdlg"><div class="lbwrap"><img id="imgBig" alt=""><button type="button" class="lbnav lbprev" id="lbPrev" aria-label="Forrige bilde">‹</button><button type="button" class="lbnav lbnext" id="lbNext" aria-label="Neste bilde">›</button></div><div class="lbfoot"><p id="imgCap" class="small"></p><span class="lbcount" id="lbCount"></span><form method="dialog"><button class="btn">Lukk</button></form></div></dialog>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
-<dialog id="gameDlg" class="gamedlg" aria-label="SeaHunter"><canvas id="fgCv"></canvas><div id="fgOv" class="fg-ov"></div><button type="button" class="fg-x fg-fs" id="fgFs" aria-label="Fullskjerm" title="Fullskjerm">⛶</button><button type="button" class="fg-x" id="fgX" aria-label="Lukk spillet">✕</button></dialog>
+<dialog id="gameDlg" class="gamedlg" aria-label="SeaHunter"><canvas id="fgCv"></canvas><div id="fgOv" class="fg-ov"></div><button type="button" class="fg-x fg-snd" id="fgSnd" aria-label="Lyd av/på"></button><button type="button" class="fg-x fg-fs" id="fgFs" aria-label="Fullskjerm" title="Fullskjerm">⛶</button><button type="button" class="fg-x" id="fgX" aria-label="Lukk spillet">✕</button></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
@@ -1146,7 +1161,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v68 (SeaHunter: toppliste og siktekorn-ikon)";
+const APP_VERSION="v70 (SeaHunter: lyr i taren, ekte størrelser)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1263,7 +1278,7 @@ async function start(){
   renderTabs();renderChart();renderPanel();
   try{initCond()}catch(e){showErr("vær: "+errMsg(e))}
   try{mapSearchInit()}catch(e){}
-  loadFeed().catch(()=>{});setTimeout(()=>{try{handleHash()}catch(e){}},50);
+  loadFeed().catch(()=>{});setTimeout(()=>{try{fjFeedLoad();fjPLoad()}catch(e){}},400);setTimeout(()=>{try{handleHash()}catch(e){}},50);
   sb.channel("dykkekart")
     .on("postgres_changes",{event:"*",schema:"public",table:"sites"},()=>debounced("sites",loadSites))
     .on("postgres_changes",{event:"*",schema:"public",table:"charts"},()=>debounced("charts",async()=>{await loadCharts();renderTabs();renderChart();if(S.view==="list")renderList()}))
@@ -3304,7 +3319,7 @@ const FJ_SP={
  lyr:{name:"Lyr",pts:15,cm:[40,113],k:10.5,spd:50,zone:[0,4600],dep:[3,14],hh:.21,curious:true,small:.2,near:.4,draw:"lyr"},
  torsk:{name:"Torsk",pts:20,cm:[45,160],k:9.5,spd:40,zone:[0,5900],dep:[4,23],hh:.22,curious:true,small:.25,near:.65,draw:"torsk"},
  hyse:{name:"Hyse",pts:15,cm:[35,88],k:9,spd:45,zone:[2400,5900],dep:[12,24],hh:.21,small:.2,near:.9,few:true,draw:"hyse"},
- berggylt:{name:"Berggylt",pts:10,cm:[25,60],k:15,spd:24,zone:[0,2400],dep:[2,10],hh:.34,curious:true,near:.75,draw:"berggylt"},
+ berggylt:{name:"Berggylt",pts:10,cm:[25,60],k:15,spd:24,zone:[0,2400],dep:[2,10],hh:.34,near:.75,draw:"berggylt"},
  steinbit:{name:"Steinbit",pts:35,cm:[50,140],k:7.5,spd:16,zone:[1600,5900],bottom:true,hh:.15,tough:true,few:true,draw:"steinbit"},
  lange:{name:"Lange",pts:45,cm:[70,175],k:4.5,spd:22,zone:[3000,6000],dep:[14,26],hh:.12,near:1,tough:true,few:true,draw:"lange"},
  flyndre:{name:"Flyndre",pts:15,cm:[25,58],k:12,spd:26,zone:[1800,5200],bottom:true,hh:.38,flat:true,draw:"flyndre"},
@@ -3312,19 +3327,35 @@ const FJ_SP={
  pigghvar:{name:"Pigghvar",pts:70,cm:[30,97],k:19.5,spd:24,zone:[2000,5600],bottom:true,hh:.6,flat:true,few:true,draw:"pigghvar"},
  uer:{name:"Uer",pts:60,cm:[25,68],k:16,spd:18,zone:[4200,6000],dep:[18,28],hh:.3,near:.85,few:true,draw:"uer"},
  breiflabb:{name:"Breiflabb",pts:80,cm:[55,155],k:13,spd:0,zone:[3300,6000],bottom:true,hh:.3,camo:true,tough:true,draw:"breiflabb"},
- kveite:{name:"Kveite",pts:120,cm:[75,235],k:11.8,spd:40,zone:[2200,6000],bottom:true,hh:.42,flat:true,free:.5,tough:true,rare:true,draw:"kveite"}};
+ kveite:{name:"Kveite",pts:120,cm:[75,235],k:11.8,spd:40,zone:[300,6000],bottom:true,hh:.42,flat:true,free:.5,tough:true,rare:true,draw:"kveite"}};
 /* how many of each per session, drawn at random, so no two sessions are alike (rare species can be missing entirely) */
 const FJ_POP={sei:[7,11],lyr:[9,14],berggylt:[9,13],torsk:[4,8],makrell:[1,3],rodspette:[5,9],flyndre:[5,9],lange:[2,4],hyse:[2,4],steinbit:[2,4],pigghvar:[0,2],uer:[0,2],breiflabb:[1,2],kveite:[1,3]};
 function fjPopN(){const n={};for(const [k,[a,b]] of Object.entries(FJ_POP))n[k]=Math.floor(fjR(a,b+1));if(Math.random()<.15)n.kveite=0;if(n.breiflabb===0&&Math.random()<.5)n.breiflabb=1;return n}
 /* most fish are medium-sized, a few are trophies */
 const fjCurF=(x,y)=>Math.max(.3,Math.min(1,(fjBed(x)-y)/320));
 const fjLen=(cm,rel)=>cm/100*FJ_U*1.35*(.82+.42*rel);
+/* weights follow a log-normal per species: median and spread. A 10 kg cod is rare, 15 kg very rare, 20 kg godlike;
+   a lyr over 8 kg is very big, over 10 a super fish and 15 almost unheard of */
+const FJ_W={makrell:[.45,.5],sei:[2,.78],lyr:[1.5,.77],torsk:[2.5,.74],hyse:[1,.6],berggylt:[.6,.55],steinbit:[3,.6],lange:[4,.6],flyndre:[.5,.5],rodspette:[.7,.6],pigghvar:[2.5,.65],uer:[.8,.55],breiflabb:[6,.7],kveite:[15,.8]};
+const FJ_GAD=new Set(["torsk","sei","lyr"]),FJ_BOT=new Set(["breiflabb","steinbit","lange","uer","hyse","pigghvar","rodspette","flyndre"]);
+const FJ_ATTR={lyr:1,torsk:.8,sei:.12};
+function fjGauss(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+/* depth rules: nothing big shallower than 8-10 m; between 10 m and the bottom any size, the biggest bottom fish deepest;
+   big cod, saithe and lyr are possible from 8 m but more common below 20 m; kveite is pure chance everywhere */
+function fjWeight(key,bd,boost=0,wmax){const d=FJ_SP[key],[w50,sg]=FJ_W[key]||[1,.6],wmin=d.k*Math.pow(d.cm[0]/100,3);let cap=Math.min(wmax||1e9,d.k*Math.pow(d.cm[1]/100,3)),mu=Math.log(w50)+boost;
+  if(key!=="kveite"){if(FJ_GAD.has(key)){if(bd<8)cap=Math.min(cap,w50*2.4);else if(bd<20)mu-=.12;else mu+=.25}
+    else if(FJ_BOT.has(key)){if(bd<10)cap=Math.min(cap,w50*2);else if(bd>20)mu+=.3}else if(bd<10)cap=Math.min(cap,w50*2.5)}
+  for(let i=0;i<14;i++){const w=Math.exp(mu+sg*fjGauss());if(w>=wmin&&w<=cap)return w}return Math.min(cap,Math.max(wmin,Math.exp(mu)))}
+const fjZ=(key,kg)=>{const [w50,sg]=FJ_W[key]||[1,.6];return (Math.log(Math.max(.01,kg))-Math.log(w50))/sg};
+/* the attraction rule: only lyr (most), cod and smaller saithe come to a hidden or waiting diver; the biggest lyr only after a long wait in the kelp */
+function fjLure(f){const a=FJ_ATTR[f.key];if(!a||f.small||f.wounded)return 0;if(f.leader&&!f.leader.hit)return 0;if(f.key==="sei"&&(f.z>.8||(f.school&&!f.lureOK)))return 0;const z=Math.max(0,f.z||0);
+  const need=(f.key==="lyr"?2+8*Math.pow(z,1.5):f.key==="torsk"?3+5*Math.pow(z,1.3):6)+3*FJ.wary,t=Math.max((FJ.coverKind==="tare"?1:.7)*(FJ.hideT||0),FJ.amb*.8);return t>=need?a:0}
 function fjSize(d,b=0){const r=Math.random();if(r<.012+.05*b)return fjR(d.cm[1]*.9,d.cm[1]);return d.cm[0]+(d.cm[1]*.88-d.cm[0])*Math.pow(Math.random(),1.9-.8*b)}
 /* a big fish drifting in from the edge of sight; only happens after a long, quiet spell, and never guaranteed */
 function fjVisitor(){const dv=FJ.dv,dBd=Math.max(0,Math.min(1,(dv.y/FJ_U-9)/13)),cand=[["torsk",5],["sei",3],["lyr",3],["hyse",2],["lange",3*dBd],["kveite",1+4*dBd]].filter(([k])=>{const z=FJ_SP[k].zone;return dv.x>z[0]-300&&dv.x<z[1]+300});if(!cand.length)return;
   let r=Math.random()*cand.reduce((a,c)=>a+c[1],0),key=cand[0][0];for(const [k,w] of cand)if((r-=w)<=0){key=k;break}
   const d=FJ_SP[key],side=Math.random()<.5?-1:1,x=Math.max(d.zone[0]+40,Math.min(d.zone[1]-40,dv.x+side*FJ.vw*fjR(.6,.85)));
-  const f=fjSpawn(key,{x,noSmall:true,big:fjR(.55,.97)});f.rest=false;f.tx=dv.x-side*fjR(100,400);f.ty=d.bottom?fjBed(f.tx)-fjR(40,120):f.y;f.tt=fjR(8,14);f.dir=-side;
+  const f=fjSpawn(key,{x,noSmall:true,boost:.6});f.rest=false;f.tx=dv.x-side*fjR(100,400);f.ty=d.bottom?fjBed(f.tx)-fjR(40,120):f.y;f.tt=fjR(8,14);f.dir=-side;
   FJ.visitor=f;FJ.pat*=.6;if(Math.random()<.5)fjMsg("Noe stort beveger seg i utkanten av sikten …",2.6,"#cfe0ee")}
 const FJ={st:"title",lvl:lsGet("dk-fj-lvl")||"normal",raf:0,last:0,W:0,H:0,dpr:1,sc:1,vw:0,vh:0,cam:{x:0,y:0},bed:null,rocks:[],kelp:[],hills:[],
   fish:[],jel:[],fx:[],part:[],spear:null,aim:null,aimW:null,keys:{},joy:null,touch:false,dv:null,o2:55,time:200,score:0,hand:[],shots:0,hits:0,streak:0,
@@ -3332,7 +3363,7 @@ const FJ={st:"title",lvl:lsGet("dk-fj-lvl")||"normal",raf:0,last:0,W:0,H:0,dpr:1
   nDives:+(lsGet("dk-fj-dives")||5),dive:0,diving:false,diveScores:[],wary:0,popN:null,diveX:[0,0],amb:0,pat:0,visitor:null,tgt:null,cur:{x:0,y:0},curT:0,curDir:1,curOff:0,sway:0};
 if(![3,5,10].includes(FJ.nDives))FJ.nDives=5;
 if(!FJ_LV[FJ.lvl])FJ.lvl="normal";
-const fjR=(a,b)=>a+Math.random()*(b-a),fjL=()=>FJ_LV[FJ.lvl],fjBest=(k,n)=>+(lsGet(`dk-fj-best-${k}-${n||FJ.nDives}`)||0);
+const fjR=(a,b)=>a+Math.random()*(b-a),fjL=()=>FJ._L&&FJ._L.key===FJ.lvl&&FJ.st!=="title"?FJ._L:FJ_LV[FJ.lvl],fjBest=(k,n)=>+(lsGet(`dk-fj-best-${k}-${n||FJ.nDives}`)||0);
 function fgBestTxt(){const out=[];for(const k of Object.keys(FJ_LV))for(const n of [3,5,10])if(fjBest(k,n))out.push(`${FJ_LV[k].name} ${n} dykk: ${fjBest(k,n)}`);return out.slice(0,4).join(" · ")}
 /* ----- the world ----- */
 /* each session gets its own seabed: 2-3 drop-offs (steep walls) and 1-2 rocky reefs rising from the deep */
@@ -3359,28 +3390,30 @@ function fjWorld(){FJ.terr=fjTerrain();FJ.bed=new Float32Array(FJ_WW/10+2);for(l
 function fjSpawn(key,o={}){const d=FJ_SP[key],L=fjL();const small=!o.noSmall&&d.small&&Math.random()<d.small;
   let x=o.x!=null?o.x:fjR(d.zone[0]+60,d.zone[1]-60);
   if(o.away&&FJ.dv){for(let i=0;i<8&&Math.abs(x-FJ.dv.x)<FJ.vw*.8;i++)x=fjR(d.zone[0]+60,d.zone[1]-60)}
-  const bed=fjBed(x),dB=Math.max(0,Math.min(1,(bed/FJ_U-9)/13)),bw=FJ.terr&&FJ.terr.big&&x>FJ.terr.big.x-120&&x<FJ.terr.big.x+800?.45:0,bias=Math.min(1,(FJ.pat||0)+dB*(d.bottom||d.near?.75:.35)+bw);
-  const cm=o.big!=null?d.cm[0]+(d.cm[1]-d.cm[0])*o.big:small?fjR(d.cm[0]*.55,d.cm[0]*.82):fjSize(d,bias),rel=Math.max(0,Math.min(1,(cm-d.cm[0])/(d.cm[1]-d.cm[0]))),len=fjLen(cm,rel);
+  const bed=fjBed(x),bw=FJ.terr&&FJ.terr.big&&x>FJ.terr.big.x-120&&x<FJ.terr.big.x+800?.2:0;
+  const cm=o.big!=null?d.cm[0]+(d.cm[1]-d.cm[0])*o.big:small?fjR(d.cm[0]*.55,d.cm[0]*.82):100*Math.pow(fjWeight(key,bed/FJ_U,(o.boost||0)+.3*(FJ.pat||0)+bw,o.wmax)/d.k,1/3),rel=Math.max(0,Math.min(1,(cm-d.cm[0])/(d.cm[1]-d.cm[0]))),len=fjLen(cm,rel);
   let y;
   if(d.bottom)y=bed-len*d.hh*.45;
   else{const lo=d.dep[0]*FJ_U,hi=Math.min(d.dep[1]*FJ_U,bed-len*.6-20);y=d.near&&Math.random()<d.near?bed-fjR(len*.6+15,len*.6+130):fjR(lo,Math.max(lo+10,hi))}
   if(o.y!=null)y=o.y;
   const kg=d.k*Math.pow(cm/100,3)*fjR(.9,1.1);
-  const f={key,d,x,y,len,cm:Math.round(cm),small,rel,trophy:!small&&rel>.88,kg:kg<10?+kg.toFixed(1):Math.round(kg),cur:Math.random()<(1-.6*FJ.wary),shy:FJ.wary*.5,
+  const z=small?-3:fjZ(key,d.k*Math.pow(cm/100,3));
+  const f={key,d,x,y,len,cm:Math.round(cm),small,rel,z,trophy:!small&&z>=2.33,kg:kg<10?+kg.toFixed(1):Math.round(kg),cur:Math.random()<(1-.6*FJ.wary),shy:FJ.wary*.5,
     vx:0,vy:0,dir:Math.random()<.5?1:-1,ph:fjR(0,6),hit:0,flee:0,tx:null,ty:null,tt:0,rest:d.bottom&&!(d.free&&Math.random()<d.free),hid:0,leader:o.leader||null,ox:o.ox||0,oy:o.oy||0,mott:Math.random()*1000,tt:fjR(2,20)};
   if(key==="kveite"&&!f.rest&&o.y==null)f.y=fjR(2*FJ_U,Math.max(2*FJ_U+10,bed-150));
   FJ.fish.push(f);return f}
 /* one population unit: makrell in big shoals, small sei in shoals while the big sei go alone,
    torsk and lyr sometimes in small groups, the rest alone */
 function fjUnit(k,away){const d=FJ_SP[k],o=away?{away:true}:{};
+  if(k==="kveite"){for(let i=0;i<8;i++){o.x=Math.random()<.15?fjR(300,2200):fjR(2200,5950);if(!away||!FJ.dv||Math.abs(o.x-FJ.dv.x)>FJ.vw*.8)break}delete o.away}
   if(!away&&((k==="sei"&&Math.random()<.5)||((k==="torsk"||k==="lyr")&&Math.random()<.45)))o.x=fjR(3200,d.zone[1]-60);
   if(!away&&k==="steinbit"){const rk=FJ.rocks.filter(r=>r.x>d.zone[0]&&r.x<d.zone[1]),r=rk[Math.floor(Math.random()*rk.length)];if(r)o.x=r.x+(Math.random()<.5?-1:1)*r.r*fjR(.7,1.1)}
   let m=1,sz=null;
   if(k==="makrell")m=Math.floor(fjR(10,19));
-  else if(k==="sei"&&Math.random()<.7){m=Math.floor(fjR(4,9));sz=[.02,.4]}
-  else if((k==="torsk"&&Math.random()<.25)||(k==="lyr"&&Math.random()<.3)){m=Math.floor(fjR(2,5));sz=[.03,.55]}
-  const mk=x=>Object.assign(x,sz?{big:fjR(...sz)}:{},m>1?{noSmall:true}:{});
-  const lead=fjSpawn(k,mk(o));if(m>1){const spr=k==="makrell"?1.4:k==="sei"?1:.8;for(let j=1;j<m;j++){const ox=fjR(-100,100)*spr,oy=fjR(-50,50)*spr;fjSpawn(k,mk({x:lead.x+ox,y:lead.y+oy,leader:lead,ox,oy}))}}
+  else if(k==="sei"&&Math.random()<.7){m=Math.floor(fjR(4,9));sz=FJ_W.sei[0]*1.6}
+  else if((k==="torsk"&&Math.random()<.25)||(k==="lyr"&&Math.random()<.3)){m=Math.floor(fjR(2,5));sz=FJ_W[k][0]*2.2}
+  const mk=x=>Object.assign(x,sz?{wmax:sz}:{},m>1?{noSmall:true}:{});
+  const lead=fjSpawn(k,mk(o));if(m>1){lead.school=true;lead.lureOK=Math.random()<.15}if(m>1){const spr=k==="makrell"?1.4:k==="sei"?1:.8;for(let j=1;j<m;j++){const ox=fjR(-100,100)*spr,oy=fjR(-50,50)*spr;fjSpawn(k,mk({x:lead.x+ox,y:lead.y+oy,leader:lead,ox,oy}))}}
   return lead}
 /* when a shoal loses its leader, another fish takes over, so nobody is left alone */
 function fjReLead(old){const mates=FJ.fish.filter(o=>o.leader===old&&!o.hit);if(!mates.length)return;const nl=mates[0];nl.leader=null;for(const o of mates)if(o!==nl)o.leader=nl}
@@ -3388,17 +3421,19 @@ function fjPopulate(){FJ.fish=[];FJ.jel=[];if(!FJ.popN)FJ.popN=fjPopN();
   for(const [k,n] of Object.entries(FJ.popN))for(let i=0;i<n;i++)fjUnit(k,false);
   /* the big ones living along the foot of the big wall */
   if(FJ.terr&&FJ.terr.big){const B=FJ.terr.big,m=Math.floor(fjR(3,6));for(let i=0;i<m;i++){const r=Math.random(),k=r<.4?"torsk":r<.55?"lange":r<.7?"sei":r<.8?"lyr":r<.88?"breiflabb":r<.95?"uer":"kveite",d=FJ_SP[k];
-    const x=Math.max(d.zone[0]+20,Math.min(d.zone[1]-20,B.x+B.w*.6+fjR(20,600)));const f=fjSpawn(k,{x,noSmall:true,big:fjR(.5,.97)});if(!d.bottom)f.y=fjBed(x)-f.len*.6-fjR(15,120)}}
+    const x=Math.max(d.zone[0]+20,Math.min(d.zone[1]-20,B.x+B.w*.6+fjR(20,600)));const f=fjSpawn(k,{x,noSmall:true});if(!d.bottom)f.y=fjBed(x)-f.len*.6-fjR(15,120)}}
   for(let i=0;i<7;i++)FJ.jel.push({x:fjR(400,5800),y:fjR(80,700),r:fjR(14,26),ph:fjR(0,6),vx:fjR(-6,6),stung:0})}
 /* ----- start / stop ----- */
-function openGame(){const d=$("#gameDlg");if(!d)return;if(!d.open)d.showModal();fjBoardLoad().then(()=>{if(FJ.st==="board")fjOverlay()});fjResize();FJ.st="title";if(!FJ.bed)fjWorld();FJ.dv=FJ.dv||{x:900,y:20,vx:0,vy:0,face:1,kick:0};if(!FJ.fish.length)fjPopulate();
+function openGame(){const d=$("#gameDlg");if(!d)return;if(!d.open){d.showModal();setTimeout(()=>{const a=document.activeElement;if(a&&a.closest&&a.closest("#gameDlg")&&a.classList.contains("fg-x"))a.blur()},0)}fjSndBtn();if(FJS.ctx&&FJS.on)FJS.ctx.resume();fjPLoad().then(()=>{if(["title","shop","badges","dex"].includes(FJ.st))fjOverlay()});fjBoardLoad().then(()=>{if(FJ.st==="board")fjOverlay()});fjResize();FJ.st="title";if(!FJ.bed)fjWorld();FJ.dv=FJ.dv||{x:900,y:20,vx:0,vy:0,face:1,kick:0};if(!FJ.fish.length)fjPopulate();
   fjOverlay();cancelAnimationFrame(FJ.raf);FJ.last=performance.now();FJ.raf=requestAnimationFrame(fjLoop)}
-function closeGame(){cancelAnimationFrame(FJ.raf);FJ.raf=0;FJ.keys={};FJ.joy=null;const d=$("#gameDlg");if(d&&d.open)d.close()}
+function closeGame(){if(FJS.ctx&&FJS.ctx.state==="running")FJS.ctx.suspend();cancelAnimationFrame(FJ.raf);FJ.raf=0;FJ.keys={};FJ.joy=null;const d=$("#gameDlg");if(d&&d.open)d.close()}
 function fjResize(){const cv=$("#fgCv");if(!cv)return;const r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);
   FJ.W=Math.max(300,r.width);FJ.H=Math.max(300,r.height);FJ.dpr=dpr;cv.width=Math.round(FJ.W*dpr);cv.height=Math.round(FJ.H*dpr);
   FJ.vh=FJ.W<FJ.H?800:Math.max(620,Math.min(760,FJ.H*.72));FJ.sc=FJ.H/FJ.vh;FJ.vw=FJ.W/FJ.sc}
-function fjStart(){const L=fjL();fjWorld();Object.assign(FJ,{st:"play",fx:[],part:[],spear:null,o2:L.o2,score:0,hand:[],shots:0,hits:0,streak:0,big:null,reload:0,paused:false,alarm:0,calm:0,
-  nPerf:0,nTorn:0,nSmall:0,maxDepth:0,diveT:0,maxDive:0,why:"",caught:{},msg:null,dv:{x:fjR(500,2600),y:14,vx:0,vy:0,face:1,kick:0},best:fjBest(FJ.lvl),dive:0,diving:false,diveScores:[],wary:0,popN:fjPopN(),diveX:[0,0],amb:0,pat:0,visitor:null,tgt:null,duck:0,lastDive:0,cur:{x:0,y:0},curT:fjR(0,60),curDir:Math.random()<.5?1:-1,curOff:0,sway:0});
+function fjStart0(){FJ.gearOn=FJ.mode==="dag"?{gun:0,fins:0,suit:0,camo:0}:{...FJP.gear};const B=FJ_LV[FJ.lvl],GO=FJ.gearOn;
+  FJ._L={...B,key:FJ.lvl,range:B.range*(1+.12*GO.gun),reload:B.reload*(1-.12*GO.gun),o2:B.o2*(1+.08*GO.suit),fear:B.fear*(1-.06*GO.camo)};FJ.newBadges=[];FJ.earned=0;
+  const L=FJ._L;fjWorld();Object.assign(FJ,{st:"play",fx:[],part:[],spear:null,o2:L.o2,score:0,hand:[],shots:0,hits:0,streak:0,big:null,reload:0,paused:false,alarm:0,calm:0,
+  nPerf:0,nTorn:0,nSmall:0,maxDepth:0,diveT:0,maxDive:0,why:"",caught:{},msg:null,dv:{x:fjR(500,2600),y:14,vx:0,vy:0,face:1,kick:0},best:FJ.mode==="dag"?fjDayBest():fjBest(FJ.lvl),dive:0,diving:false,diveScores:[],wary:0,popN:fjPopN(),diveX:[0,0],amb:0,pat:0,visitor:null,tgt:null,duck:0,lastDive:0,cur:{x:0,y:0},curT:fjR(0,60),curDir:Math.random()<.5?1:-1,curOff:0,sway:0});
   fjPopulate();FJ.cam.x=FJ.dv.x-FJ.vw/2;FJ.cam.y=-80;fjOverlay();fjMsg(FJ.touch?"Venstre tommel: svøm · trykk: skyt":"WASD: svøm · S i overflaten: duck-dive · mus/piltaster: sikt · klikk/mellomrom: skyt",5)}
 function fjMsg(t,s=2.5,col){FJ.msg={t,s,col}}
 /* ----- fish behaviour ----- */
@@ -3419,7 +3454,7 @@ function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=
   if(f.hit){f.hit+=dt;if(f.hit>.7){f.y=Math.min(fjBed(f.x)-4,f.y+30*dt)}return}
   if(f.hid>0)f.hid-=dt;
   if(f.leader&&(f.leader.hit||!FJ.fish.includes(f.leader)))fjReLead(f.leader);
-  const big=f.small?0:Math.max(0,(f.rel-.5)/.5),amb=FJ.amb>1.5;
+  const big=f.small?0:Math.max(0,Math.min(1,((f.z||0)-.8)/1.7)),amb=FJ.amb>1.5;
   /* a kveite swimming up in the water is far shyer than one lying flat on the bottom */
   const hiK=f.key==="kveite"&&!f.rest?1.3+.9*Math.min(1,Math.max(0,(fjBed(f.x)-f.y)/FJ_U-1)/4):1;
   const fear=L.fear*(1+FJ.alarm*.6)*(1+.45*FJ.wary+(f.shy||0))*(1+1.1*big)*(amb?.55:1)*(d.bottom?(f.rest?(f.key==="kveite"?1.2:.55):.8):1)*hiK*(1-.5*(FJ.cover||0));
@@ -3437,8 +3472,8 @@ function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=
     else if(d.free&&f.tt<=0){f.tt=fjR(8,20);if(Math.random()<.55){f.rest=false;f.tx=null}}
     else if(!d.free&&f.tt<=0){f.tt=fjR(10,30);if(Math.random()<(d.camo?.15:.5)){f.rest=false;f.hop=1;f.tx=Math.max(d.zone[0],Math.min(d.zone[1],f.x+fjR(-300,300)));f.ty=fjBed(f.tx)-f.len*d.hh;fjPuff(f.x,fjBed(f.x),4)}}}
   else{let tx=f.tx,ty=f.ty,spd=d.spd;
-    const hT=FJ.hideT||0,bigC=big>.3,clock=bigC?Math.max(FJ.amb,FJ.calm*.6,hT*1.3):Math.max(FJ.calm,hT*1.5),need=bigC?3.5+4*big+3*FJ.wary:2.5+3*FJ.wary;
-    const curious=d.curious&&f.cur&&!f.small&&!f.wounded&&(f.u||0)<.25&&clock>need&&FJ.alarm<.3&&dist<(bigC?900:480)&&FJ.st==="play";
+    const hT=FJ.hideT||0,bigC=big>.3,lure=fjLure(f),calmC=FJ_ATTR[f.key]&&!bigC&&!(f.key==="sei"&&f.z>.8)&&FJ.calm>2.5+3*FJ.wary;
+    const curious=FJ_ATTR[f.key]&&f.cur&&!f.small&&!f.wounded&&(f.u||0)<.25&&(lure>0||calmC)&&FJ.alarm<.3&&dist<(bigC||lure>0?900:480)&&FJ.st==="play";
     const keep=big>0&&!amb&&(FJ.dist||0)>.12&&!curious&&FJ.st==="play"&&FJ.diving?L.range*(.9+.4*big)*(1+.2*FJ.wary):0;
     const uneasy=(f.u||0)>.35&&!curious&&FJ.st==="play"&&!(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader));
     if(uneasy&&d.camo){}
@@ -3447,10 +3482,10 @@ function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=
     else if(curious){tx=dv.x+Math.sign(dx||1)*Math.max(110,Math.min(L.range*.75,f.len*2.4));ty=dv.y+Math.sin(f.mott)*30;spd=Math.max(30,spd*.75)}
     else if(keep&&dist<keep){tx=dv.x+Math.sign(dx||1)*keep*1.25;ty=f.y+Math.sin(f.mott)*20;spd*=.8;f.tt=fjR(2,4)}
     else if(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader)){tx=f.leader.x+f.ox;ty=f.leader.y+f.oy;spd*=1.15}
-    else{f.tt-=dt*(1+(hT>2?4*FJ.cover:0));if(tx==null||f.tt<=0||Math.hypot(tx-f.x,ty-f.y)<20){f.tt=fjR(4,9);tx=Math.max(d.zone[0],Math.min(d.zone[1],f.x+fjR(-500,500)));
+    else{f.tt-=dt*(1+(lure>0?3*FJ.cover:0));if(tx==null||f.tt<=0||Math.hypot(tx-f.x,ty-f.y)<20){f.tt=fjR(4,9);tx=Math.max(d.zone[0],Math.min(d.zone[1],f.x+fjR(-500,500)));
         const bed=fjBed(tx),kr=Math.random();if(d.bottom)ty=f.key==="kveite"?(kr<.35?bed-fjR(30,120):kr<.7?bed-fjR(150,600):fjR(2*FJ_U,Math.max(2*FJ_U+10,bed-150))):bed-fjR(30,120);else if(d.near&&Math.random()<d.near)ty=bed-fjR(f.len*.6+15,f.len*.6+130);else ty=fjR(d.dep[0]*FJ_U,Math.max(d.dep[0]*FJ_U+10,Math.min(d.dep[1]*FJ_U,bed-f.len-20)));
         /* someone lying still on the bottom draws fish past: the classic waiting hunt */
-        if((FJ.amb>4||hT>2)&&dist<(hT>2?1800:1000)&&Math.random()<(hT>2?.55+.4*FJ.cover:.45)+.1*big){tx=Math.max(d.zone[0],Math.min(d.zone[1],dv.x+Math.sign(dx||1)*fjR(110,L.range*.8)));ty=d.bottom?fjBed(tx)-fjR(30,90):Math.min(fjBed(tx)-f.len-20,Math.max(d.dep[0]*FJ_U,dv.y-fjR(-20,160)));f.tt=fjR(5,10)}}}
+        if(lure>0&&dist<1800&&Math.random()<(.3+.4*(FJ.cover||0))*lure){tx=Math.max(d.zone[0],Math.min(d.zone[1],dv.x+Math.sign(dx||1)*fjR(110,L.range*.8)));ty=d.bottom?fjBed(tx)-fjR(30,90):Math.min(fjBed(tx)-f.len-20,Math.max(d.dep[0]*FJ_U,dv.y-fjR(-20,160)));f.tt=fjR(5,10)}}}
     f.tx=tx;f.ty=ty;const ex=tx-f.x,ey=ty-f.y,el=Math.hypot(ex,ey)||1,want=Math.min(spd,el*1.5);
     f.vx+=(ex/el*want-f.vx)*Math.min(1,dt*1.2);f.vy+=(ey/el*want*.6-f.vy)*Math.min(1,dt*1.2);f.x+=f.vx*dt;f.y+=f.vy*dt;
     if(d.free&&Math.random()<dt*.03&&f.y>fjBed(f.x)-160){f.rest=true;f.tt=fjR(8,20)}}
@@ -3458,26 +3493,26 @@ function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=
   const cxl=Math.max(d.zone[0]-200,Math.min(d.zone[1]+200,Math.max(30,Math.min(FJ_WW-30,f.x))));if(cxl!==f.x&&(f.flee>0||(f.u||0)>.35)&&FJ.st==="play"){fjRelocate(f);return}f.x=cxl;
   const bed=fjBed(f.x);if(f.rest)f.y=bed-f.len*d.hh*.45;else f.y=Math.max(30,Math.min(bed-f.len*d.hh*.6-6,f.y))}
 /* ----- shooting ----- */
-function fjGunTip(){const dv=FJ.dv,a=fjAimAng();return {x:dv.x+Math.cos(a)*58,y:dv.y-5+Math.sin(a)*58,a}}
+function fjGunTip(){const dv=FJ.dv,a=fjAimAng(),r=58+10*fjG("gun");return {x:dv.x+Math.cos(a)*r,y:dv.y-5+Math.sin(a)*r,a}}
 function fjToW(p){return {x:FJ.cam.x+p.x/FJ.sc,y:FJ.cam.y+p.y/FJ.sc}}
 function fjAimOn(){return FJ.aimW&&(!FJ.touch||performance.now()-(FJ.tapT||0)<900)}
 function fjAimAng(){const dv=FJ.dv,sw=FJ.st==="play"?FJ.sway||0:0;if(fjAimOn())return Math.atan2(FJ.aimW.y-(dv.y-6),FJ.aimW.x-dv.x)+sw;return (dv.face>0?0:Math.PI)+sw}
 function fjFire(){const L=fjL();if(FJ.st!=="play"||FJ.paused||FJ.spear||FJ.reload>0)return;const dv=FJ.dv;
-  const t=fjGunTip();FJ.spear={x:t.x,y:t.y,ux:Math.cos(t.a),uy:Math.sin(t.a),v:950,dist:0,max:L.range,back:false};FJ.shots++;FJ.calm=0;FJ.pat*=.3;FJ.alarm=Math.min(1,FJ.alarm+.08);if(dv.y>16)FJ.o2-=.6;
+  const t=fjGunTip();FJ.spear={x:t.x,y:t.y,ux:Math.cos(t.a),uy:Math.sin(t.a),v:950,dist:0,max:L.range,back:false};FJ.shots++;fjSnd("shot");FJ.calm=0;FJ.pat*=.3;FJ.alarm=Math.min(1,FJ.alarm+.08);if(dv.y>16)FJ.o2-=.6;
   for(let i=0;i<5;i++)FJ.part.push({x:t.x,y:t.y,vx:fjR(-20,20),vy:-fjR(20,60),r:fjR(1.5,3.5),a:.9})}
 function fjFloat(x,y,txt,col){FJ.fx.push({x,y,txt,col,a:1,t:0})}
-function fjMiss(x,y){const L=fjL();FJ.streak=0;FJ.alarm=Math.min(1,FJ.alarm+.22);fjScareAt(x,y,L.fear*.9)}
+function fjMiss(x,y){const L=fjL();fjSnd("miss");FJ.streak=0;FJ.alarm=Math.min(1,FJ.alarm+.22);fjScareAt(x,y,L.fear*.9)}
 function fjHit(f,sp){const L=fjL(),d=f.d;const u=((sp.x-f.x)*f.dir)/(f.len/2),zone=u>.35?"head":u<-.35?"tail":"body";
   FJ.alarm=Math.min(1,FJ.alarm+.12);fjScareAt(f.x,f.y,L.fear*.8);
   if(f.small){f.hit=.001;FJ.nSmall++;FJ.streak=0;const pen=Math.round(15*L.mult);FJ.score=Math.max(0,FJ.score-pen);fjFloat(f.x,f.y-f.len*.4,`−${pen}  ${d.name} under minstemål (${f.cm} cm)`,"#ff8f7a");return true}
   let tear=zone==="head"?0:zone==="body"?L.tear[0]:L.tear[1];if(d.tough)tear=Math.min(.9,tear*1.4);
   if(Math.random()<tear){FJ.nTorn++;FJ.streak=0;f.hit=0;fjScare(f,sp.x-sp.ux*40,sp.y-sp.uy*40,false);f.wounded=true;fjFloat(f.x,f.y-f.len*.4,`${d.name} rev seg løs!`,"#ffb38a");return false}
   f.hit=.001;FJ.hits++;FJ.streak++;const perfect=zone==="head";if(perfect)FJ.nPerf++;
-  const bonus=FJ.streak>=3?5*(FJ.streak-2):0,dm=Math.max(0,f.y/FJ_U-10),dmul=1+.025*dm,pts=Math.round((d.pts*(.5+1.5*Math.pow(f.rel,1.3))*(f.trophy?1.4:1)*dmul+bonus)*(perfect?1.5:1)*L.mult);FJ.hand.push({pts,sp:d.name,kg:f.kg});
+  const bonus=FJ.streak>=3?5*(FJ.streak-2):0,dm=Math.max(0,f.y/FJ_U-10),dmul=1+.025*dm,pts=Math.round((d.pts*Math.min(3,.55+.55*Math.max(0,(f.z||0)+1))*(f.trophy?1.3:1)*dmul+bonus)*(perfect?1.5:1)*L.mult);FJ.hand.push({pts,sp:d.name,kg:f.kg,key:f.key});
   f.sx=sp.x-f.x;f.sy=sp.y-f.y;f.su=Math.atan2(sp.uy,sp.ux);if(!FJ.big||f.kg>FJ.big.kg)FJ.big={sp:d.name,kg:f.kg};FJ.caught[d.name]=(FJ.caught[d.name]||0)+1;
   fjFloat(f.x,f.y-f.len*.4,`+${pts}  ${d.name} ${String(f.kg).replace(".",",")} kg${f.trophy?" · TROFÉ!":""}${perfect?" · hodeskudd!":""}${dmul>=1.1?` · dypt +${Math.round((dmul-1)*100)} %`:""}`,d.rare||f.trophy?"#ffd54a":perfect?"#bff3c8":"#ffffff");
   if(f.trophy)fjMsg(`Trofé: ${d.name.toLocaleLowerCase("nb")} på ${String(f.kg).replace(".",",")} kg!`,2.5,"#ffd54a");
-  if(d.camo)fjMsg("Du fant breiflabben!",2,"#ffd54a");return true}
+  if(d.camo)fjMsg("Du fant breiflabben!",2,"#ffd54a");fjSnd("hit");fjBadgesOnHit(f);return true}
 /* ----- main update ----- */
 /* move sideways unless a wall or boulder is in the way (gentle slopes are fine) */
 function fjMoveX(nx,stop){const dv=FJ.dv;nx=Math.max(60,Math.min(FJ_WW-60,nx));if(fjFloor(nx)-28<dv.y-4&&fjFloor(nx)<fjFloor(dv.x)){if(stop)dv.vx=0;return}dv.x=nx}
@@ -3498,12 +3533,12 @@ function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv
   /* the arrow keys move the crosshair, so you can aim while swimming even when a laptop touchpad is blocked during typing */
   {const ax=(k.arrowleft?-1:0)+(k.arrowright?1:0),ay=(k.arrowup?-1:0)+(k.arrowdown?1:0);
     if(ax||ay){if(!FJ.aim)FJ.aim={x:FJ.W/2+dv.face*160,y:FJ.H/2};const v=600;FJ.aim={x:Math.max(8,Math.min(FJ.W-8,FJ.aim.x+ax*v*dt)),y:Math.max(8,Math.min(FJ.H-8,FJ.aim.y+ay*v*dt))};FJ.aimSpd=Math.max(FJ.aimSpd||0,v);FJ.touch=false}}
-  const fast=!!k.shift||(FJ.joy&&FJ.joy.on&&Math.hypot(FJ.joy.dx,FJ.joy.dy)>.95),acc=fast?420:300;
+  const fast=!!k.shift||(FJ.joy&&FJ.joy.on&&Math.hypot(FJ.joy.dx,FJ.joy.dy)>.95),gsp=1+.06*fjG("fins"),acc=(fast?420:300)*gsp;
   const hv=Math.abs(dv.vx),withCur=FJ.cur.x*dv.vx>0?Math.abs(FJ.cur.x):0;
   /* duck dive: from the surface, head down and kick straight down. More speed (or swimming with the current) means a faster descent */
-  if(dv.y<=20&&iy>.5&&!(FJ.duck>0)&&FJ.st==="play"){FJ.duck=1.1;FJ.duckV=95+hv*1.1+withCur*2.5;dv.vy=Math.max(dv.vy,FJ.duckV);dv.vx*=.6;for(let q=0;q<10;q++)FJ.part.push({x:dv.x+fjR(-30,30),y:6,vx:fjR(-30,30),vy:-fjR(10,50),r:fjR(1.5,4),a:.9})}
+  if(dv.y<=20&&iy>.5&&!(FJ.duck>0)&&FJ.st==="play"){FJ.duck=1.1;FJ.duckV=(95+hv*1.1+withCur*2.5)*(1+.1*fjG("fins"));fjSnd("duck");dv.vy=Math.max(dv.vy,FJ.duckV);dv.vx*=.6;for(let q=0;q<10;q++)FJ.part.push({x:dv.x+fjR(-30,30),y:6,vx:fjR(-30,30),vy:-fjR(10,50),r:fjR(1.5,4),a:.9})}
   if(FJ.duck>0)FJ.duck-=dt;
-  const down=iy>0&&dv.y>16,vmax=Math.max((fast?180:125)*(down?1+.3*Math.min(1,hv/120):1)+(down?withCur*.8:0),FJ.duck>0?FJ.duckV*1.15:0);
+  const down=iy>0&&dv.y>16,vmax=Math.max((fast?180:125)*gsp*(down?1+.3*Math.min(1,hv/120):1)+(down?withCur*.8:0),FJ.duck>0?FJ.duckV*1.15:0);
   dv.vx+=ix*acc*dt;dv.vy+=iy*acc*dt+(FJ.duck>0?(FJ.duckV-dv.vy)*Math.min(1,dt*3)+60*dt:0)+(down?(hv*.3+withCur)*dt:0);const drag=Math.pow(.25,dt);dv.vx*=drag;dv.vy*=drag;
   if(!iy&&!(FJ.duck>0)){const depth=dv.y/FJ_U;dv.vy+=(depth<8?-10:depth>12?8:0)*dt}
   const sp=Math.hypot(dv.vx,dv.vy);if(sp>vmax){dv.vx*=vmax/sp;dv.vy*=vmax/sp}
@@ -3514,22 +3549,25 @@ function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv
     FJ.sway=(L.cur/38)*(.045*Math.sin(FJ.curT*1.3)+.025*Math.sin(FJ.curT*3.1))*(held?.4:1)}else{FJ.cur.x=FJ.cur.y=0;FJ.sway=0}
   FJ.curOff+=FJ.cur.x*dt;
   dv.kick+=dt*(2+sp/25);if(FJ.aim&&!FJ.touch)FJ.aimW=fjToW(FJ.aim);const ang=fjAimAng();if(fjAimOn())dv.face=Math.cos(ang)>=0?1:-1;else if(Math.abs(dv.vx)>8)dv.face=Math.sign(dv.vx);
-  const surf=dv.y<=16,depth=dv.y/FJ_U;FJ.maxDepth=Math.max(FJ.maxDepth,depth);
+  const surf=dv.y<=16,depth=dv.y/FJ_U;FJ.maxDepth=Math.max(FJ.maxDepth,depth);if(depth>=30)fjBadge("dyp30");
   FJ.calm=sp<14?FJ.calm+dt:0;FJ.alarm=Math.max(0,FJ.alarm-dt*.05);if(FJ.reload>0)FJ.reload-=dt;
   FJ.aimSpd=(FJ.aimSpd||0)*Math.pow(.02,dt);const swimD=Math.pow(Math.max(0,Math.min(1,(sp-35)/145)),1.25),aimD=L.aimSpook?Math.pow(Math.max(0,Math.min(1,(FJ.aimSpd-400)/1800)),1.2):0;FJ.dist=Math.min(1,swimD+aimD);
   const onBed=dv.y>fjFloor(dv.x)-28-95&&dv.y>200;FJ.amb=onBed&&sp<14?FJ.amb+dt:Math.max(0,FJ.amb-dt*4);
   {const cv=dv.y>40?fjCover():{c:0,kind:""};FJ.cover=cv.c*(sp<40?1:sp<80?.5:0);FJ.coverKind=cv.kind;FJ.hideT=FJ.cover>.4?(FJ.hideT||0)+dt:Math.max(0,(FJ.hideT||0)-dt*3);
+    /* after a long, still wait in the kelp a big lyr may turn up at the edge of sight (no guarantee) */
+    if(FJ.coverKind==="tare"&&FJ.cover>.4&&FJ.hideT>14&&FJ.diving&&!(FJ.bigLyr&&!FJ.bigLyr.hit&&FJ.fish.includes(FJ.bigLyr))&&Math.random()<dt*.05){const sd=Math.random()<.5?-1:1,x=Math.max(60,Math.min(4500,dv.x+sd*FJ.vw*fjR(.55,.8)));
+      const f=fjSpawn("lyr",{x,noSmall:true,boost:.8});f.cur=true;f.shy=0;f.y=Math.min(fjBed(x)-f.len*.6-10,Math.max(160,dv.y+fjR(-120,60)));f.tx=dv.x+sd*fjR(150,300);f.ty=dv.y;f.tt=fjR(8,12);FJ.bigLyr=f}
     /* while you hide, fish from further off now and then come swimming past you */
-    if(FJ.hideT>3&&FJ.diving&&Math.random()<dt*.4*FJ.cover){const c=FJ.fish.filter(f=>!f.hit&&!f.rest&&!f.leader&&!f.d.camo&&f.flee<=0&&(f.u||0)<.3&&Math.abs(f.x-dv.x)>450&&Math.abs(f.x-dv.x)<2400);
+    if(FJ.hideT>3&&FJ.diving&&Math.random()<dt*.3*FJ.cover){const c=FJ.fish.filter(f=>!f.hit&&!f.rest&&!f.leader&&f.flee<=0&&(f.u||0)<.3&&fjLure(f)>0&&Math.abs(f.x-dv.x)>450&&Math.abs(f.x-dv.x)<2400);
       const f=c[Math.floor(Math.random()*c.length)];if(f){const sd=Math.sign(f.x-dv.x),d=f.d;f.tx=Math.max(d.zone[0]-150,Math.min(d.zone[1]+150,dv.x-sd*fjR(60,L.range*.7)));f.ty=Math.min(fjBed(f.tx)-f.len*.6-10,Math.max(d.dep?d.dep[0]*FJ_U:dv.y-80,dv.y+fjR(-90,60)));f.tt=fjR(8,12)}}}
   if(dv.y>16){FJ.pat=Math.min(1,FJ.pat+dt*(FJ.calm>1.5?1/22:sp<60?1/60:0)*(FJ.amb>1.5?1.4:1)*(1+.5*(FJ.cover||0)));if(sp>vmax*.7)FJ.pat=Math.max(0,FJ.pat-dt*.12);
     const vis=FJ.visitor&&!FJ.visitor.hit&&FJ.fish.includes(FJ.visitor),dBd=Math.max(0,Math.min(1,(dv.y/FJ_U-9)/13)),pv=Math.min(1,FJ.pat+.6*dBd);
     if(FJ.diving&&pv>.5&&!vis&&Math.random()<dt*.035*pv*(1+dBd)*(1+1.5*(FJ.cover||0)))fjVisitor()}
   if(!FJ.diving&&dv.y>120){FJ.diving=true;FJ.dive++;FJ.diveStart=FJ.score;FJ.diveX=[dv.x,dv.x];fjDiveEvent()}
   if(FJ.diving){FJ.diveX[0]=Math.min(FJ.diveX[0],dv.x);FJ.diveX[1]=Math.max(FJ.diveX[1],dv.x)}
-  if(surf){if(FJ.diveT>3){FJ.maxDive=Math.max(FJ.maxDive,FJ.diveT);FJ.lastDive=FJ.diveT}FJ.diveT=0;FJ.o2=Math.min(L.o2,FJ.o2+L.o2/7*dt);
-    if(FJ.hand.length){const s=FJ.hand.reduce((a,c)=>a+c.pts,0);FJ.score+=s;fjFloat(dv.x,dv.y+40,`Sikret på bøya: +${s}`,"#bff3c8");FJ.hand=[]}
-    if(FJ.diving){FJ.diving=false;FJ.diveScores.push(FJ.score-(FJ.diveStart||0));if(FJ.dive>=FJ.nDives){fjEnd("ferdig");return}fjEscalate();
+  if(surf){if(FJ.diveT>3){FJ.maxDive=Math.max(FJ.maxDive,FJ.diveT);FJ.lastDive=FJ.diveT;if(FJ.diveT>=90)fjBadge("pust90")}FJ.diveT=0;FJ.o2=Math.min(L.o2,FJ.o2+L.o2/7*dt);
+    if(FJ.hand.length){const s=FJ.hand.reduce((a,c)=>a+c.pts,0);FJ.score+=s;fjFloat(dv.x,dv.y+40,`Sikret på bøya: +${s}`,"#bff3c8");fjDexAdd(FJ.hand);fjSnd("secure");FJ.hand=[]}
+    if(FJ.diving){FJ.diving=false;fjSnd("breath");FJ.diveScores.push(FJ.score-(FJ.diveStart||0));if(FJ.dive>=FJ.nDives){fjEnd("ferdig");return}fjEscalate();
       fjMsg(`Dykk ${FJ.dive} av ${FJ.nDives}: ${FJ.diveScores[FJ.diveScores.length-1]?"+"+FJ.diveScores[FJ.diveScores.length-1]+" poeng":"ingen fisk"}. Fisken blir skyere.`,4,"#bff3c8")}}
   else{FJ.diveT+=dt;/* air use follows effort: lying still uses well under half of what active swimming does */
     const act=Math.min(1,sp/125),drain=(.44+.56*act+(fast&&il>0?.7:0))*(1+Math.max(0,depth-10)/50)*(FJ.amb>1.5?.9:1);FJ.drain=drain;FJ.o2-=drain*dt;
@@ -3552,7 +3590,7 @@ function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv
   for(const [key,n] of Object.entries(FJ.popN||{})){const d=FJ_SP[key],have=FJ.fish.filter(f=>f.key===key&&!f.leader).length;if(have<n&&Math.random()<dt*(d.rare?.02:d.camo?.03:d.few?.04:.12)*(1-.5*FJ.wary)*(1+FJ.pat)*(1+(FJ.cover||0))){
     fjUnit(key,true)}}
   for(const p of FJ.part){p.x+=(p.vx+FJ.cur.x*.8)*dt;p.y+=p.vy*dt;p.vx*=.96;if(p.sand){p.vy+=12*dt;p.a-=dt*.35}else{p.a-=dt*.45}}FJ.part=FJ.part.filter(p=>p.a>0);
-  if(dv.vx||dv.vy)if(Math.random()<dt*(1.5+sp/40))FJ.part.push({x:dv.x+dv.face*16,y:dv.y-14,vx:fjR(-8,8),vy:-fjR(30,60),r:fjR(1.5,3),a:.8});
+  if(dv.vx||dv.vy)if(Math.random()<dt*(1.5+sp/40)){if(dv.y>16&&Math.random()<.12)fjSnd("bubble");FJ.part.push({x:dv.x+dv.face*16,y:dv.y-14,vx:fjR(-8,8),vy:-fjR(30,60),r:fjR(1.5,3),a:.8})}
   for(const e of FJ.fx){e.t+=dt;e.y-=24*dt;e.a=Math.max(0,1-e.t/2)}FJ.fx=FJ.fx.filter(e=>e.a>0);
   if(FJ.msg){FJ.msg.s-=dt;if(FJ.msg.s<=0)FJ.msg=null}
   // camera
@@ -3565,9 +3603,9 @@ function fjEscalate(){if(fjL().cur&&Math.random()<.3){FJ.curDir*=-1;setTimeout((
   FJ.fish=FJ.fish.filter(f=>!f.gone);for(const k of Object.keys(FJ.popN))if(!FJ_SP[k].rare&&!FJ_SP[k].camo&&Math.random()<.4*FJ.wary)FJ.popN[k]=Math.max(0,FJ.popN[k]-1)}
 /* something unexpected can happen on any dive */
 function fjDiveEvent(){const r=Math.random();
-  if(r<.18){const f=fjSpawn("kveite",{away:true});f.rest=false;f.tt=fjR(15,30);f.x=Math.max(2200,Math.min(5900,FJ.dv.x+(Math.random()<.5?-1:1)*fjR(700,1400)));f.y=Math.min(fjBed(f.x)-80,fjR(500,1500))}
-  else if(r<.4){const lead=fjSpawn("sei",{noSmall:true,away:true,big:fjR(.02,.4)});const m=Math.floor(fjR(10,16));for(let j=1;j<m;j++){const ox=fjR(-130,130),oy=fjR(-60,60);fjSpawn("sei",{x:lead.x+ox,y:lead.y+oy,leader:lead,ox,oy,noSmall:true,big:fjR(.02,.4)})}}
-  else if(r<.45){const f=fjSpawn("torsk",{away:true,noSmall:true});const cm=fjR(FJ_SP.torsk.cm[1]*.9,FJ_SP.torsk.cm[1]);f.cm=Math.round(cm);f.len=fjLen(cm,1);f.rel=1;f.trophy=true;f.kg=Math.round(FJ_SP.torsk.k*Math.pow(cm/100,3))}}
+  if(r<.18){const f=fjSpawn("kveite",{away:true});f.rest=false;f.tt=fjR(15,30);f.x=Math.max(300,Math.min(5900,FJ.dv.x+(Math.random()<.5?-1:1)*fjR(700,1400)));f.y=Math.min(fjBed(f.x)-80,fjR(160,Math.max(200,fjBed(f.x)-150)))}
+  else if(r<.4){const lead=fjSpawn("sei",{noSmall:true,away:true,wmax:FJ_W.sei[0]*1.6});const m=Math.floor(fjR(10,16));for(let j=1;j<m;j++){const ox=fjR(-130,130),oy=fjR(-60,60);fjSpawn("sei",{x:lead.x+ox,y:lead.y+oy,leader:lead,ox,oy,noSmall:true,wmax:FJ_W.sei[0]*1.6})}}
+  else if(r<.45)fjSpawn("torsk",{away:true,noSmall:true,boost:.8})}
 /* ----- toppliste: shared with the group in Supabase (seahunter.sql) ----- */
 const FJB={rows:null,err:null,loading:false,lv:null,nd:null,per:"all",saving:false};
 const fjMe=()=>typeof S!=="undefined"&&S.user?S.user.id:null;
@@ -3575,18 +3613,109 @@ async function fjBoardLoad(){if(typeof sb==="undefined"||!fjMe())return;FJB.load
   try{const {data,error}=await sb.from("game_scores").select("*").order("score",{ascending:false}).limit(2000);if(error){FJB.err=tableErr(error,"seahunter.sql");FJB.rows=[]}else{FJB.err=null;FJB.rows=data||[]}}catch(e){FJB.err="Kunne ikke hente topplista.";FJB.rows=FJB.rows||[]}
   FJB.loading=false}
 async function fjBoardSave(){if(typeof sb==="undefined"||!fjMe()||FJ.score<=0)return;FJB.saving=true;
-  const row={player_name:(S.me&&S.me.name)||String(S.user.email||"").split("@")[0],level:FJ.lvl,dives:FJ.nDives,score:FJ.score,fish:FJ.hits,best_species:FJ.big?FJ.big.sp:"",best_kg:FJ.big?+FJ.big.kg||0:0,max_depth:+(+FJ.maxDepth||0).toFixed(1)};
-  try{const {error}=await sb.from("game_scores").insert(row);if(error)FJB.err=tableErr(error,"seahunter.sql");else await fjBoardLoad()}catch(e){FJB.err="Kunne ikke lagre på topplista (ingen nett?)."}
+  const row={player_name:(S.me&&S.me.name)||String(S.user.email||"").split("@")[0],level:FJ.lvl,dives:FJ.nDives,score:FJ.score,fish:FJ.hits,best_species:FJ.big?FJ.big.sp:"",best_kg:FJ.big?+FJ.big.kg||0:0,max_depth:+(+FJ.maxDepth||0).toFixed(1),
+    mode:FJ.mode==="dag"?"dag":"fri",day:FJ.mode==="dag"?fjDay():null,gear:FJ.mode==="dag"?0:fjGearSum(FJ.gearOn)};
+  try{let {error}=await sb.from("game_scores").insert(row);
+    if(error&&/mode|day|gear|column|schema cache/i.test(errMsg(error))&&FJ.mode!=="dag"){const r2={...row};delete r2.mode;delete r2.day;delete r2.gear;({error}=await sb.from("game_scores").insert(r2));if(!error)FJB.err="Kjør den oppdaterte seahunter.sql i Supabase for dagens dykk og utstyr."}
+    if(error)FJB.err=/mode|day|gear|column|schema cache/i.test(errMsg(error))?"Kjør den oppdaterte seahunter.sql i Supabase for dagens dykk og utstyr.":tableErr(error,"seahunter.sql");else{if(!/oppdaterte/.test(FJB.err||""))FJB.err=null;await fjBoardLoad()}}catch(e){FJB.err="Kunne ikke lagre på topplista (ingen nett?)."}
   FJB.saving=false}
 /* best score per player for one level and dive count, optionally this month only */
-function fjBoardList(lv,nd,per){const mk=new Date().toISOString().slice(0,7),best=new Map();
-  for(const r of FJB.rows||[]){if(r.level!==lv||r.dives!==nd||(per==="month"&&String(r.created_at).slice(0,7)!==mk))continue;const k=r.player||r.player_name;if(!best.has(k)||best.get(k).score<r.score)best.set(k,r)}
+function fjBoardList(lv,nd,per,mode="fri"){const mk=new Date().toISOString().slice(0,7),best=new Map(),day=per==="yday"?fjDay(1):fjDay();
+  for(const r of FJB.rows||[]){const rm=r.mode==="dag"?"dag":"fri";if(rm!==mode)continue;
+    if(mode==="dag"){if(r.day!==day)continue}else if(r.level!==lv||r.dives!==nd||(per==="month"&&String(r.created_at).slice(0,7)!==mk))continue;const k=r.player||r.player_name;if(!best.has(k)||best.get(k).score<r.score)best.set(k,r)}
   return [...best.values()].sort((a,b)=>b.score-a.score)}
 function fjBoardRows(list,n){const me=fjMe();return list.length?`<ol class="fg-board">${list.slice(0,n).map((r,i)=>`<li class="${r.player===me?"me":""}"><b class="r${i<3?i+1:""}">${i+1}</b><span>${esc(r.player_name||"?")}</span><em>${r.score}</em><small>${r.fish||0} fisk${r.best_species?` · største ${esc(String(r.best_species).toLocaleLowerCase("nb"))} ${String(r.best_kg).replace(".",",")} kg`:""} · ${new Date(r.created_at).toLocaleDateString("nb",{day:"numeric",month:"short"})}</small></li>`).join("")}</ol>`:`<p class="fg-best">Ingen resultater her ennå. Bli den første!</p>`}
+/* ===================== SeaHunter meta: profile, gear, badges, catch book, daily dive, sound ===================== */
+/* --- the player profile (shells, gear, badges, catch book) lives in Supabase (seahunter.sql) with a local copy --- */
+const FJP={coins:0,gear:{gun:0,fins:0,suit:0,camo:0},badges:{},dex:{},sessions:0,total:0,t:0,err:null};
+function fjPLocalSave(bump=true){if(bump)FJP.t=Date.now();lsSet("dk-fj-prof",JSON.stringify({coins:FJP.coins,gear:FJP.gear,badges:FJP.badges,dex:FJP.dex,sessions:FJP.sessions,total:FJP.total,t:FJP.t}))}
+(function(){try{const j=JSON.parse(lsGet("dk-fj-prof")||"null");if(j&&typeof j==="object"){Object.assign(FJP,j);FJP.gear=Object.assign({gun:0,fins:0,suit:0,camo:0},j.gear||{})}}catch(e){}})();
+async function fjPLoad(){if(typeof sb==="undefined"||!fjMe())return;
+  try{const {data,error}=await sb.from("game_profile").select("*");if(error){FJP.err=tableErr(error,"seahunter.sql");return}FJP.err=null;S.gameProfiles=data||[];
+    const r=(data||[]).find(x=>x.player===fjMe());
+    if(r&&Date.parse(r.updated_at||0)>(FJP.t||0)){FJP.coins=+r.coins||0;FJP.gear=Object.assign({gun:0,fins:0,suit:0,camo:0},r.gear||{});FJP.badges=r.badges||{};FJP.dex=r.dex||{};FJP.sessions=+r.sessions||0;FJP.total=+r.total||0;FJP.t=Date.parse(r.updated_at);fjPLocalSave(false)}
+    else if((!r||Date.parse(r.updated_at||0)<(FJP.t||0))&&(FJP.sessions||FJP.coins))fjPSave(false)}catch(e){}}
+async function fjPSave(bump=true){fjPLocalSave(bump);if(typeof sb==="undefined"||!fjMe())return;
+  const row={player:fjMe(),player_name:(S.me&&S.me.name)||"",coins:FJP.coins,gear:FJP.gear,badges:FJP.badges,dex:FJP.dex,sessions:FJP.sessions,total:FJP.total,updated_at:new Date(FJP.t||Date.now()).toISOString()};
+  try{const {error}=await sb.from("game_profile").upsert(row,{onConflict:"player"});if(error){FJP.err=tableErr(error,"seahunter.sql");return}FJP.err=null;
+    const ps=S.gameProfiles||(S.gameProfiles=[]),i=ps.findIndex(x=>x.player===row.player);if(i>=0)ps[i]=row;else ps.push(row)}catch(e){}}
+/* --- gear, bought with shells. It counts in free play; the daily dive uses standard gear for everyone --- */
+const FJ_GEAR={
+  gun:{name:"Harpun",tiers:["Standard 75 cm","Rørgevær 90 cm","Tregevær 110 cm","Pro-gevær 130 cm"],cost:[0,150,400,900],fx:t=>`+${12*t} % rekkevidde, ${12*t} % raskere lading`},
+  fins:{name:"Finner",tiers:["Plastfinner","Glassfiber","Kompositt","Karbon"],cost:[0,120,350,800],fx:t=>`+${6*t} % fart, ${10*t} % kraftigere duck-dive`},
+  suit:{name:"Drakt",tiers:["3 mm","5 mm","7 mm","7 mm åpencelle"],cost:[0,150,400,900],fx:t=>`+${8*t} % luft`},
+  camo:{name:"Kamuflasje",tiers:["Svart","Grønn kamo","Tang-kamo","Skreddersydd kamo"],cost:[0,100,300,700],fx:t=>`fisken merker deg ${6*t} % senere`}};
+const fjG=k=>(FJ.gearOn&&FJ.gearOn[k])||0,fjGearSum=g=>Object.values(g||{}).reduce((a,b)=>a+(+b||0),0);
+function fjBuy(k){const it=FJ_GEAR[k],t=FJP.gear[k]||0;if(t>=3)return;const c=it.cost[t+1];if(FJP.coins<c){toast("Ikke nok skjell ennå");return}
+  FJP.coins-=c;FJP.gear[k]=t+1;fjSnd("badge");toast(`${it.name}: ${it.tiers[t+1]}`);fjPSave();fjOverlay()}
+/* --- badges: checked as you play and when a session ends; each gives shells --- */
+const FJ_BADGES=[["forste","Første fangst","Skyt din første fisk",25],["hode","Hodejeger","5 hodeskudd i én økt",100],["presis","Skarpskytter","Minst 6 skudd og ingen bom i én økt",150],
+  ["skjult","Skjult jeger","Skyt en fisk fra skjul i tare, bak stein eller under berg",75],["vente","Tålmodig","Skyt en stor fisk etter ventejakt eller fra skjul",150],["trofe","Trofé","Skyt en fisk i trofé-størrelse",100],
+  ["torsk20","Storetorsken","Torsk på minst 20 kg",150],["kveite","Kveitejeger","Skyt en kveite",100],["kveite50","Monsterkveite","Kveite på minst 50 kg",250],["kveite100","Hundrekiloklubben","Kveite på minst 100 kg",500],
+  ["lange","Langejeger","Lange på minst 10 kg",120],["breiflabb","Breiflabbjeger","Finn og skyt en breiflabb",150],["uer","Rødt gull","Skyt en uer",120],["pigghvar","Flatfiskkongen","Skyt en pigghvar",100],
+  ["dyp30","Dypdykker","Dykk til 30 m",100],["pust90","Lang pust","Et dykk på minst 90 sekunder",100],["ekspert","Ekspert","Fullfør en økt på ekspert uten blackout",200],
+  ["dagens","Dagens beste","Led dagens dykk",150],["samler","Artssamler","Fang alle artene",500],["blackout","Lærepenge","Få blackout (det skjer de beste)",10]];
+const fjBadgeDef=id=>FJ_BADGES.find(b=>b[0]===id);
+function fjBadge(id){if(FJP.badges[id])return;const b=fjBadgeDef(id);if(!b)return;FJP.badges[id]=new Date().toISOString();FJP.coins+=b[3];(FJ.newBadges||(FJ.newBadges=[])).push(id);
+  fjMsg(`Nytt merke: ${b[1]}! +${b[3]} skjell`,3,"#ffd54a");fjSnd("badge")}
+function fjBadgesOnHit(f){const k=f.key,kg=+f.kg||0;fjBadge("forste");if(f.trophy)fjBadge("trofe");if(FJ.nPerf>=5)fjBadge("hode");
+  if((FJ.cover||0)>.4)fjBadge("skjult");if((f.z||0)>1.3&&(FJ.amb>4||(FJ.hideT||0)>4))fjBadge("vente");
+  if(k==="kveite"){fjBadge("kveite");if(kg>=50)fjBadge("kveite50");if(kg>=100)fjBadge("kveite100")}
+  if(k==="torsk"&&kg>=20)fjBadge("torsk20");if(k==="lange"&&kg>=10)fjBadge("lange");if(k==="breiflabb")fjBadge("breiflabb");if(k==="uer")fjBadge("uer");if(k==="pigghvar")fjBadge("pigghvar")}
+/* catch book: what you have secured at the buoy, per species */
+function fjDexAdd(hand){for(const h of hand){if(!h.key)continue;const e=FJP.dex[h.key]||{n:0,kg:0};e.n++;if(+h.kg>e.kg)e.kg=+h.kg;FJP.dex[h.key]=e}}
+function fjSessionEnd(why){if(why==="blackout")fjBadge("blackout");if(FJ.shots>=6&&FJ.hits===FJ.shots&&!FJ.nTorn)fjBadge("presis");
+  if(FJ.lvl==="ekspert"&&why!=="blackout"&&FJ.mode!=="dag")fjBadge("ekspert");if(Object.keys(FJ_SP).every(k=>FJP.dex[k]))fjBadge("samler");
+  FJ.earned=Math.round(FJ.score/4);FJP.coins+=FJ.earned;FJP.sessions++;FJP.total+=FJ.score;fjPSave()}
+/* --- the daily dive: the same seabed and the same fish for everyone on the same day --- */
+function fjRng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const fjDay=(back=0)=>{const d=new Date(Date.now()-back*864e5);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
+const fjDayTxt=day=>new Date(day+"T12:00:00").toLocaleDateString("nb-NO",{weekday:"long",day:"numeric",month:"short"});
+function fjSeed(day){let h=2166136261;for(const c of "seahunter-"+day){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+function fjStart(){FJ.mode="fri";fjSndInit();fjStart0()}
+function fjStartDay(){fjSndInit();FJ.mode="dag";FJ.lvl="normal";FJ.nDives=5;const orig=Math.random;Math.random=fjRng(fjSeed(fjDay()));try{fjStart0()}finally{Math.random=orig}}
+function fjDayBest(){return +(lsGet("dk-fj-day-"+fjDay())||0)}
+/* --- SeaHunter events for the activity bell: new records, daily winners and badges --- */
+function fjFeedItems(){const out=[],me=S.user&&S.user.id,cut=Date.now()-45*864e5,today=fjDay();
+  const rows=[...(S.gameRows||[])].sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at)),best={},days={};
+  for(const r of rows){if(r.mode==="dag"){if(r.day&&r.day<today&&(!days[r.day]||r.score>days[r.day].score))days[r.day]=r;continue}
+    const k=r.level+"|"+r.dives,prev=best[k];if(!prev||r.score>prev.score){const t=Date.parse(r.created_at);
+      if(prev&&t>cut){const mine=r.player===me,beatMe=prev.player===me&&!mine;out.push({kind:"game",mine,ct:t,t,when:ago(r.created_at),who:mine?"Du":(r.player_name||"Noen"),verb:beatMe?"slo SeaHunter-rekorden din":"satte ny SeaHunter-rekord",
+        text:`${FJ_LV[r.level]?FJ_LV[r.level].name:r.level}, ${r.dives} dykk: ${r.score} poeng${prev.player!==r.player?` (forrige: ${prev.player===me?"deg":(prev.player_name||"?")} med ${prev.score})`:""}`,lv:r.level,nd:r.dives,mode:"fri"})}
+      best[k]=r}}
+  for(const [day,r] of Object.entries(days)){const t=Date.parse(day+"T23:59:00");if(!(t>cut))continue;const mine=r.player===me;
+    out.push({kind:"game",mine,ct:t,t,when:fjDayTxt(day),who:mine?"Du":(r.player_name||"Noen"),verb:mine?"vant dagens dykk i SeaHunter":"vant dagens dykk i SeaHunter",text:`${r.score} poeng${r.best_species?` · største ${String(r.best_species).toLocaleLowerCase("nb")} ${String(r.best_kg).replace(".",",")} kg`:""}`,mode:"dag"})}
+  for(const p of S.gameProfiles||[])for(const [id,iso] of Object.entries(p.badges||{})){const t=Date.parse(iso),b=fjBadgeDef(id);if(!b||!(t>cut)||id==="blackout")continue;const mine=p.player===me;
+    out.push({kind:"game",mine,ct:t,t,when:ago(iso),who:mine?"Du":(p.player_name||"Noen"),verb:"fikk SeaHunter-merket",text:`${b[1]}: ${b[2].toLocaleLowerCase("nb")}`,badge:true})}
+  return out}
+async function fjFeedLoad(){if(typeof sb==="undefined"||!fjMe())return;
+  try{const [a,b]=await Promise.all([sb.from("game_scores").select("*").order("created_at",{ascending:false}).limit(600),sb.from("game_profile").select("*")]);
+    if(!a.error)S.gameRows=a.data||[];if(!b.error)S.gameProfiles=b.data||[];renderFeed()}catch(e){}}
+/* --- sound: underwater hum, the gun, hits, bubbles and breathing, all synthesised (no files) --- */
+const FJS={ctx:null,on:lsGet("dk-fj-snd")!=="0",nb:null,amb:null};
+function fjSndInit(){if(!FJS.on)return;if(FJS.ctx){if(FJS.ctx.state==="suspended")FJS.ctx.resume();return}const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  try{const c=new AC(),len=c.sampleRate*2,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);let last=0;for(let i=0;i<len;i++){last=(last+.02*(Math.random()*2-1))/1.02;d[i]=last*3.5}
+    FJS.ctx=c;FJS.nb=b;const src=c.createBufferSource();src.buffer=b;src.loop=true;const lp=c.createBiquadFilter();lp.type="lowpass";lp.frequency.value=320;const g=c.createGain();g.gain.value=.1;src.connect(lp).connect(g).connect(c.destination);src.start();FJS.amb=g}catch(e){FJS.ctx=null}}
+function fjSnd(kind){const c=FJS.ctx;if(!c||!FJS.on||!FJS.nb)return;if(c.state==="suspended")c.resume();const t=c.currentTime;
+  const noise=(dur,type,f,q,vol)=>{const s=c.createBufferSource();s.buffer=FJS.nb;const fl=c.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q||1;const g=c.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);s.connect(fl).connect(g).connect(c.destination);s.start(t,(t*7.3)%1.5);s.stop(t+dur+.05)};
+  const tone=(f0,f1,dur,vol,type="sine",dl=0)=>{const o=c.createOscillator();o.type=type;o.frequency.setValueAtTime(f0,t+dl);o.frequency.exponentialRampToValueAtTime(f1,t+dl+dur);const g=c.createGain();g.gain.setValueAtTime(.0001,t+dl);g.gain.exponentialRampToValueAtTime(vol,t+dl+.01);g.gain.exponentialRampToValueAtTime(.0001,t+dl+dur);o.connect(g).connect(c.destination);o.start(t+dl);o.stop(t+dl+dur+.05)};
+  if(kind==="shot"){noise(.12,"highpass",900,.7,.5);tone(140,55,.18,.35,"triangle")}else if(kind==="hit"){tone(90,45,.22,.45);noise(.08,"lowpass",600,1,.3)}
+  else if(kind==="miss")noise(.1,"bandpass",1800,2,.15);else if(kind==="breath")noise(.7,"bandpass",700,.8,.45);else if(kind==="duck"){noise(.45,"lowpass",900,.7,.55);tone(300,900,.25,.05,"sine",.1)}
+  else if(kind==="bubble")tone(520,1300,.07,.04);else if(kind==="badge"){tone(660,660,.14,.12,"triangle");tone(990,990,.22,.12,"triangle",.12)}else if(kind==="secure")tone(520,780,.18,.1,"triangle")}
+function fjSndToggle(){FJS.on=!FJS.on;lsSet("dk-fj-snd",FJS.on?"1":"0");if(FJS.on)fjSndInit();else if(FJS.ctx)FJS.ctx.suspend();fjSndBtn()}
+function fjSndBtn(){const b=$("#fgSnd");if(b){b.innerHTML=FJS.on?'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>':'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>';b.title=FJS.on?"Lyd på (trykk for å skru av)":"Lyd av (trykk for å skru på)"}}
+/* --- small drawings of each species for the catch book --- */
+function fjDrawMini(cv,key,known){const g=cv.getContext("2d"),w=cv.width,h=cv.height,d=FJ_SP[key];g.clearRect(0,0,w,h);g.save();g.translate(w/2,h/2);
+  const f={key,d,len:w*.78,rel:.6,ph:0,mott:0,dir:1,rest:false,flee:0,hit:0,hid:0,x:0,y:0};if(d.flat)f.len=w*.6;if(key==="breiflabb")f.len=w*.72;
+  try{if(d.flat)fjDrawFlat(g,f,1);else if(key==="breiflabb")fjDrawAngler(g,f,1);else fjDrawRound(g,f)}catch(e){}
+  g.restore();if(!known){g.globalCompositeOperation="source-atop";g.fillStyle="#0d2233";g.fillRect(0,0,w,h);g.globalCompositeOperation="source-over"}}
 function fjEnd(why){FJ.st="over";FJ.why=why;FJ.spear=null;FJ.joy=null;if(why==="blackout"){FJ.lost=FJ.hand.reduce((a,c)=>a+c.pts,0);FJ.hand=[]}else FJ.lost=0;
   if(why==="blackout"&&FJ.diving)FJ.diveScores.push(0);
-  const b=fjBest(FJ.lvl),rec=FJ.score>b&&FJ.score>0;if(rec)lsSet(`dk-fj-best-${FJ.lvl}-${FJ.nDives}`,FJ.score);FJ.best=Math.max(b,FJ.score);FJ.rec=rec;fjOverlay();
-  fjBoardSave().then(()=>{if(FJ.st==="over")fjOverlay()})}
+  if(FJ.mode==="dag"){const b=fjDayBest();FJ.rec=FJ.score>b&&FJ.score>0;if(FJ.rec)lsSet("dk-fj-day-"+fjDay(),FJ.score);FJ.best=Math.max(b,FJ.score)}
+  else{const b=fjBest(FJ.lvl),rec=FJ.score>b&&FJ.score>0;if(rec)lsSet(`dk-fj-best-${FJ.lvl}-${FJ.nDives}`,FJ.score);FJ.best=Math.max(b,FJ.score);FJ.rec=rec}
+  fjSessionEnd(why);fjOverlay();
+  fjBoardSave().then(()=>{if(FJ.mode==="dag"&&FJ.score>0){const l=fjBoardList("normal",5,"today","dag");if(l[0]&&l[0].player===fjMe()&&!FJP.badges.dagens){fjBadge("dagens");fjPSave()}}
+    if(FJB.rows)S.gameRows=FJB.rows;fjFeedLoad();if(FJ.st==="over")fjOverlay()})}
 /* ----- drawing: fish that look like their real counterparts ----- */
 function fjBy(L,H,x){const u=(x+L/2)/L;return -H*(.1+.42*Math.sin(Math.PI*Math.max(0,Math.min(1,(u-.1)/.88))))}
 function fjBodyPath(g,L,H,o={}){const x0=-L/2,x1=L/2,tp=x0+L*.12,n=(o.nose||0)*H,hd=o.head||.22;g.beginPath();g.moveTo(x1,n);
@@ -3687,10 +3816,10 @@ function fjDrawDiver(g){const dv=FJ.dv,fc=dv.face,a=fjAimAng(),sp=Math.hypot(dv.
   g.save();g.translate(dv.x,dv.y);g.scale(fc*.74,.74);g.rotate(pitch);const kick=Math.sin(dv.kick)*(.15+Math.min(.35,sp/300));
   // legs and long freediving fins
   for(const s of [1,-1]){g.save();g.translate(-34,2+s*2);g.rotate(kick*s);g.fillStyle="#141a1f";g.beginPath();g.moveTo(0,-5);g.lineTo(-46,-3);g.lineTo(-46,3);g.lineTo(0,5);g.fill();
-    g.translate(-46,0);g.rotate(kick*s*.8);g.fillStyle=s>0?"#1f2a33":"#26323c";g.beginPath();g.moveTo(0,-4);g.quadraticCurveTo(-40,-9,-78,-3);g.lineTo(-80,3);g.quadraticCurveTo(-40,6,0,4);g.fill();g.restore()}
+    g.translate(-46,0);g.rotate(kick*s*.8);g.fillStyle=[["#1f2a33","#26323c"],["#245a66","#2c6a78"],["#3a3f46","#454b53"],["#0c0e10","#1a1d21"]][fjG("fins")][s>0?0:1];g.beginPath();g.moveTo(0,-4);g.quadraticCurveTo(-40,-9,-78,-3);g.lineTo(-80,3);g.quadraticCurveTo(-40,6,0,4);g.fill();g.restore()}
   // torso (camouflage wetsuit), weight belt, head with mask and snorkel
   const gr=g.createLinearGradient(0,-12,0,12);gr.addColorStop(0,"#2a3a2e");gr.addColorStop(1,"#141c18");g.fillStyle=gr;g.beginPath();g.ellipse(-8,0,30,11,0,0,7);g.fill();
-  g.fillStyle="rgba(70,90,60,.55)";for(const [x,y,r] of [[-22,-4,5],[-6,3,6],[8,-5,4],[-30,4,4]]){g.beginPath();g.arc(x,y,r,0,7);g.fill()}
+  g.fillStyle=["rgba(70,90,60,0)","rgba(70,90,60,.55)","rgba(96,108,52,.7)","rgba(110,96,60,.75)"][fjG("camo")];for(const [x,y,r] of [[-22,-4,5],[-6,3,6],[8,-5,4],[-30,4,4]]){g.beginPath();g.arc(x,y,r,0,7);g.fill()}
   g.fillStyle="#3a3a3a";g.fillRect(-24,-11,6,22);
   g.fillStyle="#141a1f";g.beginPath();g.arc(26,-4,10,0,7);g.fill();
   g.fillStyle="rgba(150,210,235,.75)";g.beginPath();g.ellipse(32,-6,5,6,0,0,7);g.fill();g.strokeStyle="#0b0e10";g.lineWidth=1.6;g.stroke();
@@ -3699,11 +3828,11 @@ function fjDrawDiver(g){const dv=FJ.dv,fc=dv.face,a=fjAimAng(),sp=Math.hypot(dv.
   // arms and speargun follow the aim
   g.save();g.translate(dv.x+fc*9,dv.y-5);g.rotate(a);const flip=Math.cos(a)<0?-1:1;g.scale(.74,.74*flip);
   g.fillStyle="#141a1f";g.beginPath();g.moveTo(0,-4);g.lineTo(22,-3);g.lineTo(22,3);g.lineTo(0,4);g.fill();
-  g.fillStyle="#2b2f33";g.fillRect(14,-3,84,6);g.fillStyle="#5b4630";g.fillRect(14,-2,14,10);
-  const loaded=!FJ.spear&&FJ.reload<=0;g.strokeStyle="#c0392b";g.lineWidth=2.6;g.beginPath();if(loaded){g.moveTo(96,-3);g.lineTo(50,-7);g.moveTo(96,3);g.lineTo(50,7)}else{g.moveTo(96,-3);g.lineTo(102,-6);g.moveTo(96,3);g.lineTo(102,6)}g.stroke();
-  if(loaded){g.strokeStyle="#d5d9de";g.lineWidth=2;g.beginPath();g.moveTo(20,-4.5);g.lineTo(110,-4.5);g.stroke()}
+  const gt=fjG("gun"),gl=84+14*gt;g.fillStyle=gt>=2?"#5a3e24":"#2b2f33";g.fillRect(14,-3,gl,6);g.fillStyle="#5b4630";g.fillRect(14,-2,14,10);
+  const loaded=!FJ.spear&&FJ.reload<=0;g.strokeStyle="#c0392b";g.lineWidth=2.6;g.beginPath();if(loaded){g.moveTo(gl+12,-3);g.lineTo(50,-7);g.moveTo(gl+12,3);g.lineTo(50,7);if(gt>=3){g.moveTo(gl+12,-3);g.lineTo(60,-8);g.moveTo(gl+12,3);g.lineTo(60,8)}}else{g.moveTo(gl+12,-3);g.lineTo(gl+18,-6);g.moveTo(gl+12,3);g.lineTo(gl+18,6)}g.stroke();
+  if(loaded){g.strokeStyle="#d5d9de";g.lineWidth=2;g.beginPath();g.moveTo(20,-4.5);g.lineTo(gl+26,-4.5);g.stroke()}
   g.restore()}
-const fjBig=f=>!f.small&&f.rel>.6,fjClock=t=>`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,"0")}`;
+const fjBig=f=>!f.small&&(f.z||0)>1.3,fjClock=t=>`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,"0")}`;
 /* the fish nearest your aim, within reach: shown with a size estimate like a hunter would judge it */
 function fjTarget(){const L=fjL(),dv=FJ.dv,ta=fjAimAng();let tg=null,tb=1e9;
   for(const f of FJ.fish){if(f.hit)continue;const ex=f.x-dv.x,ey=f.y-(dv.y-6),dd=Math.hypot(ex,ey);if(dd>L.range*1.45)continue;if(f.d.camo&&dd>170&&!FJ.xray)continue;
@@ -3762,7 +3891,7 @@ function fjDraw(){const cv=$("#fgCv");if(!cv)return;const g=cv.getContext("2d"),
     g.fillStyle="rgba(0,0,0,.4)";g.fillRect(bx,by,bw,10);g.fillStyle=low?(Math.sin(t*10)>0?"#ff6b5a":"#c0392b"):"#7fdcf0";g.fillRect(bx,by,bw*f,10);
     g.font="600 11px Barlow, sans-serif";g.fillStyle="rgba(241,230,200,.85)";const dep=`${fnum(dv.y/FJ_U,1)} m`,tm=`${FJ.diving?FJ.dive:Math.min(FJ.nDives,FJ.dive+1)}/${FJ.nDives}`;
     if(narrow){g.textAlign="left";g.fillText(`LUFT${FJ.drain<.6&&dv.y>16?" (sparer)":""} · ${dep}${dv.y>16?" · "+fjClock(FJ.diveT):""}`,bx,by+24);g.textAlign="right";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,bx+bw,by+24)}
-    else{g.textAlign="center";g.fillText(`LUFT${FJ.drain<.6&&dv.y>16?" (sparer)":""} · DYBDE ${dep}${dv.y>16?" · TID "+fjClock(FJ.diveT):FJ.lastDive?" · FORRIGE DYKK "+fjClock(FJ.lastDive):""}`,W/2,by+24);g.textAlign="right";g.font="600 12px Barlow, sans-serif";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,W-100,30)}
+    else{g.textAlign="center";g.fillText(`LUFT${FJ.drain<.6&&dv.y>16?" (sparer)":""} · DYBDE ${dep}${dv.y>16?" · TID "+fjClock(FJ.diveT):FJ.lastDive?" · FORRIGE DYKK "+fjClock(FJ.lastDive):""}`,W/2,by+24);g.textAlign="right";g.font="600 12px Barlow, sans-serif";g.fillText(`${FJ.mode==="dag"?"DAGENS DYKK · ":""}DYKK ${tm} · REKORD ${FJ.best}`,W-144,30)}
     if(!FJ.spear&&FJ.reload>0){const p=1-FJ.reload/L.reload;g.fillStyle="rgba(0,0,0,.45)";g.fillRect(ds.x-35,ds.y+34,70,6);g.fillStyle="#F1E6C8";g.fillRect(ds.x-35,ds.y+34,70*Math.max(0,Math.min(1,p)),6)}
     const tg=fjTarget();if(tg){const f=tg,lx=(f.x-cam.x)*sc,ly=(f.y-cam.y)*sc-f.len*.42*sc-10,kg=f.kg<3?String(f.kg).replace(".",","):Math.round(f.kg);
       const txt=f.small?`${f.d.name} · under minstemål`:`${f.d.name} · ca. ${kg} kg${f.trophy?" · trofé":fjBig(f)?" · stor":""}`;
@@ -3780,46 +3909,80 @@ function fjLoop(now){const d=$("#gameDlg");if(!d||!d.open){FJ.raf=0;return}const
   if(FJ.st==="play")fjUpdate(dt);
   else{for(const f of FJ.fish)fjFish(f,dt);FJ.cam.x+=dt*25;if(FJ.cam.x>FJ_WW-FJ.vw)FJ.cam.x=0;FJ.cam.y+=((FJ.st==="title"?260:FJ.cam.y)-FJ.cam.y)*dt}
   fjDraw();FJ.raf=requestAnimationFrame(fjLoop)}
-function fjRankHTML(){if(!fjMe()||FJ.score<=0)return "";if(FJB.saving)return `<p class="fg-best">Lagrer på topplista …</p>`;if(FJB.err)return `<p class="fg-warn">${esc(FJB.err)}</p>`;
-  const list=fjBoardList(FJ.lvl,FJ.nDives,"all"),me=fjMe(),i=list.findIndex(r=>r.player===me);if(i<0)return "";
-  const mine=list[i],now=mine.score===FJ.score;return `<div class="fg-rank"><p><b>${i===0?"Du leder topplista!":`Du er nr. ${i+1} av ${list.length}`}</b> på ${esc(fjL().name.toLocaleLowerCase("nb"))}, ${FJ.nDives} dykk${now?"":` (din beste: ${mine.score})`}.</p>${fjBoardRows(list,3)}</div>`}
+function fjRankHTML(){if(!fjMe()||FJ.score<=0)return "";if(FJB.saving)return `<p class="fg-best">Lagrer på topplista …</p>`;if(FJB.err&&!/oppdaterte/.test(FJB.err))return `<p class="fg-warn">${esc(FJB.err)}</p>`;
+  const day=FJ.mode==="dag",list=day?fjBoardList("normal",5,"today","dag"):fjBoardList(FJ.lvl,FJ.nDives,"all"),me=fjMe(),i=list.findIndex(r=>r.player===me);if(i<0)return FJB.err?`<p class="fg-warn">${esc(FJB.err)}</p>`:"";
+  const mine=list[i],now=mine.score===FJ.score;return `<div class="fg-rank"><p><b>${i===0?(day?"Du leder dagens dykk!":"Du leder topplista!"):`Du er nr. ${i+1} av ${list.length}`}</b>${i===0&&day?"":day?" i dagens dykk.":` på ${esc(FJ_LV[FJ.lvl].name.toLocaleLowerCase("nb"))}, ${FJ.nDives} dykk.`}${now?"":` Din beste: ${mine.score}.`}</p>${fjBoardRows(list,3)}</div>`}
+function fjView(v,from){FJ.boardFrom=from;FJ.st=v;if(v==="board"){FJB.lv=FJ.lvl;FJB.nd=FJ.nDives;FJB.mode=FJ.mode==="dag"?"dag":"fri";fjOverlay();fjBoardLoad().then(()=>{if(FJ.st==="board")fjOverlay()})}
+  else{fjOverlay();if(v==="badges"||v==="shop")fjPLoad().then(()=>{if(FJ.st===v)fjOverlay()})}}
+function fjBack(){FJ.st=FJ.boardFrom||"title";fjOverlay()}
 function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
   if(FJ.st==="play"&&!FJ.paused){ov.hidden=true;ov.innerHTML="";return}ov.hidden=false;
   if(FJ.paused){ov.innerHTML=`<div class="fg-card"><h2>Pause</h2><button type="button" class="btn primary" id="fgGo">Fortsett</button></div>`;$("#fgGo").onclick=()=>{FJ.paused=false;FJ.last=performance.now();fjOverlay()};return}
   const lvBtns=`<div class="fg-lv">${Object.entries(FJ_LV).map(([k,v])=>`<button type="button" class="fg-lvb${k===FJ.lvl?" on":""}" data-lv="${k}"><b>${v.name}</b><small>${esc(v.d)}</small><i>×${v.mult}${fjBest(k)?` · rekord ${fjBest(k)} (${FJ.nDives} dykk)`:""}</i></button>`).join("")}</div>`;
   const wireLv=()=>ov.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{FJ.lvl=b.dataset.lv;lsSet("dk-fj-lvl",FJ.lvl);fjOverlay()});
   const ctl=FJ.touch||(window.matchMedia&&matchMedia("(pointer:coarse)").matches)?"<b>Venstre tommel</b> svømmer (dra langt for å svømme fort, dra ned i overflaten for duck-dive). <b>Trykk</b> der du vil skyte.":"<b>WASD</b> svømmer, <b>Shift</b> svømmer fort, <b>S</b> i overflaten tar et duck-dive. Sikt med <b>musa</b> eller <b>piltastene</b>, skyt med <b>klikk</b> eller <b>mellomrom</b>.";
-  if(FJ.st==="title"){ov.innerHTML=`<div class="fg-card fg-wide"><h2 class="fg-title"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#38c6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="#38c6d4" stroke="none"/><path d="M8.4 12.1L6.2 10.2v3.8z" fill="#38c6d4" stroke="none"/></svg>SeaHunter</h2><p>${ctl}</p>
-    <ul><li><b>Ett pust om gangen.</b> Fangsten er bare sikret når du er oppe ved bøya. Går lufta tom under vann, er det blackout.</li>
-    <li><b>Tareskogen</b> (til venstre) har lyr, torsk og berggylt. <b>Dypere ute</b>: rødspette, flyndre, pigghvar, lange, hyse, steinbit, kveite, uer helt nede og den kamuflerte <b>breiflabben</b>. Jo dypere, jo større fisk og flere poeng.</li>
-    <li><b>Ligg rolig</b>: fisken kommer nærmere, og du bruker under halvparten så mye luft. Jo fortere du svømmer (Shift) eller svinger harpunen, jo mer skremmes den. Sikt på hodet, og pass på minstemålet.</li>
-    <li><b>De største</b> er skyest. Er du rolig lenge uten å skyte, øker sjansen for storfisk (ingen garanti). Ligg stille på bunnen (<b>ventejakt</b>) eller gjem deg i taren, bak en stein eller under berget, så tør de å komme nær.</li>
-    <li><b>Strøm</b> fra normal og opp. Fisken blir skyere for hvert dykk, og ingen økt er lik.</li></ul>
+  if(FJ.st==="title"){const day=fjDay(),dl=fjBoardList("normal",5,"today","dag"),lead=dl[0],mb=fjDayBest(),nb=Object.keys(FJP.badges).length,nd=Object.keys(FJP.dex).length,ns=Object.keys(FJ_SP).length;
+    ov.innerHTML=`<div class="fg-card fg-wide"><div class="fg-top"><h2 class="fg-title"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#38c6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="#38c6d4" stroke="none"/><path d="M8.4 12.1L6.2 10.2v3.8z" fill="#38c6d4" stroke="none"/></svg> SeaHunter</h2><span class="fg-shells" title="Skjell: tjenes på poeng og merker, brukes på utstyr"><svg class="fg-shell" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-5 0-9 4.2-9 9.5 0 2.6 1.2 4.6 3 5.8L8 21h8l2-2.7c1.8-1.2 3-3.2 3-5.8C21 7.2 17 3 12 3z"/><path d="M12 3v15M7.5 5.5L10 18M16.5 5.5L14 18M4 10.5l5.5 7.5M20 10.5l-5.5 7.5"/></svg> ${FJP.coins}</span></div><p class="fg-ctl">${ctl}</p>
+    <div class="fg-day"><div><b>Dagens dykk</b> <span>· ${esc(fjDayTxt(day))}</span><small>Samme havbunn og fisk for alle i dag · normal · 5 dykk · standard utstyr</small>
+      <small>${lead?`Leder: <b>${esc(lead.player_name||"?")}</b> med ${lead.score}`:"Ingen har tatt dagens dykk ennå"}${mb?` · din beste i dag: <b>${mb}</b>`:""}</small></div>
+      <button type="button" class="btn primary" id="fgDay">Spill dagens dykk</button></div>
+    <div class="fg-sub">Fritt spill${fjGearSum(FJP.gear)?` <small>med ditt utstyr</small>`:""}</div>
     ${lvBtns}<div class="fg-go"><div class="fg-dives"><span>Antall dykk</span>${[3,5,10].map(n=>`<button type="button" class="chip${FJ.nDives===n?" on":""}" data-nd="${n}">${n}</button>`).join("")}</div>
-    <span class="fg-gobtns"><button type="button" class="btn fg-bbtn" id="fgBoard">Toppliste</button><button type="button" class="btn primary fg-start" id="fgGo">Start (${esc(fjL().name)}, ${FJ.nDives} dykk)</button></span></div></div>`;wireLv();
-    $("#fgBoard").onclick=()=>{FJ.boardFrom="title";FJB.lv=FJ.lvl;FJB.nd=FJ.nDives;FJ.st="board";fjOverlay();fjBoardLoad().then(()=>{if(FJ.st==="board")fjOverlay()})};
-    ov.querySelectorAll("[data-nd]").forEach(b=>b.onclick=()=>{FJ.nDives=+b.dataset.nd;lsSet("dk-fj-dives",FJ.nDives);fjOverlay()});$("#fgGo").onclick=fjStart;return}
-  if(FJ.st==="board"){const lv=FJB.lv||FJ.lvl,nd=FJB.nd||FJ.nDives,per=FJB.per,list=fjBoardList(lv,nd,per);
+    <button type="button" class="btn primary fg-start" id="fgGo">Start (${esc(FJ_LV[FJ.lvl].name)}, ${FJ.nDives} dykk)</button></div>
+    <div class="fg-nav"><button type="button" class="btn" data-view="board">Toppliste</button><button type="button" class="btn" data-view="shop">Utstyr</button><button type="button" class="btn" data-view="badges">Merker ${nb}/${FJ_BADGES.length}</button><button type="button" class="btn" data-view="dex">Fangstbok ${nd}/${ns}</button><button type="button" class="btn" data-view="help">Slik spiller du</button></div></div>`;
+    wireLv();ov.querySelectorAll("[data-nd]").forEach(b=>b.onclick=()=>{FJ.nDives=+b.dataset.nd;lsSet("dk-fj-dives",FJ.nDives);fjOverlay()});$("#fgGo").onclick=fjStart;$("#fgDay").onclick=fjStartDay;
+    ov.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>fjView(b.dataset.view,"title"));return}
+  if(FJ.st==="help"){ov.innerHTML=`<div class="fg-card fg-wide"><h2 class="fg-title">Slik spiller du</h2><p>${ctl}</p>
+    <ul><li><b>Ett pust om gangen.</b> Fangsten er bare sikret når du er oppe ved bøya. Går lufta tom under vann, er det blackout.</li>
+    <li><b>Tareskogen</b> (til venstre) har lyr, torsk og berggylt. <b>Dypere ute</b>: rødspette, flyndre, pigghvar, lange, hyse, steinbit, kveite, uer helt nede og den kamuflerte <b>breiflabben</b>. Ved <b>storstupet</b> står de største.</li>
+    <li><b>Ligg rolig</b>: fisken kommer nærmere, og du bruker under halvparten så mye luft. Jo fortere du svømmer (Shift) eller svinger harpunen, jo mer skremmes den. Sikt på hodet, og pass på minstemålet.</li>
+    <li><b>De største</b> er skyest og sjeldne: en torsk over 10 kg er sjelden, over 20 kg nesten en myte. Grunnere enn 8–10 m finnes ikke de største (unntatt kveite, som kan dukke opp hvor som helst).</li>
+    <li><b>Lyr</b>, og litt mindre <b>torsk</b> og småsei, kommer til deg når du ligger stille i skjul (tare, stein, berg) eller på bunnen. Små og middels lyr først; <b>de største lyrene</b> bare etter lang venting i taren. Andre arter bryr seg ikke.</li>
+    <li><b>Strøm</b> fra normal og opp. Fisken blir skyere for hvert dykk, og ingen økt er lik.</li>
+    <li><b>Dagens dykk</b> er likt for alle hele dagen: samme havbunn og samme fisk, normal, 5 dykk og standard utstyr. Egen toppliste for hver dag.</li>
+    <li><b>Skjell</b> tjener du på hver økt (poengene delt på 4) og på nye <b>merker</b>. Bruk dem på bedre <b>utstyr</b> til fritt spill: lengre harpun, bedre finner, tykkere drakt og kamuflasje.</li>
+    <li><b>Fangstboka</b> samler alle artene du har fått opp til bøya, med din største av hver.</li></ul>
+    <div class="fg-btns"><button type="button" class="btn primary" id="fgBack">Tilbake</button></div></div>`;$("#fgBack").onclick=fjBack;return}
+  if(FJ.st==="shop"){ov.innerHTML=`<div class="fg-card fg-wide"><div class="fg-top"><h2 class="fg-title">Utstyr</h2><span class="fg-shells"><svg class="fg-shell" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-5 0-9 4.2-9 9.5 0 2.6 1.2 4.6 3 5.8L8 21h8l2-2.7c1.8-1.2 3-3.2 3-5.8C21 7.2 17 3 12 3z"/><path d="M12 3v15M7.5 5.5L10 18M16.5 5.5L14 18M4 10.5l5.5 7.5M20 10.5l-5.5 7.5"/></svg> ${FJP.coins}</span></div>
+    <p class="fg-best">Skjell tjener du på hver økt (poengene delt på 4) og på nye merker. Utstyret gjelder i fritt spill. Dagens dykk bruker standard utstyr for alle.</p>
+    <div class="fg-shop">${Object.entries(FJ_GEAR).map(([k,it])=>{const t=FJP.gear[k]||0,nx=t<3?t+1:null,can=nx&&FJP.coins>=it.cost[nx];return `<div class="fg-item"><div><b>${it.name}</b> <span class="fg-tier" aria-label="nivå ${t} av 3">${"●".repeat(t)}${"○".repeat(3-t)}</span><small>Nå: ${esc(it.tiers[t])}${t?` · ${esc(it.fx(t))}`:""}</small>${nx?`<small>Neste: <b>${esc(it.tiers[nx])}</b> · ${esc(it.fx(nx))}</small>`:`<small>Fullt oppgradert</small>`}</div>${nx?`<button type="button" class="btn${can?" primary":""}" data-buy="${k}"${can?"":" disabled"}><svg class="fg-shell" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-5 0-9 4.2-9 9.5 0 2.6 1.2 4.6 3 5.8L8 21h8l2-2.7c1.8-1.2 3-3.2 3-5.8C21 7.2 17 3 12 3z"/><path d="M12 3v15M7.5 5.5L10 18M16.5 5.5L14 18M4 10.5l5.5 7.5M20 10.5l-5.5 7.5"/></svg> ${it.cost[nx]}</button>`:""}</div>`}).join("")}</div>
+    ${FJP.err?`<p class="fg-warn">${esc(FJP.err)} Til da lagres utstyr og merker bare på denne enheten.</p>`:""}
+    <div class="fg-btns"><button type="button" class="btn primary" id="fgBack">Tilbake</button></div></div>`;ov.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>fjBuy(b.dataset.buy));$("#fgBack").onclick=fjBack;return}
+  if(FJ.st==="badges"){const n=Object.keys(FJP.badges).length,others=(S.gameProfiles||[]).filter(p=>p.player!==fjMe()).map(p=>[p.player_name||"?",Object.keys(p.badges||{}).length]).sort((a,b)=>b[1]-a[1]);
+    ov.innerHTML=`<div class="fg-card fg-wide"><h2 class="fg-title">Merker <small class="fg-cnt">${n} av ${FJ_BADGES.length}</small></h2>
+    <div class="fg-badges">${FJ_BADGES.map(([id,name,desc,rw])=>{const got=FJP.badges[id];return `<div class="fg-badge${got?" got":""}"><b>${esc(name)}</b><small>${esc(desc)}</small><i>${got?"Tatt "+new Date(got).toLocaleDateString("nb-NO",{day:"numeric",month:"short"}):`+${rw} skjell`}</i></div>`}).join("")}</div>
+    ${others.length?`<p class="fg-best">Gjengen: ${others.map(([nm,c])=>`${esc(nm)} ${c}`).join(" · ")}</p>`:""}
+    <div class="fg-btns"><button type="button" class="btn primary" id="fgBack">Tilbake</button></div></div>`;$("#fgBack").onclick=fjBack;return}
+  if(FJ.st==="dex"){const keys=Object.keys(FJ_SP),n=keys.filter(k=>FJP.dex[k]).length;
+    ov.innerHTML=`<div class="fg-card fg-wide"><h2 class="fg-title">Fangstbok <small class="fg-cnt">${n} av ${keys.length} arter</small></h2>
+    <div class="fg-dex">${keys.map(k=>{const e=FJP.dex[k];return `<div class="fg-dexi${e?" got":""}"><canvas width="300" height="132" data-sp="${k}"></canvas><b>${e?esc(FJ_SP[k].name):"?"}</b><small>${e?`${e.n} stk · største ${String(e.kg).replace(".",",")} kg`:"ikke fanget ennå"}</small></div>`}).join("")}</div>
+    <div class="fg-btns"><button type="button" class="btn primary" id="fgBack">Tilbake</button></div></div>`;ov.querySelectorAll("canvas[data-sp]").forEach(c=>fjDrawMini(c,c.dataset.sp,!!FJP.dex[c.dataset.sp]));$("#fgBack").onclick=fjBack;return}
+  if(FJ.st==="board"){const md=FJB.mode||"fri",lv=FJB.lv||FJ.lvl,nd=FJB.nd||FJ.nDives,per=md==="dag"?(FJB.dper||"today"):FJB.per,list=fjBoardList(lv,nd,per,md);
     const big=[...(FJB.rows||[])].filter(r=>r.best_kg>0).sort((a,b)=>b.best_kg-a.best_kg).slice(0,5);
-    const chips=(name,opts,cur)=>`<div class="fg-dives"><span>${name}</span>${opts.map(([v,l])=>`<button type="button" class="chip${String(cur)===String(v)?" on":""}" data-b${{"N":"n","D":"d","P":"p"}[name[0]]}="${v}">${l}</button>`).join("")}</div>`;
+    const chips=(key,name,opts,cur)=>`<div class="fg-dives"><span>${name}</span>${opts.map(([v,l])=>`<button type="button" class="chip${String(cur)===String(v)?" on":""}" data-b${key}="${v}">${l}</button>`).join("")}</div>`;
     ov.innerHTML=`<div class="fg-card fg-wide"><h2 class="fg-title"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E3B341" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10M17 4v8a5 5 0 0 1-10 0V4"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0-4 0M17 9a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/></svg> Toppliste</h2>
-      ${chips("Nivå",Object.entries(FJ_LV).map(([k,v])=>[k,v.name]),lv)}${chips("Dykk",[[3,3],[5,5],[10,10]],nd)}${chips("Periode",[["all","Alltid"],["month","Denne måneden"]],per)}
-      ${FJB.err?`<p class="fg-warn">${esc(FJB.err)}</p>`:!fjMe()?`<p class="fg-best">Logg inn for å se topplista.</p>`:FJB.rows==null||FJB.loading&&!FJB.rows.length?`<p class="fg-best">Henter topplista …</p>`:fjBoardRows(list,10)}
-      ${big.length?`<h3 class="fg-h3">Største fisk i SeaHunter</h3><ol class="fg-board fg-big">${big.map((r,i)=>`<li><b class="r${i<3?i+1:""}">${i+1}</b><span>${esc(r.best_species)} ${String(r.best_kg).replace(".",",")} kg</span><em>${esc(r.player_name||"?")}</em><small>${esc(FJ_LV[r.level]?FJ_LV[r.level].name:r.level)}, ${r.dives} dykk · ${new Date(r.created_at).toLocaleDateString("nb",{day:"numeric",month:"short"})}</small></li>`).join("")}</ol>`:""}
+      ${chips("m","Spill",[["fri","Fritt spill"],["dag","Dagens dykk"]],md)}
+      ${md==="dag"?chips("q","Dag",[["today","I dag"],["yday","I går"]],per):chips("n","Nivå",Object.entries(FJ_LV).map(([k,v])=>[k,v.name]),lv)+chips("d","Dykk",[[3,3],[5,5],[10,10]],nd)+chips("p","Periode",[["all","Alltid"],["month","Denne måneden"]],per)}
+      ${FJB.err&&!/oppdaterte/.test(FJB.err)?`<p class="fg-warn">${esc(FJB.err)}</p>`:!fjMe()?`<p class="fg-best">Logg inn for å se topplista.</p>`:FJB.rows==null||FJB.loading&&!FJB.rows.length?`<p class="fg-best">Henter topplista …</p>`:fjBoardRows(list,10)}
+      ${FJB.err&&/oppdaterte/.test(FJB.err)?`<p class="fg-warn">${esc(FJB.err)}</p>`:""}
+      ${big.length?`<h3 class="fg-h3">Største fisk i SeaHunter</h3><ol class="fg-board fg-big">${big.map((r,i)=>`<li><b class="r${i<3?i+1:""}">${i+1}</b><span>${esc(r.best_species)} ${String(r.best_kg).replace(".",",")} kg</span><em>${esc(r.player_name||"?")}</em><small>${r.mode==="dag"?"Dagens dykk":esc(FJ_LV[r.level]?FJ_LV[r.level].name:r.level)+", "+r.dives+" dykk"} · ${new Date(r.created_at).toLocaleDateString("nb",{day:"numeric",month:"short"})}</small></li>`).join("")}</ol>`:""}
       <div class="fg-btns"><button type="button" class="btn primary" id="fgBack">Tilbake</button></div></div>`;
+    ov.querySelectorAll("[data-bm]").forEach(b=>b.onclick=()=>{FJB.mode=b.dataset.bm;fjOverlay()});ov.querySelectorAll("[data-bq]").forEach(b=>b.onclick=()=>{FJB.dper=b.dataset.bq;fjOverlay()});
     ov.querySelectorAll("[data-bn]").forEach(b=>b.onclick=()=>{FJB.lv=b.dataset.bn;fjOverlay()});ov.querySelectorAll("[data-bd]").forEach(b=>b.onclick=()=>{FJB.nd=+b.dataset.bd;fjOverlay()});ov.querySelectorAll("[data-bp]").forEach(b=>b.onclick=()=>{FJB.per=b.dataset.bp;fjOverlay()});
-    $("#fgBack").onclick=()=>{FJ.st=FJ.boardFrom||"title";fjOverlay()};return}
+    $("#fgBack").onclick=fjBack;return}
   const acc=FJ.shots?Math.round(FJ.hits/FJ.shots*100):0,list=Object.entries(FJ.caught).map(([n,c])=>`${c} ${n.toLocaleLowerCase("nb")}`).join(", ");
   const extra=[FJ.nPerf?`${FJ.nPerf} hodeskudd`:"",FJ.nTorn?`${FJ.nTorn} rev seg løs`:"",FJ.nSmall?`${FJ.nSmall} under minstemål`:""].filter(Boolean).join(" · ");
   const bo=FJ.why==="blackout";
-  ov.innerHTML=`<div class="fg-card"><h2>${bo?"Blackout!":`${FJ.nDives} dykk ferdig`}</h2>${bo?`<p class="fg-warn">Lufta tok slutt under vann${FJ.lost?`, og fangsten fra dykket (${FJ.lost} poeng) gikk tapt`:""}. I virkeligheten: dykk aldri alene, og ha en makker som følger deg fra overflaten.</p>`:""}${FJ.rec?`<p class="fg-rec">Ny rekord på ${esc(fjL().name.toLocaleLowerCase("nb"))}!</p>`:""}
-    <p class="fg-score"><b>${FJ.score}</b> poeng <small>(${esc(fjL().name)} ×${fjL().mult})</small></p>
+  const nbH=(FJ.newBadges||[]).map(id=>fjBadgeDef(id)).filter(Boolean),dayM=FJ.mode==="dag";
+  ov.innerHTML=`<div class="fg-card"><h2>${bo?"Blackout!":dayM?"Dagens dykk ferdig":`${FJ.nDives} dykk ferdig`}</h2>${bo?`<p class="fg-warn">Lufta tok slutt under vann${FJ.lost?`, og fangsten fra dykket (${FJ.lost} poeng) gikk tapt`:""}. I virkeligheten: dykk aldri alene, og ha en makker som følger deg fra overflaten.</p>`:""}${FJ.rec?`<p class="fg-rec">${FJ.mode==="dag"?"Din beste i dag!":`Ny rekord på ${esc(fjL().name.toLocaleLowerCase("nb"))}!`}</p>`:""}
+    <p class="fg-score"><b>${FJ.score}</b> poeng <small>(${dayM?"dagens dykk, ":""}${esc(fjL().name)} ×${fjL().mult})</small>${FJ.earned?` <span class="fg-earn">+${FJ.earned} skjell</span>`:""}</p>
+    ${nbH.length?`<div class="fg-newb"><b>${nbH.length===1?"Nytt merke":"Nye merker"}:</b>${nbH.map(b=>`<span>${esc(b[1])} <i>+${b[3]}</i></span>`).join("")}</div>`:""}
     <p>${FJ.hits} fisk${list?`: ${esc(list)}`:""} · treff ${acc} % (${FJ.hits} av ${FJ.shots} skudd)${FJ.big?` · største: ${esc(FJ.big.sp.toLocaleLowerCase("nb"))} ${String(FJ.big.kg).replace(".",",")} kg`:""}</p>
     <p>Poeng per dykk: ${FJ.diveScores.map(x=>x||"0").join(" · ")||"–"}</p>
     <p>Dypeste dykk ${fnum(FJ.maxDepth,1)} m · lengste dykk ${Math.round(FJ.maxDive)} s${extra?` · ${esc(extra)}`:""}</p>
-    <p class="fg-best">Din rekord på ${esc(fjL().name.toLocaleLowerCase("nb"))} med ${FJ.nDives} dykk: <b>${FJ.best}</b></p>${fjRankHTML()}<div class="fg-btns"><button type="button" class="btn primary" id="fgGo">Ny økt</button><button type="button" class="btn" id="fgBoard">Toppliste</button><button type="button" class="btn" id="fgLv">Bytt nivå</button><button type="button" class="btn" id="fgClose">Lukk</button></div></div>`;
-  $("#fgBoard").onclick=()=>{FJ.boardFrom="over";FJB.lv=FJ.lvl;FJB.nd=FJ.nDives;FJ.st="board";fjOverlay()};
-  $("#fgGo").onclick=fjStart;$("#fgLv").onclick=()=>{FJ.st="title";fjOverlay()};$("#fgClose").onclick=closeGame}
+    <p class="fg-best">${dayM?`Din beste i dagens dykk: <b>${FJ.best}</b>`:`Din rekord på ${esc(fjL().name.toLocaleLowerCase("nb"))} med ${FJ.nDives} dykk: <b>${FJ.best}</b>`}</p>${fjRankHTML()}<div class="fg-btns"><button type="button" class="btn primary" id="fgGo">${dayM?"Prøv dagens igjen":"Ny økt"}</button><button type="button" class="btn" id="fgBoard">Toppliste</button><button type="button" class="btn" id="fgLv">Bytt nivå</button><button type="button" class="btn" id="fgClose">Lukk</button></div></div>`;
+  $("#fgBoard").onclick=()=>fjView("board","over");
+  $("#fgGo").onclick=dayM?fjStartDay:fjStart;$("#fgLv").onclick=()=>{FJ.st="title";fjOverlay()};$("#fgLv").textContent=dayM?"Til start":"Bytt nivå";$("#fgClose").onclick=closeGame}
 /* ----- input ----- */
 {const cv=$("#fgCv"),d=$("#gameDlg");
   const toW=fjToW;
@@ -3838,7 +4001,8 @@ function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
   window.addEventListener("keydown",e=>{const g=$("#gameDlg");if(!g||!g.open)return;const k=e.key.toLowerCase();if(!GK.includes(k))return;e.preventDefault();FJ.keys[k]=true;FJ.touch=false;if(k===" "&&!e.repeat)fjFire()});
   window.addEventListener("keyup",e=>{FJ.keys[e.key.toLowerCase()]=false});
   window.addEventListener("blur",()=>{FJ.keys={}});
-  if(d){d.addEventListener("close",()=>{cancelAnimationFrame(FJ.raf);FJ.raf=0;FJ.keys={};if(FJ.st==="play")FJ.st="title";if(document.fullscreenElement===d)document.exitFullscreen().catch(()=>{})});const x=$("#fgX");if(x)x.onclick=closeGame;
+  if(d){d.addEventListener("close",()=>{if(FJS.ctx&&FJS.ctx.state==="running")FJS.ctx.suspend();cancelAnimationFrame(FJ.raf);FJ.raf=0;FJ.keys={};if(FJ.st==="play")FJ.st="title";if(document.fullscreenElement===d)document.exitFullscreen().catch(()=>{})});const x=$("#fgX");if(x)x.onclick=closeGame;
+    const sn=$("#fgSnd");if(sn){sn.onclick=fjSndToggle;fjSndBtn()}
     const fs=$("#fgFs");if(fs){if(!document.fullscreenEnabled||!d.requestFullscreen)fs.hidden=true;fs.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});else d.requestFullscreen().catch(()=>toast("Fullskjerm er ikke tilgjengelig her"))}}
     document.addEventListener("fullscreenchange",()=>{setTimeout(()=>{const g=$("#gameDlg");if(g&&g.open)fjResize()},60)})}
   window.addEventListener("resize",()=>{const g=$("#gameDlg");if(g&&g.open)fjResize()});
@@ -3888,6 +4052,7 @@ function feedItems(){
   for(const r of S.reports){if(r.vis==null||r.note==="Fra dykkelogg")continue;const t=Date.parse(r.created_at);if(!(t>cutoff))continue;const s=getSite(r.site_id);if(!s)continue;
     items.push({kind:"vis",mine:r.author===S.user.id,ct:t,t,when:ago(r.created_at),site:s,who:r.author===S.user.id?"Du":(r.author_name||"Noen"),verb:"meldte sikt på",text:`${fnum(r.vis,1)} m${r.note?" · "+r.note:""}`})}
   for(const s of S.sites)if(s.createdAt&&Date.parse(s.createdAt)>cutoff)items.push({kind:"site",mine:s.createdBy===S.user.id,ct:Date.parse(s.createdAt),t:Date.parse(s.createdAt),when:ago(s.createdAt),site:s,who:s.createdBy===S.user.id?"Du":"",verb:s.createdBy===S.user.id?"la til":"Nytt dykkested:",text:"",isNew:true});
+  try{items.push(...fjFeedItems())}catch(e){}
   return items.filter(it=>isFinite(it.t)).sort((a,b)=>b.t-a.t);
 }
 function diveWhen(l){
@@ -3920,14 +4085,16 @@ function renderFeed(){
     if(grew&&!S.actOpen){b.classList.remove("ring");void b.offsetWidth;b.classList.add("ring");setTimeout(()=>b.classList.remove("ring"),1600)}}
   if(!pop)return;pop.hidden=!S.actOpen;if(!S.actOpen){pop.innerHTML="";return}
   pop.onclick=e=>e.stopPropagation(); // clicks inside re-render the panel; don't let them count as "outside"
-  const items=S.actAll?all:all.filter(it=>it.kind==="dive"),N=S.feedMore?30:10,show=items.slice(0,N);
-  const row=it=>`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-site="${esc(it.site.id)}">
+  const items=S.actAll?all:all.filter(it=>it.kind==="dive"||it.kind==="game"),N=S.feedMore?30:10,show=items.slice(0,N);
+  const row=it=>it.kind==="game"?`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-game="${it.mode==="dag"?"dag":"fri"}"${it.lv?` data-lv="${esc(it.lv)}" data-nd="${it.nd}"`:""}><span class="aico agame"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="currentColor" stroke="none"/></svg></span>
+    <span class="atx"><span><b>${esc(it.who)}</b> ${esc(it.verb)}</span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`:`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-site="${esc(it.site.id)}">
     ${it.photo?`<span class="thumb sm"><img src="${esc(photoURL(it.photo.photo_path))}" alt="" loading="lazy"></span>`:`<span class="aico">${it.kind==="site"?flagSVG(false,16):it.kind==="vis"?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>':iconSVG("dykker",18)}</span>`}
     <span class="atx"><span><b>${esc(it.who)}</b>${it.who?" ":""}${esc(it.verb)} <b>${esc(it.site.name)}</b></span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`;
   pop.innerHTML=`<div class="actph"><b>Siste aktivitet</b><span class="chips"><button type="button" class="chip${S.actAll?"":" on"}" data-act="dive">Dykk</button><button type="button" class="chip${S.actAll?" on":""}" data-act="all">Alt</button></span><button type="button" class="actx" aria-label="Lukk">✕</button></div>
     <div class="feed act">${show.map(row).join("")||`<p class="emptytxt">${S.actAll?"Ingen aktivitet":"Ingen dykk logget"} de siste 45 dagene.</p>`}
     ${items.length>10?`<button class="linkbtn" id="feedMore">${S.feedMore?"Vis færre":`Vis flere (${Math.min(items.length,30)-10})`}</button>`:""}</div>`;
   pop.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>{toggleAct(false);openSite(b.dataset.site);focusSite(b.dataset.site)});
+  pop.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>{toggleAct(false);openGame();FJB.mode=b.dataset.game;if(b.dataset.lv){FJB.lv=b.dataset.lv;FJB.nd=+b.dataset.nd}FJ.boardFrom="title";FJ.st="board";fjOverlay();fjBoardLoad().then(()=>{if(FJ.st==="board")fjOverlay()})});
   pop.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{S.actAll=b.dataset.act==="all";S.feedMore=false;renderFeed()});
   pop.querySelector(".actx").onclick=()=>toggleAct(false);
   const fm=$("#feedMore");if(fm)fm.onclick=()=>{S.feedMore=!S.feedMore;renderFeed()};
