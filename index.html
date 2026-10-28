@@ -1131,7 +1131,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v61 (fiskejakt: gradvis skremming, mer liv dypt)";
+const APP_VERSION="v62 (fiskejakt: skyere fisk, stimer)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -3278,10 +3278,10 @@ function renderBestDive(){const el=$("#bestDive");if(!el)return;const B=S.bd,cm=
    and the bottom dwellers (steinbit, breiflabb, rødspette, kveite) are hard to spot. Best score per level is kept on this device. */
 const FJ_U=80,FJ_WW=6000; // 80 world units per metre, the world is 75 m wide
 const FJ_LV={
- lett:{name:"Lett",d:"God sikt, lang pust, roligere fisk",time:240,o2:70,range:480,reload:1,fear:90,flee:1.8,vis:1.5,tear:[0,.2],mult:1,ug:1,swimScare:150,ring:true,aimSpook:false},
- normal:{name:"Normal",d:"6 m sikt, svak strøm, fisken skremmes av fart og bom",cur:9,time:200,o2:55,range:360,reload:1.6,fear:150,flee:2.4,vis:1,tear:[.15,.45],mult:1.5,ug:1.5,swimScare:105,ring:true,aimSpook:true},
- vanskelig:{name:"Vanskelig",d:"Grumsete vann, strøm, sky fisk, kortere pust",cur:24,time:180,o2:45,range:320,reload:2.2,fear:200,flee:2.8,vis:.72,tear:[.25,.6],mult:2,ug:2,swimScare:85,ring:false,aimSpook:true},
- ekspert:{name:"Ekspert",d:"Dårlig sikt, sterk strøm, svært sky fisk, lite luft",cur:38,time:160,o2:38,range:280,reload:2.8,fear:250,flee:3.2,vis:.52,tear:[.35,.75],mult:3,ug:2.6,swimScare:70,ring:false,aimSpook:true}};
+ lett:{name:"Lett",d:"God sikt, lang pust, roligere fisk",time:240,o2:70,range:480,reload:1,fear:90,flee:1.8,vis:1.5,tear:[0,.2],mult:1,ug:1.8,swimScare:150,ring:true,aimSpook:false},
+ normal:{name:"Normal",d:"6 m sikt, svak strøm, fisken skremmes av fart og bom",cur:9,time:200,o2:55,range:360,reload:1.6,fear:150,flee:2.4,vis:1,tear:[.15,.45],mult:1.5,ug:2.8,swimScare:105,ring:true,aimSpook:true},
+ vanskelig:{name:"Vanskelig",d:"Grumsete vann, strøm, sky fisk, kortere pust",cur:24,time:180,o2:45,range:320,reload:2.2,fear:200,flee:2.8,vis:.72,tear:[.25,.6],mult:2,ug:2.6,swimScare:85,ring:false,aimSpook:true},
+ ekspert:{name:"Ekspert",d:"Dårlig sikt, sterk strøm, svært sky fisk, lite luft",cur:38,time:160,o2:38,range:280,reload:2.8,fear:250,flee:3.2,vis:.52,tear:[.35,.75],mult:3,ug:2.2,swimScare:70,ring:false,aimSpook:true}};
 /* species: length in cm, zone in world x, depth band in metres */
 const FJ_SP={
  makrell:{name:"Makrell",pts:15,cm:[28,46],k:8,spd:140,zone:[0,6000],dep:[1,7],school:[4,7],hh:.17,draw:"makrell"},
@@ -3297,7 +3297,7 @@ const FJ_SP={
  breiflabb:{name:"Breiflabb",pts:80,cm:[55,155],k:13,spd:0,zone:[3300,6000],bottom:true,hh:.3,camo:true,tough:true,draw:"breiflabb"},
  kveite:{name:"Kveite",pts:120,cm:[75,212],k:11.8,spd:40,zone:[2200,6000],bottom:true,hh:.42,flat:true,free:.5,tough:true,rare:true,draw:"kveite"}};
 /* how many of each per session, drawn at random, so no two sessions are alike (rare species can be missing entirely) */
-const FJ_POP={sei:[4,7],lyr:[6,10],berggylt:[5,9],torsk:[4,8],makrell:[0,2],rodspette:[3,6],flyndre:[3,6],lange:[1,3],hyse:[1,3],steinbit:[1,3],breiflabb:[0,2],kveite:[0,2]};
+const FJ_POP={sei:[4,7],lyr:[6,10],berggylt:[6,9],torsk:[3,7],makrell:[0,2],rodspette:[3,6],flyndre:[3,6],lange:[1,3],hyse:[1,3],steinbit:[1,3],breiflabb:[0,2],kveite:[0,2]};
 function fjPopN(){const n={};for(const [k,[a,b]] of Object.entries(FJ_POP))n[k]=Math.floor(fjR(a,b+1));if(Math.random()<.25)n.kveite=0;if(n.breiflabb===0&&Math.random()<.5)n.breiflabb=1;return n}
 /* most fish are medium-sized, a few are trophies */
 const fjCurF=(x,y)=>Math.max(.3,Math.min(1,(fjBed(x)-y)/320));
@@ -3337,12 +3337,22 @@ function fjSpawn(key,o={}){const d=FJ_SP[key],L=fjL();const small=!o.noSmall&&d.
   const f={key,d,x,y,len,cm:Math.round(cm),small,rel,trophy:!small&&rel>.88,kg:kg<10?+kg.toFixed(1):Math.round(kg),cur:Math.random()<(1-.6*FJ.wary),shy:FJ.wary*.5,
     vx:0,vy:0,dir:Math.random()<.5?1:-1,ph:fjR(0,6),hit:0,flee:0,tx:null,ty:null,tt:0,rest:d.bottom&&!(d.free&&Math.random()<d.free),hid:0,leader:o.leader||null,ox:o.ox||0,oy:o.oy||0,mott:Math.random()*1000};
   FJ.fish.push(f);return f}
+/* one population unit: makrell in big shoals, small sei in shoals while the big sei go alone,
+   torsk and lyr sometimes in small groups, the rest alone */
+function fjUnit(k,away){const d=FJ_SP[k],o=away?{away:true}:{};
+  if(!away&&((k==="sei"&&Math.random()<.5)||((k==="torsk"||k==="lyr")&&Math.random()<.45)))o.x=fjR(3200,d.zone[1]-60);
+  if(!away&&k==="steinbit"){const rk=FJ.rocks.filter(r=>r.x>d.zone[0]&&r.x<d.zone[1]),r=rk[Math.floor(Math.random()*rk.length)];if(r)o.x=r.x+(Math.random()<.5?-1:1)*r.r*fjR(.7,1.1)}
+  let m=1,sz=null;
+  if(k==="makrell")m=Math.floor(fjR(10,19));
+  else if(k==="sei"&&Math.random()<.7){m=Math.floor(fjR(4,9));sz=[.02,.4]}
+  else if((k==="torsk"&&Math.random()<.25)||(k==="lyr"&&Math.random()<.3)){m=Math.floor(fjR(2,5));sz=[.03,.55]}
+  const mk=x=>Object.assign(x,sz?{big:fjR(...sz)}:{},m>1?{noSmall:true}:{});
+  const lead=fjSpawn(k,mk(o));if(m>1){const spr=k==="makrell"?1.4:k==="sei"?1:.8;for(let j=1;j<m;j++){const ox=fjR(-100,100)*spr,oy=fjR(-50,50)*spr;fjSpawn(k,mk({x:lead.x+ox,y:lead.y+oy,leader:lead,ox,oy}))}}
+  return lead}
+/* when a shoal loses its leader, another fish takes over, so nobody is left alone */
+function fjReLead(old){const mates=FJ.fish.filter(o=>o.leader===old&&!o.hit);if(!mates.length)return;const nl=mates[0];nl.leader=null;for(const o of mates)if(o!==nl)o.leader=nl}
 function fjPopulate(){FJ.fish=[];FJ.jel=[];if(!FJ.popN)FJ.popN=fjPopN();
-  for(const [k,n] of Object.entries(FJ.popN))for(let i=0;i<n;i++){const d=FJ_SP[k];
-    if(d.school){const lead=fjSpawn(k,k==="sei"&&Math.random()<.5?{noSmall:true,x:fjR(3200,d.zone[1]-60)}:{noSmall:true});const m=Math.floor(fjR(...d.school));for(let j=1;j<m;j++)fjSpawn(k,{x:lead.x+fjR(-80,80),y:lead.y+fjR(-40,40),leader:lead,ox:fjR(-90,90),oy:fjR(-45,45),noSmall:true})}
-    else if(k==="steinbit"){const rk=FJ.rocks.filter(r=>r.x>d.zone[0]&&r.x<d.zone[1]);const r=rk[Math.floor(Math.random()*rk.length)];if(r)fjSpawn(k,{x:r.x+(Math.random()<.5?-1:1)*r.r*fjR(.7,1.1)});else fjSpawn(k)}
-    else if((k==="torsk"||k==="lyr")&&Math.random()<.45)fjSpawn(k,{x:fjR(3200,d.zone[1]-60)});
-    else fjSpawn(k)}
+  for(const [k,n] of Object.entries(FJ.popN))for(let i=0;i<n;i++)fjUnit(k,false);
   for(let i=0;i<7;i++)FJ.jel.push({x:fjR(400,5800),y:fjR(80,700),r:fjR(14,26),ph:fjR(0,6),vx:fjR(-6,6),stung:0})}
 /* ----- start / stop ----- */
 function openGame(){const d=$("#gameDlg");if(!d)return;if(!d.open)d.showModal();fjResize();FJ.st="title";if(!FJ.bed)fjWorld();FJ.dv=FJ.dv||{x:900,y:20,vx:0,vy:0,face:1,kick:0};if(!FJ.fish.length)fjPopulate();
@@ -3356,13 +3366,14 @@ function fjStart(){const L=fjL();fjWorld();Object.assign(FJ,{st:"play",fx:[],par
   fjPopulate();FJ.cam.x=FJ.dv.x-FJ.vw/2;FJ.cam.y=-80;fjOverlay();fjMsg(FJ.touch?"Venstre tommel: svøm · trykk: skyt":"WASD: svøm · Shift: fort · mus: sikt · klikk: skyt",4)}
 function fjMsg(t,s=2.5,col){FJ.msg={t,s,col}}
 /* ----- fish behaviour ----- */
-function fjScare(f,sx,sy,chain=true){const L=fjL(),d=f.d;if(f.hit||d.camo)return;
+function fjScare(f,sx,sy,chain=true,dir=0){const L=fjL(),d=f.d;if(f.hit||d.camo)return;
   if(d.key==="steinbit"||f.key==="steinbit"){f.hid=7;return}
-  const ax=Math.sign(f.x-sx)||f.dir;f.flee=fjR(1.4,2.2);f.rest=false;f.dir=ax;f.shy=Math.min(1,(f.shy||0)+.1);f.u=Math.max(f.u||0,.75);const v=Math.max(150,(d.spd||40)*L.flee*(1+.25*FJ.wary)+60);
+  const ax=dir||Math.sign(f.x-sx)||f.dir;f.flee=fjR(1.4,2.2);f.rest=false;f.dir=ax;f.shy=Math.min(1,(f.shy||0)+.1);f.u=Math.max(f.u||0,.75);const v=Math.max(150,(d.spd||40)*L.flee*(1+.25*FJ.wary)+60);
   f.vx=ax*v;f.vy=(f.y<sy?-1:1)*v*.35;if(f.key==="rodspette"||f.key==="flyndre"){f.flee=.7;f.vy=0;fjPuff(f.x,fjBed(f.x),8)}
-  if(chain)for(const o of FJ.fish)if(o!==f&&o.key===f.key&&!o.hit&&Math.hypot(o.x-f.x,o.y-f.y)<220)fjScare(o,sx,sy,false)}
+  if(chain!=="school"){const L0=f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader)?f.leader:f;for(const o of FJ.fish)if((o===L0||o.leader===L0)&&o!==f&&!o.hit&&o.flee<=0)fjScare(o,sx,sy,"school",ax)}
+  if(chain===true)for(const o of FJ.fish)if(o!==f&&o.key===f.key&&!o.hit&&Math.hypot(o.x-f.x,o.y-f.y)<220)fjScare(o,sx,sy,false)}
 /* a fish that fled out of sight settles somewhere else, so they don't pile up at the edge of the screen */
-function fjRelocate(f){const d=f.d,dv=FJ.dv;let x=f.x;for(let i=0;i<12;i++){x=fjR(d.zone[0]+60,d.zone[1]-60);if(Math.abs(x-dv.x)>FJ.vw*.75)break}
+function fjRelocate(f){const d=f.d,dv=FJ.dv;if(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader)){fjRelocate(f.leader);return}let x=f.x;for(let i=0;i<12;i++){x=fjR(d.zone[0]+60,d.zone[1]-60);if(Math.abs(x-dv.x)>FJ.vw*.75)break}
   const bed=fjBed(x);f.x=x;f.vx=f.vy=0;f.flee=0;f.tx=null;f.u=.3;f.leader=null;
   if(d.bottom){f.rest=!(d.free&&Math.random()<d.free);f.y=bed-f.len*d.hh*.45}else{const lo=d.dep[0]*FJ_U,hi=Math.min(d.dep[1]*FJ_U,bed-f.len*.6-20);f.y=fjR(lo,Math.max(lo+10,hi))}
   for(const o of FJ.fish)if(o.leader===f&&!o.hit){o.x=f.x+o.ox;o.y=Math.min(fjBed(o.x)-o.len,f.y+o.oy);o.flee=0;o.vx=o.vy=0;o.u=.3}}
@@ -3371,14 +3382,18 @@ function fjPuff(x,y,n){for(let i=0;i<n;i++)FJ.part.push({x:x+fjR(-12,12),y:y-fjR
 function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=Math.hypot(dx,dy),ds=Math.hypot(dv.vx,dv.vy);f.ph+=dt*(f.flee>0?12:f.rest?1.5:5);
   if(f.hit){f.hit+=dt;if(f.hit>.7){f.y=Math.min(fjBed(f.x)-4,f.y+30*dt)}return}
   if(f.hid>0)f.hid-=dt;
+  if(f.leader&&(f.leader.hit||!FJ.fish.includes(f.leader)))fjReLead(f.leader);
   const big=f.small?0:Math.max(0,(f.rel-.5)/.5),amb=FJ.amb>1.5;
-  const fear=L.fear*(1+FJ.alarm*.6)*(1+.45*FJ.wary+(f.shy||0))*(1+1.1*big)*(amb?.55:1)*(d.bottom?.55:1);
+  /* a kveite swimming up in the water is far shyer than one lying flat on the bottom */
+  const hiK=f.key==="kveite"&&!f.rest?1.3+.9*Math.min(1,Math.max(0,(fjBed(f.x)-f.y)/FJ_U-1)/4):1;
+  const fear=L.fear*(1+FJ.alarm*.6)*(1+.45*FJ.wary+(f.shy||0))*(1+1.1*big)*(amb?.55:1)*(d.bottom?(f.rest?.55:.8):1)*hiK;
   /* unease builds gradually: slow swimming barely matters, sprinting or whipping the gun around close by does */
-  if(f.flee<=0&&!d.camo&&FJ.st==="play"){const prox=Math.max(0,1-dist/(fear*2.2));let gain=(FJ.dist||0)*Math.pow(prox,.75)*(L.ug||1.5);if(dist<fear*.35&&!d.bottom&&ds>14)gain+=1.2;
-    f.u=Math.max(0,Math.min(1.2,(f.u||0)+(gain-.35)*dt));
+  if(f.flee<=0&&!d.camo&&FJ.st==="play"){const prox=Math.max(0,1-dist/(fear*2.6));let gain=(FJ.dist||0)*Math.pow(prox,.75)*(L.ug||1.5)*(hiK>1?1.3:1);if(dist<fear*.35&&!(d.bottom&&f.rest)&&ds>14)gain+=1.5;
+    f.u=Math.max(0,Math.min(1.2,(f.u||0)+(gain-.3)*dt));
+    const ld=f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader)?f.leader:null;if(ld)ld.u=Math.max(ld.u||0,f.u*.85);
     if(f.u>=1){fjScare(f,dv.x,dv.y,false);for(const o of FJ.fish)if(o!==f&&o.key===f.key&&!o.hit&&o.flee<=0&&Math.hypot(o.x-f.x,o.y-f.y)<220)o.u=Math.min(1.2,(o.u||0)+.45)}}
   const cx=FJ.cam.x+FJ.vw/2,offV=Math.abs(f.x-cx)>FJ.vw/2+140||f.y<FJ.cam.y-140||f.y>FJ.cam.y+FJ.vh+140;
-  if(f.flee>0){f.flee-=dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy*=.97;if(offV){fjRelocate(f);return}if(f.flee<=0){f.vx*=.3;f.tx=null;if(d.bottom&&!d.free&&f.key!=="kveite")f.rest=true}}
+  if(f.flee>0){f.flee-=dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy*=.97;if(offV&&!(f.leader&&FJ.fish.includes(f.leader)&&!f.leader.hit&&f.leader.flee>0)){fjRelocate(f);return}if(f.flee<=0){f.vx*=.3;f.tx=null;if(d.bottom&&!d.free&&f.key!=="kveite")f.rest=true}}
   else if(f.rest){f.vx=f.vy=0;f.tt-=dt;
     if(d.free&&f.tt<=0){f.tt=fjR(15,35);if(Math.random()<.35)f.rest=false}
     if(d.key==="steinbit"&&f.hid<=0&&Math.random()<dt*.05){f.x+=fjR(-20,20)}}
@@ -3386,13 +3401,13 @@ function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=
     const bigC=big>.3,clock=bigC?Math.max(FJ.amb,FJ.calm*.6):FJ.calm,need=bigC?3.5+4*big+3*FJ.wary:2.5+3*FJ.wary;
     const curious=d.curious&&f.cur&&!f.small&&!f.wounded&&(f.u||0)<.25&&clock>need&&FJ.alarm<.3&&dist<(bigC?700:480)&&FJ.st==="play";
     const keep=big>0&&!amb&&(FJ.dist||0)>.12&&!curious&&FJ.st==="play"&&FJ.diving?L.range*(.9+.4*big)*(1+.2*FJ.wary):0;
-    const uneasy=(f.u||0)>.35&&!curious&&FJ.st==="play";
+    const uneasy=(f.u||0)>.35&&!curious&&FJ.st==="play"&&!(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader));
     if(uneasy){if(offV){fjRelocate(f);return}tx=f.x+Math.sign(dx||f.dir)*400;ty=Math.max(d.dep?d.dep[0]*FJ_U:30,Math.min(fjBed(f.x)-f.len,f.y+(dy>0?40:-40)));spd=Math.max(45,d.spd)*(1+f.u*1.2);f.tt=1}
     else if(curious){tx=dv.x+Math.sign(dx||1)*Math.max(110,Math.min(L.range*.75,f.len*2.4));ty=dv.y+Math.sin(f.mott)*30;spd*=.6}
     else if(keep&&dist<keep){tx=dv.x+Math.sign(dx||1)*keep*1.25;ty=f.y+Math.sin(f.mott)*20;spd*=.8;f.tt=fjR(2,4)}
     else if(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader)){tx=f.leader.x+f.ox;ty=f.leader.y+f.oy;spd*=1.15}
     else{f.tt-=dt;if(tx==null||f.tt<=0||Math.hypot(tx-f.x,ty-f.y)<20){f.tt=fjR(4,9);tx=Math.max(d.zone[0],Math.min(d.zone[1],f.x+fjR(-500,500)));
-        const bed=fjBed(tx);if(d.bottom)ty=bed-fjR(30,120);else if(d.near&&Math.random()<d.near)ty=bed-fjR(f.len*.6+15,f.len*.6+130);else ty=fjR(d.dep[0]*FJ_U,Math.max(d.dep[0]*FJ_U+10,Math.min(d.dep[1]*FJ_U,bed-f.len-20)));
+        const bed=fjBed(tx);if(d.bottom)ty=f.key==="kveite"&&Math.random()<.4?bed-fjR(150,600):bed-fjR(30,120);else if(d.near&&Math.random()<d.near)ty=bed-fjR(f.len*.6+15,f.len*.6+130);else ty=fjR(d.dep[0]*FJ_U,Math.max(d.dep[0]*FJ_U+10,Math.min(d.dep[1]*FJ_U,bed-f.len-20)));
         /* someone lying still on the bottom draws fish past: the classic waiting hunt */
         if(FJ.amb>4&&dist<1000&&Math.random()<.45+.1*big){tx=Math.max(d.zone[0],Math.min(d.zone[1],dv.x+Math.sign(dx||1)*fjR(110,L.range*.8)));ty=d.bottom?fjBed(tx)-fjR(30,90):Math.min(fjBed(tx)-f.len-20,Math.max(d.dep[0]*FJ_U,dv.y-fjR(-20,160)));f.tt=fjR(5,10)}}}
     f.tx=tx;f.ty=ty;const ex=tx-f.x,ey=ty-f.y,el=Math.hypot(ex,ey)||1,want=Math.min(spd,el*1.5);
@@ -3439,11 +3454,11 @@ function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv
   dv.kick+=dt*(2+sp/25);if(FJ.aim&&!FJ.touch)FJ.aimW=fjToW(FJ.aim);const ang=fjAimAng();if(fjAimOn())dv.face=Math.cos(ang)>=0?1:-1;else if(Math.abs(dv.vx)>8)dv.face=Math.sign(dv.vx);
   const surf=dv.y<=16,depth=dv.y/FJ_U;FJ.maxDepth=Math.max(FJ.maxDepth,depth);
   FJ.calm=sp<14?FJ.calm+dt:0;FJ.alarm=Math.max(0,FJ.alarm-dt*.05);if(FJ.reload>0)FJ.reload-=dt;
-  FJ.aimSpd=(FJ.aimSpd||0)*Math.pow(.02,dt);const swimD=Math.pow(Math.max(0,Math.min(1,(sp-45)/135)),1.5),aimD=L.aimSpook?Math.pow(Math.max(0,Math.min(1,(FJ.aimSpd-500)/2200)),1.3):0;FJ.dist=Math.min(1,swimD+aimD);
+  FJ.aimSpd=(FJ.aimSpd||0)*Math.pow(.02,dt);const swimD=Math.pow(Math.max(0,Math.min(1,(sp-35)/145)),1.25),aimD=L.aimSpook?Math.pow(Math.max(0,Math.min(1,(FJ.aimSpd-400)/1800)),1.2):0;FJ.dist=Math.min(1,swimD+aimD);
   const onBed=dv.y>fjBed(dv.x)-28-95&&dv.y>200;FJ.amb=onBed&&sp<14?FJ.amb+dt:Math.max(0,FJ.amb-dt*4);
   if(dv.y>16){FJ.pat=Math.min(1,FJ.pat+dt*(FJ.calm>1.5?1/22:sp<60?1/60:0)*(FJ.amb>1.5?1.4:1));if(sp>vmax*.7)FJ.pat=Math.max(0,FJ.pat-dt*.12);
     const vis=FJ.visitor&&!FJ.visitor.hit&&FJ.fish.includes(FJ.visitor),dBd=Math.max(0,Math.min(1,(dv.y/FJ_U-9)/13)),pv=Math.min(1,FJ.pat+.6*dBd);
-    if(FJ.diving&&pv>.5&&!vis&&Math.random()<dt*.05*pv*(1+dBd))fjVisitor()}
+    if(FJ.diving&&pv>.5&&!vis&&Math.random()<dt*.035*pv*(1+dBd))fjVisitor()}
   if(!FJ.diving&&dv.y>120){FJ.diving=true;FJ.dive++;FJ.diveStart=FJ.score;FJ.diveX=[dv.x,dv.x];fjDiveEvent()}
   if(FJ.diving){FJ.diveX[0]=Math.min(FJ.diveX[0],dv.x);FJ.diveX[1]=Math.max(FJ.diveX[1],dv.x)}
   if(surf){if(FJ.diveT>3){FJ.maxDive=Math.max(FJ.maxDive,FJ.diveT)}FJ.diveT=0;FJ.o2=Math.min(L.o2,FJ.o2+L.o2/7*dt);
@@ -3468,8 +3483,7 @@ function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv
   // keep the world alive: replace fish that are gone, far from the diver
   FJ.fish=FJ.fish.filter(f=>!(f.hit&&f.hit>2.2));
   for(const [key,n] of Object.entries(FJ.popN||{})){const d=FJ_SP[key],have=FJ.fish.filter(f=>f.key===key&&!f.leader).length;if(have<n&&Math.random()<dt*(d.rare?.02:d.camo?.03:d.few?.04:.12)*(1-.5*FJ.wary)*(1+FJ.pat)){
-    if(d.school){const lead=fjSpawn(key,{noSmall:true,away:true});const m=Math.floor(fjR(...d.school));for(let j=1;j<m;j++)fjSpawn(key,{x:lead.x+fjR(-80,80),y:lead.y+fjR(-40,40),leader:lead,ox:fjR(-90,90),oy:fjR(-45,45),noSmall:true})}
-    else fjSpawn(key,{away:true})}}
+    fjUnit(key,true)}}
   for(const p of FJ.part){p.x+=(p.vx+FJ.cur.x*.8)*dt;p.y+=p.vy*dt;p.vx*=.96;if(p.sand){p.vy+=12*dt;p.a-=dt*.35}else{p.a-=dt*.45}}FJ.part=FJ.part.filter(p=>p.a>0);
   if(dv.vx||dv.vy)if(Math.random()<dt*(1.5+sp/40))FJ.part.push({x:dv.x+dv.face*16,y:dv.y-14,vx:fjR(-8,8),vy:-fjR(30,60),r:fjR(1.5,3),a:.8});
   for(const e of FJ.fx){e.t+=dt;e.y-=24*dt;e.a=Math.max(0,1-e.t/2)}FJ.fx=FJ.fx.filter(e=>e.a>0);
@@ -3485,7 +3499,7 @@ function fjEscalate(){if(fjL().cur&&Math.random()<.3){FJ.curDir*=-1;setTimeout((
 /* something unexpected can happen on any dive */
 function fjDiveEvent(){const r=Math.random();
   if(r<.18){const f=fjSpawn("kveite",{away:true});f.rest=false;f.tt=fjR(15,30);f.x=Math.max(2200,Math.min(5900,FJ.dv.x+(Math.random()<.5?-1:1)*fjR(700,1400)));f.y=Math.min(fjBed(f.x)-80,fjR(500,1500))}
-  else if(r<.4){const lead=fjSpawn("sei",{noSmall:true,away:true});const m=Math.floor(fjR(8,14));for(let j=1;j<m;j++)fjSpawn("sei",{x:lead.x+fjR(-120,120),y:lead.y+fjR(-60,60),leader:lead,ox:fjR(-130,130),oy:fjR(-60,60),noSmall:true})}
+  else if(r<.4){const lead=fjSpawn("sei",{noSmall:true,away:true,big:fjR(.02,.4)});const m=Math.floor(fjR(10,16));for(let j=1;j<m;j++){const ox=fjR(-130,130),oy=fjR(-60,60);fjSpawn("sei",{x:lead.x+ox,y:lead.y+oy,leader:lead,ox,oy,noSmall:true,big:fjR(.02,.4)})}}
   else if(r<.45){const f=fjSpawn("torsk",{away:true,noSmall:true});const cm=fjR(FJ_SP.torsk.cm[1]*.9,FJ_SP.torsk.cm[1]);f.cm=Math.round(cm);f.len=fjLen(cm,1);f.rel=1;f.trophy=true;f.kg=Math.round(FJ_SP.torsk.k*Math.pow(cm/100,3))}}
 function fjEnd(why){FJ.st="over";FJ.why=why;FJ.spear=null;FJ.joy=null;if(why==="blackout"){FJ.lost=FJ.hand.reduce((a,c)=>a+c.pts,0);FJ.hand=[]}else FJ.lost=0;
   if(why==="blackout"&&FJ.diving)FJ.diveScores.push(0);
