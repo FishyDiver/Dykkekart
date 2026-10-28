@@ -639,7 +639,7 @@ body.mapmax .maptools .mndbtn{display:inline-flex;align-items:center}
 .cvis-b{display:flex;gap:10px;align-items:flex-start;margin:8px 0 4px}.cvis-b svg{flex:none;margin-top:1px;color:var(--alpha)}.cvis-b strong{display:block}.cvis-b .small{display:block;margin:1px 0 0}
 .cvis-n{margin:6px 0 2px}
 /* Fiskejakt game */
-.gamedlg{padding:0;border:0;width:min(1680px,97vw);height:min(1040px,94vh);max-width:none;max-height:none;background:#041624;border-radius:16px;overflow:hidden;color:#E3EDF4}
+.gamedlg{padding:0;border:0;width:98vw;height:96vh;max-width:none;max-height:none;background:#041624;border-radius:16px;overflow:hidden;color:#E3EDF4}
 .gamedlg::backdrop{background:rgba(2,8,14,.7)}
 #fgCv{display:block;width:100%;height:100%;touch-action:none;cursor:none;outline:none}
 .fg-x{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(241,230,200,.35);background:rgba(4,22,36,.6);color:#F1E6C8;font-size:16px;cursor:pointer;z-index:3}
@@ -1132,7 +1132,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v65 (fiskejakt: stup, rev, skjul, større vindu)";
+const APP_VERSION="v66 (fiskejakt: storstup, dykketid, skudd i overflaten)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -3279,10 +3279,10 @@ function renderBestDive(){const el=$("#bestDive");if(!el)return;const B=S.bd,cm=
    and the bottom dwellers (steinbit, breiflabb, rødspette, kveite) are hard to spot. Best score per level is kept on this device. */
 const FJ_U=80,FJ_WW=6000; // 80 world units per metre, the world is 75 m wide
 const FJ_LV={
- lett:{name:"Lett",d:"God sikt, lang pust, roligere fisk",time:240,o2:100,range:480,reload:1,fear:90,flee:1.8,vis:1.5,tear:[0,.2],mult:1,ug:1.8,swimScare:150,ring:true,aimSpook:false},
- normal:{name:"Normal",d:"6 m sikt, svak strøm, fisken skremmes av fart og bom",cur:9,time:200,o2:85,range:360,reload:1.6,fear:150,flee:2.4,vis:1,tear:[.15,.45],mult:1.5,ug:2.8,swimScare:105,ring:true,aimSpook:true},
- vanskelig:{name:"Vanskelig",d:"Grumsete vann, strøm, sky fisk, kortere pust",cur:24,time:180,o2:70,range:320,reload:2.2,fear:200,flee:2.8,vis:.72,tear:[.25,.6],mult:2,ug:2.6,swimScare:85,ring:false,aimSpook:true},
- ekspert:{name:"Ekspert",d:"Dårlig sikt, sterk strøm, svært sky fisk, lite luft",cur:38,time:160,o2:60,range:280,reload:2.8,fear:250,flee:3.2,vis:.52,tear:[.35,.75],mult:3,ug:2.2,swimScare:70,ring:false,aimSpook:true}};
+ lett:{name:"Lett",d:"God sikt, lang pust, roligere fisk",time:240,o2:73,range:480,reload:1,fear:90,flee:1.8,vis:1.5,tear:[0,.2],mult:1,ug:1.8,swimScare:150,ring:true,aimSpook:false},
+ normal:{name:"Normal",d:"6 m sikt, svak strøm, fisken skremmes av fart og bom",cur:9,time:200,o2:64,range:360,reload:1.6,fear:150,flee:2.4,vis:1,tear:[.15,.45],mult:1.5,ug:2.8,swimScare:105,ring:true,aimSpook:true},
+ vanskelig:{name:"Vanskelig",d:"Grumsete vann, strøm, sky fisk, kortere pust",cur:24,time:180,o2:57,range:320,reload:2.2,fear:200,flee:2.8,vis:.72,tear:[.25,.6],mult:2,ug:2.6,swimScare:85,ring:false,aimSpook:true},
+ ekspert:{name:"Ekspert",d:"Dårlig sikt, sterk strøm, svært sky fisk, lite luft",cur:38,time:160,o2:51,range:280,reload:2.8,fear:250,flee:3.2,vis:.52,tear:[.35,.75],mult:3,ug:2.2,swimScare:70,ring:false,aimSpook:true}};
 /* species: length in cm, zone in world x, depth band in metres */
 const FJ_SP={
  makrell:{name:"Makrell",pts:15,cm:[28,70],k:9.5,spd:140,zone:[0,6000],dep:[1,7],school:[4,7],hh:.17,draw:"makrell"},
@@ -3322,11 +3322,11 @@ const fjR=(a,b)=>a+Math.random()*(b-a),fjL=()=>FJ_LV[FJ.lvl],fjBest=(k,n)=>+(lsG
 function fgBestTxt(){const out=[];for(const k of Object.keys(FJ_LV))for(const n of [3,5,10])if(fjBest(k,n))out.push(`${FJ_LV[k].name} ${n} dykk: ${fjBest(k,n)}`);return out.slice(0,4).join(" · ")}
 /* ----- the world ----- */
 /* each session gets its own seabed: 2-3 drop-offs (steep walls) and 1-2 rocky reefs rising from the deep */
-function fjTerrain(){const steps=[],pins=[];const n=Math.random()<.5?2:3;let tries=0;
-  while(steps.length<n&&tries++<60){const x=fjR(1700,5300);if(steps.some(q=>Math.abs(q.x-x)<900))continue;steps.push({x,w:fjR(40,90),h:fjR(220,420)})}
+function fjTerrain(){const big={x:fjR(4300,5150),w:fjR(50,80),h:fjR(640,900),big:true},steps=[big],pins=[];const n=Math.random()<.5?1:2;let tries=0;
+  while(steps.length<n+1&&tries++<60){const x=fjR(1700,3900);if(steps.some(q=>Math.abs(q.x-x)<900))continue;steps.push({x,w:fjR(40,90),h:fjR(220,400)})}
   steps.sort((a,b)=>a.x-b.x);const np=Math.random()<.6?1:2;tries=0;
-  while(pins.length<np&&tries++<60){const x=fjR(3000,5700);if(pins.some(q=>Math.abs(q.x-x)<700)||steps.some(q=>Math.abs(q.x-x)<260))continue;pins.push({x,w:fjR(110,200),h:fjR(240,430)})}
-  return {steps,pins,sum:steps.reduce((a,q)=>a+q.h,0)}}
+  while(pins.length<np&&tries++<60){const x=fjR(2900,5800);if(pins.some(q=>Math.abs(q.x-x)<700)||steps.some(q=>Math.abs(q.x-x)<(q.big?420:260)))continue;pins.push({x,w:fjR(110,200),h:fjR(240,430)})}
+  return {steps,pins,big,sum:steps.filter(q=>!q.big).reduce((a,q)=>a+q.h,0)}}
 function fjBedBase(x){const T=FJ.terr||(FJ.terr=fjTerrain()),t=Math.max(0,Math.min(1,x/FJ_WW)),s=t*t*(3-2*t);let y=480+(1960-480-T.sum)*s+38*Math.sin(x/310)+22*Math.sin(x/97+1.3)+70*Math.sin(x/1150+.4)*t;
   for(const q of T.steps){const u=Math.max(0,Math.min(1,(x-q.x)/q.w+.5));y+=q.h*u*u*(3-2*u)}return y}
 function fjBedRaw(x){let y=fjBedBase(x);for(const q of FJ.terr.pins){const u=(x-q.x)/q.w;if(Math.abs(u)<3)y-=q.h*Math.exp(-u*u)}return y}
@@ -3336,15 +3336,16 @@ function fjBed(x){const b=FJ.bed;if(!b)return fjBedRaw(x);const i=Math.max(0,Mat
 function fjWorld(){FJ.terr=fjTerrain();FJ.bed=new Float32Array(FJ_WW/10+2);for(let i=0;i<FJ.bed.length;i++)FJ.bed[i]=fjBedRaw(i*10);
   FJ.rocks=[];const addR=(x,r)=>{if(x<40||x>FJ_WW-40)return;FJ.rocks.push({x,r,y:fjBed(x)+r*.35,s:Math.random()})};
   for(let x=650;x<5900;x+=fjR(110,230))addR(x,Math.random()<.15?fjR(80,130):fjR(22,70));
-  for(const q of FJ.terr.steps){for(let i=0;i<3;i++)addR(q.x+q.w*.6+fjR(10,170),fjR(30,85));addR(q.x-q.w*.6-fjR(0,60),fjR(25,55))}
+  for(const q of FJ.terr.steps){for(let i=0;i<(q.big?6:3);i++)addR(q.x+q.w*.6+fjR(10,q.big?320:170),q.big?fjR(45,120):fjR(30,85));addR(q.x-q.w*.6-fjR(0,60),fjR(25,55))}
   for(const q of FJ.terr.pins){addR(q.x+fjR(-q.w*.4,q.w*.4),fjR(30,60));for(const sg of [-1,1])addR(q.x+sg*q.w*fjR(1.1,1.6),fjR(35,80))}
+  FJ.DM=Math.max(...FJ.bed)+140;
   FJ.floor=Float32Array.from(FJ.bed);for(const r of FJ.rocks){const rx=r.r*1.15,ry=r.r*.8;for(let x=Math.ceil((r.x-rx)/10)*10;x<=r.x+rx;x+=10){const i=x/10;if(i<0||i>=FJ.floor.length)continue;const u=(x-r.x)/rx,top=r.y-ry*Math.sqrt(Math.max(0,1-u*u));if(top<FJ.floor[i])FJ.floor[i]=top}}
-  FJ.kelp=[];for(let x=20;x<3000;x+=fjR(26,60)){const by=fjBed(x);if(by>1100)continue;FJ.kelp.push({x,h:fjR(150,Math.min(420,by-120)),ph:fjR(0,6),front:Math.random()<.28,blades:Math.floor(fjR(3,6))})}
+  FJ.kelp=[];for(let x=20;x<3200;x+=fjR(9,20)){const by=fjBed(x);if(by>1200)continue;FJ.kelp.push({x,h:fjR(70,165),fl:fjR(28,52),ph:fjR(0,6),front:Math.random()<.3,blades:Math.floor(fjR(3,6))})}
   FJ.hills=Array.from({length:40},(_,i)=>({x:i*260+fjR(-60,60),h:fjR(120,320)}))}
 function fjSpawn(key,o={}){const d=FJ_SP[key],L=fjL();const small=!o.noSmall&&d.small&&Math.random()<d.small;
   let x=o.x!=null?o.x:fjR(d.zone[0]+60,d.zone[1]-60);
   if(o.away&&FJ.dv){for(let i=0;i<8&&Math.abs(x-FJ.dv.x)<FJ.vw*.8;i++)x=fjR(d.zone[0]+60,d.zone[1]-60)}
-  const bed=fjBed(x),dB=Math.max(0,Math.min(1,(bed/FJ_U-9)/13)),bias=Math.min(1,(FJ.pat||0)+dB*(d.bottom||d.near?.75:.35));
+  const bed=fjBed(x),dB=Math.max(0,Math.min(1,(bed/FJ_U-9)/13)),bw=FJ.terr&&FJ.terr.big&&x>FJ.terr.big.x-120&&x<FJ.terr.big.x+800?.45:0,bias=Math.min(1,(FJ.pat||0)+dB*(d.bottom||d.near?.75:.35)+bw);
   const cm=o.big!=null?d.cm[0]+(d.cm[1]-d.cm[0])*o.big:small?fjR(d.cm[0]*.55,d.cm[0]*.82):fjSize(d,bias),rel=Math.max(0,Math.min(1,(cm-d.cm[0])/(d.cm[1]-d.cm[0]))),len=fjLen(cm,rel);
   let y;
   if(d.bottom)y=bed-len*d.hh*.45;
@@ -3371,6 +3372,9 @@ function fjUnit(k,away){const d=FJ_SP[k],o=away?{away:true}:{};
 function fjReLead(old){const mates=FJ.fish.filter(o=>o.leader===old&&!o.hit);if(!mates.length)return;const nl=mates[0];nl.leader=null;for(const o of mates)if(o!==nl)o.leader=nl}
 function fjPopulate(){FJ.fish=[];FJ.jel=[];if(!FJ.popN)FJ.popN=fjPopN();
   for(const [k,n] of Object.entries(FJ.popN))for(let i=0;i<n;i++)fjUnit(k,false);
+  /* the big ones living along the foot of the big wall */
+  if(FJ.terr&&FJ.terr.big){const B=FJ.terr.big,m=Math.floor(fjR(3,6));for(let i=0;i<m;i++){const r=Math.random(),k=r<.4?"torsk":r<.55?"lange":r<.7?"sei":r<.8?"lyr":r<.88?"breiflabb":r<.95?"uer":"kveite",d=FJ_SP[k];
+    const x=Math.max(d.zone[0]+20,Math.min(d.zone[1]-20,B.x+B.w*.6+fjR(20,600)));const f=fjSpawn(k,{x,noSmall:true,big:fjR(.5,.97)});if(!d.bottom)f.y=fjBed(x)-f.len*.6-fjR(15,120)}}
   for(let i=0;i<7;i++)FJ.jel.push({x:fjR(400,5800),y:fjR(80,700),r:fjR(14,26),ph:fjR(0,6),vx:fjR(-6,6),stung:0})}
 /* ----- start / stop ----- */
 function openGame(){const d=$("#gameDlg");if(!d)return;if(!d.open)d.showModal();fjResize();FJ.st="title";if(!FJ.bed)fjWorld();FJ.dv=FJ.dv||{x:900,y:20,vx:0,vy:0,face:1,kick:0};if(!FJ.fish.length)fjPopulate();
@@ -3380,7 +3384,7 @@ function fjResize(){const cv=$("#fgCv");if(!cv)return;const r=cv.getBoundingClie
   FJ.W=Math.max(300,r.width);FJ.H=Math.max(300,r.height);FJ.dpr=dpr;cv.width=Math.round(FJ.W*dpr);cv.height=Math.round(FJ.H*dpr);
   FJ.vh=FJ.W<FJ.H?800:Math.max(620,Math.min(760,FJ.H*.72));FJ.sc=FJ.H/FJ.vh;FJ.vw=FJ.W/FJ.sc}
 function fjStart(){const L=fjL();fjWorld();Object.assign(FJ,{st:"play",fx:[],part:[],spear:null,o2:L.o2,score:0,hand:[],shots:0,hits:0,streak:0,big:null,reload:0,paused:false,alarm:0,calm:0,
-  nPerf:0,nTorn:0,nSmall:0,maxDepth:0,diveT:0,maxDive:0,why:"",caught:{},msg:null,dv:{x:fjR(500,2600),y:14,vx:0,vy:0,face:1,kick:0},best:fjBest(FJ.lvl),dive:0,diving:false,diveScores:[],wary:0,popN:fjPopN(),diveX:[0,0],amb:0,pat:0,visitor:null,tgt:null,duck:0,cur:{x:0,y:0},curT:fjR(0,60),curDir:Math.random()<.5?1:-1,curOff:0,sway:0});
+  nPerf:0,nTorn:0,nSmall:0,maxDepth:0,diveT:0,maxDive:0,why:"",caught:{},msg:null,dv:{x:fjR(500,2600),y:14,vx:0,vy:0,face:1,kick:0},best:fjBest(FJ.lvl),dive:0,diving:false,diveScores:[],wary:0,popN:fjPopN(),diveX:[0,0],amb:0,pat:0,visitor:null,tgt:null,duck:0,lastDive:0,cur:{x:0,y:0},curT:fjR(0,60),curDir:Math.random()<.5?1:-1,curOff:0,sway:0});
   fjPopulate();FJ.cam.x=FJ.dv.x-FJ.vw/2;FJ.cam.y=-80;fjOverlay();fjMsg(FJ.touch?"Venstre tommel: svøm · trykk: skyt":"WASD: svøm · S i overflaten: duck-dive · mus/piltaster: sikt · klikk/mellomrom: skyt",5)}
 function fjMsg(t,s=2.5,col){FJ.msg={t,s,col}}
 /* ----- fish behaviour ----- */
@@ -3444,8 +3448,8 @@ function fjGunTip(){const dv=FJ.dv,a=fjAimAng();return {x:dv.x+Math.cos(a)*58,y:
 function fjToW(p){return {x:FJ.cam.x+p.x/FJ.sc,y:FJ.cam.y+p.y/FJ.sc}}
 function fjAimOn(){return FJ.aimW&&(!FJ.touch||performance.now()-(FJ.tapT||0)<900)}
 function fjAimAng(){const dv=FJ.dv,sw=FJ.st==="play"?FJ.sway||0:0;if(fjAimOn())return Math.atan2(FJ.aimW.y-(dv.y-6),FJ.aimW.x-dv.x)+sw;return (dv.face>0?0:Math.PI)+sw}
-function fjFire(){const L=fjL();if(FJ.st!=="play"||FJ.paused||FJ.spear||FJ.reload>0)return;const dv=FJ.dv;if(dv.y<20){fjMsg("Dykk ned først",1.2);return}
-  const t=fjGunTip();FJ.spear={x:t.x,y:t.y,ux:Math.cos(t.a),uy:Math.sin(t.a),v:950,dist:0,max:L.range,back:false};FJ.shots++;FJ.calm=0;FJ.pat*=.3;FJ.alarm=Math.min(1,FJ.alarm+.08);FJ.o2-=.6;
+function fjFire(){const L=fjL();if(FJ.st!=="play"||FJ.paused||FJ.spear||FJ.reload>0)return;const dv=FJ.dv;
+  const t=fjGunTip();FJ.spear={x:t.x,y:t.y,ux:Math.cos(t.a),uy:Math.sin(t.a),v:950,dist:0,max:L.range,back:false};FJ.shots++;FJ.calm=0;FJ.pat*=.3;FJ.alarm=Math.min(1,FJ.alarm+.08);if(dv.y>16)FJ.o2-=.6;
   for(let i=0;i<5;i++)FJ.part.push({x:t.x,y:t.y,vx:fjR(-20,20),vy:-fjR(20,60),r:fjR(1.5,3.5),a:.9})}
 function fjFloat(x,y,txt,col){FJ.fx.push({x,y,txt,col,a:1,t:0})}
 function fjMiss(x,y){const L=fjL();FJ.streak=0;FJ.alarm=Math.min(1,FJ.alarm+.22);fjScareAt(x,y,L.fear*.9)}
@@ -3509,12 +3513,12 @@ function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv
     if(FJ.diving&&pv>.5&&!vis&&Math.random()<dt*.035*pv*(1+dBd)*(1+1.5*(FJ.cover||0)))fjVisitor()}
   if(!FJ.diving&&dv.y>120){FJ.diving=true;FJ.dive++;FJ.diveStart=FJ.score;FJ.diveX=[dv.x,dv.x];fjDiveEvent()}
   if(FJ.diving){FJ.diveX[0]=Math.min(FJ.diveX[0],dv.x);FJ.diveX[1]=Math.max(FJ.diveX[1],dv.x)}
-  if(surf){if(FJ.diveT>3){FJ.maxDive=Math.max(FJ.maxDive,FJ.diveT)}FJ.diveT=0;FJ.o2=Math.min(L.o2,FJ.o2+L.o2/7*dt);
+  if(surf){if(FJ.diveT>3){FJ.maxDive=Math.max(FJ.maxDive,FJ.diveT);FJ.lastDive=FJ.diveT}FJ.diveT=0;FJ.o2=Math.min(L.o2,FJ.o2+L.o2/7*dt);
     if(FJ.hand.length){const s=FJ.hand.reduce((a,c)=>a+c.pts,0);FJ.score+=s;fjFloat(dv.x,dv.y+40,`Sikret på bøya: +${s}`,"#bff3c8");FJ.hand=[]}
     if(FJ.diving){FJ.diving=false;FJ.diveScores.push(FJ.score-(FJ.diveStart||0));if(FJ.dive>=FJ.nDives){fjEnd("ferdig");return}fjEscalate();
       fjMsg(`Dykk ${FJ.dive} av ${FJ.nDives}: ${FJ.diveScores[FJ.diveScores.length-1]?"+"+FJ.diveScores[FJ.diveScores.length-1]+" poeng":"ingen fisk"}. Fisken blir skyere.`,4,"#bff3c8")}}
   else{FJ.diveT+=dt;/* air use follows effort: lying still uses well under half of what active swimming does */
-    const act=Math.min(1,sp/125),drain=(.53+.47*act+(fast&&il>0?.7:0))*(1+Math.max(0,depth-10)/50)*(FJ.amb>1.5?.9:1);FJ.drain=drain;FJ.o2-=drain*dt;
+    const act=Math.min(1,sp/125),drain=(.44+.56*act+(fast&&il>0?.7:0))*(1+Math.max(0,depth-10)/50)*(FJ.amb>1.5?.9:1);FJ.drain=drain;FJ.o2-=drain*dt;
     if(FJ.o2<=0){FJ.o2=0;fjEnd("blackout");return}}
   for(const f of FJ.fish)fjFish(f,dt);
   for(const j of FJ.jel){j.ph+=dt*2;j.y+=Math.sin(j.ph)*6*dt-2*dt;j.x+=j.vx*dt;if(j.y<60)j.y=700;if(j.stung>0)j.stung-=dt;
@@ -3539,7 +3543,7 @@ function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv
   if(FJ.msg){FJ.msg.s-=dt;if(FJ.msg.s<=0)FJ.msg=null}
   // camera
   const tx=dv.x-FJ.vw/2+(fjAimOn()&&!FJ.touch?(FJ.aimW.x-dv.x)*.15:dv.face*60),ty=dv.y-FJ.vh*.45;
-  FJ.cam.x+=(Math.max(0,Math.min(FJ_WW-FJ.vw,tx))-FJ.cam.x)*Math.min(1,dt*3);FJ.cam.y+=(Math.max(-120,Math.min(2050-FJ.vh,ty))-FJ.cam.y)*Math.min(1,dt*3)}
+  FJ.cam.x+=(Math.max(0,Math.min(FJ_WW-FJ.vw,tx))-FJ.cam.x)*Math.min(1,dt*3);FJ.cam.y+=(Math.max(-120,Math.min((FJ.DM||2100)-50-FJ.vh,ty))-FJ.cam.y)*Math.min(1,dt*3)}
 /* after every dive the fish have seen you: warier, fewer curious, and some leave the area you hunted */
 function fjEscalate(){if(fjL().cur&&Math.random()<.3){FJ.curDir*=-1;setTimeout(()=>fjMsg("Strømmen har snudd",2.5,"#9fd8ff"),4200)}FJ.wary=Math.min(1,FJ.dive/Math.max(1,FJ.nDives-1)*.9);FJ.alarm*=.5;const [a,b]=FJ.diveX;
   for(const f of FJ.fish){if(f.hit)continue;f.shy=Math.min(1,(f.shy||0)+.15);if(Math.random()<.6*FJ.wary)f.cur=false;
@@ -3669,7 +3673,7 @@ function fjDrawDiver(g){const dv=FJ.dv,fc=dv.face,a=fjAimAng(),sp=Math.hypot(dv.
   const loaded=!FJ.spear&&FJ.reload<=0;g.strokeStyle="#c0392b";g.lineWidth=2.6;g.beginPath();if(loaded){g.moveTo(96,-3);g.lineTo(50,-7);g.moveTo(96,3);g.lineTo(50,7)}else{g.moveTo(96,-3);g.lineTo(102,-6);g.moveTo(96,3);g.lineTo(102,6)}g.stroke();
   if(loaded){g.strokeStyle="#d5d9de";g.lineWidth=2;g.beginPath();g.moveTo(20,-4.5);g.lineTo(110,-4.5);g.stroke()}
   g.restore()}
-const fjBig=f=>!f.small&&f.rel>.6;
+const fjBig=f=>!f.small&&f.rel>.6,fjClock=t=>`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,"0")}`;
 /* the fish nearest your aim, within reach: shown with a size estimate like a hunter would judge it */
 function fjTarget(){const L=fjL(),dv=FJ.dv,ta=fjAimAng();let tg=null,tb=1e9;
   for(const f of FJ.fish){if(f.hit)continue;const ex=f.x-dv.x,ey=f.y-(dv.y-6),dd=Math.hypot(ex,ey);if(dd>L.range*1.45)continue;if(f.d.camo&&dd>170&&!FJ.xray)continue;
@@ -3681,19 +3685,19 @@ function fjDraw(){const cv=$("#fgCv");if(!cv)return;const g=cv.getContext("2d"),
   const x0=cam.x-20,x1=cam.x+vw+20,y0=cam.y-20,y1=cam.y+vh+20;
   // sky and water
   if(y0<0){const sk=g.createLinearGradient(0,-200,0,0);sk.addColorStop(0,"#9fc3d6");sk.addColorStop(1,"#d9e8ee");g.fillStyle=sk;g.fillRect(x0,y0,x1-x0,-y0)}
-  const wg=g.createLinearGradient(0,0,0,2100);wg.addColorStop(0,"#2f8fb8");wg.addColorStop(.25,"#15628a");wg.addColorStop(.6,"#0a3a5a");wg.addColorStop(1,"#03182a");g.fillStyle=wg;g.fillRect(x0,Math.max(0,y0),x1-x0,y1-Math.max(0,y0));
+  const wg=g.createLinearGradient(0,0,0,2900);wg.addColorStop(0,"#2f8fb8");wg.addColorStop(.25,"#15628a");wg.addColorStop(.6,"#0a3a5a");wg.addColorStop(1,"#03182a");g.fillStyle=wg;g.fillRect(x0,Math.max(0,y0),x1-x0,y1-Math.max(0,y0));
   // light rays
   g.save();g.globalCompositeOperation="lighter";for(let i=Math.floor(x0/220);i<=x1/220;i++){const x=i*220+Math.sin(t*.3+i)*30,w=40+20*Math.sin(i*1.7);const gr=g.createLinearGradient(0,0,0,900);gr.addColorStop(0,"rgba(190,235,255,.10)");gr.addColorStop(1,"rgba(190,235,255,0)");g.fillStyle=gr;g.beginPath();g.moveTo(x-w*.3,0);g.lineTo(x+w*.3,0);g.lineTo(x+w*1.8+120,900);g.lineTo(x-w*.4+120,900);g.closePath();g.fill()}g.restore();
   // distant slope (parallax)
-  g.fillStyle="rgba(5,26,40,.42)";g.beginPath();g.moveTo(x0,2200);for(let x=Math.floor(x0/20)*20;x<=x1+20;x+=20){const yb=fjBed(x),q=x+cam.x*.6,yp=yb-150-100*Math.sin(q/420)-55*Math.sin(q/170);g.lineTo(x,Math.min(yb,yp))}g.lineTo(x1+20,2200);g.closePath();g.fill();
+  g.fillStyle="rgba(5,26,40,.42)";g.beginPath();g.moveTo(x0,3200);for(let x=Math.floor(x0/20)*20;x<=x1+20;x+=20){const yb=fjBed(x),q=x+cam.x*.6,yp=yb-150-100*Math.sin(q/420)-55*Math.sin(q/170);g.lineTo(x,Math.min(yb,yp))}g.lineTo(x1+20,3200);g.closePath();g.fill();
   // kelp behind
-  const kelpDraw=front=>{for(const k of FJ.kelp){if(k.front!==front||k.x<x0-60||k.x>x1+60)continue;const by=fjBed(k.x);g.strokeStyle=front?"rgba(48,72,30,.95)":"rgba(40,64,32,.9)";g.lineCap="round";g.lineWidth=5;g.beginPath();g.moveTo(k.x,by);let px=k.x,py=by;
-      for(let i=1;i<=10;i++){px=k.x+Math.sin(t*.8+k.ph+i*.5)*i*2.6;py=by-k.h*i/10;g.lineTo(px,py)}g.stroke();
-      g.fillStyle=front?"rgba(70,95,35,.92)":"rgba(58,84,36,.85)";for(let b=0;b<k.blades;b++){const bx=px+(b-k.blades/2)*6,bw=Math.sin(t*1.1+k.ph+b)*10;g.beginPath();g.moveTo(px,py);g.quadraticCurveTo(bx-14+bw,py-30,bx+bw*1.5,py-70-b*8);g.quadraticCurveTo(bx+10+bw,py-28,px,py);g.fill()}}};
+  const kelpDraw=front=>{for(const k of FJ.kelp){if(k.front!==front||k.x<x0-60||k.x>x1+60)continue;const by=fjBed(k.x);g.strokeStyle=front?"rgba(48,72,30,.95)":"rgba(40,64,32,.9)";g.lineCap="round";g.lineWidth=3.5;g.beginPath();g.moveTo(k.x,by);let px=k.x,py=by;
+      for(let i=1;i<=8;i++){px=k.x+Math.sin(t*.8+k.ph+i*.5)*i*1.5;py=by-k.h*i/8;g.lineTo(px,py)}g.stroke();
+      g.fillStyle=front?"rgba(70,95,35,.92)":"rgba(58,84,36,.85)";for(let b=0;b<k.blades;b++){const bx=px+(b-k.blades/2)*6,bw=Math.sin(t*1.1+k.ph+b)*10;const fl=k.fl||50;g.beginPath();g.moveTo(px,py);g.quadraticCurveTo(bx-10+bw*.7,py-fl*.45,bx+bw,py-fl-b*5);g.quadraticCurveTo(bx+8+bw*.7,py-fl*.42,px,py);g.fill()}}};
   kelpDraw(false);
   // rocks and the seabed
   g.fillStyle="#1d2a2c";for(const r of FJ.rocks){if(r.x<x0-r.r||r.x>x1+r.r)continue;const gr=g.createRadialGradient(r.x-r.r*.3,r.y-r.r*.5,r.r*.1,r.x,r.y,r.r);gr.addColorStop(0,"#4a5554");gr.addColorStop(1,"#1c2526");g.fillStyle=gr;g.beginPath();g.ellipse(r.x,r.y,r.r*1.15,r.r*.8,0,0,7);g.fill()}
-  const bg=g.createLinearGradient(0,400,0,2100);bg.addColorStop(0,"#3a3a26");bg.addColorStop(.5,"#504a34");bg.addColorStop(1,"#5c5640");g.fillStyle=bg;g.beginPath();g.moveTo(x0,2200);for(let x=Math.floor(x0/10)*10;x<=x1;x+=10)g.lineTo(x,fjBed(x));g.lineTo(x1,2200);g.closePath();g.fill();
+  const bg=g.createLinearGradient(0,400,0,2900);bg.addColorStop(0,"#3a3a26");bg.addColorStop(.5,"#504a34");bg.addColorStop(1,"#5c5640");g.fillStyle=bg;g.beginPath();g.moveTo(x0,3200);for(let x=Math.floor(x0/10)*10;x<=x1;x+=10)g.lineTo(x,fjBed(x));g.lineTo(x1,3200);g.closePath();g.fill();
   for(const q of FJ.terr.pins){const a=q.x-q.w*2.2,b=q.x+q.w*2.2;if(b<x0||a>x1)continue;const rg=g.createLinearGradient(0,fjBed(q.x),0,fjBedBase(q.x)+40);rg.addColorStop(0,"#4a5452");rg.addColorStop(1,"#232c2d");g.fillStyle=rg;g.beginPath();for(let x=a;x<=b;x+=8)g.lineTo(x,fjBed(x));for(let x=b;x>=a;x-=8)g.lineTo(x,fjBedBase(x)+30);g.closePath();g.fill()}
   /* rock faces on the walls: a band of rock just inside the slope, with a pale edge and a few cracks */
   {const face=new Path2D(),edge=new Path2D(),crack=new Path2D();for(let x=Math.floor(x0/8)*8;x<=x1;x+=8){const ya=fjBed(x),yb=fjBed(x+8);if(Math.abs(yb-ya)/8<=.9)continue;const dir=yb>ya?-1:1,o=dir*30;
@@ -3710,7 +3714,7 @@ function fjDraw(){const cv=$("#fgCv");if(!cv)return;const g=cv.getContext("2d"),
   kelpDraw(true);
   for(const p of FJ.part){g.globalAlpha=p.a;if(p.sand){g.fillStyle="rgba(150,135,100,.6)";g.beginPath();g.arc(p.x,p.y,p.r,0,7);g.fill()}else{g.strokeStyle="rgba(230,248,255,.85)";g.lineWidth=1;g.beginPath();g.arc(p.x,p.y,p.r,0,7);g.stroke()}}g.globalAlpha=1;
   // depth darkness and surface
-  const dk=g.createLinearGradient(0,0,0,2100);dk.addColorStop(0,"rgba(2,12,22,0)");dk.addColorStop(.4,"rgba(2,12,22,.25)");dk.addColorStop(1,"rgba(2,10,18,.62)");g.fillStyle=dk;g.fillRect(x0,Math.max(0,y0),x1-x0,y1-Math.max(0,y0));
+  const dk=g.createLinearGradient(0,0,0,2900);dk.addColorStop(0,"rgba(2,12,22,0)");dk.addColorStop(.4,"rgba(2,12,22,.25)");dk.addColorStop(1,"rgba(2,10,18,.62)");g.fillStyle=dk;g.fillRect(x0,Math.max(0,y0),x1-x0,y1-Math.max(0,y0));
   if(y0<20){g.strokeStyle="rgba(230,245,250,.85)";g.lineWidth=2.5;g.beginPath();for(let x=Math.floor(x0/8)*8;x<=x1;x+=8){const y=Math.sin(x/40+t*2)*3+Math.sin(x/17+t*3)*1.5;x===Math.floor(x0/8)*8?g.moveTo(x,y):g.lineTo(x,y)}g.stroke();
     if(FJ.st!=="title"){g.fillStyle="#e8642c";g.beginPath();g.arc(dv.x-140,-4,12,0,7);g.fill();g.strokeStyle="rgba(230,235,240,.5)";g.lineWidth=1;g.beginPath();g.moveTo(dv.x-140,6);g.lineTo(dv.x-60,dv.y);g.stroke()}}
   for(const e of FJ.fx){g.globalAlpha=e.a;g.font="700 15px Barlow, sans-serif";g.textAlign="center";g.fillStyle="rgba(0,0,0,.55)";g.fillText(e.txt,e.x+1,e.y+1);g.fillStyle=e.col;g.fillText(e.txt,e.x,e.y)}g.globalAlpha=1;
@@ -3727,8 +3731,8 @@ function fjDraw(){const cv=$("#fgCv");if(!cv)return;const g=cv.getContext("2d"),
     const narrow=W<600,bw=narrow?W-32:Math.min(260,W*.36),bx=narrow?16:(W-bw)/2,by=narrow?62:14,f=Math.max(0,FJ.o2/L.o2),low=f<.25&&dv.y>16;
     g.fillStyle="rgba(0,0,0,.4)";g.fillRect(bx,by,bw,10);g.fillStyle=low?(Math.sin(t*10)>0?"#ff6b5a":"#c0392b"):"#7fdcf0";g.fillRect(bx,by,bw*f,10);
     g.font="600 11px Barlow, sans-serif";g.fillStyle="rgba(241,230,200,.85)";const dep=`${fnum(dv.y/FJ_U,1)} m`,tm=`${FJ.diving?FJ.dive:Math.min(FJ.nDives,FJ.dive+1)}/${FJ.nDives}`;
-    if(narrow){g.textAlign="left";g.fillText(`LUFT${FJ.drain<.6&&dv.y>16?" (sparer)":""} · ${dep}`,bx,by+24);g.textAlign="right";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,bx+bw,by+24)}
-    else{g.textAlign="center";g.fillText(`LUFT${FJ.drain<.6&&dv.y>16?" (sparer)":""} · DYBDE ${dep}`,W/2,by+24);g.textAlign="right";g.font="600 12px Barlow, sans-serif";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,W-100,30)}
+    if(narrow){g.textAlign="left";g.fillText(`LUFT${FJ.drain<.6&&dv.y>16?" (sparer)":""} · ${dep}${dv.y>16?" · "+fjClock(FJ.diveT):""}`,bx,by+24);g.textAlign="right";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,bx+bw,by+24)}
+    else{g.textAlign="center";g.fillText(`LUFT${FJ.drain<.6&&dv.y>16?" (sparer)":""} · DYBDE ${dep}${dv.y>16?" · TID "+fjClock(FJ.diveT):FJ.lastDive?" · FORRIGE DYKK "+fjClock(FJ.lastDive):""}`,W/2,by+24);g.textAlign="right";g.font="600 12px Barlow, sans-serif";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,W-100,30)}
     if(!FJ.spear&&FJ.reload>0){const p=1-FJ.reload/L.reload;g.fillStyle="rgba(0,0,0,.45)";g.fillRect(ds.x-35,ds.y+34,70,6);g.fillStyle="#F1E6C8";g.fillRect(ds.x-35,ds.y+34,70*Math.max(0,Math.min(1,p)),6)}
     const tg=fjTarget();if(tg){const f=tg,lx=(f.x-cam.x)*sc,ly=(f.y-cam.y)*sc-f.len*.42*sc-10,kg=f.kg<3?String(f.kg).replace(".",","):Math.round(f.kg);
       const txt=f.small?`${f.d.name} · under minstemål`:`${f.d.name} · ca. ${kg} kg${f.trophy?" · trofé":fjBig(f)?" · stor":""}`;
@@ -3738,9 +3742,9 @@ function fjDraw(){const cv=$("#fgCv");if(!cv)return;const g=cv.getContext("2d"),
     if(m){g.font="600 14px Barlow, sans-serif";g.textAlign="center";g.fillStyle="rgba(0,0,0,.5)";g.fillText(m.t,W/2+1,narrow?by+46:by+46);g.fillStyle=m.col||"#F1E6C8";g.fillText(m.t,W/2,narrow?by+45:by+45)}
     // mini map: the seabed profile and where you are (no fish)
     const mw=Math.min(240,W*.5),mh=34,mx=(W-mw)/2,my=H-mh-10;g.fillStyle="rgba(3,16,26,.55)";g.fillRect(mx,my,mw,mh);g.strokeStyle="rgba(241,230,200,.35)";g.lineWidth=1;g.beginPath();
-    for(let i=0;i<=150;i++){const x=i/150*FJ_WW,y=fjBed(x)/2100;i?g.lineTo(mx+i/150*mw,my+y*mh):g.moveTo(mx,my+y*mh)}g.stroke();
-    g.strokeStyle="rgba(241,230,200,.25)";g.strokeRect(mx+cam.x/FJ_WW*mw,my+Math.max(0,cam.y)/2100*mh,vw/FJ_WW*mw,vh/2100*mh);
-    g.fillStyle="#ffd54a";g.beginPath();g.arc(mx+dv.x/FJ_WW*mw,my+dv.y/2100*mh,3,0,7);g.fill();
+    for(let i=0;i<=150;i++){const x=i/150*FJ_WW,y=fjBed(x)/(FJ.DM||2100);i?g.lineTo(mx+i/150*mw,my+y*mh):g.moveTo(mx,my+y*mh)}g.stroke();
+    g.strokeStyle="rgba(241,230,200,.25)";g.strokeRect(mx+cam.x/FJ_WW*mw,my+Math.max(0,cam.y)/(FJ.DM||2100)*mh,vw/FJ_WW*mw,vh/(FJ.DM||2100)*mh);
+    g.fillStyle="#ffd54a";g.beginPath();g.arc(mx+dv.x/FJ_WW*mw,my+dv.y/(FJ.DM||2100)*mh,3,0,7);g.fill();
     g.font="600 9px Barlow, sans-serif";g.fillStyle="rgba(241,230,200,.6)";g.textAlign="left";g.fillText("TARE",mx+4,my-3);g.textAlign="right";g.fillText("DYPT · SAND",mx+mw-4,my-3)}}
 function fjLoop(now){const d=$("#gameDlg");if(!d||!d.open){FJ.raf=0;return}const dt=Math.min(.05,(now-FJ.last)/1000);FJ.last=now;
   if(FJ.st==="play")fjUpdate(dt);
@@ -3755,7 +3759,7 @@ function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
   if(FJ.st==="title"){ov.innerHTML=`<div class="fg-card fg-wide"><h2>Fiskejakt</h2><p>${ctl}</p>
     <ul><li><b>Ett pust om gangen.</b> Fangsten er bare sikret når du er oppe ved bøya. Går lufta tom under vann, er det blackout.</li>
     <li><b>Tareskogen</b> (til venstre) har lyr, torsk og berggylt. <b>Dypere ute</b>: rødspette, flyndre, pigghvar, lange, hyse, steinbit, kveite, uer helt nede og den kamuflerte <b>breiflabben</b>. Jo dypere, jo større fisk og flere poeng.</li>
-    <li><b>Ligg rolig</b>: fisken kommer nærmere, og du bruker omtrent halvparten så mye luft. Jo fortere du svømmer (Shift) eller svinger harpunen, jo mer skremmes den. Sikt på hodet, og pass på minstemålet.</li>
+    <li><b>Ligg rolig</b>: fisken kommer nærmere, og du bruker under halvparten så mye luft. Jo fortere du svømmer (Shift) eller svinger harpunen, jo mer skremmes den. Sikt på hodet, og pass på minstemålet.</li>
     <li><b>De største</b> er skyest. Er du rolig lenge uten å skyte, øker sjansen for storfisk (ingen garanti). Ligg stille på bunnen (<b>ventejakt</b>) eller gjem deg i taren, bak en stein eller under berget, så tør de å komme nær.</li>
     <li><b>Strøm</b> fra normal og opp. Fisken blir skyere for hvert dykk, og ingen økt er lik.</li></ul>
     ${lvBtns}<div class="fg-go"><div class="fg-dives"><span>Antall dykk</span>${[3,5,10].map(n=>`<button type="button" class="chip${FJ.nDives===n?" on":""}" data-nd="${n}">${n}</button>`).join("")}</div>
