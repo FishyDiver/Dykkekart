@@ -1131,7 +1131,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v63 (fiskejakt: duck-dive, luft etter innsats)";
+const APP_VERSION="v64 (fiskejakt: mer fisk, bunnfisk som flytter seg)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -3286,19 +3286,19 @@ const FJ_LV={
 const FJ_SP={
  makrell:{name:"Makrell",pts:15,cm:[28,46],k:8,spd:140,zone:[0,6000],dep:[1,7],school:[4,7],hh:.17,draw:"makrell"},
  sei:{name:"Sei",pts:10,cm:[40,108],k:10,spd:80,zone:[400,5800],dep:[3,18],school:[3,7],hh:.2,curious:true,small:.15,draw:"sei"},
- lyr:{name:"Lyr",pts:15,cm:[40,98],k:10.5,spd:50,zone:[0,4600],dep:[3,14],hh:.21,curious:true,small:.2,near:.6,draw:"lyr"},
- torsk:{name:"Torsk",pts:20,cm:[45,128],k:9.5,spd:40,zone:[0,5900],dep:[4,23],hh:.22,curious:true,small:.25,near:.85,draw:"torsk"},
+ lyr:{name:"Lyr",pts:15,cm:[40,98],k:10.5,spd:50,zone:[0,4600],dep:[3,14],hh:.21,curious:true,small:.2,near:.4,draw:"lyr"},
+ torsk:{name:"Torsk",pts:20,cm:[45,128],k:9.5,spd:40,zone:[0,5900],dep:[4,23],hh:.22,curious:true,small:.25,near:.65,draw:"torsk"},
  hyse:{name:"Hyse",pts:15,cm:[35,72],k:9,spd:45,zone:[2400,5900],dep:[12,24],hh:.21,small:.2,near:.9,few:true,draw:"hyse"},
  berggylt:{name:"Berggylt",pts:10,cm:[25,56],k:15,spd:24,zone:[0,2400],dep:[2,10],hh:.34,curious:true,near:.75,draw:"berggylt"},
  steinbit:{name:"Steinbit",pts:35,cm:[50,122],k:7.5,spd:16,zone:[1600,5900],bottom:true,hh:.15,tough:true,few:true,draw:"steinbit"},
  lange:{name:"Lange",pts:45,cm:[70,175],k:4.5,spd:22,zone:[3000,6000],dep:[14,26],hh:.12,near:1,tough:true,few:true,draw:"lange"},
- flyndre:{name:"Flyndre",pts:15,cm:[25,50],k:12,spd:0,zone:[1800,5200],bottom:true,hh:.38,flat:true,draw:"flyndre"},
- rodspette:{name:"Rødspette",pts:20,cm:[25,58],k:13,spd:0,zone:[3000,6000],bottom:true,hh:.4,flat:true,draw:"rodspette"},
+ flyndre:{name:"Flyndre",pts:15,cm:[25,50],k:12,spd:26,zone:[1800,5200],bottom:true,hh:.38,flat:true,draw:"flyndre"},
+ rodspette:{name:"Rødspette",pts:20,cm:[25,58],k:13,spd:26,zone:[3000,6000],bottom:true,hh:.4,flat:true,draw:"rodspette"},
  breiflabb:{name:"Breiflabb",pts:80,cm:[55,155],k:13,spd:0,zone:[3300,6000],bottom:true,hh:.3,camo:true,tough:true,draw:"breiflabb"},
  kveite:{name:"Kveite",pts:120,cm:[75,212],k:11.8,spd:40,zone:[2200,6000],bottom:true,hh:.42,flat:true,free:.5,tough:true,rare:true,draw:"kveite"}};
 /* how many of each per session, drawn at random, so no two sessions are alike (rare species can be missing entirely) */
-const FJ_POP={sei:[4,7],lyr:[6,10],berggylt:[6,9],torsk:[3,7],makrell:[0,2],rodspette:[3,6],flyndre:[3,6],lange:[1,3],hyse:[1,3],steinbit:[1,3],breiflabb:[0,2],kveite:[0,2]};
-function fjPopN(){const n={};for(const [k,[a,b]] of Object.entries(FJ_POP))n[k]=Math.floor(fjR(a,b+1));if(Math.random()<.25)n.kveite=0;if(n.breiflabb===0&&Math.random()<.5)n.breiflabb=1;return n}
+const FJ_POP={sei:[7,11],lyr:[9,14],berggylt:[9,13],torsk:[4,8],makrell:[1,3],rodspette:[5,9],flyndre:[5,9],lange:[2,4],hyse:[2,4],steinbit:[2,4],breiflabb:[1,2],kveite:[1,3]};
+function fjPopN(){const n={};for(const [k,[a,b]] of Object.entries(FJ_POP))n[k]=Math.floor(fjR(a,b+1));if(Math.random()<.15)n.kveite=0;if(n.breiflabb===0&&Math.random()<.5)n.breiflabb=1;return n}
 /* most fish are medium-sized, a few are trophies */
 const fjCurF=(x,y)=>Math.max(.3,Math.min(1,(fjBed(x)-y)/320));
 const fjLen=(cm,rel)=>cm/100*FJ_U*1.35*(.82+.42*rel);
@@ -3335,7 +3335,8 @@ function fjSpawn(key,o={}){const d=FJ_SP[key],L=fjL();const small=!o.noSmall&&d.
   if(o.y!=null)y=o.y;
   const kg=d.k*Math.pow(cm/100,3)*fjR(.9,1.1);
   const f={key,d,x,y,len,cm:Math.round(cm),small,rel,trophy:!small&&rel>.88,kg:kg<10?+kg.toFixed(1):Math.round(kg),cur:Math.random()<(1-.6*FJ.wary),shy:FJ.wary*.5,
-    vx:0,vy:0,dir:Math.random()<.5?1:-1,ph:fjR(0,6),hit:0,flee:0,tx:null,ty:null,tt:0,rest:d.bottom&&!(d.free&&Math.random()<d.free),hid:0,leader:o.leader||null,ox:o.ox||0,oy:o.oy||0,mott:Math.random()*1000};
+    vx:0,vy:0,dir:Math.random()<.5?1:-1,ph:fjR(0,6),hit:0,flee:0,tx:null,ty:null,tt:0,rest:d.bottom&&!(d.free&&Math.random()<d.free),hid:0,leader:o.leader||null,ox:o.ox||0,oy:o.oy||0,mott:Math.random()*1000,tt:fjR(2,20)};
+  if(key==="kveite"&&!f.rest&&o.y==null)f.y=fjR(2*FJ_U,Math.max(2*FJ_U+10,bed-150));
   FJ.fish.push(f);return f}
 /* one population unit: makrell in big shoals, small sei in shoals while the big sei go alone,
    torsk and lyr sometimes in small groups, the rest alone */
@@ -3386,7 +3387,7 @@ function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=
   const big=f.small?0:Math.max(0,(f.rel-.5)/.5),amb=FJ.amb>1.5;
   /* a kveite swimming up in the water is far shyer than one lying flat on the bottom */
   const hiK=f.key==="kveite"&&!f.rest?1.3+.9*Math.min(1,Math.max(0,(fjBed(f.x)-f.y)/FJ_U-1)/4):1;
-  const fear=L.fear*(1+FJ.alarm*.6)*(1+.45*FJ.wary+(f.shy||0))*(1+1.1*big)*(amb?.55:1)*(d.bottom?(f.rest?.55:.8):1)*hiK;
+  const fear=L.fear*(1+FJ.alarm*.6)*(1+.45*FJ.wary+(f.shy||0))*(1+1.1*big)*(amb?.55:1)*(d.bottom?(f.rest?(f.key==="kveite"?1.2:.55):.8):1)*hiK;
   /* unease builds gradually: slow swimming barely matters, sprinting or whipping the gun around close by does */
   if(f.flee<=0&&!d.camo&&FJ.st==="play"){const prox=Math.max(0,1-dist/(fear*2.6));let gain=(FJ.dist||0)*Math.pow(prox,.75)*(L.ug||1.5)*(hiK>1?1.3:1);if(dist<fear*.35&&!(d.bottom&&f.rest)&&ds>14)gain+=1.5;
     f.u=Math.max(0,Math.min(1.2,(f.u||0)+(gain-.3)*dt));
@@ -3395,24 +3396,29 @@ function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=
   const cx=FJ.cam.x+FJ.vw/2,offV=Math.abs(f.x-cx)>FJ.vw/2+140||f.y<FJ.cam.y-140||f.y>FJ.cam.y+FJ.vh+140;
   if(f.flee>0){f.flee-=dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy*=.97;if(offV&&!(f.leader&&FJ.fish.includes(f.leader)&&!f.leader.hit&&f.leader.flee>0)){fjRelocate(f);return}if(f.flee<=0){f.vx*=.3;f.tx=null;if(d.bottom&&!d.free&&f.key!=="kveite")f.rest=true}}
   else if(f.rest){f.vx=f.vy=0;f.tt-=dt;
-    if(d.free&&f.tt<=0){f.tt=fjR(15,35);if(Math.random()<.35)f.rest=false}
-    if(d.key==="steinbit"&&f.hid<=0&&Math.random()<dt*.05){f.x+=fjR(-20,20)}}
+    /* a kveite on the bottom is never a sure thing: each has its own temper, and any movement nearby can make it lift off */
+    if(f.key==="kveite"&&FJ.st==="play"&&FJ.diving&&dist<L.range*1.2&&(ds>14||(FJ.dist||0)>.05)){if(f.spook==null)f.spook=Math.random();if(Math.random()<dt*(.03+.14*f.spook)*(1+(FJ.dist||0)*6))f.u=Math.max(f.u||0,.5)}
+    if((f.u||0)>(f.key==="kveite"?.25:.35)&&!d.camo&&FJ.st==="play"){if(f.key==="steinbit")f.hid=Math.max(f.hid,5);else{f.rest=false;f.tx=null;fjPuff(f.x,fjBed(f.x),6)}}
+    else if(d.free&&f.tt<=0){f.tt=fjR(8,20);if(Math.random()<.55){f.rest=false;f.tx=null}}
+    else if(!d.free&&f.tt<=0){f.tt=fjR(10,30);if(Math.random()<(d.camo?.15:.5)){f.rest=false;f.hop=1;f.tx=Math.max(d.zone[0],Math.min(d.zone[1],f.x+fjR(-300,300)));f.ty=fjBed(f.tx)-f.len*d.hh;fjPuff(f.x,fjBed(f.x),4)}}}
   else{let tx=f.tx,ty=f.ty,spd=d.spd;
     const bigC=big>.3,clock=bigC?Math.max(FJ.amb,FJ.calm*.6):FJ.calm,need=bigC?3.5+4*big+3*FJ.wary:2.5+3*FJ.wary;
     const curious=d.curious&&f.cur&&!f.small&&!f.wounded&&(f.u||0)<.25&&clock>need&&FJ.alarm<.3&&dist<(bigC?900:480)&&FJ.st==="play";
     const keep=big>0&&!amb&&(FJ.dist||0)>.12&&!curious&&FJ.st==="play"&&FJ.diving?L.range*(.9+.4*big)*(1+.2*FJ.wary):0;
     const uneasy=(f.u||0)>.35&&!curious&&FJ.st==="play"&&!(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader));
-    if(uneasy){if(offV){fjRelocate(f);return}tx=f.x+Math.sign(dx||f.dir)*400;ty=Math.max(d.dep?d.dep[0]*FJ_U:30,Math.min(fjBed(f.x)-f.len,f.y+(dy>0?40:-40)));spd=Math.max(45,d.spd)*(1+f.u*1.2);f.tt=1}
+    if(uneasy&&d.camo){}
+    else if(uneasy){if(offV){fjRelocate(f);return}tx=f.x+Math.sign(dx||f.dir)*400;ty=Math.max(d.dep?d.dep[0]*FJ_U:30,Math.min(fjBed(f.x)-f.len,f.y+(dy>0?40:-40)));spd=Math.max(45,d.spd)*(1+f.u*1.2);f.tt=1}
+    else if(d.bottom&&!d.free){if(!f.hop||tx==null||Math.hypot(tx-f.x,ty-f.y)<25){f.rest=true;f.hop=0;f.tt=fjR(10,30)}else spd=Math.max(22,d.spd||22)}
     else if(curious){tx=dv.x+Math.sign(dx||1)*Math.max(110,Math.min(L.range*.75,f.len*2.4));ty=dv.y+Math.sin(f.mott)*30;spd=Math.max(30,spd*.75)}
     else if(keep&&dist<keep){tx=dv.x+Math.sign(dx||1)*keep*1.25;ty=f.y+Math.sin(f.mott)*20;spd*=.8;f.tt=fjR(2,4)}
     else if(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader)){tx=f.leader.x+f.ox;ty=f.leader.y+f.oy;spd*=1.15}
     else{f.tt-=dt;if(tx==null||f.tt<=0||Math.hypot(tx-f.x,ty-f.y)<20){f.tt=fjR(4,9);tx=Math.max(d.zone[0],Math.min(d.zone[1],f.x+fjR(-500,500)));
-        const bed=fjBed(tx);if(d.bottom)ty=f.key==="kveite"&&Math.random()<.4?bed-fjR(150,600):bed-fjR(30,120);else if(d.near&&Math.random()<d.near)ty=bed-fjR(f.len*.6+15,f.len*.6+130);else ty=fjR(d.dep[0]*FJ_U,Math.max(d.dep[0]*FJ_U+10,Math.min(d.dep[1]*FJ_U,bed-f.len-20)));
+        const bed=fjBed(tx),kr=Math.random();if(d.bottom)ty=f.key==="kveite"?(kr<.35?bed-fjR(30,120):kr<.7?bed-fjR(150,600):fjR(2*FJ_U,Math.max(2*FJ_U+10,bed-150))):bed-fjR(30,120);else if(d.near&&Math.random()<d.near)ty=bed-fjR(f.len*.6+15,f.len*.6+130);else ty=fjR(d.dep[0]*FJ_U,Math.max(d.dep[0]*FJ_U+10,Math.min(d.dep[1]*FJ_U,bed-f.len-20)));
         /* someone lying still on the bottom draws fish past: the classic waiting hunt */
         if(FJ.amb>4&&dist<1000&&Math.random()<.45+.1*big){tx=Math.max(d.zone[0],Math.min(d.zone[1],dv.x+Math.sign(dx||1)*fjR(110,L.range*.8)));ty=d.bottom?fjBed(tx)-fjR(30,90):Math.min(fjBed(tx)-f.len-20,Math.max(d.dep[0]*FJ_U,dv.y-fjR(-20,160)));f.tt=fjR(5,10)}}}
     f.tx=tx;f.ty=ty;const ex=tx-f.x,ey=ty-f.y,el=Math.hypot(ex,ey)||1,want=Math.min(spd,el*1.5);
     f.vx+=(ex/el*want-f.vx)*Math.min(1,dt*1.2);f.vy+=(ey/el*want*.6-f.vy)*Math.min(1,dt*1.2);f.x+=f.vx*dt;f.y+=f.vy*dt;
-    if(d.free&&Math.random()<dt*.03&&f.y>fjBed(f.x)-160){f.rest=true;f.tt=fjR(15,35)}}
+    if(d.free&&Math.random()<dt*.03&&f.y>fjBed(f.x)-160){f.rest=true;f.tt=fjR(8,20)}}
   if(Math.abs(f.vx)>3)f.dir=Math.sign(f.vx);
   const cxl=Math.max(d.zone[0]-200,Math.min(d.zone[1]+200,Math.max(30,Math.min(FJ_WW-30,f.x))));if(cxl!==f.x&&(f.flee>0||(f.u||0)>.35)&&FJ.st==="play"){fjRelocate(f);return}f.x=cxl;
   const bed=fjBed(f.x);if(f.rest)f.y=bed-f.len*d.hh*.45;else f.y=Math.max(30,Math.min(bed-f.len*d.hh*.6-6,f.y))}
@@ -3475,7 +3481,7 @@ function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv
     if(FJ.diving){FJ.diving=false;FJ.diveScores.push(FJ.score-(FJ.diveStart||0));if(FJ.dive>=FJ.nDives){fjEnd("ferdig");return}fjEscalate();
       fjMsg(`Dykk ${FJ.dive} av ${FJ.nDives}: ${FJ.diveScores[FJ.diveScores.length-1]?"+"+FJ.diveScores[FJ.diveScores.length-1]+" poeng":"ingen fisk"}. Fisken blir skyere.`,4,"#bff3c8")}}
   else{FJ.diveT+=dt;/* air use follows effort: lying still uses well under half of what active swimming does */
-    const act=Math.min(1,sp/125),drain=(.45+.55*act+(fast&&il>0?.7:0))*(1+Math.max(0,depth-10)/50)*(FJ.amb>1.5?.9:1);FJ.drain=drain;FJ.o2-=drain*dt;
+    const act=Math.min(1,sp/125),drain=(.53+.47*act+(fast&&il>0?.7:0))*(1+Math.max(0,depth-10)/50)*(FJ.amb>1.5?.9:1);FJ.drain=drain;FJ.o2-=drain*dt;
     if(FJ.o2<=0){FJ.o2=0;fjEnd("blackout");return}}
   for(const f of FJ.fish)fjFish(f,dt);
   for(const j of FJ.jel){j.ph+=dt*2;j.y+=Math.sin(j.ph)*6*dt-2*dt;j.x+=j.vx*dt;if(j.y<60)j.y=700;if(j.stung>0)j.stung-=dt;
@@ -3706,7 +3712,7 @@ function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
   if(FJ.st==="title"){ov.innerHTML=`<div class="fg-card fg-wide"><h2>Fiskejakt</h2><p>${ctl}</p>
     <ul><li><b>Ett pust om gangen.</b> Fangsten er bare sikret når du er oppe ved bøya. Går lufta tom under vann, er det blackout.</li>
     <li><b>Tareskogen</b> (til venstre) har lyr, torsk og berggylt. <b>Dypere ute</b>: rødspette, flyndre, lange, hyse, steinbit, kveite og den kamuflerte <b>breiflabben</b>. Jo dypere, jo større fisk og flere poeng.</li>
-    <li><b>Ligg rolig</b>: fisken kommer nærmere, og du bruker under halvparten så mye luft. Jo fortere du svømmer (Shift) eller svinger harpunen, jo mer skremmes den. Sikt på hodet, og pass på minstemålet.</li>
+    <li><b>Ligg rolig</b>: fisken kommer nærmere, og du bruker omtrent halvparten så mye luft. Jo fortere du svømmer (Shift) eller svinger harpunen, jo mer skremmes den. Sikt på hodet, og pass på minstemålet.</li>
     <li><b>De største</b> er skyest. Er du rolig lenge uten å skyte, øker sjansen for storfisk (ingen garanti). Ligg stille på bunnen (<b>ventejakt</b>), så tør de å komme nær.</li>
     <li><b>Strøm</b> fra normal og opp. Fisken blir skyere for hvert dykk, og ingen økt er lik.</li></ul>
     ${lvBtns}<div class="fg-go"><div class="fg-dives"><span>Antall dykk</span>${[3,5,10].map(n=>`<button type="button" class="chip${FJ.nDives===n?" on":""}" data-nd="${n}">${n}</button>`).join("")}</div>
