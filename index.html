@@ -1161,7 +1161,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v70 (SeaHunter: lyr i taren, ekte størrelser)";
+const APP_VERSION="v71 (SeaHunter: fisk som patruljerer)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -3479,10 +3479,13 @@ function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=
     if(uneasy&&d.camo){}
     else if(uneasy){if(offV){fjRelocate(f);return}tx=f.x+Math.sign(dx||f.dir)*400;ty=Math.max(d.dep?d.dep[0]*FJ_U:30,Math.min(fjBed(f.x)-f.len,f.y+(dy>0?40:-40)));spd=Math.max(45,d.spd)*(1+f.u*1.2);f.tt=1}
     else if(d.bottom&&!d.free){if(!f.hop||tx==null||Math.hypot(tx-f.x,ty-f.y)<25){f.rest=true;f.hop=0;f.tt=fjR(10,30)}else spd=Math.max(22,d.spd||22)}
-    else if(curious){tx=dv.x+Math.sign(dx||1)*Math.max(110,Math.min(L.range*.75,f.len*2.4));ty=dv.y+Math.sin(f.mott)*30;spd=Math.max(30,spd*.75)}
-    else if(keep&&dist<keep){tx=dv.x+Math.sign(dx||1)*keep*1.25;ty=f.y+Math.sin(f.mott)*20;spd*=.8;f.tt=fjR(2,4)}
-    else if(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader)){tx=f.leader.x+f.ox;ty=f.leader.y+f.oy;spd*=1.15}
-    else{f.tt-=dt*(1+(lure>0?3*FJ.cover:0));if(tx==null||f.tt<=0||Math.hypot(tx-f.x,ty-f.y)<20){f.tt=fjR(4,9);tx=Math.max(d.zone[0],Math.min(d.zone[1],f.x+fjR(-500,500)));
+    /* curious fish never park: they patrol back and forth past you, each at its own distance and depth, turning at the ends */
+    else if(curious){if(f.orb==null){f.orb=Math.random()*6.28;f.orA=fjR(.6,1.15)*Math.max(150,Math.min(L.range*.95,f.len*3.2));f.orY=(Math.random()<.5?-1:1)*fjR(45,140);f.orW=Math.random()<.5?-1:1}
+      f.orb+=dt*f.orW*Math.max(20,d.spd*.5)/f.orA;if(Math.random()<dt*.06)f.orY=-f.orY*fjR(.7,1.2);if(Math.random()<dt*.03)f.orA=Math.max(140,Math.min(L.range*1.1,f.orA*fjR(.8,1.25)));
+      tx=dv.x+Math.sin(f.orb)*f.orA;ty=Math.max(d.dep?d.dep[0]*FJ_U*.6:30,dv.y+f.orY+Math.sin(f.orb*2+f.mott)*22);spd=Math.max(30,d.spd*.8)}
+    else if(keep&&dist<keep){f.orb=null;tx=dv.x+Math.sign(dx||1)*keep*1.25;ty=f.y+Math.sin(f.mott)*20;spd*=.8;f.tt=fjR(2,4)}
+    else if(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader)){f.orb=null;tx=f.leader.x+f.ox;ty=f.leader.y+f.oy;spd*=1.15}
+    else{f.orb=null;f.tt-=dt*(1+(lure>0?3*FJ.cover:0));if(tx==null||f.tt<=0||Math.hypot(tx-f.x,ty-f.y)<20){f.tt=fjR(4,9);tx=Math.max(d.zone[0],Math.min(d.zone[1],f.x+fjR(-500,500)));
         const bed=fjBed(tx),kr=Math.random();if(d.bottom)ty=f.key==="kveite"?(kr<.35?bed-fjR(30,120):kr<.7?bed-fjR(150,600):fjR(2*FJ_U,Math.max(2*FJ_U+10,bed-150))):bed-fjR(30,120);else if(d.near&&Math.random()<d.near)ty=bed-fjR(f.len*.6+15,f.len*.6+130);else ty=fjR(d.dep[0]*FJ_U,Math.max(d.dep[0]*FJ_U+10,Math.min(d.dep[1]*FJ_U,bed-f.len-20)));
         /* someone lying still on the bottom draws fish past: the classic waiting hunt */
         if(lure>0&&dist<1800&&Math.random()<(.3+.4*(FJ.cover||0))*lure){tx=Math.max(d.zone[0],Math.min(d.zone[1],dv.x+Math.sign(dx||1)*fjR(110,L.range*.8)));ty=d.bottom?fjBed(tx)-fjR(30,90):Math.min(fjBed(tx)-f.len-20,Math.max(d.dep[0]*FJ_U,dv.y-fjR(-20,160)));f.tt=fjR(5,10)}}}
