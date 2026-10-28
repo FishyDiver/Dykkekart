@@ -1131,7 +1131,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v62 (fiskejakt: skyere fisk, stimer)";
+const APP_VERSION="v63 (fiskejakt: duck-dive, luft etter innsats)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -3272,16 +3272,16 @@ function renderBestDive(){const el=$("#bestDive");if(!el)return;const B=S.bd,cm=
   el.querySelectorAll("[data-bs]").forEach(b=>b.onclick=()=>{S.siteT="t"+b.dataset.bt;openSite(b.dataset.bs);focusSite(b.dataset.bs)})}
 
 /* ---------- Fiskejakt: a small freediving and spearfishing game ----------
-   A side-on underwater world from a shallow kelp forest to deep sand. Swim with WASD / arrows (or the thumb stick on phones),
-   aim with the mouse and click to shoot. One breath at a time: the catch only counts once you are back at the surface.
+   A side-on underwater world from a shallow kelp forest to deep sand. Swim with WASD (or the thumb stick on phones),
+   aim with the mouse or the arrow keys and click / Space to shoot. One breath at a time: the catch only counts once you are back at the surface.
    Fish live in their own zones, flee from fast movement and misses, get curious when you lie still,
    and the bottom dwellers (steinbit, breiflabb, rødspette, kveite) are hard to spot. Best score per level is kept on this device. */
 const FJ_U=80,FJ_WW=6000; // 80 world units per metre, the world is 75 m wide
 const FJ_LV={
- lett:{name:"Lett",d:"God sikt, lang pust, roligere fisk",time:240,o2:70,range:480,reload:1,fear:90,flee:1.8,vis:1.5,tear:[0,.2],mult:1,ug:1.8,swimScare:150,ring:true,aimSpook:false},
- normal:{name:"Normal",d:"6 m sikt, svak strøm, fisken skremmes av fart og bom",cur:9,time:200,o2:55,range:360,reload:1.6,fear:150,flee:2.4,vis:1,tear:[.15,.45],mult:1.5,ug:2.8,swimScare:105,ring:true,aimSpook:true},
- vanskelig:{name:"Vanskelig",d:"Grumsete vann, strøm, sky fisk, kortere pust",cur:24,time:180,o2:45,range:320,reload:2.2,fear:200,flee:2.8,vis:.72,tear:[.25,.6],mult:2,ug:2.6,swimScare:85,ring:false,aimSpook:true},
- ekspert:{name:"Ekspert",d:"Dårlig sikt, sterk strøm, svært sky fisk, lite luft",cur:38,time:160,o2:38,range:280,reload:2.8,fear:250,flee:3.2,vis:.52,tear:[.35,.75],mult:3,ug:2.2,swimScare:70,ring:false,aimSpook:true}};
+ lett:{name:"Lett",d:"God sikt, lang pust, roligere fisk",time:240,o2:100,range:480,reload:1,fear:90,flee:1.8,vis:1.5,tear:[0,.2],mult:1,ug:1.8,swimScare:150,ring:true,aimSpook:false},
+ normal:{name:"Normal",d:"6 m sikt, svak strøm, fisken skremmes av fart og bom",cur:9,time:200,o2:85,range:360,reload:1.6,fear:150,flee:2.4,vis:1,tear:[.15,.45],mult:1.5,ug:2.8,swimScare:105,ring:true,aimSpook:true},
+ vanskelig:{name:"Vanskelig",d:"Grumsete vann, strøm, sky fisk, kortere pust",cur:24,time:180,o2:70,range:320,reload:2.2,fear:200,flee:2.8,vis:.72,tear:[.25,.6],mult:2,ug:2.6,swimScare:85,ring:false,aimSpook:true},
+ ekspert:{name:"Ekspert",d:"Dårlig sikt, sterk strøm, svært sky fisk, lite luft",cur:38,time:160,o2:60,range:280,reload:2.8,fear:250,flee:3.2,vis:.52,tear:[.35,.75],mult:3,ug:2.2,swimScare:70,ring:false,aimSpook:true}};
 /* species: length in cm, zone in world x, depth band in metres */
 const FJ_SP={
  makrell:{name:"Makrell",pts:15,cm:[28,46],k:8,spd:140,zone:[0,6000],dep:[1,7],school:[4,7],hh:.17,draw:"makrell"},
@@ -3362,8 +3362,8 @@ function fjResize(){const cv=$("#fgCv");if(!cv)return;const r=cv.getBoundingClie
   FJ.W=Math.max(300,r.width);FJ.H=Math.max(300,r.height);FJ.dpr=dpr;cv.width=Math.round(FJ.W*dpr);cv.height=Math.round(FJ.H*dpr);
   FJ.vh=FJ.W<FJ.H?800:620;FJ.sc=FJ.H/FJ.vh;FJ.vw=FJ.W/FJ.sc}
 function fjStart(){const L=fjL();fjWorld();Object.assign(FJ,{st:"play",fx:[],part:[],spear:null,o2:L.o2,score:0,hand:[],shots:0,hits:0,streak:0,big:null,reload:0,paused:false,alarm:0,calm:0,
-  nPerf:0,nTorn:0,nSmall:0,maxDepth:0,diveT:0,maxDive:0,why:"",caught:{},msg:null,dv:{x:fjR(500,2600),y:14,vx:0,vy:0,face:1,kick:0},best:fjBest(FJ.lvl),dive:0,diving:false,diveScores:[],wary:0,popN:fjPopN(),diveX:[0,0],amb:0,pat:0,visitor:null,tgt:null,cur:{x:0,y:0},curT:fjR(0,60),curDir:Math.random()<.5?1:-1,curOff:0,sway:0});
-  fjPopulate();FJ.cam.x=FJ.dv.x-FJ.vw/2;FJ.cam.y=-80;fjOverlay();fjMsg(FJ.touch?"Venstre tommel: svøm · trykk: skyt":"WASD: svøm · Shift: fort · mus: sikt · klikk: skyt",4)}
+  nPerf:0,nTorn:0,nSmall:0,maxDepth:0,diveT:0,maxDive:0,why:"",caught:{},msg:null,dv:{x:fjR(500,2600),y:14,vx:0,vy:0,face:1,kick:0},best:fjBest(FJ.lvl),dive:0,diving:false,diveScores:[],wary:0,popN:fjPopN(),diveX:[0,0],amb:0,pat:0,visitor:null,tgt:null,duck:0,cur:{x:0,y:0},curT:fjR(0,60),curDir:Math.random()<.5?1:-1,curOff:0,sway:0});
+  fjPopulate();FJ.cam.x=FJ.dv.x-FJ.vw/2;FJ.cam.y=-80;fjOverlay();fjMsg(FJ.touch?"Venstre tommel: svøm · trykk: skyt":"WASD: svøm · S i overflaten: duck-dive · mus/piltaster: sikt · klikk/mellomrom: skyt",5)}
 function fjMsg(t,s=2.5,col){FJ.msg={t,s,col}}
 /* ----- fish behaviour ----- */
 function fjScare(f,sx,sy,chain=true,dir=0){const L=fjL(),d=f.d;if(f.hit||d.camo)return;
@@ -3399,11 +3399,11 @@ function fjFish(f,dt){const d=f.d,L=fjL(),dv=FJ.dv,dx=f.x-dv.x,dy=f.y-dv.y,dist=
     if(d.key==="steinbit"&&f.hid<=0&&Math.random()<dt*.05){f.x+=fjR(-20,20)}}
   else{let tx=f.tx,ty=f.ty,spd=d.spd;
     const bigC=big>.3,clock=bigC?Math.max(FJ.amb,FJ.calm*.6):FJ.calm,need=bigC?3.5+4*big+3*FJ.wary:2.5+3*FJ.wary;
-    const curious=d.curious&&f.cur&&!f.small&&!f.wounded&&(f.u||0)<.25&&clock>need&&FJ.alarm<.3&&dist<(bigC?700:480)&&FJ.st==="play";
+    const curious=d.curious&&f.cur&&!f.small&&!f.wounded&&(f.u||0)<.25&&clock>need&&FJ.alarm<.3&&dist<(bigC?900:480)&&FJ.st==="play";
     const keep=big>0&&!amb&&(FJ.dist||0)>.12&&!curious&&FJ.st==="play"&&FJ.diving?L.range*(.9+.4*big)*(1+.2*FJ.wary):0;
     const uneasy=(f.u||0)>.35&&!curious&&FJ.st==="play"&&!(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader));
     if(uneasy){if(offV){fjRelocate(f);return}tx=f.x+Math.sign(dx||f.dir)*400;ty=Math.max(d.dep?d.dep[0]*FJ_U:30,Math.min(fjBed(f.x)-f.len,f.y+(dy>0?40:-40)));spd=Math.max(45,d.spd)*(1+f.u*1.2);f.tt=1}
-    else if(curious){tx=dv.x+Math.sign(dx||1)*Math.max(110,Math.min(L.range*.75,f.len*2.4));ty=dv.y+Math.sin(f.mott)*30;spd*=.6}
+    else if(curious){tx=dv.x+Math.sign(dx||1)*Math.max(110,Math.min(L.range*.75,f.len*2.4));ty=dv.y+Math.sin(f.mott)*30;spd=Math.max(30,spd*.75)}
     else if(keep&&dist<keep){tx=dv.x+Math.sign(dx||1)*keep*1.25;ty=f.y+Math.sin(f.mott)*20;spd*=.8;f.tt=fjR(2,4)}
     else if(f.leader&&!f.leader.hit&&FJ.fish.includes(f.leader)){tx=f.leader.x+f.ox;ty=f.leader.y+f.oy;spd*=1.15}
     else{f.tt-=dt;if(tx==null||f.tt<=0||Math.hypot(tx-f.x,ty-f.y)<20){f.tt=fjR(4,9);tx=Math.max(d.zone[0],Math.min(d.zone[1],f.x+fjR(-500,500)));
@@ -3439,13 +3439,22 @@ function fjHit(f,sp){const L=fjL(),d=f.d;const u=((sp.x-f.x)*f.dir)/(f.len/2),zo
   if(d.camo)fjMsg("Du fant breiflabben!",2,"#ffd54a");return true}
 /* ----- main update ----- */
 function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv,k=FJ.keys;
-  let ix=(k.a||k.arrowleft?-1:0)+(k.d||k.arrowright?1:0),iy=(k.w||k.arrowup?-1:0)+(k.s||k.arrowdown?1:0);
+  let ix=(k.a?-1:0)+(k.d?1:0),iy=(k.w?-1:0)+(k.s?1:0);
   if(FJ.joy&&FJ.joy.on){ix=FJ.joy.dx;iy=FJ.joy.dy}
   const il=Math.hypot(ix,iy);if(il>1){ix/=il;iy/=il}
-  const fast=!!k.shift||(FJ.joy&&FJ.joy.on&&Math.hypot(FJ.joy.dx,FJ.joy.dy)>.95),vmax=fast?180:125,acc=fast?420:300;
-  dv.vx+=ix*acc*dt;dv.vy+=iy*acc*dt;const drag=Math.pow(.25,dt);dv.vx*=drag;dv.vy*=drag;
-  if(!iy){const depth=dv.y/FJ_U;dv.vy+=(depth<8?-10:depth>12?8:0)*dt}
+  /* the arrow keys move the crosshair, so you can aim while swimming even when a laptop touchpad is blocked during typing */
+  {const ax=(k.arrowleft?-1:0)+(k.arrowright?1:0),ay=(k.arrowup?-1:0)+(k.arrowdown?1:0);
+    if(ax||ay){if(!FJ.aim)FJ.aim={x:FJ.W/2+dv.face*160,y:FJ.H/2};const v=600;FJ.aim={x:Math.max(8,Math.min(FJ.W-8,FJ.aim.x+ax*v*dt)),y:Math.max(8,Math.min(FJ.H-8,FJ.aim.y+ay*v*dt))};FJ.aimSpd=Math.max(FJ.aimSpd||0,v);FJ.touch=false}}
+  const fast=!!k.shift||(FJ.joy&&FJ.joy.on&&Math.hypot(FJ.joy.dx,FJ.joy.dy)>.95),acc=fast?420:300;
+  const hv=Math.abs(dv.vx),withCur=FJ.cur.x*dv.vx>0?Math.abs(FJ.cur.x):0;
+  /* duck dive: from the surface, head down and kick straight down. More speed (or swimming with the current) means a faster descent */
+  if(dv.y<=20&&iy>.5&&!(FJ.duck>0)&&FJ.st==="play"){FJ.duck=1.1;FJ.duckV=95+hv*1.1+withCur*2.5;dv.vy=Math.max(dv.vy,FJ.duckV);dv.vx*=.6;for(let q=0;q<10;q++)FJ.part.push({x:dv.x+fjR(-30,30),y:6,vx:fjR(-30,30),vy:-fjR(10,50),r:fjR(1.5,4),a:.9})}
+  if(FJ.duck>0)FJ.duck-=dt;
+  const down=iy>0&&dv.y>16,vmax=Math.max((fast?180:125)*(down?1+.3*Math.min(1,hv/120):1)+(down?withCur*.8:0),FJ.duck>0?FJ.duckV*1.15:0);
+  dv.vx+=ix*acc*dt;dv.vy+=iy*acc*dt+(FJ.duck>0?(FJ.duckV-dv.vy)*Math.min(1,dt*3)+60*dt:0)+(down?(hv*.3+withCur)*dt:0);const drag=Math.pow(.25,dt);dv.vx*=drag;dv.vy*=drag;
+  if(!iy&&!(FJ.duck>0)){const depth=dv.y/FJ_U;dv.vy+=(depth<8?-10:depth>12?8:0)*dt}
   const sp=Math.hypot(dv.vx,dv.vy);if(sp>vmax){dv.vx*=vmax/sp;dv.vy*=vmax/sp}
+  {const tp=FJ.duck>0?1.4:Math.max(-1.3,Math.min(1.3,Math.atan2(dv.vy,Math.abs(dv.vx)+25)*(sp>30?1:sp/30)));dv.pitch=(dv.pitch||0)+(tp-(dv.pitch||0))*Math.min(1,dt*(FJ.duck>0?7:4))}
   dv.x=Math.max(60,Math.min(FJ_WW-60,dv.x+dv.vx*dt));dv.y=Math.max(10,Math.min(fjBed(dv.x)-28,dv.y+dv.vy*dt));if(dv.y>=fjBed(dv.x)-29)dv.vy=Math.min(0,dv.vy);
   if(L.cur){FJ.curT+=dt;FJ.cur.x=L.cur*FJ.curDir*(.7+.3*Math.sin(FJ.curT/6)+.2*Math.sin(FJ.curT*1.7));FJ.cur.y=L.cur*.3*Math.sin(FJ.curT*.8);
     const held=dv.y>fjBed(dv.x)-28-95&&!il,cf=fjCurF(dv.x,dv.y)*(held?.3:1);dv.x=Math.max(60,Math.min(FJ_WW-60,dv.x+FJ.cur.x*cf*dt));if(dv.y>16)dv.y=Math.max(10,Math.min(fjBed(dv.x)-28,dv.y+FJ.cur.y*cf*.6*dt));
@@ -3465,7 +3474,8 @@ function fjUpdate(dt){if(FJ.st!=="play"||FJ.paused)return;const L=fjL(),dv=FJ.dv
     if(FJ.hand.length){const s=FJ.hand.reduce((a,c)=>a+c.pts,0);FJ.score+=s;fjFloat(dv.x,dv.y+40,`Sikret på bøya: +${s}`,"#bff3c8");FJ.hand=[]}
     if(FJ.diving){FJ.diving=false;FJ.diveScores.push(FJ.score-(FJ.diveStart||0));if(FJ.dive>=FJ.nDives){fjEnd("ferdig");return}fjEscalate();
       fjMsg(`Dykk ${FJ.dive} av ${FJ.nDives}: ${FJ.diveScores[FJ.diveScores.length-1]?"+"+FJ.diveScores[FJ.diveScores.length-1]+" poeng":"ingen fisk"}. Fisken blir skyere.`,4,"#bff3c8")}}
-  else{FJ.diveT+=dt;const drain=(1+(sp>vmax*.7?.8:0)+(fast&&il>0?.6:0))*(1+Math.max(0,depth-10)/40)*(sp<14?.8:1);FJ.o2-=drain*dt;
+  else{FJ.diveT+=dt;/* air use follows effort: lying still uses well under half of what active swimming does */
+    const act=Math.min(1,sp/125),drain=(.45+.55*act+(fast&&il>0?.7:0))*(1+Math.max(0,depth-10)/50)*(FJ.amb>1.5?.9:1);FJ.drain=drain;FJ.o2-=drain*dt;
     if(FJ.o2<=0){FJ.o2=0;fjEnd("blackout");return}}
   for(const f of FJ.fish)fjFish(f,dt);
   for(const j of FJ.jel){j.ph+=dt*2;j.y+=Math.sin(j.ph)*6*dt-2*dt;j.x+=j.vx*dt;if(j.y<60)j.y=700;if(j.stung>0)j.stung-=dt;
@@ -3596,7 +3606,7 @@ function fjDrawFishW(g,f){const dv=FJ.dv,dist=Math.hypot(f.x-dv.x,f.y-dv.y);g.sa
   if(f.hit&&f.su!=null){g.save();g.translate(f.x+f.sx,f.y+f.sy);if(f.hit>.7)g.globalAlpha=Math.max(0,1-(f.hit-.7)/1.4);g.rotate(f.su);fjSpearShape(g,48);g.restore()}
   if(f.wounded&&!f.hit){g.fillStyle="rgba(190,30,30,.5)";g.beginPath();g.arc(f.x,f.y,2.5,0,7);g.fill()}}
 function fjSpearShape(g,len){g.strokeStyle="#d5d9de";g.lineWidth=2.4;g.lineCap="round";g.beginPath();g.moveTo(-len,0);g.lineTo(0,0);g.stroke();g.fillStyle="#eef1f4";g.beginPath();g.moveTo(7,0);g.lineTo(-6,-4);g.lineTo(-3,0);g.lineTo(-6,4);g.closePath();g.fill()}
-function fjDrawDiver(g){const dv=FJ.dv,fc=dv.face,a=fjAimAng(),sp=Math.hypot(dv.vx,dv.vy),pitch=Math.max(-.6,Math.min(.6,Math.atan2(dv.vy,Math.abs(dv.vx)+40)));
+function fjDrawDiver(g){const dv=FJ.dv,fc=dv.face,a=fjAimAng(),sp=Math.hypot(dv.vx,dv.vy),pitch=dv.pitch!=null?dv.pitch:Math.max(-.6,Math.min(.6,Math.atan2(dv.vy,Math.abs(dv.vx)+40)));
   g.save();g.translate(dv.x,dv.y);g.scale(fc*.74,.74);g.rotate(pitch);const kick=Math.sin(dv.kick)*(.15+Math.min(.35,sp/300));
   // legs and long freediving fins
   for(const s of [1,-1]){g.save();g.translate(-34,2+s*2);g.rotate(kick*s);g.fillStyle="#141a1f";g.beginPath();g.moveTo(0,-5);g.lineTo(-46,-3);g.lineTo(-46,3);g.lineTo(0,5);g.fill();
@@ -3668,8 +3678,8 @@ function fjDraw(){const cv=$("#fgCv");if(!cv)return;const g=cv.getContext("2d"),
     const narrow=W<600,bw=narrow?W-32:Math.min(260,W*.36),bx=narrow?16:(W-bw)/2,by=narrow?62:14,f=Math.max(0,FJ.o2/L.o2),low=f<.25&&dv.y>16;
     g.fillStyle="rgba(0,0,0,.4)";g.fillRect(bx,by,bw,10);g.fillStyle=low?(Math.sin(t*10)>0?"#ff6b5a":"#c0392b"):"#7fdcf0";g.fillRect(bx,by,bw*f,10);
     g.font="600 11px Barlow, sans-serif";g.fillStyle="rgba(241,230,200,.85)";const dep=`${fnum(dv.y/FJ_U,1)} m`,tm=`${FJ.diving?FJ.dive:Math.min(FJ.nDives,FJ.dive+1)}/${FJ.nDives}`;
-    if(narrow){g.textAlign="left";g.fillText(`LUFT · ${dep}`,bx,by+24);g.textAlign="right";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,bx+bw,by+24)}
-    else{g.textAlign="center";g.fillText(`LUFT · DYBDE ${dep}`,W/2,by+24);g.textAlign="right";g.font="600 12px Barlow, sans-serif";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,W-56,30)}
+    if(narrow){g.textAlign="left";g.fillText(`LUFT${FJ.drain<.6&&dv.y>16?" (sparer)":""} · ${dep}`,bx,by+24);g.textAlign="right";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,bx+bw,by+24)}
+    else{g.textAlign="center";g.fillText(`LUFT${FJ.drain<.6&&dv.y>16?" (sparer)":""} · DYBDE ${dep}`,W/2,by+24);g.textAlign="right";g.font="600 12px Barlow, sans-serif";g.fillText(`DYKK ${tm} · REKORD ${FJ.best}`,W-56,30)}
     if(!FJ.spear&&FJ.reload>0){const p=1-FJ.reload/L.reload;g.fillStyle="rgba(0,0,0,.45)";g.fillRect(ds.x-35,ds.y+34,70,6);g.fillStyle="#F1E6C8";g.fillRect(ds.x-35,ds.y+34,70*Math.max(0,Math.min(1,p)),6)}
     const tg=fjTarget();if(tg){const f=tg,lx=(f.x-cam.x)*sc,ly=(f.y-cam.y)*sc-f.len*.42*sc-10,kg=f.kg<3?String(f.kg).replace(".",","):Math.round(f.kg);
       const txt=f.small?`${f.d.name} · under minstemål`:`${f.d.name} · ca. ${kg} kg${f.trophy?" · trofé":fjBig(f)?" · stor":""}`;
@@ -3692,11 +3702,11 @@ function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
   if(FJ.paused){ov.innerHTML=`<div class="fg-card"><h2>Pause</h2><button type="button" class="btn primary" id="fgGo">Fortsett</button></div>`;$("#fgGo").onclick=()=>{FJ.paused=false;FJ.last=performance.now();fjOverlay()};return}
   const lvBtns=`<div class="fg-lv">${Object.entries(FJ_LV).map(([k,v])=>`<button type="button" class="fg-lvb${k===FJ.lvl?" on":""}" data-lv="${k}"><b>${v.name}</b><small>${esc(v.d)}</small><i>×${v.mult}${fjBest(k)?` · rekord ${fjBest(k)} (${FJ.nDives} dykk)`:""}</i></button>`).join("")}</div>`;
   const wireLv=()=>ov.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{FJ.lvl=b.dataset.lv;lsSet("dk-fj-lvl",FJ.lvl);fjOverlay()});
-  const ctl=FJ.touch||(window.matchMedia&&matchMedia("(pointer:coarse)").matches)?"<b>Venstre tommel</b> svømmer (dra langt for å svømme fort). <b>Trykk</b> der du vil skyte.":"<b>WASD</b> eller piltastene svømmer, <b>Shift</b> svømmer fort. Sikt med <b>musa</b>, skyt med <b>klikk</b> eller <b>mellomrom</b>.";
+  const ctl=FJ.touch||(window.matchMedia&&matchMedia("(pointer:coarse)").matches)?"<b>Venstre tommel</b> svømmer (dra langt for å svømme fort, dra ned i overflaten for duck-dive). <b>Trykk</b> der du vil skyte.":"<b>WASD</b> svømmer, <b>Shift</b> svømmer fort, <b>S</b> i overflaten tar et duck-dive. Sikt med <b>musa</b> eller <b>piltastene</b>, skyt med <b>klikk</b> eller <b>mellomrom</b>.";
   if(FJ.st==="title"){ov.innerHTML=`<div class="fg-card fg-wide"><h2>Fiskejakt</h2><p>${ctl}</p>
     <ul><li><b>Ett pust om gangen.</b> Fangsten er bare sikret når du er oppe ved bøya. Går lufta tom under vann, er det blackout.</li>
     <li><b>Tareskogen</b> (til venstre) har lyr, torsk og berggylt. <b>Dypere ute</b>: rødspette, flyndre, lange, hyse, steinbit, kveite og den kamuflerte <b>breiflabben</b>. Jo dypere, jo større fisk og flere poeng.</li>
-    <li><b>Ligg rolig</b>, så kommer fisken nærmere. Jo fortere du svømmer (Shift) eller svinger harpunen, jo mer skremmes den. Sikt på hodet, og pass på minstemålet.</li>
+    <li><b>Ligg rolig</b>: fisken kommer nærmere, og du bruker under halvparten så mye luft. Jo fortere du svømmer (Shift) eller svinger harpunen, jo mer skremmes den. Sikt på hodet, og pass på minstemålet.</li>
     <li><b>De største</b> er skyest. Er du rolig lenge uten å skyte, øker sjansen for storfisk (ingen garanti). Ligg stille på bunnen (<b>ventejakt</b>), så tør de å komme nær.</li>
     <li><b>Strøm</b> fra normal og opp. Fisken blir skyere for hvert dykk, og ingen økt er lik.</li></ul>
     ${lvBtns}<div class="fg-go"><div class="fg-dives"><span>Antall dykk</span>${[3,5,10].map(n=>`<button type="button" class="chip${FJ.nDives===n?" on":""}" data-nd="${n}">${n}</button>`).join("")}</div>
