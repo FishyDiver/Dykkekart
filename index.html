@@ -846,6 +846,13 @@ body.replaying .zoomnote{display:none!important}
 .dexdlg[open]{display:block}.dexdlg::backdrop{background:#081a2e}
 .dexwrap{height:100%;overflow-y:auto;background:#081a2e url(bakgrunn.jpg?v=26) center/cover no-repeat fixed;-webkit-overflow-scrolling:touch}
 .dexin{max-width:1100px;margin:0 auto;padding:14px 16px 40px}
+.recdlg .recin{max-width:1280px;min-height:100%;box-sizing:border-box;padding:0 28px 48px;background:var(--panel);color:var(--ink);box-shadow:0 0 0 1px rgba(159,195,224,.10),0 24px 70px rgba(0,0,0,.5)}
+.recdlg .dextop{background:var(--panel);margin:0;padding:14px 0 10px}.recdlg .dextop h2{color:var(--ink)}
+.recdlg .dexclose{color:var(--ink);background:var(--soft);border-color:var(--line)}
+.recdlg .rtabs{max-width:420px}.recdlg .kpis{max-width:760px}.statdlg .kpis{max-width:900px}.statdlg .recgrid>.rsec>h3{font-size:24px}.statdlg .chart{max-width:640px}.statdlg .sptab{margin-top:4px}.statdlg .sttxt{margin:0 0 6px;font-size:13.5px;color:var(--muted)}
+.recdlg .recgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:0 36px;align-items:start}
+.recdlg .ycards{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+@media (max-width:700px){.recdlg .recin{padding:0 14px 40px;box-shadow:none}}
 .dextop{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:3;padding:10px 0 8px;margin:-14px 0 0;background:linear-gradient(#081a2e 75%,rgba(8,26,46,0))}
 .dextop h2{margin:0;font-size:30px;color:#F1E6C8;flex:1;letter-spacing:.5px}.dexsub{font:500 14px Barlow,sans-serif;color:#9fc3e0;letter-spacing:0;margin-left:6px}@media (max-width:520px){.dexsub{display:block;margin:2px 0 0;font-size:13px}}
 .dexclose{border:1px solid rgba(159,195,224,.35);background:rgba(8,26,46,.7);color:#E3EDF4;border-radius:999px;width:38px;height:38px;font-size:20px;line-height:1;cursor:pointer}
@@ -970,6 +977,7 @@ body.replaying .zoomnote{display:none!important}
 .hdrbtn{display:inline-flex;align-items:center;gap:6px;flex:none;border:1px solid #E3B341;background:#FFF6DC;color:#7A5300;border-radius:999px;padding:6px 14px;font-weight:600}
 .hdrbtn:hover{background:#FCEBB6}
 .hdrbtn.on{background:#E3B341;color:#2B1D00;border-color:#E3B341}
+.statbtn{border:1px solid #7b6fe0!important;background:#211c4d!important;color:#DAD6FF!important}.statbtn:hover{background:#2c2670!important}.statbtn.on{background:#7b6fe0!important;color:#12103a!important}body.mapmax .maptools .statbtn{display:inline-flex;align-items:center;gap:6px}
 .recbar{display:none;align-items:center;gap:6px;border-color:#E3B341;background:#FFF6DC;color:#7A5300}
 body.mapmax .recbar{display:inline-flex}
 .recbar.on{background:#E3B341;color:#2B1D00}
@@ -1063,7 +1071,8 @@ body.mapmax .recbar{display:inline-flex}
     <svg class="jk-logo" width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><clipPath id="jkH"><circle cx="32" cy="32" r="24"/></clipPath><circle cx="32" cy="32" r="24" fill="#123a5e"/><g clip-path="url(#jkH)"><path d="M4 33 C12 29 18 37 26 33 S40 29 48 33 S58 37 62 33 V62 H4Z" fill="#4fd0d6"/><g transform="translate(16,35) scale(.27)"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="#F1E6C8"/><circle cx="22" cy="34" r="5" fill="#1ea5ae"/></g></g><circle cx="32" cy="32" r="24" fill="none" stroke="#F1E6C8" stroke-width="3.6"/><path d="M32 2v9M32 53v9M2 32h9M53 32h9" stroke="#F1E6C8" stroke-width="3.6" stroke-linecap="round"/></svg>
     <h1>Jaktkart</h1><span class="ver"></span>
   </div>
-  <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
+  <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Rekorder"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
+  <button id="statHdr" class="hdrbtn statbtn" type="button" aria-pressed="false" title="Statistikk: fisk, størrelser, sikt og temperatur"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M6 21V11"/><path d="M11 21V4"/><path d="M16 21v-7"/><path d="M21 21V8"/></svg><span>Statistikk</span></button>
   <button id="dexHdr" class="hdrbtn dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span><b class="dexcnt" id="dexHdrCnt"></b></button>
   <button id="seaHdr" class="hdrbtn seabtn" type="button" title="Sesongkalender: når er artene her?"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Sesong<span class="kal">kalender</span></span></button>
   <button id="mndHdr" class="hdrbtn mndbtn" type="button" title="Månedens fangst: kåring og disipliner"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg><span>Månedens<span class="mf-l"> fangst</span></span><b class="mnddot" id="mndDot" hidden></b></button>
@@ -1088,7 +1097,8 @@ body.mapmax .recbar{display:inline-flex}
     </div>
     <div class="maptools">
       <button id="listBtn" class="btn maxonly" type="button">Liste</button>
-      <button id="recBar" class="btn maxonly recbar" type="button" title="Rekorder og statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
+      <button id="recBar" class="btn maxonly recbar" type="button" title="Rekorder"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Rekorder</span></button>
+      <button id="statBar" class="btn maxonly statbtn" type="button" aria-pressed="false" title="Statistikk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M6 21V11"/><path d="M11 21V4"/><path d="M16 21v-7"/><path d="M21 21V8"/></svg><span>Statistikk</span></button>
       <button id="dexBar" class="btn maxonly dexbtn" type="button" title="Artsdex – arts-bingo for gjengen"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Artsdex</span></button>
       <button id="seaBar" class="btn maxonly seabtn" type="button" title="Sesongkalender"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Sesong</span></button>
       <button id="actBar" class="btn maxonly actbar" type="button" title="Siste aktivitet" aria-label="Siste aktivitet" aria-haspopup="true" aria-expanded="false"><svg class="act-bell" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><b class="actcnt" id="actCntBar" hidden></b></button>
@@ -1149,6 +1159,8 @@ body.mapmax .recbar{display:inline-flex}
 <dialog id="dexDlg" class="dexdlg" aria-label="Artsdex"><div class="dexwrap" id="dexWrap"></div></dialog>
 <dialog id="seaDlg" class="dexdlg seadlg" aria-label="Sesongkalender"><div class="dexwrap" id="seaWrap"></div></dialog>
 <dialog id="mndDlg" class="dexdlg mnddlg" aria-label="Månedens fangst"><div class="dexwrap" id="mndWrap"></div></dialog>
+<dialog id="statDlg" class="dexdlg recdlg statdlg" aria-label="Statistikk"><div class="dexwrap" id="statScroll"><div class="dexin recin" id="statWrap"></div></div></dialog>
+<dialog id="recDlg" class="dexdlg recdlg" aria-label="Rekorder og statistikk"><div class="dexwrap" id="recScroll"><div class="dexin recin" id="recWrap"></div></div></dialog>
 <div id="newSp" class="newsp" hidden role="status"></div>
 <dialog id="imgDlg" class="imgdlg"><div class="lbwrap"><img id="imgBig" alt=""><button type="button" class="lbnav lbprev" id="lbPrev" aria-label="Forrige bilde">‹</button><button type="button" class="lbnav lbnext" id="lbNext" aria-label="Neste bilde">›</button></div><div class="lbfoot"><p id="imgCap" class="small"></p><span class="lbcount" id="lbCount"></span><form method="dialog"><button class="btn">Lukk</button></form></div></dialog>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
@@ -1434,7 +1446,7 @@ function renderFrames(){
 }
 
 /* ---------- panel ---------- */
-function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="site")renderSiteView();else if(S.view==="area")renderAreaView();else if(S.view==="records")renderRecords()}
+function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="site")renderSiteView();else if(S.view==="area")renderAreaView();}
 function renderListView(){
   panel.innerHTML=`<div id="bestDive"></div><div id="highlights"></div><div id="dexTeaser"></div>
     <div class="lhead"><div class="lhead-t"><h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="lvis" id="lVis"></p></div>
@@ -1488,7 +1500,7 @@ function renderSiteView(){
   panel.innerHTML=`<button class="btn ghost back" id="back">${S.siteFrom==="records"?"‹ Tilbake til rekorder":"Alle steder"}</button><div id="siteBody"></div>
   <div id="stats"></div><div id="visStats"></div><div id="speciesBox"></div>
   <div class="logs"><h3>Dykkelogg</h3>${logFormHTML()}<div id="logList"></div></div><div id="siteActions"></div>`;
-  $("#back").onclick=()=>{if(S.editLog)cancelEditLog();if(S.siteFrom==="records"){S.siteFrom=null;openRecords();return}S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel()};
+  $("#back").onclick=()=>{if(S.editLog)cancelEditLog();if(S.siteFrom==="records"){S.siteFrom=null;S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel();openRecords();return}S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel()};
   $("#logForm").onsubmit=saveLog;wireCatchEditor();S.buddySel=[];renderBuddyPicker();$("#lCancel").onclick=cancelEditLog;S.editLog=null;
   renderSiteBody();renderStats();renderLogs();renderSpecies();renderVisStats();
 }
@@ -2964,7 +2976,7 @@ function catchesHTML(logId){const L=S.catches.filter(c=>c.log_id===logId);if(!L.
   return `<div class="m">${a?`Fanget: ${a}`:""}${a&&b?"<br>":""}${b?`Sett: ${b}`:""}</div>${ph.length?`<div class="thumbs">${ph.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+(measureTxt(c)?" · "+measureTxt(c):"")+(c.caught_by?" · "+c.caught_by:""))}" aria-label="Vis bilde av ${esc(c.species)}"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}`}
 /* lightbox: open a photo and browse the others in the same section (arrow keys, buttons, swipe) */
 S.lb={list:[],i:0};
-function openLightbox(b){const scope=b.closest(".dexcard")||b.closest("#dexWrap")||b.closest("#mndWrap")||b.closest("#panel")||document,seen=new Set(),list=[];
+function openLightbox(b){const scope=b.closest(".dexcard")||b.closest("#dexWrap")||b.closest("#mndWrap")||b.closest("#recWrap")||b.closest("#statWrap")||b.closest("#panel")||document,seen=new Set(),list=[];
   for(const x of scope.querySelectorAll("[data-img]")){const k=x.dataset.img;if(!k||seen.has(k))continue;seen.add(k);list.push({img:k,cap:x.dataset.cap||""})}
   S.lb={list,i:Math.max(0,list.findIndex(x=>x.img===b.dataset.img))};showLb();const d=$("#imgDlg");if(!d.open)d.showModal()}
 function showLb(){const {list,i}=S.lb,it=list[i];if(!it)return;$("#imgBig").src=photoURL(it.img);$("#imgCap").textContent=it.cap;
@@ -2978,19 +2990,19 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(
 
 /* ---------- records & statistics page ---------- */
 S.recYear=null;S.recSort="kg";S.allLogs=null;S.allReports=null;
-function openRecords(){cancelShapeEdit();clearDraft();S.sel=null;S.selArea=null;S.logsFor=null;S.view="records";S.sheetList=false;renderPins();renderAreas();renderRecords();setTimeout(mobileReveal,0);
-  Promise.all([cachedQ("alllogs",sb.from("logs").select("*")),cachedQ("allreports",sb.from("vis_reports").select("*"))]).then(([a,b])=>{if(!a.error)S.allLogs=a.data;if(!b.error)S.allReports=b.data;if(S.view==="records")renderRecords()})}
+S.recOpen=false;
+function openRecords(){S.recOpen=true;renderRecords();const d=$("#recDlg");if(d&&!d.open)d.showModal();syncRecBtn();
+  Promise.all([cachedQ("alllogs",sb.from("logs").select("*")),cachedQ("allreports",sb.from("vis_reports").select("*"))]).then(([a,b])=>{if(!a.error)S.allLogs=a.data;if(!b.error)S.allReports=b.data;if(S.recOpen)renderRecords()})}
+function closeRecords(){S.recOpen=false;const d=$("#recDlg");if(d&&d.open)d.close();syncRecBtn()}
 function recRow(c,i,medal){const s=getSite(c.site_id);
   return `<div class="rec">${i!=null?`<span class="rk">${i+1}</span>`:""}${c.photo_path?`<button class="thumb big" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+" · "+measureTxt(c)+(s?" · "+s.name:"")+(catcherName(c)?" · "+catcherName(c):""))}" aria-label="Vis bilde"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`:`<span class="thumb big ph">${iconSVG(SPICON(c.species),22)}</span>`}
     <span class="rb"><b>${medal?"🥇 ":""}${esc(c.species)}</b> <span class="rm">${esc(measureTxt(c)||"–")}</span><br><span class="small">${s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button> · `:""}${esc(catcherName(c))}${c.date?" · "+esc(fdate(c.date)):""}</span></span></div>`}
 function SPICON(sp){const k=sp.toLowerCase();if(/tare|tang|søl|krusflik|salat/.test(k))return "tare";if(/akkar|blekksprut|nise|spekkhogger|havert/.test(k))return "dyr";if(/snegl/.test(k))return "skjell";return /skjell|musling/.test(k)?(/blå|o-|hjerte/.test(k)?"musling":"skjell"):/krabbe|hummer|kreps/.test(k)?"dyr":/kråkebolle/.test(k)?"kraakebolle":/sel|oter/.test(k)?"dyr":"fisk"}
 S.recTab="rek";
-function recHead(){return `<button class="btn ghost back" id="back">Alle steder</button><h2>${S.recTab==="aar"?"Dykkeåret":"Rekorder og statistikk"}</h2>
-  <div class="rtabs" id="recTabs" role="tablist">${[["rek","Rekorder"],["aar","Dykkeåret"]].map(([k,l])=>`<button role="tab" data-tab="${k}" class="${S.recTab===k?"on":""}" aria-selected="${S.recTab===k}">${l}</button>`).join("")}</div>`}
-function wireRecHead(){$("#back").onclick=()=>{S.view="list";renderPanel()};
-  $("#recTabs").onclick=e=>{const b=e.target.closest("[data-tab]");if(!b||b.dataset.tab===S.recTab)return;S.recTab=b.dataset.tab;panel.scrollTop=0;renderRecords()}}
+function recWrap(){return $("#recWrap")}
+function recHead(){return `<div class="dextop"><h2>Rekorder</h2><button class="dexclose" id="recX" aria-label="Lukk">✕</button></div>`}
+function wireRecHead(){$("#recX").onclick=closeRecords}
 function renderRecords(){
-  if(S.recTab==="arter"||S.recTab==="mnd")S.recTab="rek";if(S.recTab==="aar")return renderYear();
   const years=[...new Set(S.catches.map(c=>(c.date||"").slice(0,4)).filter(Boolean))].sort().reverse();
   const cy=String(new Date().getFullYear());if(S.recYear==null)S.recYear=years.includes(cy)?cy:"alle";
   const inYear=c=>S.recYear==="alle"||(c.date||"").startsWith(S.recYear);
@@ -3015,23 +3027,20 @@ function renderRecords(){
   for(const c of allIn){const k=catcherName(c)||"Ukjent";(divers[k]||(divers[k]={dives:0,sp:new Set()})).sp.add(c.species)}
   const dRows=Object.entries(divers).sort((a,b)=>b[1].dives-a[1].dives||b[1].sp.size-a[1].sp.size).slice(0,8);
   const yl=S.recYear==="alle"?"alle år":S.recYear;
-  panel.innerHTML=`${recHead()}
+  recWrap().innerHTML=`${recHead()}
     <div class="chips" id="yrChips">${[...years.slice(0,4),"alle"].filter((v,i,a)=>a.indexOf(v)===i).map(y=>`<button class="chip ${S.recYear===y?"on":""}" data-y="${y}">${y==="alle"?"Alle år":y}</button>`).join("")}${years.length?"":`<button class="chip on" data-y="alle">Alle år</button>`}</div>
-    <div class="kpis"><div><b>${logs.length||"–"}</b><span>dykk</span></div><div><b>${dv.S}</b><span>arter</span></div><div><b>${caught.reduce((n,c)=>n+c.count,0)}</b><span>fanget</span></div><div><b>${new Set(logs.map(l=>l.site_id)).size||"–"}</b><span>steder dykket</span></div></div>
+    <div class="recgrid">
     <section class="rsec"><h3>${S.recYear==="alle"?"Største per art":"Årets største per art"}</h3>
       ${best.length?best.map(c=>recRow(c,null,true)).join(""):`<p class="emptytxt">Ingen fangster med vekt eller lengde ${S.recYear==="alle"?"ennå":"i "+yl}. Legg inn kg eller cm når du logger fangst.</p>`}</section>
     <section class="rsec"><h3>Topp 10 ${S.recSort==="kg"?"tyngste":"lengste"} fangster</h3>
       <div class="chips" id="sortChips"><button class="chip ${S.recSort==="kg"?"on":""}" data-s="kg">Vekt</button><button class="chip ${S.recSort==="cm"?"on":""}" data-s="cm">Lengde</button></div>
       ${top.length?top.map((c,i)=>recRow(c,i)).join(""):`<p class="emptytxt">Ingen fangster med ${S.recSort==="kg"?"vekt":"lengde"} ${S.recYear==="alle"?"ennå":"i "+yl}.</p>`}</section>
     ${photos.length?`<section class="rsec"><h3>Siste bilder</h3><div class="gallery">${photos.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(c.species+(measureTxt(c)?" · "+measureTxt(c):"")+(getSite(c.site_id)?" · "+getSite(c.site_id).name:"")+(catcherName(c)?" · "+catcherName(c):""))}"><img src="${esc(photoURL(c.photo_path))}" alt="${esc(c.species)}" loading="lazy"></button>`).join("")}</div></section>`:""}
-    <section class="rsec"><h3>Arter</h3>${spRows.length?`<p class="small" style="margin:0 0 6px">${dv.S} arter registrert ${S.recYear==="alle"?"totalt":"i "+yl}. Shannon H′ ${fnum(dv.H,2)}.</p>${hbars(spRows)}`:`<p class="emptytxt">Ingen arter registrert ${S.recYear==="alle"?"ennå":"i "+yl}.</p>`}
-      ${rich.length?`<h4 class="h4">Mest artsrike steder</h4>${hbars(rich.map(x=>({label:x.s.name,value:x.d.S,text:`${x.d.S} arter`,tip:`${x.s.name}: ${x.d.S} arter, H′ ${fnum(x.d.H,2)}`})))}`:""}</section>
-    <section class="rsec">${S.allLogs==null?`<p class="small">Henter dykk og siktdata…</p>`:vp.length>=2?visStatsHTML(vp,{site:false}).replace("<h3>Sikt over tid</h3>","<h3>Sikt</h3>")+(vRank.length?`<h4 class="h4">Best snittsikt (minst 3 målinger)</h4>${hbars(vRank.map(x=>({label:x.s.name,value:x.avg,text:`${fnum(x.avg,1)} m`,tip:`${x.s.name}: ${fnum(x.avg,1)} m snitt over ${x.n} målinger`})))}`:""):`<h3>Sikt</h3><p class="emptytxt">For få siktmålinger ${S.recYear==="alle"?"ennå":"i "+yl}.</p>`}</section>
-    ${dRows.length?`<section class="rsec"><h3>Mest aktive dykkere</h3>${hbars(dRows.map(([k,v])=>({label:k,value:v.dives,text:`${v.dives} dykk · ${v.sp.size} ${v.sp.size===1?"art":"arter"}`})))}</section>`:""}`;
+    </div>`;
   wireRecHead();
   $("#yrChips").onclick=e=>{const b=e.target.closest("[data-y]");if(!b)return;S.recYear=b.dataset.y;renderRecords()};
   $("#sortChips").onclick=e=>{const b=e.target.closest("[data-s]");if(!b)return;S.recSort=b.dataset.s;renderRecords()};
-  panel.querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{S.siteFromNext="records";openSite(b.dataset.site);focusSite(b.dataset.site)});
+  recWrap().querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{closeRecords();S.siteFromNext="records";openSite(b.dataset.site);focusSite(b.dataset.site)});
 }
 
 
@@ -4594,7 +4603,7 @@ function renderMonth(){
   const crowns={};for(const c of kingList){const n=catcherName(c)||"Ukjent";crowns[n]=(crowns[n]||0)+1}
   const crownRows=Object.entries(crowns).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v])=>({label:k,value:v,text:`${v} ${v===1?"krone":"kroner"}`}));
   const isCur=M===cur,daysLeft=isCur?new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate():0;
-  panel.innerHTML=`${recHead()}
+  recWrap().innerHTML=`${recHead()}
     <div class="chips" id="mndChips">${months.map(m=>`<button class="chip ${m===M?"on":""}" data-m="${m}">${esc(mlab(m))}</button>`).join("")}</div>
     <p class="small" style="margin:6px 0 0">${isCur?`Nullstilles om ${daysLeft+1} ${daysLeft===0?"dag":"dager"}. Den største av hver art i måneden får kronen 👑.`:"Avsluttet måned."}</p>
     <div class="kpis"><div><b>${S.allLogs==null?"…":logs.length}</b><span>dykk</span></div><div><b>${new Set(cs.map(c=>c.species)).size}</b><span>arter</span></div><div><b>${caught.reduce((n,c)=>n+(c.count||1),0)}</b><span>fanget</span></div><div><b>${newSp.length}</b><span>nye arter</span></div></div>
@@ -4605,7 +4614,7 @@ function renderMonth(){
     ${newSp.length?`<section class="rsec"><h3>Nye arter for gjengen</h3><p style="margin:0">${newSp.map(c=>`<b>${esc(c.species)}</b> <span class="small">(${esc(catcherName(c)||"ukjent")})</span>`).join(", ")}</p></section>`:""}`;
   wireRecHead();
   $("#mndChips").onclick=e=>{const b=e.target.closest("[data-m]");if(!b)return;S.mnd=b.dataset.m;renderMonth()};
-  panel.querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{S.siteFromNext="records";openSite(b.dataset.site);focusSite(b.dataset.site)});
+  recWrap().querySelectorAll(".rsite").forEach(b=>b.onclick=()=>{closeRecords();S.siteFromNext="records";openSite(b.dataset.site);focusSite(b.dataset.site)});
 }
 
 /* ---------- månedens fangst: vote for the fish of the month + automatic disciplines + overall points ---------- */
@@ -4720,7 +4729,7 @@ $("#mndDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]")
 S.yrYear=null;S.yrWho=null;
 function renderYear(){
   const logsAll=S.allLogs;
-  if(logsAll==null){panel.innerHTML=`${recHead()}<p class="small">Henter dykk…</p>`;wireRecHead();return}
+  if(logsAll==null){statWrap().innerHTML=`${statHead()}<p class="small">Henter dykk…</p>`;wireStatHead();return}
   const cy=String(new Date().getFullYear());
   const years=[...new Set([cy,...logsAll.map(l=>(l.date||"").slice(0,4)).filter(Boolean)])].sort().reverse();
   if(!S.yrYear||!years.includes(S.yrYear))S.yrYear=years[0];const Y=S.yrYear;
@@ -4763,7 +4772,7 @@ function renderYear(){
       ${a1&&a1[1].d?card("🏆 Årets dykker",esc(a1[0]),`${a1[1].d} dykk`):""}${a2&&a2[1].sp.size?card("🔎 Artsjeger",esc(a2[0]),`${a2[1].sp.size} arter`):""}
       ${bc?card("🎣 Årets fangst",esc(catcherName(bc)),`${esc(bc.species)} ${esc(measureTxt(bc))}`):""}${nf?card("✨ Flest nye arter",esc(nf[0]),`${nf[1]} ${nf[1]===1?"ny":"nye"} for gjengen`):""}</div></section>`}
   const whoLbl=grp?"Gjengen":isMe?"Ditt":W+"s";
-  panel.innerHTML=`${recHead()}
+  statWrap().innerHTML=`${statHead()}
     <div class="chips" id="yrY">${years.slice(0,5).map(y=>`<button class="chip ${y===Y?"on":""}" data-y="${y}">${y}</button>`).join("")}</div>
     <div class="chips" id="yrW" style="margin-top:6px">${me?`<button class="chip ${isMe?"on":""}" data-w="${esc(me)}">Meg</button>`:""}<button class="chip ${grp?"on":""}" data-w="*">Gjengen</button>${others.map(n=>`<button class="chip ${W===n?"on":""}" data-w="${esc(n)}">${esc(n)}</button>`).join("")}</div>
     <div class="yrhero"><span class="small">${Y===cy?"Så langt i år":"Hele året"}</span><h3>${esc(whoLbl)} dykkeår ${Y}</h3>
@@ -4782,11 +4791,118 @@ function renderYear(){
     ${logs.length?`<section class="rsec"><h3>Dykk per måned</h3>${mchart}</section>`:""}
     ${awards}
     <p class="small" style="margin-top:14px">Tips: ta skjermbilde for å dele.</p>`;
-  wireRecHead();
+  wireStatHead();
   $("#yrY").onclick=e=>{const b=e.target.closest("[data-y]");if(!b)return;S.yrYear=b.dataset.y;renderYear()};
   $("#yrW").onclick=e=>{const b=e.target.closest("[data-w]");if(!b)return;S.yrWho=b.dataset.w;renderYear()};
-  {const yp=$("#yrPlay");if(yp)yp.onclick=()=>playYear(logs,Y,whoLbl)}
+  {const yp=$("#yrPlay");if(yp)yp.onclick=()=>{closeStats();playYear(logs,Y,whoLbl)}}
 }
+
+/* ---------- statistics window: everything logged on the map ---------- */
+S.statOpen=false;S.statTab="over";S.stYear="alle";S.stSp="*";
+function statWrap(){return $("#statWrap")}
+function statHead(){return `<div class="dextop"><h2>${S.statTab==="aar"?"Dykkeåret":"Statistikk"}</h2><button class="dexclose" id="statX" aria-label="Lukk">✕</button></div>
+  <div class="rtabs" id="statTabs" role="tablist">${[["over","Oversikt"],["aar","Dykkeåret"]].map(([k,l])=>`<button role="tab" data-tab="${k}" class="${S.statTab===k?"on":""}" aria-selected="${S.statTab===k}">${l}</button>`).join("")}</div>`}
+function wireStatHead(){$("#statX").onclick=closeStats;
+  $("#statTabs").onclick=e=>{const b=e.target.closest("[data-tab]");if(!b||b.dataset.tab===S.statTab)return;S.statTab=b.dataset.tab;const sc=$("#statScroll");if(sc)sc.scrollTop=0;renderStatDlg()}}
+function histChart(v,dec,unit,aria){if(v.length<2)return"";const mn=Math.min(...v),mx=Math.max(...v);
+  const nb=mx===mn?1:Math.min(10,Math.max(4,Math.ceil(Math.sqrt(v.length)*1.6))),st=(mx-mn)/nb||1,bins=Array(nb).fill(0);
+  for(const x of v)bins[Math.min(nb-1,Math.floor((x-mn)/st))]++;
+  const lo=i=>mn+i*st;
+  return colChart(bins.map(b=>b||null),bins.map((_,i)=>fnum(lo(i),dec)),{fmt:x=>fnum(x,0),tip:i=>` fisk (${fnum(lo(i),dec)}–${fnum(lo(i)+st,dec)} ${unit})`,aria})}
+function renderStatDlg(){
+  if(S.statTab==="aar")return renderYear();
+  const W=statWrap();
+  if(S.allLogs==null){W.innerHTML=`${statHead()}<p class="small">Henter dykk…</p>`;wireStatHead();return}
+  const yrOf=d=>String(d||"").slice(0,4);
+  const years=[...new Set([...S.allLogs.map(l=>yrOf(l.date)),...S.catches.map(c=>yrOf(c.date))].filter(Boolean))].sort().reverse();
+  if(S.stYear!=="alle"&&!years.includes(S.stYear))S.stYear="alle";
+  const Y=S.stYear,inY=d=>Y==="alle"||yrOf(d)===Y,yl=Y==="alle"?"alle år":Y;
+  const logs=S.allLogs.filter(l=>inY(l.date)),reps=(S.allReports||[]).filter(r=>Y==="alle"||yrOf(r.created_at)===Y);
+  const cs=S.catches.filter(c=>inY(c.date)),caught=cs.filter(c=>c.kind==="fanget"),seenC=cs.filter(c=>c.kind!=="fanget");
+  const cnt=c=>+c.count||1,sum=(a,f)=>a.reduce((n,x)=>n+f(x),0),avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+  const med=a=>{if(!a.length)return null;const b=a.slice().sort((x,y)=>x-y),m=b.length>>1;return b.length%2?b[m]:(b[m-1]+b[m])/2};
+  const mon=d=>{const m=+String(d||"").slice(5,7)-1;return m>=0&&m<12?m:-1};
+  const MLAB=MONTHS.map(m=>m[0].toUpperCase()+m.slice(1,3));
+  const nz=a=>a.map(v=>v||null);
+  const nFish=sum(caught,cnt),nSeen=sum(seenC,cnt),dv=diversity(cs);
+  const vp=visPoints(logs,reps),temps=logs.filter(l=>l.temp!=null),depths=logs.filter(l=>l.depth!=null);
+  const sitesN=new Set(logs.map(l=>l.site_id)).size;
+  const top=(arr,k,dir=1)=>arr.slice().sort((a,b)=>dir*(b[k]-a[k]))[0];
+  const ws=x=>{const st=getSite(x.site_id);return st?` på ${esc(st.name)}`:""};
+  // fish
+  const fishM=Array(12).fill(0);for(const c of caught){const m=mon(c.date);if(m>=0)fishM[m]+=cnt(c)}
+  const fishY={};for(const c of caught){const y=yrOf(c.date);if(y)fishY[y]=(fishY[y]||0)+cnt(c)}
+  const yAsc=Object.keys(fishY).sort();
+  const fishSp={};for(const c of caught)fishSp[c.species]=(fishSp[c.species]||0)+cnt(c);
+  const spRows=Object.entries(fishSp).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([k,v])=>({label:k,value:v,text:`${v} fisk`,tip:`${k}: ${v} fanget`}));
+  const perDive=logs.length?nFish/logs.length:null;
+  // sizes
+  const sized=caught.filter(c=>c.weight_kg!=null||c.size_cm!=null);
+  const spCount={};for(const c of sized)spCount[c.species]=(spCount[c.species]||0)+cnt(c);
+  const spList=Object.entries(spCount).sort((a,b)=>b[1]-a[1]).slice(0,8).map(x=>x[0]);
+  if(S.stSp!=="*"&&!spList.includes(S.stSp))S.stSp="*";
+  const sel=sized.filter(c=>S.stSp==="*"||c.species===S.stSp);
+  const wts=sel.filter(c=>c.weight_kg!=null).map(c=>+c.weight_kg),cms=sel.filter(c=>c.size_cm!=null).map(c=>+c.size_cm);
+  const sumTxt=(a,d,u)=>a.length?`${a.length} målt · snitt ${fnum(avg(a),d)} ${u} · median ${fnum(med(a),d)} ${u} · størst ${fnum(Math.max(...a),d)} ${u}`:"";
+  const wd=wts.length&&Math.max(...wts)>=10?0:1;
+  const sizeTab=Object.entries(spCount).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([sp])=>{
+    const L=sized.filter(c=>c.species===sp),w=L.filter(c=>c.weight_kg!=null).map(c=>+c.weight_kg),m=L.filter(c=>c.size_cm!=null).map(c=>+c.size_cm);
+    return `<tr><td>${esc(sp)}</td><td>${sum(L,cnt)}</td><td>${w.length?fnum(avg(w),2)+" kg":"–"}</td><td>${w.length?fnum(Math.max(...w),2)+" kg":"–"}</td><td>${m.length?fnum(avg(m))+" cm":"–"}</td><td>${m.length?fnum(Math.max(...m))+" cm":"–"}</td></tr>`}).join("");
+  // visibility, temperature, depth
+  const vSite={};for(const p of vp)(vSite[p.site]||(vSite[p.site]=[])).push(p.vis);
+  const vRank=Object.entries(vSite).filter(([,a])=>a.length>=3).map(([id,a])=>({s:getSite(id),avg:avg(a),n:a.length})).filter(x=>x.s).sort((a,b)=>b.avg-a.avg).slice(0,6);
+  const tM=Array.from({length:12},()=>[]),dM=Array.from({length:12},()=>[]);
+  for(const l of temps){const m=mon(l.date);if(m>=0)tM[m].push(+l.temp)}for(const l of depths){const m=mon(l.date);if(m>=0)dM[m].push(+l.depth)}
+  const cold=temps.length?top(temps,"temp",-1):null,warm=temps.length?top(temps,"temp"):null,deep=depths.length?top(depths,"depth"):null;
+  // dives
+  const diveM=Array(12).fill(0);for(const l of logs){const m=mon(l.date);if(m>=0)diveM[m]++}
+  const bySite={};for(const l of logs)if(l.site_id)bySite[l.site_id]=(bySite[l.site_id]||0)+1;
+  const siteRows=Object.entries(bySite).map(([id,n])=>({s:getSite(id),n})).filter(x=>x.s).sort((a,b)=>b.n-a.n).slice(0,8).map(x=>({label:x.s.name,value:x.n,text:`${x.n} dykk`}));
+  const hrs=Array(24).fill(0);let nh=0;for(const l of logs){const h=parseInt(String(l.time_of_day||"").slice(0,2),10);if(h>=0&&h<24){hrs[h]++;nh++}}
+  const h0=Math.max(0,hrs.findIndex(v=>v)),h1=hrs.length-1-[...hrs].reverse().findIndex(v=>v);
+  // species + places + people
+  const spDives={};for(const c of cs)(spDives[c.species]||(spDives[c.species]=new Set())).add(c.log_id);
+  const spDiveRows=Object.entries(spDives).map(([k,v])=>({label:k,value:v.size,text:`${v.size} dykk`,tip:`${k}: registrert på ${v.size} dykk`})).sort((a,b)=>b.value-a.value).slice(0,12);
+  const bySt={};for(const c of cs)(bySt[c.site_id]||(bySt[c.site_id]=[])).push(c);
+  const rich=Object.entries(bySt).map(([id,L])=>({s:getSite(id),d:diversity(L)})).filter(x=>x.s).sort((a,b)=>b.d.S-a.d.S||b.d.H-a.d.H).slice(0,5);
+  const ppl={};for(const l of logs)for(const n of new Set([l.author_name,...(l.buddies||[])].filter(Boolean)))(ppl[n]||(ppl[n]={d:0,f:0}),ppl[n].d++);
+  for(const c of caught){const n=catcherName(c);if(n)(ppl[n]||(ppl[n]={d:0,f:0})).f+=cnt(c)}
+  const pRows=Object.entries(ppl).sort((a,b)=>b[1].d-a[1].d||b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.d,text:`${v.d} dykk · ${v.f} fisk`}));
+  const fRows=Object.entries(ppl).filter(([,v])=>v.f).sort((a,b)=>b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.f,text:`${v.f} fisk`}));
+  const kp=(b,l)=>`<div><b>${b}</b><span>${l}</span></div>`;
+  const none=t=>`<p class="emptytxt">${t}</p>`;
+  W.innerHTML=`${statHead()}
+    <div class="chips" id="stY">${[...years.slice(0,6),"alle"].map(y=>`<button class="chip ${Y===y?"on":""}" data-y="${y}">${y==="alle"?"Alle år":y}</button>`).join("")}</div>
+    <div class="kpis">${kp(logs.length,"dykk")}${kp(sitesN||"–","steder")}${kp(dv.S,"arter")}${kp(nFish,"fisk fanget")}${kp(nSeen,"fisk sett")}${kp(vp.length?fnum(avg(vp.map(p=>p.vis)),1)+" m":"–","snittsikt")}${kp(temps.length?fnum(avg(temps.map(l=>+l.temp)),1)+" °C":"–","snitt vanntemp.")}${kp(deep?fnum(deep.depth,1)+" m":"–","dypeste dykk")}</div>
+    <div class="recgrid">
+    <section class="rsec"><h3>Fisk</h3>${nFish?`<p class="sttxt">${nFish} fisk fanget i ${esc(yl)}${perDive!=null?`, ${fnum(perDive,1)} per dykk`:""}.</p>
+      <h4 class="h4">Fanget per måned</h4>${colChart(nz(fishM),MLAB,{fmt:v=>fnum(v,0),tip:()=>" fisk",aria:"Fanget fisk per måned"})}
+      ${Y==="alle"&&yAsc.length>1?`<h4 class="h4">Fanget per år</h4>${colChart(yAsc.map(y=>fishY[y]),yAsc,{fmt:v=>fnum(v,0),tip:()=>" fisk",aria:"Fanget fisk per år"})}`:""}
+      <h4 class="h4">Fanget per art</h4>${hbars(spRows)}`:none(`Ingen fangst registrert i ${esc(yl)}.`)}</section>
+    <section class="rsec"><h3>Størrelse</h3>${sized.length?`<div class="chips" id="stSp"><button class="chip ${S.stSp==="*"?"on":""}" data-sp="*">Alle arter</button>${spList.map(sp=>`<button class="chip ${S.stSp===sp?"on":""}" data-sp="${esc(sp)}">${esc(sp)}</button>`).join("")}</div>
+      <h4 class="h4">Vekt</h4>${wts.length>=2?`<p class="sttxt">${sumTxt(wts,wd===0?1:2,"kg")}</p>${histChart(wts,wd,"kg","Vektfordeling")}`:none("For få fangster med vekt.")}
+      <h4 class="h4">Lengde</h4>${cms.length>=2?`<p class="sttxt">${sumTxt(cms,0,"cm")}</p>${histChart(cms,0,"cm","Lengdefordeling")}`:none("For få fangster med lengde.")}
+      <h4 class="h4">Per art</h4><table class="sptab"><thead><tr><th>Art</th><th>Fisk</th><th>Snitt kg</th><th>Størst kg</th><th>Snitt cm</th><th>Størst cm</th></tr></thead><tbody>${sizeTab}</tbody></table>`:none(`Ingen fangster med vekt eller lengde i ${esc(yl)}. Legg inn kg eller cm når du logger fangst.`)}</section>
+    <section class="rsec"><h3>Sikt</h3>${vp.length>=2?visStatsHTML(vp,{site:false}).replace("<h3>Sikt over tid</h3>","")+(vRank.length?`<h4 class="h4">Best snittsikt (minst 3 målinger)</h4>${hbars(vRank.map(x=>({label:x.s.name,value:x.avg,text:`${fnum(x.avg,1)} m`,tip:`${x.n} målinger`})))}`:""):none(`For lite siktdata i ${esc(yl)}.`)}</section>
+    <section class="rsec"><h3>Temperatur og dybde</h3>${temps.length||depths.length?`
+      ${temps.length?`<h4 class="h4">Vanntemperatur, snitt per måned</h4>${colChart(tM.map(a=>a.length?avg(a):null),MLAB,{unit:" °C",tip:i=>` (${tM[i].length} dykk)`,aria:"Snitt vanntemperatur per måned"})}
+        <p class="sttxt">Kaldest ${fnum(cold.temp,1)} °C (${esc(fdate(cold.date))}${ws(cold)}), varmest ${fnum(warm.temp,1)} °C (${esc(fdate(warm.date))}${ws(warm)}).</p>`:""}
+      ${depths.length?`<h4 class="h4">Dybde, snitt per måned</h4>${colChart(dM.map(a=>a.length?avg(a):null),MLAB,{unit:" m",tip:i=>` (${dM[i].length} dykk)`,aria:"Snitt dybde per måned"})}
+        <p class="sttxt">Snitt ${fnum(avg(depths.map(l=>+l.depth)),1)} m. Dypest ${fnum(deep.depth,1)} m (${esc(fdate(deep.date))}${ws(deep)}).</p>`:""}`:none(`Ingen temperatur eller dybde logget i ${esc(yl)}.`)}</section>
+    <section class="rsec"><h3>Dykk</h3>${logs.length?`<h4 class="h4">Dykk per måned</h4>${colChart(nz(diveM),MLAB,{fmt:v=>fnum(v,0),tip:()=>" dykk",aria:"Dykk per måned"})}
+      ${siteRows.length?`<h4 class="h4">Mest dykkede steder</h4>${hbars(siteRows)}`:""}
+      ${nh>=3?`<h4 class="h4">Tid på døgnet</h4>${colChart(hrs.slice(h0,h1+1).map(v=>v||null),hrs.map((_,i)=>String(i)).slice(h0,h1+1),{fmt:v=>fnum(v,0),tip:()=>" dykk",aria:"Dykk etter klokkeslett"})}<p class="sttxt">Klokkeslett for dykkstart, ${nh} dykk med tid.</p>`:""}`:none(`Ingen dykk logget i ${esc(yl)}.`)}</section>
+    <section class="rsec"><h3>Arter</h3>${spDiveRows.length?`<p class="sttxt">${dv.S} arter registrert i ${esc(yl)}. Shannon H′ ${fnum(dv.H,2)}.</p>${hbars(spDiveRows)}
+      ${rich.length?`<h4 class="h4">Mest artsrike steder</h4>${hbars(rich.map(x=>({label:x.s.name,value:x.d.S,text:`${x.d.S} arter`,tip:`${x.s.name}: ${x.d.S} arter, H′ ${fnum(x.d.H,2)}`})))}`:""}`:none(`Ingen arter registrert i ${esc(yl)}.`)}</section>
+    ${pRows.length?`<section class="rsec"><h3>Folk</h3><h4 class="h4">Mest aktive dykkere</h4>${hbars(pRows)}${fRows.length?`<h4 class="h4">Flest fisk fanget</h4>${hbars(fRows)}`:""}</section>`:""}
+    </div>`;
+  wireStatHead();
+  $("#stY").onclick=e=>{const b=e.target.closest("[data-y]");if(!b)return;S.stYear=b.dataset.y;renderStatDlg()};
+  const sp=$("#stSp");if(sp)sp.onclick=e=>{const b=e.target.closest("[data-sp]");if(!b)return;S.stSp=b.dataset.sp;renderStatDlg()};
+}
+function openStats(){S.statOpen=true;renderStatDlg();const d=$("#statDlg");if(d&&!d.open)d.showModal();syncRecBtn();
+  Promise.all([cachedQ("alllogs",sb.from("logs").select("*")),cachedQ("allreports",sb.from("vis_reports").select("*"))]).then(([a,b])=>{if(!a.error)S.allLogs=a.data;if(!b.error)S.allReports=b.data;if(S.statOpen)renderStatDlg()})}
+function closeStats(){S.statOpen=false;const d=$("#statDlg");if(d&&d.open)d.close();syncRecBtn()}
 
 /* ---------- moon phase + spring/neap tide ---------- */
 function moonInfo(t){
@@ -5053,9 +5169,15 @@ $("#seaHdr").onclick=()=>openSeason();$("#seaBar").onclick=()=>openSeason();
 $("#seaDlg").addEventListener("close",()=>{S.seaOpen=false;S.seaEdit=null});
 
 /* ---------- records button in header / bottom bar ---------- */
-function syncRecBtn(){const on=S.view==="records";for(const id of ["recHdr","recBar"]){const b=$("#"+id);if(b){b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)}}}
-function toggleRecords(){if(S.view==="records"){S.view="list";renderPanel()}else{openRecords();if(S.max){S.sheetList=false;updateSheet()}}}
+function syncRecBtn(){for(const [ids,on] of [[["recHdr","recBar"],!!S.recOpen],[["statHdr","statBar"],!!S.statOpen]])for(const id of ids){const b=$("#"+id);if(b){b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)}}}
+function toggleRecords(){if(S.recOpen)closeRecords();else openRecords()}
+$("#recDlg").addEventListener("close",()=>{S.recOpen=false;syncRecBtn()});
+$("#recDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();openLightbox(b)});
 $("#recHdr").onclick=toggleRecords;$("#recBar").onclick=toggleRecords;
+function toggleStats(){if(S.statOpen)closeStats();else openStats()}
+$("#statHdr").onclick=toggleStats;$("#statBar").onclick=toggleStats;
+$("#statDlg").addEventListener("close",()=>{S.statOpen=false;syncRecBtn()});
+$("#statDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();openLightbox(b)});
 $("#dexHdr").onclick=()=>openDex();$("#dexBar").onclick=()=>openDex();
 $("#dexDlg").addEventListener("close",()=>{S.dexOpen=false;syncDexBtn()});
 $("#dexDlg").addEventListener("cancel",e=>{const det=$("#dexDet");if(det&&!det.hidden){e.preventDefault();det.hidden=true;det.innerHTML=""}});
