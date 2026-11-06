@@ -4001,8 +4001,8 @@ function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
       FJ.aim=p;FJ.aimW=toW(p);if(e.pointerType!=="mouse")FJ.tapT=performance.now();fjFire()});
     const up=e=>{if(FJ.joy&&e.pointerId===FJ.joy.id)FJ.joy=null};cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",up)}
   const GK=["w","a","s","d","arrowup","arrowdown","arrowleft","arrowright"," ","shift"];
-  window.addEventListener("keydown",e=>{const g=$("#gameDlg");if(!g||!g.open)return;const k=e.key.toLowerCase();if(!GK.includes(k))return;e.preventDefault();FJ.keys[k]=true;FJ.touch=false;if(k===" "&&!e.repeat)fjFire()});
-  window.addEventListener("keyup",e=>{FJ.keys[e.key.toLowerCase()]=false});
+  window.addEventListener("keydown",e=>{const g=$("#gameDlg");if(!g||!g.open)return;const k=String(e.key||"").toLowerCase();if(!GK.includes(k))return;e.preventDefault();FJ.keys[k]=true;FJ.touch=false;if(k===" "&&!e.repeat)fjFire()});
+  window.addEventListener("keyup",e=>{if(e.key)FJ.keys[e.key.toLowerCase()]=false});
   window.addEventListener("blur",()=>{FJ.keys={}});
   if(d){d.addEventListener("close",()=>{if(FJS.ctx&&FJS.ctx.state==="running")FJS.ctx.suspend();cancelAnimationFrame(FJ.raf);FJ.raf=0;FJ.keys={};if(FJ.st==="play")FJ.st="title";if(document.fullscreenElement===d)document.exitFullscreen().catch(()=>{})});const x=$("#fgX");if(x)x.onclick=closeGame;
     const sn=$("#fgSnd");if(sn){sn.onclick=fjSndToggle;fjSndBtn()}
@@ -4088,7 +4088,7 @@ function renderFeed(){
     if(grew&&!S.actOpen){b.classList.remove("ring");void b.offsetWidth;b.classList.add("ring");setTimeout(()=>b.classList.remove("ring"),1600)}}
   if(!pop)return;pop.hidden=!S.actOpen;if(!S.actOpen){pop.innerHTML="";return}
   pop.onclick=e=>e.stopPropagation(); // clicks inside re-render the panel; don't let them count as "outside"
-  const items=S.actAll?all:all.filter(it=>it.kind==="dive"||it.kind==="game"),N=S.feedMore?30:10,show=items.slice(0,N);
+  const items=S.actAll?all:all.filter(it=>it.kind==="dive"),N=S.feedMore?30:10,show=items.slice(0,N);
   const row=it=>it.kind==="game"?`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-game="${it.mode==="dag"?"dag":"fri"}"${it.lv?` data-lv="${esc(it.lv)}" data-nd="${it.nd}"`:""}><span class="aico agame"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="currentColor" stroke="none"/></svg></span>
     <span class="atx"><span><b>${esc(it.who)}</b> ${esc(it.verb)}</span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`:`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-site="${esc(it.site.id)}">
     ${it.photo?`<span class="thumb sm"><img src="${esc(photoURL(it.photo.photo_path))}" alt="" loading="lazy"></span>`:`<span class="aico">${it.kind==="site"?flagSVG(false,16):it.kind==="vis"?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>':iconSVG("dykker",18)}</span>`}
