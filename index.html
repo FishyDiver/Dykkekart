@@ -1061,6 +1061,37 @@ body.mapmax .recbar{display:inline-flex}
 @media (min-width:781px) and (max-width:830px){.hdrbtn>span{display:none}.hdrbtn{padding:6px 9px}}
 @media (min-width:581px) and (max-width:640px){.hdrbtn{padding:6px 7px}.top{gap:6px}}
 @media (max-width:412px){#gameHdr{display:none}}
+
+/* ---------- statistics window: neutral dark base, colour carries meaning ---------- */
+.statdlg .recin{--panel:#161D28;--ink:#EAEFF4;--muted:#9AA8B7;--line:#2A3444;--soft:#1F2833;--alpha:#F5A623;background:#0E131A;color:var(--ink);box-shadow:0 0 0 1px rgba(255,255,255,.06),0 24px 70px rgba(0,0,0,.55)}
+.dexdlg.statdlg .dextop{background:#0E131A}.dexdlg.statdlg .dextop h2{color:#EAEFF4}
+.dexdlg.statdlg .dexclose{background:#1F2833;border-color:#2A3444;color:#EAEFF4}
+.dexdlg.statdlg .chips .chip{color:var(--muted);border-color:var(--line);background:var(--soft)}
+.dexdlg.statdlg .chips .chip.on{background:#EAEFF4;color:#0E131A;border-color:#EAEFF4}
+.statdlg .rtabs{background:#1F2833}.statdlg .rtabs button.on{background:#EAEFF4;color:#0E131A;box-shadow:none}
+.statdlg .chart{max-width:none}.statdlg .chart .cl{font-size:10.5px}
+.sthero{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#1A2230,#131A24);padding:16px 18px 18px;margin:14px 0 0}
+.sthero-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}.sthero-h b{font:700 15px "Barlow Condensed",sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}.sthero-h em{font-style:normal;color:var(--muted);font-size:14px}
+.stk4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stk4.sm{margin-top:12px}
+.stk{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--ac);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stk i{font-style:normal;font-size:18px;line-height:1}.stk b{font:700 46px/1 "Barlow Condensed",sans-serif;color:var(--ac)}.stk span{font-size:13px;color:var(--muted)}
+.stk4.sm .stk{padding:9px 12px}.stk4.sm .stk b{font-size:30px}.stk4.sm .stk i{font-size:15px}
+.stgh{margin:22px 0 10px;font:700 15px "Barlow Condensed",sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.sthlg{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.sthl{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--ac);border-radius:12px;padding:10px 14px;min-width:0}
+.sthl-l{display:block;font-size:11.5px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted)}.sthl b{display:block;font:700 27px/1.1 "Barlow Condensed",sans-serif;color:var(--ac);margin:2px 0;overflow:hidden;text-overflow:ellipsis}.sthl-s{font-size:13px;color:var(--muted);line-height:1.35}
+.stnav{display:flex;gap:8px;margin:22px 0 0;flex-wrap:wrap}.stnav button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:999px;padding:6px 16px 6px 12px;font:600 14px Barlow,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}.stnav button:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--ac)}.stnav button:hover{border-color:var(--ac)}
+.stgrp{display:flex;align-items:center;gap:10px;margin:34px 0 14px;padding:0 0 8px;border-bottom:3px solid var(--ac);font-size:30px;color:#EAEFF4;scroll-margin-top:84px}
+.stgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:18px;align-items:start}
+.stc{--alpha:var(--ac);background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--ac);border-radius:14px;padding:16px 18px 18px;min-width:0}
+.stc>h3{margin:0 0 4px;font-size:25px;color:var(--ink)}.stlead{margin:0 0 6px;font-size:14px;color:var(--muted)}.stlead b{color:var(--ink);font-size:15px}
+.stc .h4{margin:18px 0 6px;font:600 12.5px Barlow,sans-serif;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.stc .ht{background:rgba(255,255,255,.08)}.stc .hl{color:var(--ink)}.stc .logs h3{display:none}.stc .logs{margin:0}
+.stmini{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:2px 0 10px}.stmini div{background:var(--soft);border-radius:9px;padding:6px 9px}.stmini span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}.stmini b{font:700 20px "Barlow Condensed",sans-serif;color:var(--ink)}
+.stdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:baseline}
+.stleg{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;margin-top:2px;font-size:12px;color:var(--muted)}.stleg i{grid-column:1/-1;height:8px;border-radius:4px}.stleg span:last-child{text-align:right}
+.stc .sptab th{color:var(--muted)}.stc .sptab td{border-color:var(--line)}
+@media (max-width:700px){.stk4{grid-template-columns:repeat(2,1fr)}.stk b{font-size:38px}.stmini{grid-template-columns:repeat(2,1fr)}.stgrp{font-size:26px}.stc{padding:14px}}
 </style>
 </head>
 <body>
@@ -1173,7 +1204,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v71 (SeaHunter: fisk som patruljerer)";
+const APP_VERSION="v72 (Statistikk og rekorder i egne vinduer)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -2855,19 +2886,19 @@ async function condSnapshot(lat,lon,ts){
 
 /* ---------- charts (single series, app blue) ---------- */
 function barPath(x,top,w,base,r=3){r=Math.min(r,w/2,Math.max(0,base-top));return `M${x},${base}V${top+r}Q${x},${top} ${x+r},${top}H${x+w-r}Q${x+w},${top} ${x+w},${top+r}V${base}Z`}
-function colChart(vals,labels,{fmt=v=>fnum(v,1),unit="",tip=(i,v)=>"",H=96,aria=""}={}){
+function colChart(vals,labels,{fmt=v=>fnum(v,1),unit="",tip=(i,v)=>"",H=96,aria="",colors=null,all=false}={}){
   const W=360,padB=16,padT=14,n=vals.length,bw=W/n,base=H-padB,ok=vals.filter(v=>v!=null),max=Math.max(1,...ok);
   const imax=ok.length?vals.indexOf(Math.max(...ok)):-1;
   let h=`<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(aria)}"><line x1="0" x2="${W}" y1="${base+.5}" y2="${base+.5}" stroke="var(--line)"/>`;
   vals.forEach((v,i)=>{const x=i*bw+2,w=bw-4;
     if(v==null)h+=`<rect x="${x+w/2-4}" y="${base-2}" width="8" height="2" rx="1" fill="var(--line)"><title>${esc(labels[i])}: ingen data</title></rect>`;
-    else{const top=base-Math.max(3,v/max*(base-padT));h+=`<path d="${barPath(x,top,w,base)}" fill="var(--alpha)"><title>${esc(labels[i])}: ${esc(fmt(v))}${unit}${tip(i,v)}</title></path>`;
-      if(i===imax)h+=`<text x="${x+w/2}" y="${top-3}" text-anchor="middle" class="cv">${esc(fmt(v))}${unit}</text>`}
+    else{const top=base-Math.max(3,v/max*(base-padT));h+=`<path d="${barPath(x,top,w,base)}" fill="${colors&&colors[i]?colors[i]:"var(--alpha)"}"><title>${esc(labels[i])}: ${esc(fmt(v))}${unit}${tip(i,v)}</title></path>`;
+      if(i===imax||all)h+=`<text x="${x+w/2}" y="${top-3}" text-anchor="middle" class="cv">${esc(fmt(v))}${unit}</text>`}
     h+=`<text x="${i*bw+bw/2}" y="${H-3}" text-anchor="middle" class="cl">${esc(labels[i])}</text>`});
   return h+"</svg>";
 }
 function hbars(rows,{max}={}){const m=max??Math.max(1,...rows.map(r=>r.value));
-  return `<div class="hbars">${rows.map(r=>`<div class="hb" title="${esc(r.tip||"")}"><span class="hl">${esc(r.label)}</span><span class="ht"><i style="width:${Math.max(2,r.value/m*100).toFixed(1)}%"></i></span><span class="hv">${esc(r.text)}</span></div>`).join("")}</div>`}
+  return `<div class="hbars">${rows.map(r=>`<div class="hb" title="${esc(r.tip||"")}"><span class="hl">${esc(r.label)}</span><span class="ht"><i style="width:${Math.max(2,r.value/m*100).toFixed(1)}%${r.color?`;background:${r.color}`:""}"></i></span><span class="hv">${esc(r.text)}</span></div>`).join("")}</div>`}
 function lineChart(ys,{H=90,aria="",xl="",yl=""}={}){
   const W=360,pl=22,pb=16,pt=10,n=ys.length,max=Math.max(1,...ys),X=i=>pl+(n>1?i/(n-1):0)*(W-pl-6),Y=v=>H-pb-v/max*(H-pb-pt);
   const d=ys.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join("");
@@ -2877,7 +2908,7 @@ function lineChart(ys,{H=90,aria="",xl="",yl=""}={}){
     ${ys.map((v,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${n>30?2.5:4}" fill="var(--alpha)" stroke="var(--panel)" stroke-width="2"><title>Etter dykk ${i+1}: ${v} arter</title></circle>`).join("")}
     <text x="${pl}" y="${H-3}" class="cl">${esc(xl)}</text><text x="${W}" y="${H-3}" text-anchor="end" class="cl">${n} dykk</text></svg>`;
 }
-function seqColor(t){const a=[207,227,247],b=[11,47,107];return `rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(",")})`}
+function seqColor(t){const dk=!!S.statOpen,a=dk?[30,64,102]:[207,227,247],b=dk?[110,214,255]:[11,47,107];return `rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(",")})`}
 function windVisRose(pts,size=150){
   const sec=DIRS.map(()=>[]);for(const p of pts)sec[Math.round(p.dir/45)%8].push(p.vis);
   const avg=sec.map(a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null),ok=avg.filter(v=>v!=null),mx=Math.max(...ok),mn=Math.min(...ok);
@@ -4809,33 +4840,47 @@ function histChart(v,dec,unit,aria){if(v.length<2)return"";const mn=Math.min(...
   for(const x of v)bins[Math.min(nb-1,Math.floor((x-mn)/st))]++;
   const lo=i=>mn+i*st;
   return colChart(bins.map(b=>b||null),bins.map((_,i)=>fnum(lo(i),dec)),{fmt:x=>fnum(x,0),tip:i=>` fisk (${fnum(lo(i),dec)}–${fnum(lo(i)+st,dec)} ${unit})`,aria})}
+const ST_COL={dykk:"#34D399",fisk:"#F5A623",art:"#A3E635",sted:"#2DD4BF",sett:"#FBBF77",sikt:"#38BDF8",temp:"#EF5350",dyb:"#8B8CFF",str:"#F0719B",folk:"#C084FC"};
+const SPPAL=["#F5A623","#4FC3F7","#4DD0A1","#E8DB4D","#8C9EFF","#FF7A59","#D98BC4","#A9B4C0"];
+const FULLM=["januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"];
+function tempColor(t){const TS=[[0,[76,141,255]],[6,[56,189,248]],[10,[74,222,128]],[14,[250,204,21]],[18,[251,146,60]],[22,[239,68,68]]];
+  if(t<=TS[0][0])return `rgb(${TS[0][1]})`;if(t>=TS[5][0])return `rgb(${TS[5][1]})`;
+  for(let i=1;i<TS.length;i++)if(t<=TS[i][0]){const [t0,c0]=TS[i-1],[t1,c1]=TS[i],f=(t-t0)/(t1-t0);return `rgb(${c0.map((v,k)=>Math.round(v+(c1[k]-v)*f)).join(",")})`}}
 function renderStatDlg(){
   if(S.statTab==="aar")return renderYear();
   const W=statWrap();
   if(S.allLogs==null){W.innerHTML=`${statHead()}<p class="small">Henter dykk…</p>`;wireStatHead();return}
+  const C=ST_COL;
+  const cnt=c=>+c.count||1,sum=(a,f)=>a.reduce((n,x)=>n+f(x),0),avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+  const med=a=>{if(!a.length)return null;const b=a.slice().sort((x,y)=>x-y),m=b.length>>1;return b.length%2?b[m]:(b[m-1]+b[m])/2};
   const yrOf=d=>String(d||"").slice(0,4);
+  const mon=d=>{const m=+String(d||"").slice(5,7)-1;return m>=0&&m<12?m:-1};
+  const MLAB=MONTHS.map(m=>m[0].toUpperCase()+m.slice(1,3)),nz=a=>a.map(v=>v||null);
   const years=[...new Set([...S.allLogs.map(l=>yrOf(l.date)),...S.catches.map(c=>yrOf(c.date))].filter(Boolean))].sort().reverse();
   if(S.stYear!=="alle"&&!years.includes(S.stYear))S.stYear="alle";
   const Y=S.stYear,inY=d=>Y==="alle"||yrOf(d)===Y,yl=Y==="alle"?"alle år":Y;
   const logs=S.allLogs.filter(l=>inY(l.date)),reps=(S.allReports||[]).filter(r=>Y==="alle"||yrOf(r.created_at)===Y);
   const cs=S.catches.filter(c=>inY(c.date)),caught=cs.filter(c=>c.kind==="fanget"),seenC=cs.filter(c=>c.kind!=="fanget");
-  const cnt=c=>+c.count||1,sum=(a,f)=>a.reduce((n,x)=>n+f(x),0),avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
-  const med=a=>{if(!a.length)return null;const b=a.slice().sort((x,y)=>x-y),m=b.length>>1;return b.length%2?b[m]:(b[m-1]+b[m])/2};
-  const mon=d=>{const m=+String(d||"").slice(5,7)-1;return m>=0&&m<12?m:-1};
-  const MLAB=MONTHS.map(m=>m[0].toUpperCase()+m.slice(1,3));
-  const nz=a=>a.map(v=>v||null);
   const nFish=sum(caught,cnt),nSeen=sum(seenC,cnt),dv=diversity(cs);
+  // one fixed colour per species (ranked over all catches so it never changes with the filters)
+  const allSp={};for(const c of S.catches)if(c.species)allSp[c.species]=(allSp[c.species]||0)+cnt(c);
+  const spOrder=Object.entries(allSp).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+  const spCol=sp=>{const i=spOrder.indexOf(sp);return i>=0&&i<SPPAL.length?SPPAL[i]:"#8A96A3"};
+  const dot=sp=>`<i class="stdot" style="background:${spCol(sp)}"></i>`;
   const vp=visPoints(logs,reps),temps=logs.filter(l=>l.temp!=null),depths=logs.filter(l=>l.depth!=null);
   const sitesN=new Set(logs.map(l=>l.site_id)).size;
   const top=(arr,k,dir=1)=>arr.slice().sort((a,b)=>dir*(b[k]-a[k]))[0];
-  const ws=x=>{const st=getSite(x.site_id);return st?` på ${esc(st.name)}`:""};
+  const stn=x=>{const st=getSite(x.site_id);return st?esc(st.name):""};
+  const ctx=x=>[stn(x),x.date?esc(fdate(x.date)):""].filter(Boolean).join(" · ");
   // fish
   const fishM=Array(12).fill(0);for(const c of caught){const m=mon(c.date);if(m>=0)fishM[m]+=cnt(c)}
   const fishY={};for(const c of caught){const y=yrOf(c.date);if(y)fishY[y]=(fishY[y]||0)+cnt(c)}
   const yAsc=Object.keys(fishY).sort();
   const fishSp={};for(const c of caught)fishSp[c.species]=(fishSp[c.species]||0)+cnt(c);
-  const spRows=Object.entries(fishSp).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([k,v])=>({label:k,value:v,text:`${v} fisk`,tip:`${k}: ${v} fanget`}));
-  const perDive=logs.length?nFish/logs.length:null;
+  const spRows=Object.entries(fishSp).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([k,v])=>({label:k,value:v,text:`${v} fisk`,tip:`${k}: ${v} fanget`,color:spCol(k)}));
+  const fishSite={};for(const c of caught)if(c.site_id)fishSite[c.site_id]=(fishSite[c.site_id]||0)+cnt(c);
+  const bestSiteF=Object.entries(fishSite).map(([id,n])=>({s:getSite(id),n})).filter(x=>x.s).sort((a,b)=>b.n-a.n)[0];
+  const perDive=logs.length?nFish/logs.length:null,bestM=nFish?fishM.indexOf(Math.max(...fishM)):-1;
   // sizes
   const sized=caught.filter(c=>c.weight_kg!=null||c.size_cm!=null);
   const spCount={};for(const c of sized)spCount[c.species]=(spCount[c.species]||0)+cnt(c);
@@ -4843,62 +4888,84 @@ function renderStatDlg(){
   if(S.stSp!=="*"&&!spList.includes(S.stSp))S.stSp="*";
   const sel=sized.filter(c=>S.stSp==="*"||c.species===S.stSp);
   const wts=sel.filter(c=>c.weight_kg!=null).map(c=>+c.weight_kg),cms=sel.filter(c=>c.size_cm!=null).map(c=>+c.size_cm);
-  const sumTxt=(a,d,u)=>a.length?`${a.length} målt · snitt ${fnum(avg(a),d)} ${u} · median ${fnum(med(a),d)} ${u} · størst ${fnum(Math.max(...a),d)} ${u}`:"";
+  const mini=(a,d,u)=>`<div class="stmini">${[["målt",String(a.length)],["snitt",fnum(avg(a),d)+" "+u],["median",fnum(med(a),d)+" "+u],["størst",fnum(Math.max(...a),d)+" "+u]].map(([l,v])=>`<div><span>${l}</span><b>${v}</b></div>`).join("")}</div>`;
   const wd=wts.length&&Math.max(...wts)>=10?0:1;
   const sizeTab=Object.entries(spCount).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([sp])=>{
     const L=sized.filter(c=>c.species===sp),w=L.filter(c=>c.weight_kg!=null).map(c=>+c.weight_kg),m=L.filter(c=>c.size_cm!=null).map(c=>+c.size_cm);
-    return `<tr><td>${esc(sp)}</td><td>${sum(L,cnt)}</td><td>${w.length?fnum(avg(w),2)+" kg":"–"}</td><td>${w.length?fnum(Math.max(...w),2)+" kg":"–"}</td><td>${m.length?fnum(avg(m))+" cm":"–"}</td><td>${m.length?fnum(Math.max(...m))+" cm":"–"}</td></tr>`}).join("");
+    return `<tr><td>${dot(sp)}${esc(sp)}</td><td>${sum(L,cnt)}</td><td>${w.length?fnum(avg(w),2)+" kg":"–"}</td><td>${w.length?fnum(Math.max(...w),2)+" kg":"–"}</td><td>${m.length?fnum(avg(m))+" cm":"–"}</td><td>${m.length?fnum(Math.max(...m))+" cm":"–"}</td></tr>`}).join("");
+  const bigC=sized.slice().sort((a,b)=>((b.weight_kg??-1)-(a.weight_kg??-1))||((b.size_cm??-1)-(a.size_cm??-1)))[0];
   // visibility, temperature, depth
   const vSite={};for(const p of vp)(vSite[p.site]||(vSite[p.site]=[])).push(p.vis);
   const vRank=Object.entries(vSite).filter(([,a])=>a.length>=3).map(([id,a])=>({s:getSite(id),avg:avg(a),n:a.length})).filter(x=>x.s).sort((a,b)=>b.avg-a.avg).slice(0,6);
   const tM=Array.from({length:12},()=>[]),dM=Array.from({length:12},()=>[]);
   for(const l of temps){const m=mon(l.date);if(m>=0)tM[m].push(+l.temp)}for(const l of depths){const m=mon(l.date);if(m>=0)dM[m].push(+l.depth)}
   const cold=temps.length?top(temps,"temp",-1):null,warm=temps.length?top(temps,"temp"):null,deep=depths.length?top(depths,"depth"):null;
+  const visBest=logs.filter(l=>l.vis!=null).length?top(logs.filter(l=>l.vis!=null),"vis"):null;
   // dives
   const diveM=Array(12).fill(0);for(const l of logs){const m=mon(l.date);if(m>=0)diveM[m]++}
   const bySite={};for(const l of logs)if(l.site_id)bySite[l.site_id]=(bySite[l.site_id]||0)+1;
   const siteRows=Object.entries(bySite).map(([id,n])=>({s:getSite(id),n})).filter(x=>x.s).sort((a,b)=>b.n-a.n).slice(0,8).map(x=>({label:x.s.name,value:x.n,text:`${x.n} dykk`}));
   const hrs=Array(24).fill(0);let nh=0;for(const l of logs){const h=parseInt(String(l.time_of_day||"").slice(0,2),10);if(h>=0&&h<24){hrs[h]++;nh++}}
   const h0=Math.max(0,hrs.findIndex(v=>v)),h1=hrs.length-1-[...hrs].reverse().findIndex(v=>v);
-  // species + places + people
-  const spDives={};for(const c of cs)(spDives[c.species]||(spDives[c.species]=new Set())).add(c.log_id);
-  const spDiveRows=Object.entries(spDives).map(([k,v])=>({label:k,value:v.size,text:`${v.size} dykk`,tip:`${k}: registrert på ${v.size} dykk`})).sort((a,b)=>b.value-a.value).slice(0,12);
+  const bestDM=logs.length?diveM.indexOf(Math.max(...diveM)):-1;
+  // species, places, people
+  const spDives={};for(const c of cs)if(c.species)(spDives[c.species]||(spDives[c.species]=new Set())).add(c.log_id);
+  const spDiveRows=Object.entries(spDives).map(([k,v])=>({label:k,value:v.size,text:`${v.size} dykk`,tip:`${k}: registrert på ${v.size} dykk`,color:spCol(k)})).sort((a,b)=>b.value-a.value).slice(0,12);
   const bySt={};for(const c of cs)(bySt[c.site_id]||(bySt[c.site_id]=[])).push(c);
   const rich=Object.entries(bySt).map(([id,L])=>({s:getSite(id),d:diversity(L)})).filter(x=>x.s).sort((a,b)=>b.d.S-a.d.S||b.d.H-a.d.H).slice(0,5);
-  const ppl={};for(const l of logs)for(const n of new Set([l.author_name,...(l.buddies||[])].filter(Boolean)))(ppl[n]||(ppl[n]={d:0,f:0}),ppl[n].d++);
+  const ppl={};for(const l of logs)for(const n of new Set([l.author_name,...(l.buddies||[])].filter(Boolean))){(ppl[n]||(ppl[n]={d:0,f:0})).d++}
   for(const c of caught){const n=catcherName(c);if(n)(ppl[n]||(ppl[n]={d:0,f:0})).f+=cnt(c)}
   const pRows=Object.entries(ppl).sort((a,b)=>b[1].d-a[1].d||b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.d,text:`${v.d} dykk · ${v.f} fisk`}));
   const fRows=Object.entries(ppl).filter(([,v])=>v.f).sort((a,b)=>b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.f,text:`${v.f} fisk`}));
-  const kp=(b,l)=>`<div><b>${b}</b><span>${l}</span></div>`;
+  // building blocks
   const none=t=>`<p class="emptytxt">${t}</p>`;
+  const tile=(ico,val,lab,col)=>`<div class="stk" style="--ac:${col}"><i>${ico}</i><b>${val}</b><span>${lab}</span></div>`;
+  const hl=[];
+  if(bigC)hl.push([C.str,"Største fangst",esc(measureTxt(bigC)),`${esc(bigC.species)}${catcherName(bigC)?" · "+esc(catcherName(bigC)):""}<br>${ctx(bigC)}`]);
+  if(visBest)hl.push([C.sikt,"Beste sikt",`${fnum(visBest.vis,1)} m`,ctx(visBest)]);
+  if(bestM>=0&&fishM[bestM])hl.push([C.fisk,"Beste fangstmåned",FULLM[bestM][0].toUpperCase()+FULLM[bestM].slice(1),`${fishM[bestM]} fisk`]);
+  if(bestSiteF)hl.push([C.dykk,"Beste fangststed",esc(bestSiteF.s.name),`${bestSiteF.n} fisk`]);
+  if(deep)hl.push([C.dyb,"Dypeste dykk",`${fnum(deep.depth,1)} m`,ctx(deep)]);
+  if(temps.length)hl.push([C.temp,"Vanntemperatur",`${fnum(cold.temp,1)}–${fnum(warm.temp,1)} °C`,`kaldest ${esc(fdate(cold.date))}, varmest ${esc(fdate(warm.date))}`]);
+  const hlHTML=hl.map(([c,l,v,s])=>`<div class="sthl" style="--ac:${c}"><span class="sthl-l">${l}</span><b>${v}</b><span class="sthl-s">${s}</span></div>`).join("");
+  const card=(col,title,lead,body)=>`<section class="stc" style="--ac:${col}"><h3>${title}</h3>${lead?`<p class="stlead">${lead}</p>`:""}${body}</section>`;
+  const fishCard=card(C.fisk,"Fisk",nFish?`<b>${nFish}</b> fisk fanget i ${esc(yl)}${perDive!=null?`, <b>${fnum(perDive,1)}</b> per dykk`:""}${bestM>=0?`. Flest i ${FULLM[bestM]}`:""}.`:"",
+    nFish?`<h4 class="h4">Fanget per måned</h4>${colChart(nz(fishM),MLAB,{fmt:v=>fnum(v,0),tip:()=>" fisk",aria:"Fanget fisk per måned",all:true,H:130})}
+      ${Y==="alle"&&yAsc.length>1?`<h4 class="h4">Fanget per år</h4>${colChart(yAsc.map(y=>fishY[y]),yAsc,{fmt:v=>fnum(v,0),tip:()=>" fisk",aria:"Fanget fisk per år",all:true,H:130})}`:""}
+      <h4 class="h4">Fanget per art</h4>${hbars(spRows)}`:none(`Ingen fangst registrert i ${esc(yl)}.`));
+  const sizeCard=card(C.str,"Størrelse",sized.length?`Vekt og lengde på fangstene. Velg art for å se den alene.`:"",
+    sized.length?`<div class="chips" id="stSp"><button class="chip ${S.stSp==="*"?"on":""}" data-sp="*">Alle arter</button>${spList.map(sp=>`<button class="chip ${S.stSp===sp?"on":""}" data-sp="${esc(sp)}">${dot(sp)}${esc(sp)}</button>`).join("")}</div>
+      <h4 class="h4">Vekt, antall fisk per vektklasse (kg)</h4>${wts.length>=2?`${mini(wts,wd===0?1:2,"kg")}${histChart(wts,wd,"kg","Vektfordeling")}`:none("For få fangster med vekt.")}
+      <h4 class="h4">Lengde, antall fisk per lengdeklasse (cm)</h4>${cms.length>=2?`${mini(cms,0,"cm")}${histChart(cms,0,"cm","Lengdefordeling")}`:none("For få fangster med lengde.")}
+      <h4 class="h4">Per art</h4><table class="sptab"><thead><tr><th>Art</th><th>Fisk</th><th>Snitt kg</th><th>Størst kg</th><th>Snitt cm</th><th>Størst cm</th></tr></thead><tbody>${sizeTab}</tbody></table>`:none(`Ingen fangster med vekt eller lengde i ${esc(yl)}. Legg inn kg eller cm når du logger fangst.`));
+  const visCard=card(C.sikt,"Sikt",vp.length>=2?`<b>${fnum(avg(vp.map(p=>p.vis)),1)} m</b> i snitt, ${vp.length} målinger.`:"",
+    vp.length>=2?visStatsHTML(vp,{site:false}).replace("<h3>Sikt over tid</h3>","").replace(/<p class="small"[^>]*>[^<]*<\/p>/,"").replace("Mørkere sektor","Lysere sektor")+(vRank.length?`<h4 class="h4">Best snittsikt per sted (minst 3 målinger)</h4>${hbars(vRank.map(x=>({label:x.s.name,value:x.avg,text:`${fnum(x.avg,1)} m`,tip:`${x.n} målinger`})))}`:""):none(`For lite siktdata i ${esc(yl)}.`));
+  const tempCard=card(C.temp,"Vanntemperatur",temps.length?`<b>${fnum(avg(temps.map(l=>+l.temp)),1)} °C</b> i snitt. Kaldest ${fnum(cold.temp,1)} °C, varmest ${fnum(warm.temp,1)} °C.`:"",
+    temps.length?`<h4 class="h4">Snitt per måned</h4>${colChart(tM.map(a=>a.length?avg(a):null),MLAB,{unit:" °C",tip:i=>` (${tM[i].length} dykk)`,aria:"Snitt vanntemperatur per måned",all:true,H:130,colors:tM.map(a=>a.length?tempColor(avg(a)):null)})}
+      <div class="stleg"><i style="background:linear-gradient(90deg,#4C8DFF,#38BDF8,#4ADE80,#FACC15,#FB923C,#EF4444)"></i><span>kaldt</span><span>varmt</span></div>`:none(`Ingen temperatur logget i ${esc(yl)}.`));
+  const depthCard=card(C.dyb,"Dybde",depths.length?`<b>${fnum(avg(depths.map(l=>+l.depth)),1)} m</b> i snitt. Dypest ${fnum(deep.depth,1)} m.`:"",
+    depths.length?`<h4 class="h4">Snitt per måned</h4>${colChart(dM.map(a=>a.length?avg(a):null),MLAB,{unit:" m",tip:i=>` (${dM[i].length} dykk)`,aria:"Snitt dybde per måned",all:true,H:130})}`:none(`Ingen dybde logget i ${esc(yl)}.`));
+  const diveCard=card(C.dykk,"Dykk",logs.length?`<b>${logs.length}</b> dykk på <b>${sitesN}</b> steder${bestDM>=0&&diveM[bestDM]?`. Mest aktiv i ${FULLM[bestDM]}`:""}.`:"",
+    logs.length?`<h4 class="h4">Dykk per måned</h4>${colChart(nz(diveM),MLAB,{fmt:v=>fnum(v,0),tip:()=>" dykk",aria:"Dykk per måned",all:true,H:130})}
+      ${siteRows.length?`<h4 class="h4">Mest dykkede steder</h4>${hbars(siteRows)}`:""}
+      ${nh>=3?`<h4 class="h4">Klokkeslett for dykkstart (${nh} dykk)</h4>${colChart(hrs.slice(h0,h1+1).map(v=>v||null),hrs.map((_,i)=>String(i)).slice(h0,h1+1),{fmt:v=>fnum(v,0),tip:()=>" dykk",aria:"Dykk etter klokkeslett",H:110})}`:""}`:none(`Ingen dykk logget i ${esc(yl)}.`));
+  const spCard=card(C.art,"Arter",spDiveRows.length?`<b>${dv.S}</b> arter registrert. Variasjon (Shannon H′) <b>${fnum(dv.H,2)}</b>.`:"",
+    spDiveRows.length?`<h4 class="h4">Antall dykk arten er registrert på</h4>${hbars(spDiveRows)}${rich.length?`<h4 class="h4">Mest artsrike steder</h4>${hbars(rich.map(x=>({label:x.s.name,value:x.d.S,text:`${x.d.S} arter`,tip:`${x.s.name}: ${x.d.S} arter, H′ ${fnum(x.d.H,2)}`})))}`:""}`:none(`Ingen arter registrert i ${esc(yl)}.`));
+  const folkCard=pRows.length?card(C.folk,"Folk","",`<h4 class="h4">Mest aktive dykkere</h4>${hbars(pRows)}${fRows.length?`<h4 class="h4">Flest fisk fanget</h4>${hbars(fRows)}`:""}`):"";
   W.innerHTML=`${statHead()}
     <div class="chips" id="stY">${[...years.slice(0,6),"alle"].map(y=>`<button class="chip ${Y===y?"on":""}" data-y="${y}">${y==="alle"?"Alle år":y}</button>`).join("")}</div>
-    <div class="kpis">${kp(logs.length,"dykk")}${kp(sitesN||"–","steder")}${kp(dv.S,"arter")}${kp(nFish,"fisk fanget")}${kp(nSeen,"fisk sett")}${kp(vp.length?fnum(avg(vp.map(p=>p.vis)),1)+" m":"–","snittsikt")}${kp(temps.length?fnum(avg(temps.map(l=>+l.temp)),1)+" °C":"–","snitt vanntemp.")}${kp(deep?fnum(deep.depth,1)+" m":"–","dypeste dykk")}</div>
-    <div class="recgrid">
-    <section class="rsec"><h3>Fisk</h3>${nFish?`<p class="sttxt">${nFish} fisk fanget i ${esc(yl)}${perDive!=null?`, ${fnum(perDive,1)} per dykk`:""}.</p>
-      <h4 class="h4">Fanget per måned</h4>${colChart(nz(fishM),MLAB,{fmt:v=>fnum(v,0),tip:()=>" fisk",aria:"Fanget fisk per måned"})}
-      ${Y==="alle"&&yAsc.length>1?`<h4 class="h4">Fanget per år</h4>${colChart(yAsc.map(y=>fishY[y]),yAsc,{fmt:v=>fnum(v,0),tip:()=>" fisk",aria:"Fanget fisk per år"})}`:""}
-      <h4 class="h4">Fanget per art</h4>${hbars(spRows)}`:none(`Ingen fangst registrert i ${esc(yl)}.`)}</section>
-    <section class="rsec"><h3>Størrelse</h3>${sized.length?`<div class="chips" id="stSp"><button class="chip ${S.stSp==="*"?"on":""}" data-sp="*">Alle arter</button>${spList.map(sp=>`<button class="chip ${S.stSp===sp?"on":""}" data-sp="${esc(sp)}">${esc(sp)}</button>`).join("")}</div>
-      <h4 class="h4">Vekt</h4>${wts.length>=2?`<p class="sttxt">${sumTxt(wts,wd===0?1:2,"kg")}</p>${histChart(wts,wd,"kg","Vektfordeling")}`:none("For få fangster med vekt.")}
-      <h4 class="h4">Lengde</h4>${cms.length>=2?`<p class="sttxt">${sumTxt(cms,0,"cm")}</p>${histChart(cms,0,"cm","Lengdefordeling")}`:none("For få fangster med lengde.")}
-      <h4 class="h4">Per art</h4><table class="sptab"><thead><tr><th>Art</th><th>Fisk</th><th>Snitt kg</th><th>Størst kg</th><th>Snitt cm</th><th>Størst cm</th></tr></thead><tbody>${sizeTab}</tbody></table>`:none(`Ingen fangster med vekt eller lengde i ${esc(yl)}. Legg inn kg eller cm når du logger fangst.`)}</section>
-    <section class="rsec"><h3>Sikt</h3>${vp.length>=2?visStatsHTML(vp,{site:false}).replace("<h3>Sikt over tid</h3>","")+(vRank.length?`<h4 class="h4">Best snittsikt (minst 3 målinger)</h4>${hbars(vRank.map(x=>({label:x.s.name,value:x.avg,text:`${fnum(x.avg,1)} m`,tip:`${x.n} målinger`})))}`:""):none(`For lite siktdata i ${esc(yl)}.`)}</section>
-    <section class="rsec"><h3>Temperatur og dybde</h3>${temps.length||depths.length?`
-      ${temps.length?`<h4 class="h4">Vanntemperatur, snitt per måned</h4>${colChart(tM.map(a=>a.length?avg(a):null),MLAB,{unit:" °C",tip:i=>` (${tM[i].length} dykk)`,aria:"Snitt vanntemperatur per måned"})}
-        <p class="sttxt">Kaldest ${fnum(cold.temp,1)} °C (${esc(fdate(cold.date))}${ws(cold)}), varmest ${fnum(warm.temp,1)} °C (${esc(fdate(warm.date))}${ws(warm)}).</p>`:""}
-      ${depths.length?`<h4 class="h4">Dybde, snitt per måned</h4>${colChart(dM.map(a=>a.length?avg(a):null),MLAB,{unit:" m",tip:i=>` (${dM[i].length} dykk)`,aria:"Snitt dybde per måned"})}
-        <p class="sttxt">Snitt ${fnum(avg(depths.map(l=>+l.depth)),1)} m. Dypest ${fnum(deep.depth,1)} m (${esc(fdate(deep.date))}${ws(deep)}).</p>`:""}`:none(`Ingen temperatur eller dybde logget i ${esc(yl)}.`)}</section>
-    <section class="rsec"><h3>Dykk</h3>${logs.length?`<h4 class="h4">Dykk per måned</h4>${colChart(nz(diveM),MLAB,{fmt:v=>fnum(v,0),tip:()=>" dykk",aria:"Dykk per måned"})}
-      ${siteRows.length?`<h4 class="h4">Mest dykkede steder</h4>${hbars(siteRows)}`:""}
-      ${nh>=3?`<h4 class="h4">Tid på døgnet</h4>${colChart(hrs.slice(h0,h1+1).map(v=>v||null),hrs.map((_,i)=>String(i)).slice(h0,h1+1),{fmt:v=>fnum(v,0),tip:()=>" dykk",aria:"Dykk etter klokkeslett"})}<p class="sttxt">Klokkeslett for dykkstart, ${nh} dykk med tid.</p>`:""}`:none(`Ingen dykk logget i ${esc(yl)}.`)}</section>
-    <section class="rsec"><h3>Arter</h3>${spDiveRows.length?`<p class="sttxt">${dv.S} arter registrert i ${esc(yl)}. Shannon H′ ${fnum(dv.H,2)}.</p>${hbars(spDiveRows)}
-      ${rich.length?`<h4 class="h4">Mest artsrike steder</h4>${hbars(rich.map(x=>({label:x.s.name,value:x.d.S,text:`${x.d.S} arter`,tip:`${x.s.name}: ${x.d.S} arter, H′ ${fnum(x.d.H,2)}`})))}`:""}`:none(`Ingen arter registrert i ${esc(yl)}.`)}</section>
-    ${pRows.length?`<section class="rsec"><h3>Folk</h3><h4 class="h4">Mest aktive dykkere</h4>${hbars(pRows)}${fRows.length?`<h4 class="h4">Flest fisk fanget</h4>${hbars(fRows)}`:""}</section>`:""}
-    </div>`;
+    <div class="sthero"><div class="sthero-h"><b>Hovedtall</b><em>${esc(yl)}</em></div>
+      <div class="stk4">${tile("🤿",logs.length,"dykk",C.dykk)}${tile("🐟",nFish,"fisk fanget",C.fisk)}${tile("🔎",dv.S,"arter",C.art)}${tile("📍",sitesN||"–","steder",C.sted)}</div>
+      <div class="stk4 sm">${tile("👀",nSeen,"fisk sett",C.sett)}${tile("🌫",vp.length?fnum(avg(vp.map(p=>p.vis)),1)+" m":"–","snittsikt",C.sikt)}${tile("🌡",temps.length?fnum(avg(temps.map(l=>+l.temp)),1)+" °C":"–","snitt vanntemp.",C.temp)}${tile("⬇",deep?fnum(deep.depth,1)+" m":"–","dypeste dykk",C.dyb)}</div></div>
+    ${hlHTML?`<h2 class="stgh">Høydepunkter</h2><div class="sthlg">${hlHTML}</div>`:""}
+    <div class="stnav" id="stNav"><button type="button" data-go="stg-fangst" style="--ac:${C.fisk}">Fangst</button><button type="button" data-go="stg-forhold" style="--ac:${C.sikt}">Forhold</button><button type="button" data-go="stg-aktivitet" style="--ac:${C.dykk}">Aktivitet</button></div>
+    <h2 class="stgrp" id="stg-fangst" style="--ac:${C.fisk}">🐟 Fangst</h2><div class="stgrid">${fishCard}${sizeCard}</div>
+    <h2 class="stgrp" id="stg-forhold" style="--ac:${C.sikt}">🌊 Forhold</h2><div class="stgrid">${visCard}${tempCard}${depthCard}</div>
+    <h2 class="stgrp" id="stg-aktivitet" style="--ac:${C.dykk}">🤿 Aktivitet</h2><div class="stgrid">${diveCard}${spCard}${folkCard}</div>`;
   wireStatHead();
   $("#stY").onclick=e=>{const b=e.target.closest("[data-y]");if(!b)return;S.stYear=b.dataset.y;renderStatDlg()};
   const sp=$("#stSp");if(sp)sp.onclick=e=>{const b=e.target.closest("[data-sp]");if(!b)return;S.stSp=b.dataset.sp;renderStatDlg()};
+  $("#stNav").onclick=e=>{const b=e.target.closest("[data-go]");if(!b)return;const t=document.getElementById(b.dataset.go);if(t)t.scrollIntoView({behavior:"smooth",block:"start"})};
 }
 function openStats(){S.statOpen=true;renderStatDlg();const d=$("#statDlg");if(d&&!d.open)d.showModal();syncRecBtn();
   Promise.all([cachedQ("alllogs",sb.from("logs").select("*")),cachedQ("allreports",sb.from("vis_reports").select("*"))]).then(([a,b])=>{if(!a.error)S.allLogs=a.data;if(!b.error)S.allReports=b.data;if(S.statOpen)renderStatDlg()})}
