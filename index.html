@@ -1092,6 +1092,22 @@ body.mapmax .recbar{display:inline-flex}
 .stleg{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;margin-top:2px;font-size:12px;color:var(--muted)}.stleg i{grid-column:1/-1;height:8px;border-radius:4px}.stleg span:last-child{text-align:right}
 .stc .sptab th{color:var(--muted)}.stc .sptab td{border-color:var(--line)}
 @media (max-width:700px){.stk4{grid-template-columns:repeat(2,1fr)}.stk b{font-size:38px}.stmini{grid-template-columns:repeat(2,1fr)}.stgrp{font-size:26px}.stc{padding:14px}}
+/* v73: header fits itself (fitHdr adds hk1..hk10 until the chart tab has room) */
+.top.hk1 .ver,.top.hk1 .hdrbtn .kal,.top.hka #addChartBtn{display:none}
+.top.hk2 .mndbtn>span,.top.hk2 .gamebtn>span,.top.hk2 .actbtn .act-l{display:none}
+.top.hs1 #seaHdr>span,.top.hs2 #statHdr>span,.top.hs3 #dexHdr>span,.top.hs4 #recHdr>span,.top.hk3 .hdrbtn>span{display:none}
+@media (min-width:581px){.top.hs1 #seaHdr,.top.hs2 #statHdr,.top.hs3 #dexHdr,.top.hs4 #recHdr,.top.hk3 .hdrbtn{padding:6px 9px}}
+#tabs.more{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent)}
+.top.hk4 .brand h1{display:none}
+@media (min-width:581px){.top.hk5{gap:6px}.top.hk5 .hdrbtn{padding:6px 7px}.top.hk5 #menuBtn{padding:6px}.top.hk5 #menuBtn .mlab{display:none}.top.hk5 #menuBtn .mico{display:block}}
+.top.hk6 #gameHdr{display:none}
+.top.hk7 #mndHdr{display:none}
+.top.hk8{gap:4px;padding-left:6px;padding-right:6px}.top.hk8 .hdrbtn{padding:6px 5px}.top.hk8 .tab{padding:6px 9px}
+.top.hk9 .brand{display:none}
+/* v73: phones. HUD wraps instead of being cut, and the right-hand map buttons move below it (hudPlace) */
+@media (max-width:700px){.hud{left:52px;max-width:calc(100% - 60px)}.hud-row{flex-wrap:wrap;overflow:visible;border-radius:16px;gap:1px 2px;padding:2px 3px}.hud-i{padding:3px 3px 3px 2px;gap:2px}.hud-i svg{width:16px;height:16px}}
+@media (max-width:480px){.maptools{gap:5px}.maptools #mndBar{padding:0 7px}.maptools #condSel{flex:1 1 0;min-width:104px;max-width:220px;padding-left:8px;text-overflow:ellipsis}}
+#placeBtn .pl-l{display:inline}@media (max-width:400px){#placeBtn .pl-l{display:none}}
 </style>
 </head>
 <body>
@@ -1134,7 +1150,7 @@ body.mapmax .recbar{display:inline-flex}
       <button id="seaBar" class="btn maxonly seabtn" type="button" title="Sesongkalender"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Sesong</span></button>
       <button id="actBar" class="btn maxonly actbar" type="button" title="Siste aktivitet" aria-label="Siste aktivitet" aria-haspopup="true" aria-expanded="false"><svg class="act-bell" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><b class="actcnt" id="actCntBar" hidden></b></button>
       <button id="mndBar" class="btn maxonly mndbtn" type="button" title="Månedens fangst"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg></button>
-      <button id="placeBtn" class="btn primary">Nytt dykkested</button>
+      <button id="placeBtn" class="btn primary">Nytt <span class="pl-l">dykke</span>sted</button>
       <button id="drawBtn" class="btn">Tegn</button>
       <select id="condSel" class="btn" aria-label="Vis vindforhold på kartet"><option value="off">Forhold: av</option><option value="now">Forhold nå</option><option value="+3">Om 3 timer</option><option value="+6">Om 6 timer</option><option value="d1h10">I morgen kl 10</option><option value="d1h15">I morgen kl 15</option><option value="d2h10">Overmorgen kl 10</option></select>
       <span id="drawBar" hidden><span class="dgrp" id="dPick"><button class="btn" id="dPoly">Polygon</button><button class="btn" id="dLine">Linje</button><button class="btn" id="dRect">Rektangel</button><button class="btn" id="dPoint">Markør</button></span><button class="btn" id="dUndo">Angre punkt</button><button class="btn primary" id="dDone">Ferdig</button><button class="btn ghost" id="dCancel">Avbryt</button></span>
@@ -1204,7 +1220,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v72 (Statistikk og rekorder i egne vinduer)";
+const APP_VERSION="v73 (Mobil: topplinje, værstripe og verktøylinje passer)";
 function lsGet0(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function lsSet0(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed? ?out/i.test(String((e&&(e.message||e.details))||e||""))}
@@ -1391,7 +1407,18 @@ async function liveClick(ll){
 /* ---------- tabs & image charts ---------- */
 function renderTabs(){
   $("#tabs").innerHTML=[LIVE,...S.charts].map(c=>`<button class="tab ${c.id===S.active?"on":""}" data-id="${esc(c.id)}">${esc(c.name)}</button>`).join("");
+  fitHdr();
 }
+/* header: hide the least important labels/buttons, step by step, until the active chart tab fits */
+const HK=["hk1","hka","hk2","hs1","hs2","hs3","hs4","hk3","hk4","hk5","hk6","hk7","hk8","hk9"];
+function fitHdr(){try{const h=$("header.top"),t=$("#tabs");if(!h||!t)return;HK.forEach(c=>h.classList.remove(c));if(!h.offsetParent)return;
+  const a=t.querySelector(".tab.on")||t.querySelector(".tab");const need=()=>Math.min(t.scrollWidth,Math.max(a?a.offsetWidth:0,72));
+  for(const c of HK){if(t.clientWidth>=need())break;h.classList.add(c)}
+  if(a){const tr=t.getBoundingClientRect(),ar=a.getBoundingClientRect();if(ar.left<tr.left)t.scrollLeft+=ar.left-tr.left-4;else if(ar.right>tr.right)t.scrollLeft+=ar.right-tr.right+6}tabsMore()}catch(e){}}
+function tabsMore(){const t=$("#tabs");if(t)t.classList.toggle("more",t.scrollLeft+t.clientWidth<t.scrollWidth-4)}
+{let q=0;const fh=()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;fitHdr()})};
+  try{const ro=new ResizeObserver(fh);ro.observe($("header.top"));ro.observe($("#tabs"))}catch(e){}addEventListener("resize",fh);
+  try{document.fonts&&document.fonts.ready.then(fh)}catch(e){}$("#tabs").addEventListener("scroll",tabsMore,{passive:true})}
 function switchChart(id){cancelDraw();cancelShapeEdit();clearDraft();if(S.view==="area"||S.view==="areaedit"){S.view="list";S.selArea=null}S.active=id;S.draft=null;setMode("view");if(S.view!=="site"){S.view="list";S.sel=null}renderTabs();renderChart();renderPanel()}
 $("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b)switchChart(b.dataset.id)});
 function renderChart(){
@@ -1443,7 +1470,7 @@ function showCoord(e){const c=activeChart();const el=$("#coord");if(!c||!c.geo||
 
 function setMode(m){S.mode=m;wrap.classList.toggle("placing",m!=="view");lmapEl.style.cursor=m!=="view"?"crosshair":"";
   $("#hint").textContent=m==="place"?"Klikk på kartet der dykkestedet er. Esc avbryter.":m==="move"?"Klikk på den nye plasseringen. Esc avbryter.":"";
-  $("#placeBtn").textContent=m==="place"?"Avbryt":"Nytt dykkested";if(isLive())renderLive()}
+  $("#placeBtn").innerHTML=m==="place"?"Avbryt":'Nytt <span class="pl-l">dykke</span>sted';if(isLive())renderLive()}
 $("#placeBtn").onclick=()=>{cancelDraw();cancelShapeEdit();setMode(S.mode==="place"?"view":"place")};
 document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(S.mode!=="view")setMode("view");if(S.drawer||S.drawMenu)cancelDraw();if(S.editingArea){cancelShapeEdit();if(S.view==="area")renderAreaBody()}});
 async function mapClick(e){
@@ -2377,7 +2404,7 @@ function hudDetail(k){const pt=S.hud.at,now=Date.now();if(!pt)return"";
       return `<b>Strømstille</b><p>Ingen strømsteder er satt opp ennå. Åpne et strømsted, for eksempel Saltstraumen, trykk <b style="display:inline;color:inherit;font-size:inherit">Rediger</b> og fyll inn «Strømstille»: hvor mange minutter etter høyvann og lavvann i ${esc((cur&&cur.lat!=null?regionOf(cur.lat,cur.lon):REG(curRegion())).short)} strømmen står stille, og hvor lenge.</p><p class="hd-src">Krever at slack.sql er kjørt i Supabase.</p>${cur?`<button type="button" class="linkbtn" data-hslack="${esc(cur.id)}">Sett opp for ${esc(cur.name)} ›</button>`:""}`}const up=v.ev.filter(e=>e.b>now).slice(0,4);
     return `<b>Strømstille · ${esc(ss.name)}</b>${up.map(e=>`<div class="hd-row${e.a<=now?" on":""}"><span>${esc(dayLbl(e.a)==="i dag"?"":dayLbl(e.a)+" ")}${hm(e.a)}–${hm(e.b)}</span><span>${e.kind==="high"?"flo":"fjære"}</span><span>${slackDiffHTML(e)}</span></div>`).join("")}<button type="button" class="linkbtn" data-hsite="${esc(ss.id)}">Åpne ${esc(ss.name)} ›</button>`}
   return ""}
-function renderHud(){const el=$("#hud");if(!el)return;if(!isLive()||!S.hud.at){el.hidden=true;return}
+function renderHud(){queueMicrotask(hudPlace);const el=$("#hud");if(!el)return;if(!isLive()||!S.hud.at){el.hidden=true;return}
   const items=hudItems();if(!items.length){el.hidden=true;return}el.hidden=false;
   el.innerHTML=`<div class="hud-row">${items.map(it=>`<button type="button" class="hud-i${it.on?" on":""}${it.hi?" hi":""}${it.dim?" dim":""}${S.hud.open===it.k?" open":""}" data-k="${it.k}" title="${esc(it.ti)}" aria-label="${esc(it.ti)}">${it.ic}<span class="lg">${esc(it.tx)}</span>${it.sx!=null?`<span class="sm">${esc(it.sx)}</span>`:`<span class="sm">${esc(it.tx)}</span>`}</button>`).join("")}</div>
     ${S.hud.open&&items.some(it=>it.k===S.hud.open)?`<div class="hud-pop">${hudDetail(S.hud.open)}</div>`:""}`;
@@ -2385,6 +2412,15 @@ function renderHud(){const el=$("#hud");if(!el)return;if(!isLive()||!S.hud.at){e
   const hq=el.querySelector("[data-hslack]");if(hq)hq.onclick=e=>{e.stopPropagation();S.hud.open=null;renderHud();const st=getSite(hq.dataset.hslack);if(!st)return;S.view="edit";renderEdit(st);setTimeout(()=>{const d=document.querySelector(".slackset");if(d){d.open=true;d.scrollIntoView({block:"center",behavior:"smooth"});const i=$("#fSlH");if(i)i.focus()}},80)};
   const hs=el.querySelector("[data-hsite]");if(hs)hs.onclick=e=>{e.stopPropagation();S.hud.open=null;openSite(hs.dataset.hsite);focusSite(hs.dataset.hsite)}}
 document.addEventListener("click",e=>{if(S.hud&&S.hud.open&&!e.target.closest("#hud")){S.hud.open=null;renderHud()}});
+/* phones: when the HUD strip reaches the right-hand map buttons (map layers), move those buttons down below it */
+function hudPlace(){try{const m=$("#lmap"),rc=m&&m.querySelector(".leaflet-top.leaflet-right");if(!rc)return;rc.style.top="";
+  const h=$("#hud"),row=h&&!h.hidden&&h.offsetParent&&h.querySelector(".hud-row");if(!row)return;
+  const ks=[...rc.children].filter(k=>k.offsetParent);if(!ks.length)return;
+  const hr=row.getBoundingClientRect(),mr=m.getBoundingClientRect(),L=Math.min(...ks.map(k=>k.getBoundingClientRect().left)),T=Math.min(...ks.map(k=>k.getBoundingClientRect().top));
+  if(hr.right>L-4&&hr.bottom>T-4)rc.style.top=Math.round(hr.bottom-mr.top-4)+"px"}catch(e){}}
+{let q=0;const hp=()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;hudPlace()})};addEventListener("resize",hp);
+  try{new ResizeObserver(hp).observe($("#lmap"))}catch(e){}
+  try{new MutationObserver(hp).observe($("#heatBar"),{attributes:true,attributeFilter:["hidden"]})}catch(e){}}
 
 /* ---------- extra map layers: Yggdrasil (Fiskeridirektoratet), Miljødirektoratet, NGU, Kartverket, NASA ---------- */
 S.chlDate=null;
