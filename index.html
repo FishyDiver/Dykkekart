@@ -244,6 +244,8 @@ dialog p{color:var(--muted);margin:6px 0 0}
 .vbig{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:20px;color:var(--alpha)}.vbig.old{color:var(--muted)}
 .vform{display:grid;grid-template-columns:90px 1fr auto;gap:6px}
 .vform input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.vwhen{grid-column:1/-1;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--muted)}form.vform .vwhen input[type=date],form.vform .vwhen input[type=time]{width:auto;min-width:0;flex:0 1 auto;padding:5px 8px;font-size:14px}.vwhen .linkbtn{font-size:13px}
+.vedit{font-size:12px;margin-left:2px}.vedhead{margin:4px 0 6px;font-size:13px;font-weight:600;color:var(--alpha)}.vedbtns{grid-column:1/-1;display:flex;gap:6px;justify-content:flex-end}
 .crow{display:grid;grid-template-columns:1fr 80px 52px 58px 30px;gap:4px;margin-bottom:4px}
 .crow input,.crow select{width:100%;padding:6px 7px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
 .crow .btn{padding:0}
@@ -254,7 +256,7 @@ dialog p{color:var(--muted);margin:6px 0 0}
 .feed{margin:4px 0 10px}.feed h3{font-size:18px;margin-bottom:4px}
 .frow{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:6px 4px}
 .frow:hover{background:var(--soft)}.frow b{color:var(--alpha);display:inline-block;min-width:46px}
-@media (max-width:480px){.vform{grid-template-columns:80px 1fr}.vform .btn{grid-column:1/-1}.crow{grid-template-columns:1fr 74px 46px 52px 26px}}
+@media (max-width:480px){.vform{grid-template-columns:80px 1fr}.vform .btn{grid-column:1/-1;order:2}.vform .vwhen{order:1}.vform .vedbtns{order:3}.crow{grid-template-columns:1fr 74px 46px 52px 26px}}
 #offBar{position:fixed;left:50%;transform:translateX(-50%);top:calc(8px + env(safe-area-inset-top,0px));z-index:2500;background:var(--ink);color:var(--panel);font-size:13px;font-weight:600;padding:4px 12px;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
 .pin.round{transform:translate(-15px,-37px) scale(var(--inv));transform-origin:15px 37px}
 .lp.round .lbl{left:30px;top:2px}
@@ -1220,7 +1222,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v74 (English)";
+const APP_VERSION="v75 (Visibility for earlier dives)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -2775,7 +2777,9 @@ S.catches=[];S.reports=[];S.sp="";S.catchErr=null;S.visErr=null;
 const SPECIES=["Torsk", "Sei", "Lyr", "Hyse", "Hvitting", "Sypike", "Lysing", "Lange", "Brosme", "Steinbit", "Flekksteinbit", "Breiflabb", "Kveite", "Rødspette", "Skrubbe", "Sandflyndre", "Lomre", "Piggvar", "Uer", "Lusuer", "Berggylt", "Grønngylt", "Bergnebb", "Rødnebb/blåstål", "Makrell", "Sild", "Ulke", "Rognkjeks", "Ålekvabbe", "Tangsprell", "Pigghå", "Laks", "Sjøørret", "Scallops", "Harpeskjell", "Blåskjell", "O-skjell", "Hestskjell", "Kuskjell", "Hjerteskjell", "Sandskjell", "Kongsnegl", "Strandsnegl", "Kongekrabbe", "Taskekrabbe", "Strandkrabbe", "Pyntekrabbe", "Hummer", "Sjøkreps", "Kråkebolle", "Rød kråkebolle", "Sjøpølse", "Sjøstjerne", "Akkar", "Sukkertare", "Fingertare", "Stortare", "Butare", "Søl", "Krusflik", "Havsalat", "Blæretang", "Grisetang", "Sel", "Havert", "Oter", "Nise", "Spekkhogger"];
 function tableErr(e,file){const m=errMsg(e);return (e&&(e.code==="42P01"||e.code==="PGRST205"))||/(does not exist|could not find the table)/i.test(m)?`The table does not exist yet. Run ${file} in Supabase.`:m}
 function normSp(x){x=String(x||"").trim().replace(/\s+/g," ");return x?spKey(x[0].toLocaleUpperCase("nb")+x.slice(1)):""}
-function ago(t){const d=(Date.now()-Date.parse(t))/60e3;if(d<2)return"just now";if(d<60)return`${Math.round(d)} min ago`;if(d<24*60)return`${Math.round(d/60)} h ago`;if(d<48*60)return"yesterday";return new Date(t).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}
+function ago(t){const ms=typeof t==="number"?t:Date.parse(t),d=(Date.now()-ms)/60e3;if(d<2)return"just now";if(d<60)return`${Math.round(d)} min ago`;
+  const day=x=>{const z=new Date(x);z.setHours(0,0,0,0);return z.getTime()},dd=Math.round((day(Date.now())-day(ms))/864e5);
+  if(dd<=0||d<6*60)return`${Math.round(d/60)} h ago`;if(dd===1)return"yesterday";return new Date(ms).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}
 async function loadCatches(){const {data,error}=await cachedQ("catches",sb.from("catches").select("*"));if(error){S.catchErr=tableErr(error,"catch.sql");return}S.catchErr=null;S.catches=data;afterCatchData()}
 async function loadReports(){const since=new Date(Date.now()-14*864e5).toISOString();const {data,error}=await cachedQ("reports",sb.from("vis_reports").select("*").gte("created_at",since));
   if(error){S.visErr=tableErr(error,"catch.sql");return}S.visErr=null;S.reports=data.sort((a,b)=>b.created_at.localeCompare(a.created_at));afterVisData()}
@@ -2839,18 +2843,44 @@ function sunLine(lat,lon,now,fut=false){
     if(!fut&&now>s.set){const tm=sunDay(now+864e5,lat,lon).sun;if(tm.rise!=null)parts.push(`<small>tomorrow up ${hm(tm.rise)}</small>`)}}
   return `<div class="csun">${ic}${parts.join("")}</div>`;
 }
-/* visibility reports in site panel */
+/* visibility reports in site panel: report now or for an earlier time, and edit or delete your own reports */
+function localDT(t){const d=new Date(t),p=n=>String(n).padStart(2,"0");return [`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`,`${p(d.getHours())}:${p(d.getMinutes())}`]}
+function visWhen(t){const [d]=localDT(t);return (d===today()?"today":ago(t))+" "+hm(t)}
 function renderVis(s){
   const el=$("#visBox");if(!el)return;
-  const R=S.reports.filter(r=>r.site_id===s.id).slice(0,3),r0=R[0],fresh=r0&&(Date.now()-Date.parse(r0.created_at))<48*3600e3;
-  el.innerHTML=`<div class="visq">${r0?`<p style="margin:0 0 6px"><strong class="vbig${fresh?"":" old"}">Visibility ${fnum(r0.vis,1)} m</strong> <span class="small">${esc(ago(r0.created_at))}, ${r0.author===S.user.id?"you":esc(r0.author_name||"a member")}${r0.note?`: ${esc(r0.note==="Fra dykkelogg"?"from the dive log":r0.note)}`:""}</span></p>`:`<p class="small" style="margin:0 0 6px">No visibility report in the last 14 days.</p>`}
-    ${R.length>1?`<p class="small" style="margin:0 0 6px">Before: ${R.slice(1).map(r=>`${fnum(r.vis,1)} m ${esc(ago(r.created_at))}`).join(", ")}</p>`:""}
-    <form class="f vform" id="vForm"><input type="number" id="vVis" min="0" step="0.5" placeholder="Visibility (m)" aria-label="Visibility in metres" required><input type="text" id="vNote" placeholder="Comment (optional)" aria-label="Comment"><button class="btn primary" id="vSave">Report visibility now</button></form>
+  const ed=S.visEdit&&S.visEdit.site_id===s.id?S.visEdit:null;if(!ed)S.visEdit=null;
+  const R=S.reports.filter(r=>r.site_id===s.id).slice(0,4),r0=R[0],fresh=r0&&(Date.now()-Date.parse(r0.created_at))<48*3600e3;
+  const mine=r=>r.author===S.user.id,editBtn=r=>mine(r)?` <button type="button" class="linkbtn vedit" data-vid="${esc(r.id)}" aria-label="Edit this report">Edit</button>`:"";
+  const noteTxt=r=>r.note?`: ${esc(r.note==="Fra dykkelogg"?"from the dive log":r.note)}`:"";
+  const [d0,t0]=localDT(ed?Date.parse(ed.created_at):Date.now());
+  el.innerHTML=`<div class="visq">${r0?`<p style="margin:0 0 6px"><strong class="vbig${fresh?"":" old"}">Visibility ${fnum(r0.vis,1)} m</strong> <span class="small">${esc(ago(r0.created_at))}, ${mine(r0)?"you":esc(r0.author_name||"a member")}${noteTxt(r0)}</span>${editBtn(r0)}</p>`:`<p class="small" style="margin:0 0 6px">No visibility report in the last 14 days.</p>`}
+    ${R.length>1?`<p class="small" style="margin:0 0 6px">Before: ${R.slice(1).map(r=>`${fnum(r.vis,1)} m ${esc(ago(r.created_at))}${mine(r)?"":", "+esc(r.author_name||"")}${editBtn(r)}`).join(" · ")}</p>`:""}
+    ${ed?`<p class="vedhead">Editing your report from ${esc(visWhen(ed.created_at))}</p>`:""}
+    <form class="f vform" id="vForm"><input type="number" id="vVis" min="0" step="0.5" placeholder="Visibility (m)" aria-label="Visibility in metres" required value="${ed?esc(String(ed.vis)):""}"><input type="text" id="vNote" placeholder="${ed&&ed.note==="Fra dykkelogg"?"Comment (from the dive log)":"Comment (optional)"}" aria-label="Comment" value="${ed&&ed.note!=="Fra dykkelogg"?esc(ed.note||""):""}"><button class="btn primary" id="vSave">${ed?"Save changes":"Report visibility"}</button>
+      <div class="vwhen"><span>When</span><input type="date" id="vDate" value="${d0}" max="${today()}" aria-label="Date of the dive" required><input type="time" id="vTime" value="${t0}" aria-label="Time" required>${ed?"":`<button type="button" class="linkbtn" id="vNow"${" hidden"}>Now</button>`}</div>
+      ${ed?`<div class="vedbtns"><button type="button" class="btn ghost danger" id="vDel">Delete</button><button type="button" class="btn ghost" id="vCancel">Cancel</button></div>`:""}</form>
     ${S.visErr?`<p class="small err">${esc(S.visErr)}</p>`:""}<div class="err" id="vErr"></div></div>`;
-  $("#vForm").onsubmit=async e=>{e.preventDefault();const v=num($("#vVis").value);if(v==null)return;$("#vSave").disabled=true;
-    const snap=await condSnapshot(s.lat,s.lon,Date.now());
-    const {error}=await colSafe(r=>sb.from("vis_reports").insert(r),{site_id:s.id,vis:v,note:$("#vNote").value.trim(),author:S.user.id,author_name:S.me.name,...snap},["wind_dir","wind_speed","tide_phase"],"stats.sql","wind and tide");
+  let touched=!!ed;
+  const nowBtn=$("#vNow"),mark=()=>{touched=true;if(nowBtn)nowBtn.hidden=false};
+  $("#vDate").oninput=mark;$("#vTime").oninput=mark;
+  if(nowBtn)nowBtn.onclick=()=>{const [d,t]=localDT(Date.now());$("#vDate").value=d;$("#vTime").value=t;touched=false;nowBtn.hidden=true};
+  el.querySelectorAll(".vedit").forEach(b=>b.onclick=()=>{S.visEdit=S.reports.find(r=>r.id===b.dataset.vid)||null;renderVis(s);$("#vVis")?.focus()});
+  if(ed){$("#vCancel").onclick=()=>{S.visEdit=null;renderVis(s)};
+    $("#vDel").onclick=async()=>{if(!confirm("Delete this visibility report?"))return;const {error}=await sb.from("vis_reports").delete().eq("id",ed.id);
+      if(error){$("#vErr").textContent="Could not delete: "+errMsg(error);return}S.visEdit=null;toast("The report has been deleted");await loadReports();loadSiteReports(s.id)}}
+  $("#vForm").onsubmit=async e=>{e.preventDefault();const v=num($("#vVis").value);if(v==null)return;$("#vErr").textContent="";
+    let ts=Date.now();if(touched){ts=new Date(`${$("#vDate").value}T${$("#vTime").value||"12:00"}`).getTime();if(!isFinite(ts)){$("#vErr").textContent="Choose a date and a time.";return}
+      if(ts>Date.now()+5*60e3){$("#vErr").textContent="The time can't be in the future.";return}}
+    $("#vSave").disabled=true;
+    const same=ed&&ts===Date.parse(ed.created_at);
+    const snap=same?Object.fromEntries(["wind_dir","wind_speed","tide_phase"].filter(k=>ed[k]!=null).map(k=>[k,ed[k]])):await condSnapshot(s.lat,s.lon,ts);
+    const typed=$("#vNote").value.trim(),note=ed&&ed.note==="Fra dykkelogg"&&!typed?"Fra dykkelogg":typed;
+    const row={site_id:s.id,vis:v,note,author:S.user.id,author_name:S.me.name,...snap};if(touched)row.created_at=new Date(ts).toISOString();
+    const {error}=await colSafe(r=>sb.from("vis_reports").insert(r),row,["wind_dir","wind_speed","tide_phase"],"stats.sql","wind and tide");
     if(error){$("#vErr").textContent="Could not save: "+tableErr(error,"catch.sql");$("#vSave").disabled=false;return}
+    if(ed){const {error:de}=await sb.from("vis_reports").delete().eq("id",ed.id);if(de)toast("Saved, but the old report could not be removed: "+errMsg(de))}
+    S.visEdit=null;
+    if(Date.now()-ts>14*864e5)toast("Saved. Reports older than 14 days count in the stats, but are not shown as the latest visibility.");else if(touched||ed)toast(ed?"The report has been updated":"Visibility saved for "+visWhen(ts));
     await loadReports();loadSiteReports(s.id)};
 }
 
@@ -3041,7 +3071,10 @@ async function afterLogSaved(s,log,catches,snap){
       if(_file){try{row.photo_path=await uploadImage(await shrinkImage(_file))}catch(e){warn.push("A photo was not uploaded: "+errMsg(e))}}
       rows.push({...row,log_id:log.id,site_id:s.id,date:log.date,author:S.user.id,author_name:S.me.name})}
     const {error}=await colSafe(r=>sb.from("catches").insert(r),rows,["photo_path","weight_kg","caught_by"],"stats.sql","photo and weight");if(error)warn.push("Catch was not saved: "+tableErr(error,"catch.sql"))}
-  if(log.vis!=null&&log.date===today()){const {error}=await colSafe(r=>sb.from("vis_reports").insert(r),{site_id:s.id,vis:log.vis,note:"Fra dykkelogg",author:S.user.id,author_name:S.me.name,...(snap||{})},["wind_dir","wind_speed","tide_phase"],"stats.sql","wind and tide");if(error&&!/finnes ikke/.test(tableErr(error,"")))warn.push("Visibility report: "+errMsg(error))}
+  const at=log.date?new Date(`${log.date}T${log.time_of_day||"12:00"}`).getTime():NaN;
+  if(log.vis!=null&&log.date&&log.date<=today()&&(log.date===today()||Date.now()-at<14*864e5)){const vr={site_id:s.id,vis:log.vis,note:"Fra dykkelogg",author:S.user.id,author_name:S.me.name,...(snap||{})};
+    if(log.date!==today()||log.time_of_day)vr.created_at=new Date(Math.min(at,Date.now())).toISOString();
+    const {error}=await colSafe(r=>sb.from("vis_reports").insert(r),vr,["wind_dir","wind_speed","tide_phase"],"stats.sql","wind and tide");if(error&&!/does not exist/.test(tableErr(error,"")))warn.push("Visibility report: "+errMsg(error))}
   return warn;
 }
 function catchesHTML(logId){const L=S.catches.filter(c=>c.log_id===logId);if(!L.length)return"";
