@@ -1437,6 +1437,53 @@ body:not(.mapmax) .layout{background:none}
 #seaO [data-o="env"].on{background:var(--lb-sea);border-color:var(--lb-sea);color:var(--lb-bg0)}
 @media (max-width:700px){.sc-envbar{padding:12px 14px;gap:10px}.sc-envbar svg{width:28px;height:28px}.sc-envbar b{font-size:17px}.sc-envhead span{flex-basis:100%;order:3}}
 
+/* ---------- v87: the header beam gets a gold compass rose behind the logo, faint rhumb lines like an old chart, and a rope along the bottom ---------- */
+:root{--lb-compass:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2244%22 fill=%22none%22 stroke=%22%23B48A3E%22 stroke-width=%225%22/%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2244%22 fill=%22none%22 stroke=%22%23F2D998%22 stroke-width=%222.4%22 stroke-dasharray=%221.1 7.54%22/%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2246.6%22 fill=%22none%22 stroke=%22%23E7C77E%22 stroke-width=%22.9%22/%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2241.4%22 fill=%22none%22 stroke=%22%237C5A22%22 stroke-width=%22.8%22/%3E%3Cpath d=%22M50.00,50.00 L48.42,42.85 L61.48,22.28 Z%22 fill=%22%23E9CC86%22/%3E%3Cpath d=%22M50.00,50.00 L56.18,46.06 L61.48,22.28 Z%22 fill=%22%239C7632%22/%3E%3Cpath d=%22M50.00,50.00 L53.94,43.82 L77.72,38.52 Z%22 fill=%22%23E9CC86%22/%3E%3Cpath d=%22M50.00,50.00 L57.15,51.58 L77.72,38.52 Z%22 fill=%22%239C7632%22/%3E%3Cpath d=%22M50.00,50.00 L57.15,48.42 L77.72,61.48 Z%22 fill=%22%23E9CC86%22/%3E%3Cpath d=%22M50.00,50.00 L53.94,56.18 L77.72,61.48 Z%22 fill=%22%239C7632%22/%3E%3Cpath d=%22M50.00,50.00 L56.18,53.94 L61.48,77.72 Z%22 fill=%22%23E9CC86%22/%3E%3Cpath d=%22M50.00,50.00 L48.42,57.15 L61.48,77.72 Z%22 fill=%22%239C7632%22/%3E%3Cpath d=%22M50.00,50.00 L51.58,57.15 L38.52,77.72 Z%22 fill=%22%23E9CC86%22/%3E%3Cpath d=%22M50.00,50.00 L43.82,53.94 L38.52,77.72 Z%22 fill=%22%239C7632%22/%3E%3Cpath d=%22M50.00,50.00 L46.06,56.18 L22.28,61.48 Z%22 fill=%22%23E9CC86%22/%3E%3Cpath d=%22M50.00,50.00 L42.85,48.42 L22.28,61.48 Z%22 fill=%22%239C7632%22/%3E%3Cpath d=%22M50.00,50.00 L42.85,51.58 L22.28,38.52 Z%22 fill=%22%23E9CC86%22/%3E%3Cpath d=%22M50.00,50.00 L46.06,43.82 L22.28,38.52 Z%22 fill=%22%239C7632%22/%3E%3Cpath d=%22M50.00,50.00 L43.82,46.06 L38.52,22.28 Z%22 fill=%22%23E9CC86%22/%3E%3Cpath d=%22M50.00,50.00 L51.58,42.85 L38.52,22.28 Z%22 fill=%22%239C7632%22/%3E%3Cpath d=%22M50.00,50.00 L51.06,39.75 L76.87,23.13 Z%22 fill=%22%23F0D894%22/%3E%3Cpath d=%22M50.00,50.00 L60.25,48.94 L76.87,23.13 Z%22 fill=%22%23A57D34%22/%3E%3Cpath d=%22M50.00,50.00 L60.25,51.06 L76.87,76.87 Z%22 fill=%22%23F0D894%22/%3E%3Cpath d=%22M50.00,50.00 L51.06,60.25 L76.87,76.87 Z%22 fill=%22%23A57D34%22/%3E%3Cpath d=%22M50.00,50.00 L48.94,60.25 L23.13,76.87 Z%22 fill=%22%23F0D894%22/%3E%3Cpath d=%22M50.00,50.00 L39.75,51.06 L23.13,76.87 Z%22 fill=%22%23A57D34%22/%3E%3Cpath d=%22M50.00,50.00 L39.75,48.94 L23.13,23.13 Z%22 fill=%22%23F0D894%22/%3E%3Cpath d=%22M50.00,50.00 L48.94,39.75 L23.13,23.13 Z%22 fill=%22%23A57D34%22/%3E%3Cpath d=%22M50.00,50.00 L60.00,42.00 L99.00,50.00 Z%22 fill=%22%23F6E2A6%22/%3E%3Cpath d=%22M50.00,50.00 L60.00,58.00 L99.00,50.00 Z%22 fill=%22%23B08638%22/%3E%3Cpath d=%22M50.00,50.00 L58.00,60.00 L50.00,99.00 Z%22 fill=%22%23F6E2A6%22/%3E%3Cpath d=%22M50.00,50.00 L42.00,60.00 L50.00,99.00 Z%22 fill=%22%23B08638%22/%3E%3Cpath d=%22M50.00,50.00 L40.00,58.00 L1.00,50.00 Z%22 fill=%22%23F6E2A6%22/%3E%3Cpath d=%22M50.00,50.00 L40.00,42.00 L1.00,50.00 Z%22 fill=%22%23B08638%22/%3E%3Cpath d=%22M50.00,50.00 L42.00,40.00 L50.00,1.00 Z%22 fill=%22%23F4C978%22/%3E%3Cpath d=%22M50.00,50.00 L58.00,40.00 L50.00,1.00 Z%22 fill=%22%239A5A22%22/%3E%3C/svg%3E");--lb-rhumb:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221600%22 height=%22120%22 viewBox=%220 0 1600 120%22%3E%3Cg stroke=%22%23E2C27A%22 stroke-opacity=%22.16%22 stroke-width=%221%22%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%22499%22 y2=%22-2294%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%22949%22 y2=%22-2157%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%221364%22 y2=%22-1936%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%221728%22 y2=%22-1637%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%222027%22 y2=%22-1273%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%222248%22 y2=%22-858%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%222385%22 y2=%22-408%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%222431%22 y2=%2260%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%222385%22 y2=%22528%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%222248%22 y2=%22978%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%222027%22 y2=%221393%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%221728%22 y2=%221757%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%221364%22 y2=%222056%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%22949%22 y2=%222277%22/%3E%3Cline x1=%2231%22 y1=%2260%22 x2=%22499%22 y2=%222414%22/%3E%3C/g%3E%3C/svg%3E");--lb-rope:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22%3E%3Crect width=%2212%22 height=%228%22 fill=%22%235E4520%22/%3E%3Cg stroke-linecap=%22round%22%3E%3Cpath d=%22M-3 9 L5 -1 M3 9 L11 -1 M9 9 L17 -1%22 stroke=%22%23B38F4C%22 stroke-width=%223.6%22/%3E%3Cpath d=%22M-2.4 8 L4.6 -.6 M3.6 8 L10.6 -.6 M9.6 8 L16.6 -.6%22 stroke=%22%23D9BC7C%22 stroke-width=%221.1%22/%3E%3C/g%3E%3C/svg%3E")}
+.top{background-image:var(--lb-rope),var(--lb-rhumb),linear-gradient(rgba(255,226,170,.07),rgba(0,0,0,.28)),var(--lb-woodgrain-h),linear-gradient(#34261A,#22180F);
+  background-size:11px 7px,1600px 120px,auto,700px 120px,auto;background-position:0 100%,0 50%,0 0,0 0,0 0;background-repeat:repeat-x,no-repeat,no-repeat,repeat,no-repeat;
+  border-bottom:1px solid rgba(0,0,0,.65);padding-bottom:16px}
+.top .brand{position:relative;isolation:isolate}
+.top .brand::before{content:"";position:absolute;left:-10px;top:50%;width:54px;height:54px;transform:translateY(-50%);background:var(--lb-compass) center/contain no-repeat;z-index:-1;pointer-events:none;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.6))}
+.top .brand .jk-logo{filter:drop-shadow(0 0 2px rgba(0,0,0,.55));margin:0 8px 0 2px}
+@media (max-width:420px){.top .brand::before{left:-9px;width:46px;height:46px}.top .brand .jk-logo{margin:0 6px 0 2px}}
+
+/* ---------- v88: calmer stats. One colour per group (catch rust, conditions azure, activity gold), no icons in the tally,
+   one type scale, and the highlights as a tidy ledger grid ---------- */
+.statdlg .recin{--c-str:var(--c-fisk);--c-temp:var(--c-sikt);--c-dyb:var(--c-sikt);--c-dykk:var(--c-sett);--c-art:var(--c-sett);--c-folk:var(--c-sett)}
+.statdlg .stgrp{font:600 28px/1.15 var(--lb-fell);border-bottom:2px solid var(--ac);margin:36px 0 16px}
+.statdlg .stnav button:before{width:10px;height:10px;border-radius:50%}
+/* tally */
+.sthero .stk i,.stk span::before{display:none}
+.sthero .stk{padding:2px 16px 4px}
+.sthero .stk b,.stk b{font:600 46px/1.05 var(--lb-fell);margin:0}
+.sthero .stk4.sm .stk b,.stk4.sm .stk b{font-size:28px}
+.stk span{font:500 13.5px Barlow,sans-serif;color:var(--lb-t3);margin-top:4px}
+.sthero .stk4.sm{margin-top:12px;padding-top:12px}
+.sthero-h{margin-bottom:10px}
+@media (max-width:700px){.sthero .stk b,.stk b{font-size:36px}.sthero .stk4.sm .stk b,.stk4.sm .stk b{font-size:24px}.sthero .stk{padding:6px 10px 8px}}
+/* highlights: a ledger grid with thin rules, no orphans, one ink colour */
+.sthlg{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;background:var(--lb-bg1);border:1px solid var(--lb-line);border-radius:3px;overflow:hidden}
+.sthl{background:none;border:0;border-radius:0;padding:12px 16px 14px;box-shadow:1px 1px 0 var(--lb-line)}
+.sthl-l{font:500 13px Barlow,sans-serif;color:var(--lb-t3)}
+.sthl b{font:600 23px/1.25 var(--lb-fell);color:var(--lb-t1);margin:3px 0 2px;white-space:normal}
+.sthl-s{font-size:12.5px;color:var(--lb-t3)}
+@media (max-width:900px){.sthlg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.sthl{padding:10px 12px 12px}.sthl b{font-size:19px}}
+@media (max-width:340px){.sthlg{grid-template-columns:minmax(0,1fr)}}
+/* chart cards: same rhythm everywhere, bars in the group colour */
+.stc{border-top:2px solid var(--ac);padding:16px 18px 18px}
+.stc>h3{font:600 22px/1.2 var(--lb-fell)}
+.stlead{font-size:13.5px}
+.stc .h4{font:600 13.5px Barlow,sans-serif;color:var(--lb-t2);margin:18px 0 8px}
+.stc .hbars .ht i{background:var(--ac)!important}
+.stmini b{font:600 20px var(--lb-fell)}
+.stmini span{font:500 12px Barlow,sans-serif}
+/* the dive year cards use the same ledger look */
+.recdlg .ycards,.ycards{gap:0;background:var(--lb-bg1);border:1px solid var(--lb-line);border-radius:3px;overflow:hidden}
+.ycard{border:0;border-radius:0;background:none;padding:10px 14px 12px;box-shadow:1px 1px 0 var(--lb-line)}
+.ycard .yl{font:500 13px Barlow,sans-serif;color:var(--lb-t3)}
+.ycard b{font:600 21px/1.25 var(--lb-fell)}
+
 </style>
 </head>
 <body>
@@ -1549,7 +1596,7 @@ body:not(.mapmax) .layout{background:none}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v86 (Conditions)";
+const APP_VERSION="v88 (Calm stats)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -5397,9 +5444,9 @@ function renderStatDlg(){
       <div class="stk4 sm">${tile("👀",nSeen,"fish seen",C.sett)}${tile("🌫",vp.length?fnum(avg(vp.map(p=>p.vis)),1)+" m":"–","avg. visibility",C.sikt)}${tile("🌡",temps.length?fnum(avg(temps.map(l=>+l.temp)),1)+" °C":"–","avg. water temp.",C.temp)}${tile("⬇",deep?fnum(deep.depth,1)+" m":"–","deepest dive",C.dyb)}</div></div>
     ${hlHTML?`<h2 class="stgh">Highlights</h2><div class="sthlg">${hlHTML}</div>`:""}
     <div class="stnav" id="stNav"><button type="button" data-go="stg-fangst" style="--ac:${C.fisk}">Catch</button><button type="button" data-go="stg-forhold" style="--ac:${C.sikt}">Conditions</button><button type="button" data-go="stg-aktivitet" style="--ac:${C.dykk}">Activity</button></div>
-    <h2 class="stgrp" id="stg-fangst" style="--ac:${C.fisk}">🐟 Catch</h2><div class="stgrid">${fishCard}${sizeCard}</div>
-    <h2 class="stgrp" id="stg-forhold" style="--ac:${C.sikt}">🌊 Conditions</h2><div class="stgrid">${visCard}${tempCard}${depthCard}</div>
-    <h2 class="stgrp" id="stg-aktivitet" style="--ac:${C.dykk}">🤿 Activity</h2><div class="stgrid">${diveCard}${spCard}${folkCard}</div>`;
+    <h2 class="stgrp" id="stg-fangst" style="--ac:${C.fisk}">Catch</h2><div class="stgrid">${fishCard}${sizeCard}</div>
+    <h2 class="stgrp" id="stg-forhold" style="--ac:${C.sikt}">Conditions</h2><div class="stgrid">${visCard}${tempCard}${depthCard}</div>
+    <h2 class="stgrp" id="stg-aktivitet" style="--ac:${C.dykk}">Activity</h2><div class="stgrid">${diveCard}${spCard}${folkCard}</div>`;
   wireStatHead();
   $("#stY").onclick=e=>{const b=e.target.closest("[data-y]");if(!b)return;S.stYear=b.dataset.y;renderStatDlg()};
   const sp=$("#stSp");if(sp)sp.onclick=e=>{const b=e.target.closest("[data-sp]");if(!b)return;S.stSp=b.dataset.sp;renderStatDlg()};
