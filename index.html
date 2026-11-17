@@ -1413,6 +1413,16 @@ body:not(.mapmax) .layout{background:none}
 .mf-votesec .mf-cands.mf-nopic .mf-cand{max-width:none}
 .mf-winner>div:not(:has(.mf-pic)){grid-template-columns:1fr;padding:12px 16px}
 
+/* ---------- v85: every month is its own framed box again (no joined bars); the bright frame stays only on good/top this month ---------- */
+:root{--lv2o:#A7C3BB}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--lv2o:#46788A}}
+:root[data-theme="dark"]{--lv2o:#46788A}
+.sbx.jl,.sbx.jr{border-radius:2px;margin-right:0;--bl:1px;--br:1px}
+.sbx,.sbx.l0,.sbx.l0.now{box-shadow:inset 0 0 0 1px rgba(var(--lb-hi),.13)}
+.sbx.l1,.sbx.l1.now{box-shadow:inset 0 0 0 1px rgba(var(--lb-hi),.22)}
+.sbx.l2,.sbx.l2.now{box-shadow:inset 0 0 0 1px var(--lv2o)}
+.sbx.fr,.sbx.fr.l1,.sbx.fr.l2,.sbx.fr.l3,.sbx.fr.l4,.sbx.fr.now{box-shadow:inset 0 0 0 1px rgba(var(--lb-red3),.75)}
+
 </style>
 </head>
 <body>
@@ -1525,7 +1535,7 @@ body:not(.mapmax) .layout{background:none}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v84 (Extras)";
+const APP_VERSION="v85 (Framed boxes)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
