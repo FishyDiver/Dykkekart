@@ -1423,6 +1423,20 @@ body:not(.mapmax) .layout{background:none}
 .sbx.l2,.sbx.l2.now{box-shadow:inset 0 0 0 1px var(--lv2o)}
 .sbx.fr,.sbx.fr.l1,.sbx.fr.l2,.sbx.fr.l3,.sbx.fr.l4,.sbx.fr.now{box-shadow:inset 0 0 0 1px rgba(var(--lb-red3),.75)}
 
+/* ---------- v86: "Conditions through the year" is easy to find: shown by default with a title, and a big bar when hidden ---------- */
+.sc-envhead{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin:10px 0 8px}
+.sc-envhead b{font:600 21px/1.2 var(--lb-fell);color:var(--lb-t1)}
+.sc-envhead span{color:var(--lb-t3);font-size:13.5px}
+.sc-envhead .sc-envtog{margin-left:auto;font-size:13.5px}
+.sc-envbar{display:flex;align-items:center;gap:14px;width:100%;margin:10px 0 12px;padding:14px 18px;border:1px solid var(--lb-brass);border-radius:4px;background:linear-gradient(90deg,rgba(var(--lb-sea3),.18),rgba(var(--lb-sea3),.04));color:var(--lb-t1);cursor:pointer;text-align:left;font:inherit}
+.sc-envbar:hover{background:rgba(var(--lb-sea3),.24)}
+.sc-envbar svg{flex:none;color:var(--lb-sea)}
+.sc-envbar b{display:block;font:600 20px/1.2 var(--lb-fell)}
+.sc-envbar small{display:block;color:var(--lb-t3);font-size:13.5px;margin-top:2px}
+.sc-envbar i{margin-left:auto;font-style:normal;font-weight:600;color:var(--lb-link);white-space:nowrap}
+#seaO [data-o="env"].on{background:var(--lb-sea);border-color:var(--lb-sea);color:var(--lb-bg0)}
+@media (max-width:700px){.sc-envbar{padding:12px 14px;gap:10px}.sc-envbar svg{width:28px;height:28px}.sc-envbar b{font-size:17px}.sc-envhead span{flex-basis:100%;order:3}}
+
 </style>
 </head>
 <body>
@@ -1535,7 +1549,7 @@ body:not(.mapmax) .layout{background:none}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v85 (Framed boxes)";
+const APP_VERSION="v86 (Conditions)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -5580,7 +5594,7 @@ function ownSplit(sp,rid){rid=rid||curRegion();const all=Array(12).fill(0),got=A
 function scFindChart(lv,sp,gmax){const o=ownSplit(sp),cm=new Date().getMonth(),mx=Math.max(1,gmax||Math.max(...o.all)),BH=30;
   const cols=o.all.map((v,m)=>`<div class="sc-fb${m===cm?" now":""}" title="${esc(`${spn(sp)}, ${MNS[m]}: ${v?`${v} ${v===1?"record":"records"}${o.got[m]?` (${o.got[m]} caught)`:""}`:"no finds"}`)}">${v?`<b>${v}</b><i style="height:${Math.max(3,Math.round(v/mx*BH))}px"></i>`:""}</div>`).join("");
   return `<div class="sc-fbars${o.n?"":" none"}" data-sp="${esc(sp)}">${cols}${o.n?"":`<span class="sc-fnone">No finds recorded yet</span>`}</div>`}
-S.scOpt=Object.assign({own:false,env:false},lsGet("dk-sc")||{});
+S.scOpt=Object.assign({own:false,env:true},lsGet("dk-sc")||{});if(!S.scOpt.envv){S.scOpt.env=true;S.scOpt.envv=1;try{lsSet("dk-sc",S.scOpt)}catch(e){}} // v86: conditions shown by default
 function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wrap.scrollTop;
   const now=new Date(),cm=now.getMonth(),ed=S.seaEdit,O=S.scOpt;
   const sps=seaSpecies(),data={};for(const sp of sps){const v=seaLevels(sp);data[sp]=ed&&ed[sp]?Object.assign({},v,ed[sp]):v}
@@ -5598,7 +5612,8 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   let env="";
   if(O.env){const logs=(S.allLogs||[]).filter(l=>siteRegionId(l.site_id)===rid),vp=visPoints(logs,(S.reports||[]).filter(q=>siteRegionId(q.site_id)===rid)),vs=Array(12).fill(0),vn=Array(12).fill(0);for(const q of vp){vs[q.month]+=q.vis;vn[q.month]++}
     const ts=Array(12).fill(0),tn=Array(12).fill(0);for(const l of logs)if(l.temp!=null&&l.date){const m=+l.date.slice(5,7)-1;ts[m]+=+l.temp;tn[m]++}
-    env=`<div class="sc-envblock">${envCurvesHTML(dl,ts.map((s2,i)=>tn[i]?s2/tn[i]:null),vs.map((s2,i)=>vn[i]?s2/vn[i]:null),tn,vn,cm)}</div>`}
+    env=`<div class="sc-envblock"><div class="sc-envhead"><b>Conditions through the year</b><span>Daylight, water temperature and visibility, month by month</span><button type="button" class="linkbtn sc-envtog">Hide</button></div>${envCurvesHTML(dl,ts.map((s2,i)=>tn[i]?s2/tn[i]:null),vs.map((s2,i)=>vn[i]?s2/vn[i]:null),tn,vn,cm)}</div>`}
+  else if(!ed)env=`<button type="button" class="sc-envbar sc-envtog"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17c3-6 6-9 9-9s5 3 9 1"/><path d="M3 21h18"/><circle cx="18" cy="4.5" r="2"/></svg><span><b>Conditions through the year</b><small>Daylight, water temperature and visibility, month by month</small></span><i>Show ›</i></button>`;
   const mname=now.toLocaleDateString("en-GB",{month:"long"}),Mname=mname[0].toUpperCase()+mname.slice(1);
   // species rows
   let rows="",lastG=null,zebra=0,gmax=null;
@@ -5633,6 +5648,7 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   $("#seaF").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.f)S.seaFilter=b.dataset.f;if(b.dataset.s)S.seaSort=S.seaSort==="naa"?"gruppe":"naa";renderSeason()};
   $("#seaO").onclick=e=>{const b=e.target.closest("[data-o]");if(!b)return;O[b.dataset.o]=!O[b.dataset.o];lsSet("dk-sc",O);
     if(b.dataset.o==="env"&&O.env&&S.allLogs==null)cachedQ("alllogs",sb.from("logs").select("*")).then(a2=>{if(!a2.error)S.allLogs=a2.data;if(S.seaOpen)renderSeason()});renderSeason()};
+  wrap.querySelectorAll(".sc-envtog").forEach(b=>b.onclick=()=>{O.env=!O.env;lsSet("dk-sc",O);renderSeason()});
   const toggleSp=(sp,force)=>{if(S.seaEdit)return;S.seaOpenSp=force||S.seaOpenSp!==sp?sp:null;renderSeason();
     if(S.seaOpenSp){const r=[...wrap.querySelectorAll(".sc-row.open")][0];if(r){const det=r.nextElementSibling,bx=(det||r).getBoundingClientRect(),wb=wrap.getBoundingClientRect();if(force||bx.bottom>wb.bottom-10||r.getBoundingClientRect().top<wb.top+110)r.scrollIntoView({block:"center",behavior:"smooth"})}}};
   wrap.querySelectorAll(".sc-lab[data-sp]").forEach(b=>b.onclick=()=>toggleSp(b.dataset.sp));
