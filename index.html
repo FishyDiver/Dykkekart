@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-title" content="Jaktkart">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Source+Serif+4:wght@400;600&family=Young+Serif&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
@@ -1484,6 +1484,47 @@ body:not(.mapmax) .layout{background:none}
 .ycard .yl{font:500 13px Barlow,sans-serif;color:var(--lb-t3)}
 .ycard b{font:600 21px/1.25 var(--lb-fell)}
 
+/* ---------- v91: titles in Young Serif, and every page/panel opens under the same wooden beam as the header ---------- */
+:root{--lb-title:"Young Serif","Source Serif 4",Georgia,serif;
+  --lb-band:var(--lb-rope),linear-gradient(rgba(255,226,170,.07),rgba(0,0,0,.28)),var(--lb-woodgrain-h),linear-gradient(#34261A,#22180F);
+  --lb-band-size:11px 7px,auto,700px 120px,auto;--lb-band-pos:0 100%,0 0,0 0,0 0;--lb-band-rep:repeat-x,no-repeat,repeat,no-repeat}
+h1,h2,h3,.top .brand h1,.dextop h2,.recdlg .dextop h2,.dexdlg.statdlg .dextop h2,.seadlg .dextop h2,.stgrp,.statdlg .stgrp,.stc>h3,.sthero-h b,.stgh,.dexsec h3,.mf-sec h3,
+.sc-envhead b,.sc-envbar b,.dexcard h3,.sc-nowm b,.mf-nav b,.yrhero h3,.recdlg .rsec h3,.recdlg .rsec>h3,.actph b,.panel h2,.panel h3,.dexteaser .dtt b,.mf-dh b,.mf-winner b,
+.dexdlg .dcard .dtx b,.mf-votesec .mf-ci b{font-family:var(--lb-title)!important;font-weight:400!important;letter-spacing:0}
+/* dialog title band */
+.dexdlg .dextop,.seadlg .dextop,.recdlg .dextop,.dexdlg.statdlg .dextop{background-color:#2C1F14;background-image:var(--lb-band);background-size:var(--lb-band-size);background-position:var(--lb-band-pos);background-repeat:var(--lb-band-rep);
+  border-bottom:0;margin:0 -28px 16px;padding:14px 28px 21px;box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.dextop h2,.recdlg .dextop h2,.dexdlg.statdlg .dextop h2,.seadlg .dextop h2{color:#F1E7CF;font-size:34px}
+.dextop .dexsub{color:#CDB98F}
+.dextop .dexclose,.recdlg .dextop .dexclose,.dexdlg.statdlg .dextop .dexclose{border-color:#C9A35E;color:#F1E7CF;background:rgba(0,0,0,.22)}
+.dextop .dexclose:hover{background:rgba(201,163,94,.25)}
+.seadlg .dexin.sc{padding-top:0}
+.seadlg .sc-head{top:72px}
+@media (max-width:700px){.seadlg .sc-head{top:0}}
+.seadlg .dextop{margin:0 -26px 16px;padding-left:26px;padding-right:26px}
+@media (max-width:700px){.dexdlg .dextop,.seadlg .dextop,.recdlg .dextop,.dexdlg.statdlg .dextop{margin:0 -14px 14px;padding:12px 14px 19px}.dextop h2,.recdlg .dextop h2,.dexdlg.statdlg .dextop h2,.seadlg .dextop h2{font-size:28px}}
+/* side panel: the way back is a sticky wooden bar that stays at the top while you scroll */
+.panel>.back{position:sticky;top:-12px;z-index:8;display:flex;align-items:center;justify-content:flex-start;gap:6px;width:calc(100% + 40px);box-sizing:border-box;margin:-12px -20px 14px;padding:11px 56px 17px 20px;border:0;border-radius:0;
+  background-color:#2C1F14;background-image:var(--lb-band);background-size:var(--lb-band-size);background-position:var(--lb-band-pos);background-repeat:var(--lb-band-rep);
+  color:#F1E7CF;font:600 15px Barlow,sans-serif;box-shadow:0 3px 8px rgba(0,0,0,.22)}
+.panel>.back:hover{color:#fff;background-color:#3a2a1b;filter:brightness(1.12)}
+#minSide{z-index:1301}
+/* the Catch of the month shortcut in the map bar belongs to the full-screen map only */
+body:not(.mapmax) #mndBar{display:none!important}
+
+/* v91: dive-year card on the start page, a small plaque with this year's dives per month */
+.yrteaser{position:relative;display:block;width:100%;text-align:left;margin:0 0 14px;padding:12px 14px 12px;cursor:pointer;font:inherit;
+  --lb-t1:#F1E7CF;--lb-t3:#B9C9C2;color:#F1E7CF;border:1px solid #8A6A26;border-radius:3px;
+  background:radial-gradient(130% 160% at 50% 0%,var(--lb-plq-hi) 0%,var(--lb-plq) 55%,var(--lb-plq-lo) 100%);
+  box-shadow:inset 0 0 0 3px var(--lb-plq),inset 0 0 0 4px rgba(221,184,102,.7)}
+.yrteaser:hover{filter:brightness(1.08)}
+.yrteaser .dcta{position:absolute;right:14px;top:12px;font-size:13px;font-weight:600;color:#DDB866}
+.yrteaser .yt-t b{display:block;font:400 22px/1.15 var(--lb-title);color:#F1E7CF;padding-right:90px}
+.yrteaser .yt-n{display:block;margin-top:4px;font-size:13.5px;color:#B9C9C2}.yrteaser .yt-n b{color:#F1E7CF}
+.yrteaser .yt-bars{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;align-items:end;height:30px;margin-top:10px}
+.yrteaser .yt-bars i{display:block;background:#DDB866;border-radius:1px;opacity:.85}
+.yrteaser .yt-bars i.now{background:#F1E7CF;opacity:1}.yrteaser .yt-bars i.fut{opacity:.2}
+
 </style>
 </head>
 <body>
@@ -1596,7 +1637,7 @@ body:not(.mapmax) .layout{background:none}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v90 (Discipline check)";
+const APP_VERSION="v91 (Wood bands)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -1789,14 +1830,15 @@ async function liveClick(ll){
 
 /* ---------- tabs & image charts ---------- */
 function renderTabs(){
-  $("#tabs").innerHTML=[LIVE,...S.charts].map(c=>`<button class="tab ${c.id===S.active?"on":""}" data-id="${esc(c.id)}">${esc(c.name)}</button>`).join("");
+  /* v91: with only the sea chart there is nothing to switch between, so no tab is shown */
+  $("#tabs").innerHTML=!S.charts.length?"":[LIVE,...S.charts].map(c=>`<button class="tab ${c.id===S.active?"on":""}" data-id="${esc(c.id)}">${esc(c.name)}</button>`).join("");
   fitHdr();
 }
 /* header: hide the least important labels/buttons, step by step, until the active chart tab fits */
 const HK=["hk1","hka","hk2","hs1","hs2","hs3","hs4","hk3","hk4","hk5","hk6","hk7","hk8","hk9"];
 function fitHdr(){try{const h=$("header.top"),t=$("#tabs");if(!h||!t)return;HK.forEach(c=>h.classList.remove(c));if(!h.offsetParent)return;
   const a=t.querySelector(".tab.on")||t.querySelector(".tab");const need=()=>Math.min(t.scrollWidth,Math.max(a?a.offsetWidth:0,72));
-  for(const c of HK){if(t.clientWidth>=need())break;h.classList.add(c)}
+  for(const c of HK){if(t.clientWidth>=need()&&h.scrollWidth<=h.clientWidth+1)break;h.classList.add(c)}
   if(a){const tr=t.getBoundingClientRect(),ar=a.getBoundingClientRect();if(ar.left<tr.left)t.scrollLeft+=ar.left-tr.left-4;else if(ar.right>tr.right)t.scrollLeft+=ar.right-tr.right+6}tabsMore()}catch(e){}}
 function tabsMore(){const t=$("#tabs");if(t)t.classList.toggle("more",t.scrollLeft+t.clientWidth<t.scrollWidth-4)}
 {let q=0;const fh=()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;fitHdr()})};
@@ -1889,7 +1931,7 @@ function renderFrames(){
 /* ---------- panel ---------- */
 function renderPanel(){if(S.view==="list")renderListView();else if(S.view==="site")renderSiteView();else if(S.view==="area")renderAreaView();}
 function renderListView(){
-  panel.innerHTML=`<div id="bestDive"></div><div id="highlights"></div><div id="dexTeaser"></div>
+  panel.innerHTML=`<div id="bestDive"></div><div id="highlights"></div><div id="dexTeaser"></div><div id="yearTeaser"></div>
     <div class="lhead"><div class="lhead-t"><h2 id="lTitle"></h2><p class="sub" id="lSub"></p><p class="lvis" id="lVis"></p></div>
 </div>
     <p class="small" id="condNote" style="margin:4px 0 0"></p>
@@ -1938,7 +1980,7 @@ function openSite(id){S.siteFrom=S.siteFromNext||null;S.siteFromNext=null;setTim
 async function loadLogs(id){const {data,error}=await cachedQ("logs:"+id,sb.from("logs").select("*").eq("site_id",id));if(error||S.logsFor!==id)return;
   S.logs=data.sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.created_at||"").localeCompare(a.created_at||""));renderLogs();renderStats();renderSpecies();renderVisStats()}
 function renderSiteView(){
-  panel.innerHTML=`<button class="btn ghost back" id="back">${S.siteFrom==="records"?"‹ Back to records":"All sites"}</button><div id="siteBody"></div>
+  panel.innerHTML=`<button class="btn ghost back" id="back">${S.siteFrom==="records"?"‹ Back to records":"‹ All sites"}</button><div id="siteBody"></div>
   <div id="stats"></div><div id="visStats"></div><div id="speciesBox"></div>
   <div class="logs"><h3>Dive log</h3>${logFormHTML()}<div id="logList"></div></div><div id="siteActions"></div>`;
   $("#back").onclick=()=>{if(S.editLog)cancelEditLog();if(S.siteFrom==="records"){S.siteFrom=null;S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel();openRecords();return}S.view="list";S.sel=null;S.logsFor=null;renderPins();renderPanel()};
@@ -2153,6 +2195,7 @@ $("#menuBtn").onclick=async()=>{await loadMembers();renderMenu();mdlg.showModal(
 function renderMenu(){
   const admin=S.me.role==="admin";
   $("#menuBody").innerHTML=`<h2>Menu</h2><p class="small" style="margin:0">Version ${APP_VERSION}</p><p>Logged in as <b>${esc(S.me.name)}</b> (${esc(S.user.email)})</p>
+  <div class="menu-sec"><h3>Your dive year</h3><p class="small" style="margin:0 0 8px">Look back at your dives, catches and best moments this year, and replay the year on the map.</p><button class="btn primary" id="mYear">Open your dive year</button></div>
   <div class="menu-sec fg-menu"><h3>SeaHunter</h3><p class="small" style="margin:0 0 8px">A small freediving game: swim from the kelp forest to the sandy bottom and look for fish. Four levels.${typeof fgBestTxt==="function"&&fgBestTxt()?` Records: <b>${esc(fgBestTxt())}</b>.`:""}</p><button class="btn primary" id="mGame">Play</button></div>
   <div class="menu-sec"><h3>Your name</h3><form class="f" id="mName" style="display:flex;gap:8px"><input type="text" id="mNameIn" value="${esc(S.me.name)}" required><button class="btn">Save</button></form><p class="small" style="margin:6px 0 0">If you change it, your dives, catches, votes and game scores move to the new name, and the old name disappears.</p></div>
   <div class="menu-sec"><h3>Members</h3>${S.members.map(m=>`<div class="mrow"><span>${esc(m.name||"(no name)")}<br><small>${esc(m.email)}${m.role==="admin"?", administrator":""}</small></span>${admin&&m.email.toLowerCase()!==S.user.email.toLowerCase()?`<button class="btn ghost danger" data-rm="${esc(m.email)}">Remove</button>`:""}</div>`).join("")}
@@ -2169,6 +2212,7 @@ function renderMenu(){
   <div class="err" id="mErr"></div>
   <div class="formbtns"><button class="btn" id="mOut">Log out</button><button class="btn ghost" id="mClose">Close</button></div>`;
   $("#mClose").onclick=()=>mdlg.close();
+  $("#mYear").onclick=()=>{mdlg.close();openDiveYear()};
   $("#mOut").onclick=async()=>{mdlg.close();await sb.auth.signOut();location.reload()};
   $("#mName").onsubmit=async e=>{e.preventDefault();const n=$("#mNameIn").value.trim(),old=(S.me.name||"").trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error){$("#mErr").textContent=errMsg(error);return}
     S.me.name=n;const r=old&&old.toLowerCase()!==n.toLowerCase()?await mergeNames(old,n):null;await loadMembers();renderMenu();
@@ -2451,7 +2495,7 @@ function zoomToArea(a){if(!isLive())switchChart("live");try{if(isPoint(a.geom)){
   S.lmap.fitBounds(L.geoJSON(a.geom).getBounds(),{maxZoom:16,padding:[30,30]})}catch(e){}}
 function renderAreaView(){
   const a0=S.areas.find(x=>x.id===S.selArea),bs=(S.areaFrom&&getSite(S.areaFrom))||(a0&&a0.siteId&&getSite(a0.siteId))||null;
-  panel.innerHTML=`<button class="btn ghost back" id="back">${bs?"‹ Back to "+esc(bs.name):"All sites"}</button><div id="areaBody"></div>`;
+  panel.innerHTML=`<button class="btn ghost back" id="back">${bs?"‹ Back to "+esc(bs.name):"‹ All sites"}</button><div id="areaBody"></div>`;
   $("#back").onclick=()=>{cancelShapeEdit();if(bs){openSite(bs.id)}else{S.view="list";S.selArea=null;renderAreas();renderPanel()}};
   renderAreaBody();
 }
@@ -4689,7 +4733,20 @@ function highlightItems(){
   let items=pick(60);if(items.length<3)items=pick(365);
   return items.sort((a,b)=>String(b.c.date).localeCompare(String(a.c.date))||String(b.c.created_at||"").localeCompare(String(a.c.created_at||""))).slice(0,10);
 }
-function renderDexTeaser(){const el=$("#dexTeaser");if(!el)return;syncDexBtn();if(!S.catches.length){el.innerHTML="";return}const d=dexData();
+/* v91: "Your dive year" gets its own card on the start page, so it's easy to find */
+function openDiveYear(){S.statTab="aar";openStats()}
+function renderYearTeaser(){const el=$("#yearTeaser");if(!el)return;
+  if(S.allLogs==null){el.innerHTML="";if(!S._yrLoading){S._yrLoading=1;cachedQ("alllogs",sb.from("logs").select("*")).then(a=>{if(!a.error)S.allLogs=a.data;if(S.view==="list")renderYearTeaser()}).catch(()=>{})}return}
+  const Y=String(new Date().getFullYear()),me=S.me.name||"";
+  const logs=S.allLogs.filter(l=>(l.date||"").startsWith(Y)&&(l.author===S.user.id||l.author_name===me||(l.buddies||[]).includes(me)));
+  const caught=S.catches.filter(c=>c.kind==="fanget"&&(c.date||"").startsWith(Y)&&(catcherName(c)===me||(!caughtBy(c)&&c.author===S.user.id)));
+  const sp=new Set(caught.map(c=>c.species)).size,big=caught.filter(c=>c.weight_kg!=null||c.size_cm!=null).sort((a,b)=>bigger(a,b)?-1:bigger(b,a)?1:0)[0];
+  const pm=Array(12).fill(0);for(const l of logs){const m=+String(l.date).slice(5,7)-1;if(m>=0&&m<12)pm[m]++}const mx=Math.max(1,...pm),cm=new Date().getMonth();
+  el.innerHTML=`<button class="yrteaser" id="yrGo" aria-label="Open your dive year ${Y}"><span class="dcta">Look back ›</span><span class="yt-t"><b>Your dive year ${Y}</b></span>
+    <span class="yt-n">${logs.length?`<b>${logs.length}</b> ${logs.length===1?"dive":"dives"} · <b>${sp}</b> ${sp===1?"species":"species"} caught${big?` · biggest: ${esc(spn(big.species).toLocaleLowerCase("en-GB"))} ${esc(measureTxt(big))}`:""}`:"No dives logged yet this year. Your year fills up here as you log."}</span>
+    <span class="yt-bars" aria-hidden="true">${pm.map((v,m)=>`<i class="${m===cm?"now":""}${m>cm?" fut":""}" style="height:${v?Math.max(18,Math.round(v/mx*100)):6}%"></i>`).join("")}</span></button>`;
+  $("#yrGo").onclick=openDiveYear}
+function renderDexTeaser(){renderYearTeaser();const el=$("#dexTeaser");if(!el)return;syncDexBtn();if(!S.catches.length){el.innerHTML="";return}const d=dexData();
   const recent=Object.values(d.by).sort((a,b)=>catchSort(b.first,a.first)).slice(0,5);const pct=Math.round(d.found/Math.max(1,d.total)*100);
   el.innerHTML=`<button class="dexteaser" id="dexGo" aria-label="Open the species dex"><span class="dcta">Open ›</span><span class="dtt"><b>Species dex</b><span>${d.found} of ${d.total} species</span></span><span class="dexbar"><i style="width:${pct}%"></i></span><span class="drow">${recent.map(o=>`<span class="dround">${spPic(o.sp,{own:o.photo&&o.photo.photo_path})}</span>`).join("")}</span></button>`;
   const g=$("#dexGo");g.onclick=()=>openDex();if(S.spPick==null&&!S._pickLoading){S._pickLoading=1;loadSpPick().then(()=>{if(S.view==="list")renderDexTeaser()})}
