@@ -1394,6 +1394,25 @@ body:not(.mapmax) .layout{background:none}
 @media (max-width:560px){.mf-votesec .mf-cands{grid-template-columns:minmax(0,1fr)}.mf-side .mf-kpis{grid-template-columns:repeat(2,1fr)}.mf-side .mf-kpis div:nth-child(3){border-left:0}.mf-side .mf-kpis div:nth-child(n+3){border-top:1px solid rgba(221,184,102,.22)}.mf-winner>div{grid-template-columns:1fr}}
 .sthl b{font-size:26px}
 
+/* ---------- v81: season colours as one sea ramp. hard = faint, possible = deep sea, good = dark cyan, top = kelp green.
+   In the dark the ramp gets brighter towards top, on paper it gets stronger (darker) towards top. ---------- */
+:root{--lv2:#C6D9D3;--lv2p:#C6D9D3;--lv3:#3F9799;--lv3o:#2F7C7E;--lv4:#4A8433;--lv4o:#386826;
+  --sc-k4:#4A8433;--sc-k3:#2F7C7E;--sc-b4bg:rgba(74,132,51,.14);--sc-b4tx:#3F7529;--sc-b3bg:rgba(63,151,153,.14);--sc-b3tx:#2C7375;--sc-line:#4A8433;
+  --sc-c1:#C6D9D3;--sc-c2:#3F9799;--sc-c3:#4A8433}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--lv2:#2B5260;--lv2p:#2B5260;--lv3:#1F8A90;--lv3o:#3AA3A8;--lv4:#9ED98A;--lv4o:#C4EDB4;
+  --sc-k4:#9ED98A;--sc-k3:#5CC3C8;--sc-b4bg:rgba(158,217,138,.14);--sc-b4tx:#9ED98A;--sc-b3bg:rgba(92,195,200,.14);--sc-b3tx:#5CC3C8;--sc-line:#9ED98A;
+  --sc-c1:#2B5260;--sc-c2:#1F8A90;--sc-c3:#9ED98A}}
+:root[data-theme="dark"]{--lv2:#2B5260;--lv2p:#2B5260;--lv3:#1F8A90;--lv3o:#3AA3A8;--lv4:#9ED98A;--lv4o:#C4EDB4;
+  --sc-k4:#9ED98A;--sc-k3:#5CC3C8;--sc-b4bg:rgba(158,217,138,.14);--sc-b4tx:#9ED98A;--sc-b3bg:rgba(92,195,200,.14);--sc-b3tx:#5CC3C8;--sc-line:#9ED98A;
+  --sc-c1:#2B5260;--sc-c2:#1F8A90;--sc-c3:#9ED98A}
+.sc-now{--lv3:#1F8A90;--lv4:#9ED98A}
+.sc-nowl .k.t{color:#9ED98A}.sc-nowl .k.g{color:#5CC3C8}
+
+/* v82: catches without a photo are shown as text cards after the photo cards */
+.mf-votesec .mf-cands.mf-nopic{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin-top:14px}
+.mf-votesec .mf-cands.mf-nopic .mf-cand{max-width:none}
+.mf-winner>div:not(:has(.mf-pic)){grid-template-columns:1fr;padding:12px 16px}
+
 </style>
 </head>
 <body>
@@ -1506,7 +1525,7 @@ body:not(.mapmax) .layout{background:none}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v80 (Clear type)";
+const APP_VERSION="v83 (Name merge)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -2064,10 +2083,10 @@ function renderMenu(){
   const admin=S.me.role==="admin";
   $("#menuBody").innerHTML=`<h2>Menu</h2><p class="small" style="margin:0">Version ${APP_VERSION}</p><p>Logged in as <b>${esc(S.me.name)}</b> (${esc(S.user.email)})</p>
   <div class="menu-sec fg-menu"><h3>SeaHunter</h3><p class="small" style="margin:0 0 8px">A small freediving game: swim from the kelp forest to the sandy bottom and look for fish. Four levels.${typeof fgBestTxt==="function"&&fgBestTxt()?` Records: <b>${esc(fgBestTxt())}</b>.`:""}</p><button class="btn primary" id="mGame">Play</button></div>
-  <div class="menu-sec"><h3>Your name</h3><form class="f" id="mName" style="display:flex;gap:8px"><input type="text" id="mNameIn" value="${esc(S.me.name)}" required><button class="btn">Save</button></form></div>
+  <div class="menu-sec"><h3>Your name</h3><form class="f" id="mName" style="display:flex;gap:8px"><input type="text" id="mNameIn" value="${esc(S.me.name)}" required><button class="btn">Save</button></form><p class="small" style="margin:6px 0 0">If you change it, your dives, catches, votes and game scores move to the new name, and the old name disappears.</p></div>
   <div class="menu-sec"><h3>Members</h3>${S.members.map(m=>`<div class="mrow"><span>${esc(m.name||"(no name)")}<br><small>${esc(m.email)}${m.role==="admin"?", administrator":""}</small></span>${admin&&m.email.toLowerCase()!==S.user.email.toLowerCase()?`<button class="btn ghost danger" data-rm="${esc(m.email)}">Remove</button>`:""}</div>`).join("")}
   ${admin?`<form class="f" id="mAdd"><label for="mEmail">Invite a dive buddy (e-mail)</label><div style="display:flex;gap:8px"><input type="text" id="mEmail" inputmode="email" required placeholder="buddy@email.com"><button class="btn primary">Add</button></div></form>
-  <p class="small">Then send them the link to this page: <b>${esc(location.origin+location.pathname)}</b>. They tap “First time? Create an account” and use the e-mail you added.</p>`:""}</div>
+  <p class="small">Then send them the link to this page: <b>${esc(location.origin+location.pathname)}</b>. They tap “First time? Create an account” and use the e-mail you added.</p><form class="f" id="mMerge" style="margin-top:14px"><label for="mMgOld">Merge two names</label><p class="small" style="margin:0 0 6px">For someone who changed their name, or a name typed in two ways. Everything under the old name (dives, dive buddies, catches, “caught by”, visibility, votes, game scores) moves to the new name, and the old name disappears.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="mMgOld" list="mMgList" required placeholder="Old name" style="flex:1;min-width:130px"><input type="text" id="mMgNew" list="mMgList" required placeholder="New name" style="flex:1;min-width:130px"><button class="btn">Merge</button></div><datalist id="mMgList">${allNamesSeen().map(x=>`<option value="${esc(x)}">`).join("")}</datalist></form>`:""}</div>
   <div class="menu-sec"><h3>Charts</h3><p class="small" style="margin:0 0 8px">Add your own chart image (screenshot or QGIS export) as an extra tab.</p><button class="btn" id="mChart">New chart</button></div>
   <div class="menu-sec"><h3>App</h3>${isStandalone()?`<p class="small" style="margin:0">You are using the app version.</p>`:installEvt?`<p class="small" style="margin:0 0 8px">Add Jaktkart to the home screen as an app.</p><button class="btn primary" id="mInstall">Install app</button>`:isIOS()?`<p class="small" style="margin:0">iPhone: open the page in Safari, tap the Share button (square with an arrow up) and choose “Add to Home Screen”.</p>`:`<p class="small" style="margin:0">Android: open the page in Chrome, tap ⋮ and choose “Install app” or “Add to Home screen”.</p>`}</div>
   <div class="menu-sec"><h3>Export</h3><p class="small" style="margin:0 0 8px">All sites with coordinates as GPX, for GPS, OsmAnd or Google Earth.</p><button class="btn" id="mGpx">Download GPX</button></div>
@@ -2080,7 +2099,13 @@ function renderMenu(){
   <div class="formbtns"><button class="btn" id="mOut">Log out</button><button class="btn ghost" id="mClose">Close</button></div>`;
   $("#mClose").onclick=()=>mdlg.close();
   $("#mOut").onclick=async()=>{mdlg.close();await sb.auth.signOut();location.reload()};
-  $("#mName").onsubmit=async e=>{e.preventDefault();const n=$("#mNameIn").value.trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error)$("#mErr").textContent=errMsg(error);else{S.me.name=n;await loadMembers();renderMenu()}};
+  $("#mName").onsubmit=async e=>{e.preventDefault();const n=$("#mNameIn").value.trim(),old=(S.me.name||"").trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error){$("#mErr").textContent=errMsg(error);return}
+    S.me.name=n;const r=old&&old.toLowerCase()!==n.toLowerCase()?await mergeNames(old,n):null;await loadMembers();renderMenu();
+    if(r&&r.err)$("#mErr").textContent="Your name is saved, but the old entries still say "+old+". "+r.err;else if(r&&r.n)toast(`Name saved. ${r.n} ${r.n===1?"entry":"entries"} moved from ${old} to ${n}.`);else toast("Name saved")};
+  const mg=$("#mMerge");if(mg)mg.onsubmit=async e=>{e.preventDefault();const o=$("#mMgOld").value.trim(),n=$("#mMgNew").value.trim();$("#mErr").textContent="";
+    if(!o||!n||o.toLowerCase()===n.toLowerCase()){$("#mErr").textContent="Choose two different names.";return}
+    if(!confirm(`Move everything registered as "${o}" to "${n}"? "${o}" disappears from all lists. This can't be undone.`))return;
+    const r=await mergeNames(o,n);if(r.err){$("#mErr").textContent=r.err;return}toast(r.n?`${r.n} ${r.n===1?"entry":"entries"} moved from ${o} to ${n}`:`Nothing was registered as ${o}`);renderMenu()};
   $("#mGpx").onclick=downloadGpx;
   $("#mGame").onclick=()=>{mdlg.close();openGame()};
 $("#mChart").onclick=()=>{mdlg.close();openChartDlg(null)};
@@ -2167,6 +2192,14 @@ const SELF_WORDS=new Set(["me","meg","mig","myself","jeg","i","self","moi"]);
 function isSelfWord(v){return SELF_WORDS.has(String(v||"").trim().toLowerCase())}
 function caughtBy(c){const v=c&&String(c.caught_by||"").trim();return v&&!isSelfWord(v)&&v!==c.author_name?v:null}
 function catcherName(c){return (c&&(caughtBy(c)||c.author_name))||""}
+/* v83: name changes. merge_names (rename.sql) moves an old name to a new one in every table */
+function allNamesSeen(){const n=[...whoNames(),...(S.allLogs||S.feedLogs||[]).flatMap(l=>[l.author_name,...(l.buddies||[])]),...(S.reports||[]).map(r=>r.author_name),...((S.mf&&S.mf.votes)||[]).map(v=>v.voter_name)];
+  const seen=new Map();for(const x of n){const v=String(x||"").trim();if(!v||isSelfWord(v))continue;const k=v.toLowerCase();if(!seen.has(k))seen.set(k,v)}return [...seen.values()].sort((a,b)=>a.localeCompare(b,"nb"))}
+async function mergeNames(o,n){try{const {data,error}=await sb.rpc("merge_names",{old_name:o,new_name:n});
+    if(error)return {err:/merge_names|Could not find the function|does not exist|schema cache/i.test(error.message||"")?"Run rename.sql in Supabase once (SQL Editor), then try again.":(error.message||errMsg(error))};
+    await reloadAfterMerge();return {n:+data||0}}catch(e){return {err:"Could not merge the names."}}}
+async function reloadAfterMerge(){S.allLogs=null;S.allReports=null;try{await Promise.all([loadCatches(),loadReports(),loadFeed(),loadVotes()])}catch(e){}
+  try{if(S.sel)loadLogs(S.sel)}catch(e){}try{fjFeedLoad()}catch(e){}renderFeed();try{if(S.statOpen)openStats();if(S.mf&&S.mf.open)renderMf()}catch(e){}}
 function whoNames(){const n=[S.me&&S.me.name,...(S.members||[]).map(m=>m.name),...S.catches.map(c=>caughtBy(c)||c.author_name),...(S.logs||[]).flatMap(l=>[l.author_name,...(l.buddies||[])]),...(S.buddySel||[])];
   return [...new Set(n.map(x=>String(x||"").trim()).filter(x=>x&&!isSelfWord(x)))].sort((a,b)=>a.localeCompare(b,"nb"))}
 /* ---------- areas (polygons, lines and markers) ---------- */
@@ -5073,7 +5106,7 @@ function mfPoints(M){const {D,newSp}=mfDisciplines(M),pts={},why={};const add=(n
   return Object.entries(pts).map(([who,p])=>({who,p,why:why[who]})).sort((a,b)=>b.p-a.p||a.who.localeCompare(b.who,"nb"))}
 function mfPic(c){const own=c.photo_path,st=spImg(c.species),cap=[spn(c.species),measureTxt(c),catcherName(c),getSite(c.site_id)?.name].filter(Boolean).join(" · ");
   if(own)return `<button type="button" class="mf-pic" style="--bg:url(&quot;${esc(photoURL(own))}&quot;)" data-img="${esc(own)}" data-cap="${esc(cap)}" aria-label="Show photo"><img src="${esc(photoURL(own))}" alt="" loading="lazy"></button>`;
-  return `<span class="mf-pic ill">${st?`<img src="${esc(st.src)}" alt="" loading="lazy"><i>Illustration</i>`:`<span class="ph">${iconSVG(SPICON(c.species),34)}</span>`}</span>`}
+  return ""} // v82: no illustration for catches without a photo
 function renderMf(){const wrap=$("#mndWrap");if(!wrap)return;const st=wrap.scrollTop;
   const months=mfMonths();if(!S.mf.month||!months.includes(S.mf.month))S.mf.month=months[months.length-1];const M=S.mf.month,mi=months.indexOf(M);
   const open=mfOpenVote(M),cands=mfCands(M),{t,mine,list}=mfTally(M),winners=open?[]:mfVoteWinners(M),closeD=mfClose(M);
@@ -5084,9 +5117,9 @@ function renderMf(){const wrap=$("#mndWrap");if(!wrap)return;const st=wrap.scrol
     !cands.length?`<p class="mf-note">No candidates yet. Log a catch with a photo, weight or length in ${esc(mfLabel(M).toLocaleLowerCase("nb"))}, and the crew can vote on it.</p>`:
     `${winners.length?`<div class="mf-winner">${winners.map(w=>`<div>${mfPic(w.c)}<span><small>${winners.length>1?"Shared win":"Fish of the month"} · ${w.n} ${w.n===1?"vote":"votes"}</small><b>${esc(spn(w.c.species))} ${esc(measureTxt(w.c))}</b>${esc(catcherName(w.c)||"")}${getSite(w.c.site_id)?" · "+esc(getSite(w.c.site_id).name):""}</span></div>`).join("")}</div>`:""}
      <p class="mf-note">${open?`One vote each. You can't vote for your own catch, but you can change your vote until the vote closes ${esc(closeD.toLocaleDateString("en-GB",{day:"numeric",month:"long"}))}${daysLeft<=7?` (in ${daysLeft} ${daysLeft===1?"day":"days"})`:""}.`:`The vote is closed. ${list.length} ${list.length===1?"vote":"votes"} in total.`}</p>
-     <div class="mf-cands">${cands.map(c=>{const n=(t[c.id]||[]).length,mineC=mine&&mine.catch_id===c.id,own=catcherName(c)===S.me.name||(!caughtBy(c)&&c.author===S.user.id),s2=getSite(c.site_id);
+     ${[cands.filter(c=>c.photo_path),cands.filter(c=>!c.photo_path)].filter(g=>g.length).map(grp=>`<div class="mf-cands${grp[0].photo_path?"":" mf-nopic"}">${grp.map(c=>{const n=(t[c.id]||[]).length,mineC=mine&&mine.catch_id===c.id,own=catcherName(c)===S.me.name||(!caughtBy(c)&&c.author===S.user.id),s2=getSite(c.site_id);
        return `<div class="mf-cand${mineC?" voted":""}${n&&n===lead?" lead":""}">${mfPic(c)}<div class="mf-ci"><b>${n&&n===lead?"👑 ":""}${esc(spn(c.species))}</b><span>${esc(measureTxt(c)||(c.kind==="sett"?"seen":""))}</span><small>${esc(catcherName(c)||"unknown")}${s2?" · "+esc(s2.name):""}${c.date?" · "+esc(fdate(c.date,true)):""}</small></div>
-         <div class="mf-vb"><span class="mf-n" title="${esc((t[c.id]||[]).join(", "))}">${n} ${n===1?"vote":"votes"}</span>${open?(own?`<span class="mf-own">Your catch</span>`:`<button type="button" class="mf-vote${mineC?" on":""}" data-vote="${esc(c.id)}"${S.mf.busy?" disabled":""}>${mineC?"✓ Your vote":"Vote"}</button>`):""}</div></div>`}).join("")}</div>`;
+         <div class="mf-vb"><span class="mf-n" title="${esc((t[c.id]||[]).join(", "))}">${n} ${n===1?"vote":"votes"}</span>${open?(own?`<span class="mf-own">Your catch</span>`:`<button type="button" class="mf-vote${mineC?" on":""}" data-vote="${esc(c.id)}"${S.mf.busy?" disabled":""}>${mineC?"✓ Your vote":"Vote"}</button>`):""}</div></div>`}).join("")}</div>`).join("")}`;
   const spCard=d=>`<div class="mf-d mf-wide"><div class="mf-dh"><span class="mf-di">${d.icon}</span><div><b>${esc(d.name)}</b><small>${esc(d.what)}</small></div></div>
       ${d.sp.length?(()=>{const con=d.sp.filter(x=>x.n>1),solo=d.sp.filter(x=>x.n<2);
         return `${con.length?`<div class="mf-sps">${con.map(x=>`<div class="mf-spr"><div class="mf-spn"><b>${esc(spn(x.sp))}</b><small>${x.n} have caught it</small></div>
