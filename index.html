@@ -1222,7 +1222,7 @@ body.mapmax .recbar{display:inline-flex}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v75 (Visibility for earlier dives)";
+const APP_VERSION="v76 (Who caught it)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -1878,7 +1878,13 @@ async function colSafe(fn,row,cols,file,what="colour and symbol"){
     for(const [f,ws] of Object.entries(groups))if(!S._warned.has(f)){S._warned.add(f);alert(`Saved, but ${[...ws].join(" and ")} was not saved. Run ${f} in Supabase first.`)}}
   return res;
 }
-function catcherName(c){return (c&&(c.caught_by||c.author_name))||""}
+/* who caught it: an empty field, your own name or a word like "me" means the person who logged it */
+const SELF_WORDS=new Set(["me","meg","mig","myself","jeg","i","self","moi"]);
+function isSelfWord(v){return SELF_WORDS.has(String(v||"").trim().toLowerCase())}
+function caughtBy(c){const v=c&&String(c.caught_by||"").trim();return v&&!isSelfWord(v)&&v!==c.author_name?v:null}
+function catcherName(c){return (c&&(caughtBy(c)||c.author_name))||""}
+function whoNames(){const n=[S.me&&S.me.name,...(S.members||[]).map(m=>m.name),...S.catches.map(c=>caughtBy(c)||c.author_name),...(S.logs||[]).flatMap(l=>[l.author_name,...(l.buddies||[])]),...(S.buddySel||[])];
+  return [...new Set(n.map(x=>String(x||"").trim()).filter(x=>x&&!isSelfWord(x)))].sort((a,b)=>a.localeCompare(b,"nb"))}
 /* ---------- areas (polygons, lines and markers) ---------- */
 const AREA_TYPES={
   quality:{name:"Quality",icon:"stjerne",pat:"fylt",vals:{topp:["Top","#0E7A3A","stjerne"],bra:["Good","#3FA34D"],ok:["OK","#C9B92B"],middels:["Average","#E8A020"],darlig:["Poor","#E0662B"],ubrukelig:["Not worth it","#B3261E"]}},
@@ -2792,7 +2798,7 @@ function spSiteSet(){return new Set(S.catches.filter(c=>c.species===S.sp).map(c=
 /* catch editor in log form */
 function catchEditorHTML(){return `<div class="catchEd"><label style="margin-top:12px">Catch and species seen</label><div id="cRows"></div><button type="button" class="btn ghost" id="cAdd" style="padding:3px 8px;margin-top:4px">+ Add species</button>
   <datalist id="spList">${[...new Set([...S.catches.map(c=>c.species),...SPECIES])].map(spn).sort((a,b)=>a.localeCompare(b,"en")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist>
-  <datalist id="whoList">${[...new Set([...(S.members||[]).map(m=>m.name).filter(n=>n&&n!==S.me.name),...S.catches.map(c=>c.caught_by).filter(Boolean),...(S.buddySel||[])])].sort((a,b)=>a.localeCompare(b,"nb")).map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>`}
+  <datalist id="whoList">${whoNames().map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div>`}
 function wireCatchEditor(){const b=$("#cAdd");if(b)b.onclick=addCatchRow;const dt=$("#lDate");if(dt)dt.addEventListener("change",()=>document.querySelectorAll("#cRows .crow").forEach(checkCatchRow))}
 /* ---------- dive buddies ---------- */
 S.buddySel=[];
@@ -2811,7 +2817,7 @@ function renderBuddyPicker(){
   inp.onblur=()=>{if(addBuddyFromInput())renderBuddyPicker()};
 }
 function addBuddyFromInput(){const inp=$("#lBuddyNew");if(!inp)return false;let added=false;
-  for(let n of inp.value.split(",")){n=n.trim().replace(/\s+/g," ");if(!n||n===(S.me&&S.me.name))continue;n=n.split(" ").map(x=>x[0].toLocaleUpperCase("nb")+x.slice(1)).join(" ");if(!S.buddySel.includes(n)){S.buddySel.push(n);added=true}}
+  for(let n of inp.value.split(",")){n=n.trim().replace(/\s+/g," ");if(!n||n===(S.me&&S.me.name)||isSelfWord(n))continue;n=n.split(" ").map(x=>x[0].toLocaleUpperCase("nb")+x.slice(1)).join(" ");if(!S.buddySel.includes(n)){S.buddySel.push(n);added=true}}
   inp.value="";return added}
 /* ---------- sunrise / sunset (computed locally, suncalc method) ---------- */
 function sunTimes(date,lat,lon){
@@ -3054,8 +3060,8 @@ function addCatchRow(c){c=c&&c.species!==undefined?c:null;const d=document.creat
   d.innerHTML=`<input type="text" list="spList" class="cSp" placeholder="Species" aria-label="Species"><select class="cKind" aria-label="Caught or seen"><option value="sett">Seen</option><option value="fanget">Caught</option></select><label class="unit cCntW"><input type="number" class="cCnt" min="1" value="1" aria-label="Count" title="Count"><span>pcs</span></label>
     <label class="unit cSizeW"><input type="number" class="cSize" min="0" step="1" aria-label="Biggest length in cm" title="Biggest length, cm"><span>cm</span></label><label class="unit cKgW"><input type="number" class="cKg" min="0" step="0.01" aria-label="Weight in kg" title="Weight, kg"><span>kg</span></label>
     <label class="btn ghost cPh" title="Attach photo">${CAMSVG}<span>Photo</span><input type="file" accept="image/*" hidden></label><button type="button" class="btn ghost cRm" aria-label="Remove">×</button>
-    <label class="unit pre cWhoW"><span>By</span><input type="text" class="cWho" list="whoList" placeholder="me, or pick/type a name" aria-label="Who got or saw it" autocomplete="off"></label><div class="cwarn" hidden></div>`;
-  if(c){d.querySelector(".cSp").value=c.species?spn(c.species):"";d.querySelector(".cKind").value=c.kind||"sett";d.querySelector(".cCnt").value=c.count||1;d.querySelector(".cSize").value=c.size_cm??"";d.querySelector(".cKg").value=c.weight_kg??"";d.querySelector(".cWho").value=c.caught_by||"";
+    <label class="unit pre cWhoW"><span>By</span><input type="text" class="cWho" list="whoList" placeholder="Pick or type a name" aria-label="Who got or saw it" autocomplete="off" value="${esc(S.me.name||"")}"></label><div class="cwarn" hidden></div>`;
+  if(c){d.querySelector(".cSp").value=c.species?spn(c.species):"";d.querySelector(".cKind").value=c.kind||"sett";d.querySelector(".cCnt").value=c.count||1;d.querySelector(".cSize").value=c.size_cm??"";d.querySelector(".cKg").value=c.weight_kg??"";d.querySelector(".cWho").value=catcherName(c);
     if(c.photo_path){const lb=d.querySelector(".cPh"),fi0=lb.querySelector("input");lb.innerHTML=`<img src="${esc(photoURL(c.photo_path))}" alt="" class="cprev"><span>Change</span>`;lb.appendChild(fi0)}}
   d.querySelector(".cRm").onclick=()=>d.remove();
   for(const s of [".cSp",".cKind",".cSize"]){const el=d.querySelector(s);el.addEventListener("input",()=>checkCatchRow(d));el.addEventListener("change",()=>checkCatchRow(d))}
@@ -3063,7 +3069,7 @@ function addCatchRow(c){c=c&&c.species!==undefined?c:null;const d=document.creat
   const fi=d.querySelector("input[type=file]");fi.onchange=()=>{const f=fi.files[0];const sp=d.querySelector(".cPh span");if(!f){sp.textContent="Photo";return}
     try{const u=URL.createObjectURL(f);d.querySelector(".cPh").innerHTML=`<img src="${u}" alt="" class="cprev"><span>Change</span>`;d.querySelector(".cPh").appendChild(fi)}catch(e){sp.textContent="1 photo"}};
   $("#cRows").appendChild(d);if(!c)d.querySelector(".cSp").focus()}
-function readCatchRows(){return [...document.querySelectorAll("#cRows .crow")].map(r=>({id:r.dataset.id||null,species:normSp(r.querySelector(".cSp").value),kind:r.querySelector(".cKind").value,count:Math.max(1,Math.round(num(r.querySelector(".cCnt").value)??1)),size_cm:num(r.querySelector(".cSize").value),weight_kg:num(r.querySelector(".cKg")?.value),caught_by:(v=>v&&v!==S.me.name?v:null)((r.querySelector(".cWho")?.value||"").trim()),_file:r.querySelector("input[type=file]")?.files?.[0]||null})).filter(c=>c.species)}
+function readCatchRows(){return [...document.querySelectorAll("#cRows .crow")].map(r=>({id:r.dataset.id||null,species:normSp(r.querySelector(".cSp").value),kind:r.querySelector(".cKind").value,count:Math.max(1,Math.round(num(r.querySelector(".cCnt").value)??1)),size_cm:num(r.querySelector(".cSize").value),weight_kg:num(r.querySelector(".cKg")?.value),caught_by:(v=>v&&v!==S.me.name&&!isSelfWord(v)?v:null)((r.querySelector(".cWho")?.value||"").trim()),_file:r.querySelector("input[type=file]")?.files?.[0]||null})).filter(c=>c.species)}
 async function afterLogSaved(s,log,catches,snap){
   const warn=[];
   if(catches.length){
@@ -3078,9 +3084,9 @@ async function afterLogSaved(s,log,catches,snap){
   return warn;
 }
 function catchesHTML(logId){const L=S.catches.filter(c=>c.log_id===logId);if(!L.length)return"";
-  const f=k=>L.filter(c=>c.kind===k).map(c=>`${c.count>1?c.count+" ":""}${esc(spn(c.species).toLocaleLowerCase("nb"))}${measureTxt(c)?` (${esc(measureTxt(c))})`:""}${c.caught_by?` <span class="by">by ${esc(c.caught_by)}</span>`:""}`).join(", ");
+  const f=k=>L.filter(c=>c.kind===k).map(c=>`${c.count>1?c.count+" ":""}${esc(spn(c.species).toLocaleLowerCase("nb"))}${measureTxt(c)?` (${esc(measureTxt(c))})`:""}${caughtBy(c)?` <span class="by">by ${esc(caughtBy(c))}</span>`:""}`).join(", ");
   const a=f("fanget"),b=f("sett"),ph=L.filter(c=>c.photo_path);
-  return `<div class="m">${a?`Caught: ${a}`:""}${a&&b?"<br>":""}${b?`Seen: ${b}`:""}</div>${ph.length?`<div class="thumbs">${ph.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(spn(c.species)+(measureTxt(c)?" · "+measureTxt(c):"")+(c.caught_by?" · "+c.caught_by:""))}" aria-label="Show photo of ${esc(spn(c.species))}"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}`}
+  return `<div class="m">${a?`Caught: ${a}`:""}${a&&b?"<br>":""}${b?`Seen: ${b}`:""}</div>${ph.length?`<div class="thumbs">${ph.map(c=>`<button class="thumb" data-img="${esc(c.photo_path)}" data-cap="${esc(spn(c.species)+(measureTxt(c)?" · "+measureTxt(c):"")+(caughtBy(c)?" · "+caughtBy(c):""))}" aria-label="Show photo of ${esc(spn(c.species))}"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`).join("")}</div>`:""}`}
 /* lightbox: open a photo and browse the others in the same section (arrow keys, buttons, swipe) */
 S.lb={list:[],i:0};
 function openLightbox(b){const scope=b.closest(".dexcard")||b.closest("#dexWrap")||b.closest("#mndWrap")||b.closest("#recWrap")||b.closest("#statWrap")||b.closest("#panel")||document,seen=new Set(),list=[];
@@ -4163,7 +4169,7 @@ function feedItems(){
   const items=[];
   for(const l of S.feedLogs){const s=getSite(l.site_id);if(!s)continue;
     const C=S.catches.filter(c=>c.log_id===l.id),caught=C.filter(c=>c.kind==="fanget"),seen=C.filter(c=>c.kind!=="fanget");
-    const cap=caught.slice(0,3).map(c=>{const extra=[measureTxt(c),c.caught_by&&c.caught_by!==l.author_name?c.caught_by:""].filter(Boolean).join(", ");return `${c.count>1?c.count+" ":""}${spn(c.species).toLocaleLowerCase("nb")}${extra?" ("+extra+")":""}`}).join(", ")+(caught.length>3?` and ${caught.length-3} more`:"");
+    const cap=caught.slice(0,3).map(c=>{const extra=[measureTxt(c),caughtBy(c)||""].filter(Boolean).join(", ");return `${c.count>1?c.count+" ":""}${spn(c.species).toLocaleLowerCase("nb")}${extra?" ("+extra+")":""}`}).join(", ")+(caught.length>3?` and ${caught.length-3} more`:"");
     const parts=[cap?"Caught "+cap:"",seen.length?`saw ${seen.length} ${seen.length===1?"art":"species"}`:"",l.vis!=null?`visibility ${fnum(l.vis,1)} m`:""].filter(Boolean);
     const dt=Date.parse(`${l.date}T${l.time_of_day||"12:00"}`);
     items.push({kind:"dive",mine:l.author===S.user.id,ct:Date.parse(l.created_at||"")||(isFinite(dt)?dt:0),t:isFinite(dt)?dt:Date.parse(l.created_at||0),when:diveWhen(l),site:s,who:joinNames([l.author===S.user.id?"You":(l.author_name||"Someone"),...(l.buddies||[]).filter(b=>b&&b!==l.author_name).map(b=>b===S.me.name?"you":b)]),verb:"dived at",text:parts.join(" · "),photo:C.find(c=>c.photo_path)})}
@@ -4783,7 +4789,7 @@ function renderMf(){const wrap=$("#mndWrap");if(!wrap)return;const st=wrap.scrol
     !cands.length?`<p class="mf-note">No candidates yet. Log a catch with a photo, weight or length in ${esc(mfLabel(M).toLocaleLowerCase("nb"))}, and the crew can vote on it.</p>`:
     `${winners.length?`<div class="mf-winner">${winners.map(w=>`<div>${mfPic(w.c)}<span><small>${winners.length>1?"Shared win":"Fish of the month"} · ${w.n} ${w.n===1?"vote":"votes"}</small><b>${esc(spn(w.c.species))} ${esc(measureTxt(w.c))}</b>${esc(catcherName(w.c)||"")}${getSite(w.c.site_id)?" · "+esc(getSite(w.c.site_id).name):""}</span></div>`).join("")}</div>`:""}
      <p class="mf-note">${open?`One vote each. You can't vote for your own catch, but you can change your vote until the vote closes ${esc(closeD.toLocaleDateString("en-GB",{day:"numeric",month:"long"}))}${daysLeft<=7?` (in ${daysLeft} ${daysLeft===1?"day":"days"})`:""}.`:`The vote is closed. ${list.length} ${list.length===1?"vote":"votes"} in total.`}</p>
-     <div class="mf-cands">${cands.map(c=>{const n=(t[c.id]||[]).length,mineC=mine&&mine.catch_id===c.id,own=catcherName(c)===S.me.name||(!c.caught_by&&c.author===S.user.id),s2=getSite(c.site_id);
+     <div class="mf-cands">${cands.map(c=>{const n=(t[c.id]||[]).length,mineC=mine&&mine.catch_id===c.id,own=catcherName(c)===S.me.name||(!caughtBy(c)&&c.author===S.user.id),s2=getSite(c.site_id);
        return `<div class="mf-cand${mineC?" voted":""}${n&&n===lead?" lead":""}">${mfPic(c)}<div class="mf-ci"><b>${n&&n===lead?"👑 ":""}${esc(spn(c.species))}</b><span>${esc(measureTxt(c)||(c.kind==="sett"?"seen":""))}</span><small>${esc(catcherName(c)||"unknown")}${s2?" · "+esc(s2.name):""}${c.date?" · "+esc(fdate(c.date,true)):""}</small></div>
          <div class="mf-vb"><span class="mf-n" title="${esc((t[c.id]||[]).join(", "))}">${n} ${n===1?"vote":"votes"}</span>${open?(own?`<span class="mf-own">Your catch</span>`:`<button type="button" class="mf-vote${mineC?" on":""}" data-vote="${esc(c.id)}"${S.mf.busy?" disabled":""}>${mineC?"✓ Your vote":"Stem"}</button>`):""}</div></div>`}).join("")}</div>`;
   const spCard=d=>`<div class="mf-d mf-wide"><div class="mf-dh"><span class="mf-di">${d.icon}</span><div><b>${esc(d.name)}</b><small>${esc(d.what)}</small></div></div>
@@ -4849,7 +4855,7 @@ function renderYear(){
   const inLog=l=>grp||(isMe?(l.author===S.user.id||l.author_name===me):l.author_name===W)||(l.buddies||[]).includes(W);
   const logs=ly.filter(inLog).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
   const cy_=S.catches.filter(c=>(c.date||"").startsWith(Y));
-  const mineC=c=>grp||catcherName(c)===W||(isMe&&c.author===S.user.id&&!c.caught_by);
+  const mineC=c=>grp||catcherName(c)===W||(isMe&&c.author===S.user.id&&!caughtBy(c));
   const cs=cy_.filter(mineC),caught=cs.filter(c=>c.kind==="fanget");
   const species=new Set(cs.map(c=>c.species));
   // first finds this year (first ever for the group, by this person)
