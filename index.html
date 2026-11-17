@@ -1475,7 +1475,6 @@ body:not(.mapmax) .layout{background:none}
 .stc>h3{font:600 22px/1.2 var(--lb-fell)}
 .stlead{font-size:13.5px}
 .stc .h4{font:600 13.5px Barlow,sans-serif;color:var(--lb-t2);margin:18px 0 8px}
-.stc .hbars .ht i{background:var(--ac)!important}
 .stmini b{font:600 20px var(--lb-fell)}
 .stmini span{font:500 12px Barlow,sans-serif}
 /* the dive year cards use the same ledger look */
@@ -1535,6 +1534,18 @@ body.pageopen header.top{position:relative;z-index:2100}
 .dexdlg .dexsheet{inset:var(--hdrh,0px) 0 0 0}
 /* v94: the dive-year card is first on the start page; leave room for the panel's minimise button above it */
 #yearTeaser:not(:empty){padding-top:28px}
+
+/* ---------- v95: shades instead of one flat colour.
+   Lists (sites, species): the top row has the full group colour and each row below gets a little paler, so the order reads at a glance.
+   People: every person has their own shade of orange/amber, the same in all three People lists.
+   Column charts: taller columns are deeper in colour. ---------- */
+:root{--pp1:#B5561C;--pp2:#E08A3C;--pp3:#7A3A10;--pp4:#C99A3E;--pp5:#9C4A2A;--pp6:#E3A86A;--pp7:#5E3A14;--pp8:#D2704A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--pp1:#F2A65A;--pp2:#FFD59A;--pp3:#D9773A;--pp4:#F7B8A0;--pp5:#C9A34A;--pp6:#E8885F;--pp7:#FBE6BC;--pp8:#B8653A}}
+:root[data-theme="dark"]{--pp1:#F2A65A;--pp2:#FFD59A;--pp3:#D9773A;--pp4:#F7B8A0;--pp5:#C9A34A;--pp6:#E8885F;--pp7:#FBE6BC;--pp8:#B8653A}
+.stc .hbars .hb .ht i:not([style*="--pp"]){--sh:100%;background:color-mix(in oklab,var(--ac) var(--sh),var(--lb-bg1))!important}
+.stc .hbars .hb:nth-child(2) .ht i{--sh:86%}.stc .hbars .hb:nth-child(3) .ht i{--sh:74%}.stc .hbars .hb:nth-child(4) .ht i{--sh:64%}
+.stc .hbars .hb:nth-child(5) .ht i{--sh:56%}.stc .hbars .hb:nth-child(6) .ht i{--sh:50%}.stc .hbars .hb:nth-child(n+7) .ht i{--sh:45%}
+.stc .hbars .hb .hl{display:flex;align-items:center;gap:7px}
 
 </style>
 </head>
@@ -1648,7 +1659,7 @@ body.pageopen header.top{position:relative;z-index:2100}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v94 (Dive year on top)";
+const APP_VERSION="v95 (Shades)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -3419,7 +3430,7 @@ function colChart(vals,labels,{fmt=v=>fnum(v,1),unit="",tip=(i,v)=>"",H=96,aria=
   let h=`<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(aria)}"><line x1="0" x2="${W}" y1="${base+.5}" y2="${base+.5}" stroke="var(--line)"/>`;
   vals.forEach((v,i)=>{const x=i*bw+2,w=bw-4;
     if(v==null)h+=`<rect x="${x+w/2-4}" y="${base-2}" width="8" height="2" rx="1" fill="var(--line)"><title>${esc(labels[i])}: no data</title></rect>`;
-    else{const top=base-Math.max(3,v/max*(base-padT));h+=`<path d="${barPath(x,top,w,base)}" fill="${colors&&colors[i]?colors[i]:"var(--alpha)"}"><title>${esc(labels[i])}: ${esc(fmt(v))}${unit}${tip(i,v)}</title></path>`;
+    else{const top=base-Math.max(3,v/max*(base-padT));h+=`<path d="${barPath(x,top,w,base)}" style="fill:${colors&&colors[i]?colors[i]:`color-mix(in oklab,var(--alpha) ${Math.round(60+40*v/max)}%,var(--panel))`}"><title>${esc(labels[i])}: ${esc(fmt(v))}${unit}${tip(i,v)}</title></path>`;
       if(i===imax||all)h+=`<text x="${x+w/2}" y="${top-3}" text-anchor="middle" class="cv">${esc(fmt(v))}${unit}</text>`}
     h+=`<text x="${i*bw+bw/2}" y="${H-3}" text-anchor="middle" class="cl">${esc(labels[i])}</text>`});
   return h+"</svg>";
@@ -5475,10 +5486,12 @@ function renderStatDlg(){
   const rich=Object.entries(bySt).map(([id,L])=>({s:getSite(id),d:diversity(L)})).filter(x=>x.s).sort((a,b)=>b.d.S-a.d.S||b.d.H-a.d.H).slice(0,5);
   const ppl={};for(const l of logs)for(const n of new Set([l.author_name,...(l.buddies||[])].filter(Boolean))){(ppl[n]||(ppl[n]={d:0,f:0})).d++}
   for(const c of caught){const n=catcherName(c);if(n)(ppl[n]||(ppl[n]={d:0,f:0})).f+=cnt(c)}
-  const pRows=Object.entries(ppl).sort((a,b)=>b[1].d-a[1].d||b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.d,text:`${v.d} dive${v.d===1?"":"s"} · ${v.f} fish`}));
-  const fRows=Object.entries(ppl).filter(([,v])=>v.f).sort((a,b)=>b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.f,text:`${v.f} fish`}));
+  /* v95: each person keeps the same shade in all the People lists */
+  const pOrd=Object.entries(ppl).sort((a,b)=>b[1].d-a[1].d||b[1].f-a[1].f).map(([k])=>k),pCol=k=>`var(--pp${(Math.max(0,pOrd.indexOf(k))%8)+1})`;
+  const pRows=Object.entries(ppl).sort((a,b)=>b[1].d-a[1].d||b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.d,text:`${v.d} dive${v.d===1?"":"s"} · ${v.f} fish`,color:pCol(k)}));
+  const fRows=Object.entries(ppl).filter(([,v])=>v.f).sort((a,b)=>b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.f,text:`${v.f} fish`,color:pCol(k)}));
   const pSp={};for(const c of caught){const n=catcherName(c);if(n)(pSp[n]||(pSp[n]=new Set())).add(c.species)}
-  const sRowsP=Object.entries(pSp).sort((a,b)=>b[1].size-a[1].size).slice(0,8).map(([k,v])=>({label:k,value:v.size,text:`${v.size} species`,tip:`${k}: ${[...v].map(x=>spn(x)).sort().join(", ")}`}));
+  const sRowsP=Object.entries(pSp).sort((a,b)=>b[1].size-a[1].size).slice(0,8).map(([k,v])=>({label:k,value:v.size,text:`${v.size} species`,tip:`${k}: ${[...v].map(x=>spn(x)).sort().join(", ")}`,color:pCol(k)}));
   // building blocks
   const none=t=>`<p class="emptytxt">${t}</p>`;
   const tile=(ico,val,lab,col)=>`<div class="stk" style="--ac:${col}"><i>${ico}</i><b>${val}</b><span>${lab}</span></div>`;
