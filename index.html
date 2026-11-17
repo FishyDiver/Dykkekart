@@ -644,7 +644,7 @@ body.mapmax .maptools .mndbtn{display:inline-flex;align-items:center}
 /* Fiskejakt game */
 .gamedlg{padding:0;border:0;width:98vw;height:96vh;max-width:none;max-height:none;background:#041624;border-radius:16px;overflow:hidden;color:#E3EDF4}
 .gamedlg::backdrop{background:rgba(2,8,14,.7)}
-#fgCv{display:block;width:100%;height:100%;touch-action:none;cursor:none;outline:none}
+#fgCv{display:block;width:100%;height:100%;touch-action:none;cursor:default;outline:none}#fgCv.aim{cursor:none}
 .fg-x{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(241,230,200,.35);background:rgba(4,22,36,.6);color:#F1E6C8;font-size:16px;cursor:pointer;z-index:3}
 .fg-title{display:flex;align-items:center;gap:10px}
 .fg-gobtns{display:flex;gap:8px;flex-wrap:wrap}
@@ -1346,6 +1346,31 @@ body:not(.mapmax) .layout{background:none}
 .panel a:not(.btn),.dexin a:not(.btn),.recin a:not(.btn){color:var(--lb-link)}
 .actph b{font:400 21px var(--lb-fell)}
 
+/* ---------- v78: season calendar cues. Good and top months are solid bars, the rest steps back ---------- */
+:root{--scg:3px;--lv3o:#5F876E;--lv4o:#26493A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--lv3o:#7FA88F;--lv4o:#BFE0CE}}
+:root[data-theme="dark"]{--lv3o:#7FA88F;--lv4o:#BFE0CE}
+@media (max-width:700px){:root{--scg:2px}}
+.sc-boxes{gap:var(--scg)}
+.sbx,.sbx.l0{background:rgba(var(--lb-hi),.03);box-shadow:none}
+.sbx.l1,.sbx.l1.now{background:rgba(var(--lb-hi),.085);box-shadow:none}
+.sbx.l2,.sbx.l2.now{background:transparent;box-shadow:inset 0 0 0 1.5px var(--lv2)}
+.sbx.l3,.sbx.l3.now{background:var(--lv3);--o:var(--lv3o)}
+.sbx.l4,.sbx.l4.now{background:var(--lv4);--o:var(--lv4o)}
+.sbx.l3,.sbx.l4,.sbx.l3.now,.sbx.l4.now{box-shadow:inset var(--bl,1px) 0 0 var(--o),inset calc(-1*var(--br,1px)) 0 0 var(--o),inset 0 1px 0 var(--o),inset 0 -1px 0 var(--o)}
+.sbx.jl{--bl:0px}.sbx.jr{--br:0px}
+.sbx.jl{border-top-left-radius:0;border-bottom-left-radius:0}
+.sbx.jr{border-top-right-radius:0;border-bottom-right-radius:0;margin-right:calc(-1*var(--scg))}
+.sbx.fr,.sbx.fr.l1,.sbx.fr.l2,.sbx.fr.l3,.sbx.fr.l4,.sbx.fr.now{background:var(--lvfr);box-shadow:none}
+.sbx.now{outline:2px solid var(--sc-ring);outline-offset:1px;z-index:1}
+.sc-leg i.sbx.l2,.sc-brush i.sbx.l2,.lg-bar.sbx.l2{box-shadow:inset 0 0 0 1.5px var(--lv2)}
+/* rows: in season this month gets a dot and full ink, the rest is dimmed */
+.sc-row .sc-lab b::before{content:"";flex:none;width:8px;height:8px;border-radius:50%}
+.sc-row.insn .sc-lab b::before{background:var(--lv3);box-shadow:inset 0 0 0 1px var(--lv3o)}
+.sc-row.insn4 .sc-lab b::before{background:var(--lv4);box-shadow:inset 0 0 0 1px var(--lv4o)}
+.sc-row.insn .sc-lab b{font-weight:600}
+.dexin.sc:not(.sc-editing) .sc-row:not(.insn) .sc-lab b{color:var(--lb-t3)}
+
 </style>
 </head>
 <body>
@@ -1458,7 +1483,7 @@ body:not(.mapmax) .layout{background:none}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v77 (Logbook)";
+const APP_VERSION="v78 (Season cues)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -4269,7 +4294,7 @@ function fjDraw(){const cv=$("#fgCv");if(!cv)return;const g=cv.getContext("2d"),
 function fjLoop(now){const d=$("#gameDlg");if(!d||!d.open){FJ.raf=0;return}const dt=Math.min(.05,(now-FJ.last)/1000);FJ.last=now;
   if(FJ.st==="play")fjUpdate(dt);
   else{for(const f of FJ.fish)fjFish(f,dt);FJ.cam.x+=dt*25;if(FJ.cam.x>FJ_WW-FJ.vw)FJ.cam.x=0;FJ.cam.y+=((FJ.st==="title"?260:FJ.cam.y)-FJ.cam.y)*dt}
-  fjDraw();FJ.raf=requestAnimationFrame(fjLoop)}
+  fjDraw();{const cv=document.getElementById("fgCv"),aim=FJ.st==="play"&&!FJ.paused;if(cv&&cv._aim!==aim){cv._aim=aim;cv.classList.toggle("aim",aim)}}FJ.raf=requestAnimationFrame(fjLoop)}
 function fjRankHTML(){if(!fjMe()||FJ.score<=0)return "";if(FJB.saving)return `<p class="fg-best">Saving to the leaderboard …</p>`;if(FJB.err&&!/updated/.test(FJB.err))return `<p class="fg-warn">${esc(FJB.err)}</p>`;
   const day=FJ.mode==="dag",list=day?fjBoardList("normal",5,"today","dag"):fjBoardList(FJ.lvl,FJ.nDives,"all"),me=fjMe(),i=list.findIndex(r=>r.player===me);if(i<0)return FJB.err?`<p class="fg-warn">${esc(FJB.err)}</p>`:"";
   const mine=list[i],now=mine.score===FJ.score;return `<div class="fg-rank"><p><b>${i===0?(day?"You lead the daily dive!":"You lead the leaderboard!"):`You are no. ${i+1} of ${list.length}`}</b>${i===0&&day?"":day?" in the daily dive.":` on ${esc(FJ_LV[FJ.lvl].name.toLocaleLowerCase("nb"))}, ${FJ.nDives} dive${FJ.nDives===1?"":"s"}.`}${now?"":` Your best: ${mine.score}.`}</p>${fjBoardRows(list,3)}</div>`}
@@ -5473,9 +5498,11 @@ function scTrackInner(lv,sp,{H=50,gbif=null,edit=false,showOwn=true,today:showTo
 function scMonthsHTML(short){const cm=new Date().getMonth();return MNS.map((m,i)=>`<span class="${i===cm?"now":""}">${short?m[0].toUpperCase():`<span class="mlong">${m}</span><span class="mshort">${m[0].toUpperCase()}</span>`}</span>`).join("")}
 /* season boxes: one box per month in sea colours */
 function scBoxes(lv,sp,{own=false,edit=false}={}){const r=rulesFor(sp),ow=own?ownByMonth(sp):null,cm=new Date().getMonth();
+  /* v78: good and top months next to each other join into one season bar */
+  const ins=lv.map((l,m)=>{const f=closedSpan(r,m);return l>=3&&!(f&&f[1]>.97)});
   return `<div class="sc-boxes">${lv.map((l,m)=>{const fr=closedSpan(r,m),full=fr&&fr[1]>.97;
     const tip=`${spn(sp)}, ${MNS[m]}: ${LVL[l]}${fr?" · protected"+(full?"":" part of the month"):""}${ow&&ow[m]?` · the crew: ${ow[m]} reg.`:""}${edit?" (tap to change)":""}`;
-    return `<${edit?"button type=\"button\"":"div"} class="sbx l${l}${m===cm?" now":""}${full?" fr":""}" data-sp="${esc(sp)}" data-m="${m}" title="${esc(tip)}">${fr&&!full?`<span class="frp" style="left:${(fr[0]*100).toFixed(1)}%;width:${(fr[1]*100).toFixed(1)}%"></span>`:""}${ow&&ow[m]?`<span class="od" style="width:${Math.min(10,5+ow[m])}px;height:${Math.min(10,5+ow[m])}px"></span>`:""}</${edit?"button":"div"}>`}).join("")}</div>`}
+    return `<${edit?"button type=\"button\"":"div"} class="sbx l${l}${m===cm?" now":""}${full?" fr":""}${ins[m]&&ins[m-1]?" jl":""}${ins[m]&&ins[m+1]?" jr":""}" data-sp="${esc(sp)}" data-m="${m}" title="${esc(tip)}">${fr&&!full?`<span class="frp" style="left:${(fr[0]*100).toFixed(1)}%;width:${(fr[1]*100).toFixed(1)}%"></span>`:""}${ow&&ow[m]?`<span class="od" style="width:${Math.min(10,5+ow[m])}px;height:${Math.min(10,5+ow[m])}px"></span>`:""}</${edit?"button":"div"}>`}).join("")}</div>`}
 /* the group's finds per month, for the "Våre funn" columns */
 function ownSplit(sp,rid){rid=rid||curRegion();const all=Array(12).fill(0),got=Array(12).fill(0);
   for(const c of S.catches)if(c.species===sp&&c.date&&siteRegionId(c.site_id)===rid){const m=+String(c.date).slice(5,7)-1;if(m<0||m>11)continue;all[m]++;if(c.kind==="fanget")got[m]++}
@@ -5505,11 +5532,11 @@ function renderSeason(){const wrap=$("#seaWrap");if(!wrap)return;const stTop=wra
   const mname=now.toLocaleDateString("en-GB",{month:"long"}),Mname=mname[0].toUpperCase()+mname.slice(1);
   // species rows
   let rows="",lastG=null,zebra=0,gmax=null;
-  for(const sp of list){const d=data[sp],l=d.lv[cm];
+  for(const sp of list){const d=data[sp],l=d.lv[cm],fNow=closedSpan(rulesFor(sp),cm),insNow=l>=3&&!(fNow&&fNow[1]>.97);
     if(S.seaSort!=="naa"){const g=grp(sp);if(g!==lastG){rows+=`<div class="sc-secfull">${esc(g)}</div>`;lastG=g;zebra=0}}
     const op=!ed&&S.seaOpenSp===sp;
     const fm=O.own&&!ed,fn=fm?ownSplit(sp).n:0;if(fm&&gmax==null)gmax=Math.max(1,...list.flatMap(x=>ownSplit(x).all));
-    rows+=`<div class="sc-row${zebra++%2?" z":""}${op?" open":""}${fm?" sc-frow":""}"><button class="sc-lab" type="button" data-sp="${esc(sp)}" aria-expanded="${op}" title="${esc(op?"Tap to close":"Tap to read more about "+spn(sp).toLocaleLowerCase("nb"))}"><b>${esc(spn(sp))}</b>${fm?(fn?`<em class="fcnt">${fn} finds</em>`:""):l>=3?`<em class="lvnow l${l}">${l===4?"top":"good"}</em>`:""}<i class="chev" aria-hidden="true">›</i></button>${fm?scFindChart(d.lv,sp,gmax):scBoxes(d.lv,sp,{edit:!!ed})}</div>`;
+    rows+=`<div class="sc-row${zebra++%2?" z":""}${op?" open":""}${fm?" sc-frow":""}${insNow?" insn"+(l===4?" insn4":""):""}"><button class="sc-lab" type="button" data-sp="${esc(sp)}" aria-expanded="${op}" title="${esc(op?"Tap to close":"Tap to read more about "+spn(sp).toLocaleLowerCase("nb"))}"><b>${esc(spn(sp))}</b>${fm?(fn?`<em class="fcnt">${fn} finds</em>`:""):l>=3?`<em class="lvnow l${l}">${l===4?"top":"good"}</em>`:""}<i class="chev" aria-hidden="true">›</i></button>${fm?scFindChart(d.lv,sp,gmax):scBoxes(d.lv,sp,{edit:!!ed})}</div>`;
     if(op)rows+=scDetailHTML(sp,d,cm,Mname);
     if(ed)rows+=`<div class="sc-noteed"><input data-note="${esc(sp)}" value="${esc(seaNoteVal(sp))}" placeholder="Your own note about ${esc(spn(sp).toLocaleLowerCase("nb"))} for the crew (optional)"></div>`}
   const nm=a=>a.map(sp=>`<button class="sc-chip" data-sp="${esc(sp)}">${esc(spn(sp))}</button>`).join("");
