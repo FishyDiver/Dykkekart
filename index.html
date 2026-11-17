@@ -1525,6 +1525,15 @@ body:not(.mapmax) #mndBar{display:none!important}
 .yrteaser .yt-bars i{display:block;background:#DDB866;border-radius:1px;opacity:.85}
 .yrteaser .yt-bars i.now{background:#F1E7CF;opacity:1}.yrteaser .yt-bars i.fut{opacity:.2}
 
+/* v92: exploration button: brass telescope; gold when the map is in exploration mode */
+.expbtn{margin-top:8px!important}
+.lyrbtn.expbtn.on{background:#DDB866;color:#10262E;border-color:rgba(0,0,0,.25)}
+
+/* v93: big windows sit under the header, which stays visible and clickable */
+dialog.dexdlg[open]{position:fixed;inset:var(--hdrh,0px) 0 0 0;width:100%;height:auto;max-height:none;margin:0;z-index:2000}
+body.pageopen header.top{position:relative;z-index:2100}
+.dexdlg .dexsheet{inset:var(--hdrh,0px) 0 0 0}
+
 </style>
 </head>
 <body>
@@ -1637,7 +1646,7 @@ body:not(.mapmax) #mndBar{display:none!important}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v91 (Wood bands)";
+const APP_VERSION="v93 (Static top bar)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -2920,7 +2929,7 @@ const LYR=[
  {id:"chl",g:"Satellite and other",name:"Plankton from satellite (chlorophyll)",src:"NASA",
   desc:"A lot of plankton gives murky water. Each cell is about 1 × 1 km, so the layer shows broad patterns out in the fjords, not single bays. Near the shore the values can be too high because of the bottom and river water. Clouds leave holes, so go back a few days to find a clear image. No data in the polar night north of the Arctic Circle."},
  {id:"fog",g:"Satellite and other",name:"Exploration",src:"The crew's logs",
-  desc:"A light fog over the map that lifts around places you have logged dives. The more dives, the bigger the clear area."}];
+  desc:"The map goes dark, and lights up around places the crew has logged dives. The more dives, the bigger the clear area. Also on the telescope button on the map."}];
 const LY={};for(const d of LYR)LY[d.id]=d;
 function lyrMake(d){if(d.layer)return d.layer;
   if(d.ags){const ls=d.ags.map(([b,ids,defs])=>agsLayer(b,ids,b===MDIR?ATT_M:d.id==="grunt"?'Kartverket, '+ATT_F:ATT_F,null,defs));d.layer=ls.length===1?ls[0]:grp(...ls)}
@@ -2932,7 +2941,8 @@ function lyrMake(d){if(d.layer)return d.layer;
   return d.layer}
 const lyrOn=id=>!!(S.lmap&&LY[id]&&LY[id].layer&&S.lmap.hasLayer(LY[id].layer));
 function lyrSet(id,on){const d=LY[id];if(!d||!S.lmap)return;const l=lyrMake(d);if(on&&!S.lmap.hasLayer(l))l.addTo(S.lmap);if(!on&&S.lmap.hasLayer(l))S.lmap.removeLayer(l);
-  lsSet("dk-lyr",LYR.filter(x=>lyrOn(x.id)).map(x=>x.id));renderLyr()}
+  lsSet("dk-lyr",LYR.filter(x=>lyrOn(x.id)).map(x=>x.id));renderLyr();syncExpBtn()}
+function syncExpBtn(){const b=document.getElementById("expBtn");if(!b)return;const on=lyrOn("fog");b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on))}
 function lyrParts(d){const l=d.layer;return l?(l._parts||[l]):[]}
 function lyrStatus(d){if(d.feat)return featStatus(d);const ps=lyrParts(d);if(!ps.length)return "";const ok=ps.some(p=>p._ok>0),bad=ps.some(p=>p._bad>0);
   if(bad&&!ok)return `<small class="ly-err">The map did not respond. Try again later.</small>`;
@@ -3030,9 +3040,13 @@ function initLayers(){
       b.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 8.5 12 14l10-5.5z"/><path d="m2 13 10 5.5L22 13"/><path d="m2 17.5 10 5.5 10-5.5" opacity=".55"/></svg><b hidden></b>';
       L.DomEvent.disableClickPropagation(b);b.onclick=()=>{S.lyrOpen=!S.lyrOpen;renderLyr()};return b}});
   new Ctl().addTo(S.lmap);
+  /* v92: exploration mode gets its own button under the layers button */
+  const Exp=L.Control.extend({options:{position:"topright"},onAdd(){const b=L.DomUtil.create("button","lyrbtn expbtn");b.id="expBtn";b.type="button";b.title="Exploration mode: the map stays dark where the crew hasn't dived yet";b.setAttribute("aria-label","Exploration mode");b.setAttribute("aria-pressed","false");
+      b.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 14.5 15 8.2l1.9 3.5-11.5 6.3z"/><path d="m15 8.2 3.6-2 1.9 3.5-3.6 2"/><path d="m2.4 15.1 1.9 3.5"/><path d="M10.2 14.6 8 21"/><path d="m11.4 14 3.1 7"/></svg>';L.DomEvent.disableClickPropagation(b);b.onclick=()=>{const on=!lyrOn("fog");lyrSet("fog",on);if(on){const n=allSites().filter(x=>x.lat!=null&&x.logCount>0).length;toast(n?`Exploration mode: ${n} ${n===1?"place":"places"} explored. Dive somewhere new to light up more of the map.`:"Exploration mode: log a dive to light up the first part of the map.")}};return b}});
+  new Exp().addTo(S.lmap);
   let saved=lsGet("dk-lyr");if(!saved){const old=lsGet("dk-ovl")||[];saved=old.filter(k=>LY[k])}
   for(const id of saved)if(LY[id])lyrMake(LY[id]).addTo(S.lmap);
-  S.lmap.on("zoomend",()=>{for(const d of LYR)if(d.feat)featZoom(d)});S.lmap.on("moveend",()=>{if(S.lyrOpen)renderLyr()});renderLyr()}
+  S.lmap.on("zoomend",()=>{for(const d of LYR)if(d.feat)featZoom(d)});S.lmap.on("moveend",()=>{if(S.lyrOpen)renderLyr()});renderLyr();syncExpBtn()}
 /* tap the map: what is registered here in the active ArcGIS layers */
 const IDF_SKIP=/^(systemnr|status|kommune|objectid|fid|shape|shape[._ ]?(area|length|leng)|globalid|st_area|st_length|se_anno.*|id|lokalid|navnerom|versjonid|oppdateringsdato|datafangstdato|kartid|.*_id)$/i;
 async function identifyAt(ll){const act=LYR.filter(d=>(d.ags||d._fb)&&lyrOn(d.id)),fe=LYR.filter(d=>d.feat&&d._feats&&lyrOn(d.id));if(!act.length&&!fe.length)return false;
@@ -3059,12 +3073,12 @@ function makeFog(){return new (L.Layer.extend({
   _hide(){if(this._c)this._c.style.opacity=0},
   _draw(){const map=this._map,c=this._c;if(!map||!c)return;const sz=map.getSize(),dpr=window.devicePixelRatio||1;
     c.width=sz.x*dpr;c.height=sz.y*dpr;c.style.width=sz.x+"px";c.style.height=sz.y+"px";c.style.opacity=1;L.DomUtil.setPosition(c,map.containerPointToLayerPoint([0,0]));
-    const g=c.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,sz.x,sz.y);g.fillStyle="rgba(6,16,30,.34)";g.fillRect(0,0,sz.x,sz.y);
+    const g=c.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,sz.x,sz.y);g.fillStyle="rgba(3,10,18,.82)";g.fillRect(0,0,sz.x,sz.y);
     g.globalCompositeOperation="destination-out";const z=map.getZoom();
     for(const st of allSites()){if(st.lat==null||st.lon==null||!(st.logCount>0))continue;
-      const p=map.latLngToContainerPoint([st.lat,st.lon]),mpp=40075016.686*Math.cos(st.lat*Math.PI/180)/Math.pow(2,z+8),r=(700+220*Math.min(10,st.logCount))/mpp;
+      const p=map.latLngToContainerPoint([st.lat,st.lon]),mpp=40075016.686*Math.cos(st.lat*Math.PI/180)/Math.pow(2,z+8),r=(900+300*Math.min(10,st.logCount))/mpp;
       if(p.x<-r||p.y<-r||p.x>sz.x+r||p.y>sz.y+r)continue;
-      const gr=g.createRadialGradient(p.x,p.y,r*.3,p.x,p.y,r);gr.addColorStop(0,"rgba(0,0,0,1)");gr.addColorStop(1,"rgba(0,0,0,0)");g.fillStyle=gr;g.beginPath();g.arc(p.x,p.y,r,0,7);g.fill()}
+      const gr=g.createRadialGradient(p.x,p.y,r*.45,p.x,p.y,r);gr.addColorStop(0,"rgba(0,0,0,1)");gr.addColorStop(.75,"rgba(0,0,0,.85)");gr.addColorStop(1,"rgba(0,0,0,0)");g.fillStyle=gr;g.beginPath();g.arc(p.x,p.y,r,0,7);g.fill()}
     g.globalCompositeOperation="source-over"}}))()}
 
 /* ---------- the dive year as a replay on the map ---------- */
@@ -5796,6 +5810,25 @@ $("#statHdr").onclick=toggleStats;$("#statBar").onclick=toggleStats;
 $("#statDlg").addEventListener("close",()=>{S.statOpen=false;syncRecBtn()});
 $("#statDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();openLightbox(b)});
 $("#dexHdr").onclick=()=>openDex();$("#dexBar").onclick=()=>openDex();
+/* v93: the big windows (records, stats, dex, season, monthly) open under the header instead of as blocking pop-ups,
+   so the top bar stays usable: tap another button to switch, tap the same button again to close */
+(function(){const PAGES=[["recHdr","recDlg"],["statHdr","statDlg"],["dexHdr","dexDlg"],["seaHdr","seaDlg"],["mndHdr","mndDlg"],["recBar","recDlg"],["statBar","statDlg"],["dexBar","dexDlg"],["seaBar","seaDlg"],["mndBar","mndDlg"]];
+  const hdrH=()=>{const h=document.querySelector("header.top");const v=h&&h.offsetParent!==null?Math.max(0,Math.round(h.getBoundingClientRect().bottom)):0;document.documentElement.style.setProperty("--hdrh",v+"px")};
+  const openPages=()=>[...document.querySelectorAll("dialog.dexdlg[open]")];
+  const sync=()=>{for(const [b,d] of PAGES){const bt=document.getElementById(b),dl=document.getElementById(d);if(bt&&dl){bt.classList.toggle("on",dl.open);bt.setAttribute("aria-pressed",String(dl.open))}}document.body.classList.toggle("pageopen",openPages().length>0)};
+  const closePage=d=>{const x=d.querySelector(".dexclose");if(x)x.click();if(d.open)d.close()};
+  const sm=HTMLDialogElement.prototype.showModal;
+  HTMLDialogElement.prototype.showModal=function(){if(!this.classList.contains("dexdlg"))return sm.call(this);
+    hdrH();for(const o of openPages())if(o!==this)closePage(o);if(!this.open)this.show();sync()};
+  for(const d of document.querySelectorAll("dialog.dexdlg"))d.addEventListener("close",()=>setTimeout(sync,0));
+  document.addEventListener("click",e=>{const t=e.target;if(!t||!t.closest)return;
+    if(t.closest("#actPop [data-site],#actPop [data-game]")){for(const d of openPages())closePage(d);return}
+    const b=t.closest("button");if(!b)return;const m=PAGES.find(p=>p[0]===b.id);if(!m)return;const d=document.getElementById(m[1]);
+    if(d&&d.open){e.stopImmediatePropagation();e.preventDefault();closePage(d)}},true);
+  document.addEventListener("keydown",e=>{if(e.key!=="Escape"||S.actOpen)return;let modal=null;try{modal=document.querySelector("dialog:modal")}catch(_){}if(modal)return;
+    const ds=openPages(),d=ds[ds.length-1];if(!d)return;const ev=new Event("cancel",{cancelable:true});d.dispatchEvent(ev);if(!ev.defaultPrevented)closePage(d)});
+  window.addEventListener("resize",()=>{if(openPages().length)hdrH()});
+})();
 $("#dexDlg").addEventListener("close",()=>{S.dexOpen=false;syncDexBtn()});
 $("#dexDlg").addEventListener("cancel",e=>{const det=$("#dexDet");if(det&&!det.hidden){e.preventDefault();det.hidden=true;det.innerHTML=""}});
 $("#dexDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();openLightbox(b)});
