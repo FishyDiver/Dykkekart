@@ -1,8 +1,8 @@
 {
   "name": "Jaktkart",
   "short_name": "Jaktkart",
-  "description": "Undervannsjakt rundt Bodø: steder, fangst, vær og tidevann for gjengen",
-  "lang": "no",
+  "description": "Spearfishing around Bodø: sites, catches, weather and tide for the crew",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
