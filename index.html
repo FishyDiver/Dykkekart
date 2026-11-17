@@ -1659,7 +1659,7 @@ body.pageopen header.top{position:relative;z-index:2100}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v96 (Caught only)";
+const APP_VERSION="v97 (Biggest caught)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -3493,7 +3493,10 @@ function diversity(catches){const cnt={};for(const c of catches)cnt[c.species]=(
 function speciesHTML(s,L,logs){
   const dv=diversity(L),dives=Math.max(1,s.logCount||0,logs.length,new Set(L.map(c=>c.log_id)).size),by={};
   for(const c of L){const o=by[c.species]||(by[c.species]={sp:c.species,logs:new Set(),caught:0,seen:0,maxCm:null,maxKg:null,months:new Array(12).fill(0)});
-    o.logs.add(c.log_id);if(c.kind==="fanget")o.caught+=c.count;else o.seen+=c.count;if(c.size_cm!=null)o.maxCm=Math.max(o.maxCm??0,c.size_cm);if(c.weight_kg!=null)o.maxKg=Math.max(o.maxKg??0,c.weight_kg);if(c.date)o.months[+c.date.slice(5,7)-1]++}
+    o.logs.add(c.log_id);if(c.kind==="fanget")o.caught+=c.count;else o.seen+=c.count;
+    /* v97: "Biggest" is the biggest fish caught; a bigger fish that was only seen is shown separately */
+    if(c.kind==="fanget"){if(c.size_cm!=null)o.maxCm=Math.max(o.maxCm??0,c.size_cm);if(c.weight_kg!=null)o.maxKg=Math.max(o.maxKg??0,c.weight_kg)}
+    else{if(c.size_cm!=null)o.seenCm=Math.max(o.seenCm??0,c.size_cm);if(c.weight_kg!=null)o.seenKg=Math.max(o.seenKg??0,c.weight_kg)}if(c.date)o.months[+c.date.slice(5,7)-1]++}
   const rows=Object.values(by).sort((a,b)=>b.logs.size-a.logs.size||a.sp.localeCompare(b.sp,"nb"));
   const mstrip=m=>`<svg width="60" height="10" aria-hidden="true">${m.map((v,i)=>`<rect x="${i*5}" y="${v?0:6}" width="4" height="${v?10:4}" rx="1" fill="${v?"var(--alpha)":"var(--line)"}"/>`).join("")}</svg>`;
   const asc=logs.slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.created_at||"").localeCompare(b.created_at||""));
@@ -3503,8 +3506,8 @@ function speciesHTML(s,L,logs){
     <p class="small" style="margin:0 0 8px">H′ increases with more species and a more even distribution. J′ close to 1 means the species are about equally common.</p>
     <h4 class="h4">How often the species is seen</h4>${hbars(rows.slice(0,10).map(o=>({label:spn(o.sp),value:o.logs.size/dives,text:`${Math.round(o.logs.size/dives*100)} %`,tip:`${spn(o.sp)}: recorded in ${o.logs.size} of ${dives} dive${dives===1?"":"s"}`})),{max:1})}
     ${acc.length>=3?`<h4 class="h4">Species found by number of dives</h4>${lineChart(acc,{aria:"Species accumulation",xl:"Dive 1"})}<p class="small" style="margin:0">If the curve flattens out, most of the species here have probably been recorded.</p>`:""}
-    <h4 class="h4">All species</h4><table class="sptab"><thead><tr><th>Species</th><th>Seen in</th><th>Caught</th><th>Biggest</th><th title="Months the species is recorded, Jan to Dec">Month</th></tr></thead><tbody>
-    ${rows.map(o=>`<tr><td>${esc(spn(o.sp))}</td><td>${o.logs.size}/${dives}</td><td>${o.caught||"–"}</td><td>${esc([o.maxKg!=null?fnum(o.maxKg,2)+" kg":"",o.maxCm!=null?fnum(o.maxCm)+" cm":""].filter(Boolean).join(", ")||"–")}</td><td>${mstrip(o.months)}</td></tr>`).join("")}</tbody></table></div>`;
+    <h4 class="h4">All species</h4><table class="sptab"><thead><tr><th>Species</th><th>Seen in</th><th>Caught</th><th title="Biggest fish caught here. A bigger fish that was only seen is shown under it">Biggest caught</th><th title="Months the species is recorded, Jan to Dec">Month</th></tr></thead><tbody>
+    ${rows.map(o=>`<tr><td>${esc(spn(o.sp))}</td><td>${o.logs.size}/${dives}</td><td>${o.caught||"–"}</td><td>${esc([o.maxKg!=null?fnum(o.maxKg,2)+" kg":"",o.maxCm!=null?fnum(o.maxCm)+" cm":""].filter(Boolean).join(", ")||"–")}${(o.seenKg!=null&&(o.maxKg==null||o.seenKg>o.maxKg))||(o.seenKg==null&&o.seenCm!=null&&(o.maxCm==null||o.seenCm>o.maxCm))?`<br><span class="small">seen: ${esc([o.seenKg!=null?fnum(o.seenKg,2)+" kg":"",o.seenCm!=null?fnum(o.seenCm)+" cm":""].filter(Boolean).join(", "))}</span>`:""}</td><td>${mstrip(o.months)}</td></tr>`).join("")}</tbody></table></div>`;
 }
 function renderSpecies(){
   const el=$("#speciesBox");if(!el)return;const s=getSite(S.sel);if(!s){el.innerHTML="";return}
