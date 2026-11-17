@@ -1596,7 +1596,7 @@ body:not(.mapmax) .layout{background:none}
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v88 (Calm stats)";
+const APP_VERSION="v90 (Discipline check)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -4667,27 +4667,27 @@ function pickResult(r){
 function catchKey(c){return [c.weight_kg??-1,c.size_cm??-1]}
 function bigger(a,b){const x=catchKey(a),y=catchKey(b);return x[0]!==y[0]?x[0]>y[0]:x[1]>y[1]}
 function highlightItems(){
+  /* v89: only fish that were caught (not seen), newest first. Tags still mark records, this year's biggest and so on */
   const caught=S.catches.filter(c=>c.kind==="fanget"&&c.date&&getSite(c.site_id));
   const best={},yBest={},bySp={};const yr=String(new Date().getFullYear());
   for(const c of caught){if(c.weight_kg==null&&c.size_cm==null)continue;
     if(!best[c.species]||bigger(c,best[c.species]))best[c.species]=c;
     if(c.date.startsWith(yr)&&(!yBest[c.species]||bigger(c,yBest[c.species])))yBest[c.species]=c;
     (bySp[c.species]||(bySp[c.species]=[])).push(c)}
-  const firstAt={};for(const c of S.catches.filter(c=>c.date).sort((a,b)=>a.date.localeCompare(b.date)||String(a.created_at||"").localeCompare(String(b.created_at||"")))){const k=c.site_id+"|"+c.species;if(!firstAt[k])firstAt[k]=c.id}
+  const firstAt={};for(const c of caught.slice().sort(catchSort)){const k=c.site_id+"|"+c.species;if(!firstAt[k])firstAt[k]=c.id}
   const pick=days=>{const cut=new Date(Date.now()-days*864e5).toISOString().slice(0,10),out=[];
-    for(const c of S.catches){if(!c.date||c.date<cut||!getSite(c.site_id))continue;
-      const tags=[];let sc=0;const meas=c.weight_kg!=null||c.size_cm!=null;
-      if(c.kind==="fanget"&&meas){
-        if(best[c.species]===c&&(bySp[c.species]||[]).length>1){tags.push(["rek","Record"]);sc+=100}
-        else if(yBest[c.species]===c){tags.push(["yr","This year's biggest"]);sc+=60}
-        const L=bySp[c.species]||[];if(L.length>=5&&!tags.length){const smaller=L.filter(x=>bigger(c,x)).length;if(smaller/(L.length-1)>=.8){tags.push(["big","Big"]);sc+=25}}}
-      if(firstAt[c.site_id+"|"+c.species]===c.id&&S.catches.some(x=>x.site_id===c.site_id&&x.id!==c.id)){tags.push(["new","New species at the site"]);sc+=30}
-      if(!tags.length)continue;
-      if(c.photo_path)sc+=15;sc+=Math.min(20,(c.weight_kg||0));
-      out.push({c,tags,sc})}
+    for(const c of caught){if(c.date<cut)continue;
+      const meas=c.weight_kg!=null||c.size_cm!=null,tags=[];
+      if(meas){
+        if(best[c.species]===c&&(bySp[c.species]||[]).length>1)tags.push(["rek","Record"]);
+        else if(yBest[c.species]===c)tags.push(["yr","This year's biggest"]);
+        const L=bySp[c.species]||[];if(L.length>=5&&!tags.length){const smaller=L.filter(x=>bigger(c,x)).length;if(smaller/(L.length-1)>=.8)tags.push(["big","Big"])}}
+      if(firstAt[c.site_id+"|"+c.species]===c.id&&caught.some(x=>x.site_id===c.site_id&&x.id!==c.id))tags.push(["new","New species at the site"]);
+      if(!meas&&!c.photo_path&&!tags.length)continue;
+      out.push({c,tags})}
     return out};
-  let items=pick(60);if(items.length<2)items=pick(180);
-  return items.sort((a,b)=>b.sc-a.sc||String(b.c.date).localeCompare(String(a.c.date))).slice(0,8);
+  let items=pick(60);if(items.length<3)items=pick(365);
+  return items.sort((a,b)=>String(b.c.date).localeCompare(String(a.c.date))||String(b.c.created_at||"").localeCompare(String(a.c.created_at||""))).slice(0,10);
 }
 function renderDexTeaser(){const el=$("#dexTeaser");if(!el)return;syncDexBtn();if(!S.catches.length){el.innerHTML="";return}const d=dexData();
   const recent=Object.values(d.by).sort((a,b)=>catchSort(b.first,a.first)).slice(0,5);const pct=Math.round(d.found/Math.max(1,d.total)*100);
@@ -5163,12 +5163,14 @@ function mfDisciplines(M){const inM=x=>(x.date||"").startsWith(M),cs=S.catches.f
     rows.forEach((r,i)=>{r.place=i>0&&big(rows[i-1].c,r.c)===0?rows[i-1].place:i});
     return {sp,rows,n:rows.length}}).sort((a,b)=>(b.n>1)-(a.n>1)||b.n-a.n||a.sp.localeCompare(b.sp,"nb"));
   const D=[
-   {k:"art",icon:"⚖️",name:"Biggest per species",what:"Biggest catch of each species (weight, otherwise length). Gives points when at least two people have caught the species.",sp:perSp},
-   {k:"rek",icon:"🎯",name:"Record hunter",what:"Closest to the crew's record for the species (from before this month)",rows:bestPer(caught,rel),fmt:r=>`${Math.round(r.v*100)} % of the record · ${spn(r.c.species).toLocaleLowerCase("nb")} ${measureTxt(r.c)}${r.v>1?" · new record!":""}`},
-   {k:"species",icon:"🧭",name:"All-rounder",what:"Most species (seen or caught)",rows:per(m=>{const s={};for(const c of cs){const k=who(c);(s[k]=s[k]||new Set()).add(c.species)}for(const k in s)m[k]=s[k].size}),fmt:r=>`${r.v} species`},
-   {k:"dives",icon:"🤿",name:"Most active",what:"Most dives",rows:S.allLogs==null?null:per(m=>{for(const l of logs)for(const n of new Set([l.author_name,...(l.buddies||[])].filter(Boolean)))m[n]=(m[n]||0)+1}),fmt:r=>`${r.v} dive${r.v===1?"":"s"}`},
-   {k:"skjell",icon:"🐚",name:"Harvest king",what:"Most shellfish, crabs and sea urchins harvested",rows:per(m=>{for(const c of caught)if(MF_SHELL.has(c.species)){const k=who(c);m[k]=(m[k]||0)+(+c.count||1)}}),fmt:r=>`${r.v} pcs`}];
+   {k:"art",icon:"⚖️",name:"Biggest per species",what:"Biggest catch of each species this month (weight, otherwise length). Gives points when at least two people have caught the species.",sp:perSp},
+   {k:"rek",icon:"🎯",name:"Record hunter",what:"This month's catch closest to the crew's record for the species (record from before this month)",rows:bestPer(caught,rel),fmt:r=>`${Math.round(r.v*100)} % of the record · ${spn(r.c.species).toLocaleLowerCase("nb")} ${measureTxt(r.c)}${r.v>1?" · new record!":""}`},
+   {k:"species",icon:"🧭",name:"All-rounder",what:"Most different species this month (seen or caught)",rows:(()=>{const s={};for(const c of cs){const k=who(c);(s[k]=s[k]||new Set()).add(c.species)}return Object.entries(s).map(([k,v])=>({who:k,v:v.size,list:[...v].map(x=>spn(x).toLocaleLowerCase("en-GB")).sort()})).sort((a,b)=>b.v-a.v)})(),fmt:r=>`${r.v} species: ${r.list.join(", ")}`},
+   {k:"dives",icon:"🤿",name:"Most active",what:"Most dives this month",rows:S.allLogs==null?null:per(m=>{for(const l of logs)for(const n of new Set([l.author_name,...(l.buddies||[])].filter(Boolean)))m[n]=(m[n]||0)+1}),fmt:r=>`${r.v} dive${r.v===1?"":"s"}`},
+   {k:"skjell",icon:"🐚",name:"Harvest king",what:"Most shellfish, crabs and sea urchins harvested this month",rows:per(m=>{for(const c of caught)if(MF_SHELL.has(c.species)){const k=who(c);m[k]=(m[k]||0)+(+c.count||1)}}),fmt:r=>`${r.v} pcs`}];
   return {D,newSp,cs,caught,logs}}
+/* v90: equal values share a place (same medal and same points), like in the points table */
+function mfPlaced(rows){const out=[];let place=0,last=null;rows.slice(0,8).forEach((r,i)=>{if(last==null||r.v!==last){place=i;last=r.v}if(place<3)out.push({r,place})});return out}
 function mfPoints(M){const {D,newSp}=mfDisciplines(M),pts={},why={};const add=(n,p,w)=>{if(!n)return;pts[n]=(pts[n]||0)+p;(why[n]=why[n]||[]).push(w)};
   for(const d of D){if(d.sp){for(const x of d.sp){if(x.n<2)continue;for(const r of x.rows)if(r.place<2)add(r.who,2-r.place,`Biggest ${spn(x.sp).toLocaleLowerCase("nb")} (${r.place+1}.)`)}continue}
     if(!d.rows)continue;let place=0,last=null;d.rows.slice(0,6).forEach((r,i)=>{if(last==null||r.v!==last){place=i;last=r.v}if(place<3)add(r.who,3-place,`${d.name} (${place+1}.)`)})}
@@ -5198,7 +5200,7 @@ function renderMf(){const wrap=$("#mndWrap");if(!wrap)return;const st=wrap.scrol
         ${solo.length?`<p class="mf-solo"><b>Without competition (no points):</b> ${solo.map(x=>`<button type="button" class="linkbtn mf-solob" data-site="${esc(x.rows[0].c.site_id)}" title="Show the site"><b>${esc(spn(x.sp))}</b> ${esc(x.rows[0].who)} ${esc(measureTxt(x.rows[0].c))}</button>`).join(", ")}</p>`:""}`})():`<p class="mf-empty">No catches with weight or length yet</p>`}</div>`;
   const dHTML=D.map(d=>{if(d.sp)return spCard(d);const rows=d.rows;
     return `<div class="mf-d"><div class="mf-dh"><span class="mf-di">${d.icon}</span><div><b>${esc(d.name)}</b><small>${esc(d.what)}</small></div></div>
-      ${rows==null?`<p class="mf-note">Fetching dives…</p>`:rows.length?`<ol class="mf-pod">${rows.slice(0,3).map((r,i)=>`<li class="p${i+1}"><span class="mf-m">${["🥇","🥈","🥉"][i]}</span><b>${esc(r.who)}</b><span>${esc(d.fmt(r))}</span>${r.c?`<button type="button" class="linkbtn mf-site" data-site="${esc(r.c.site_id)}" title="Show the site">›</button>`:""}</li>`).join("")}</ol>`:`<p class="mf-empty">None yet</p>`}</div>`}).join("");
+      ${rows==null?`<p class="mf-note">Fetching dives…</p>`:rows.length?`<ol class="mf-pod">${mfPlaced(rows).map(({r,place:i})=>`<li class="p${i+1}"><span class="mf-m">${["🥇","🥈","🥉"][i]}</span><b>${esc(r.who)}</b><span>${esc(d.fmt(r))}</span>${r.c?`<button type="button" class="linkbtn mf-site" data-site="${esc(r.c.site_id)}" title="Show the site">›</button>`:""}</li>`).join("")}</ol>`:`<p class="mf-empty">None yet</p>`}</div>`}).join("");
   const hist=months.slice().reverse().filter(m=>m!==M&&!mfOpenVote(m)).slice(0,12).map(m=>{const w=mfVoteWinners(m),p=mfPoints(m)[0];return `<button type="button" class="mf-h" data-m="${m}"><b>${esc(mfLabel(m))}</b><span>${w.length?`🐟 ${esc(w.map(x=>`${spn(x.c.species)} (${catcherName(x.c)||"?"})`).join(", "))}`:"No vote"}</span><span>${p?`🏆 ${esc(p.who)} · ${p.p} points`:""}</span></button>`}).join("");
   wrap.innerHTML=`<div class="dexin mf">
     <div class="dextop"><h2>Catch of the month</h2><button class="dexclose" id="mndX" aria-label="Close">✕</button></div>
@@ -5207,10 +5209,10 @@ function renderMf(){const wrap=$("#mndWrap");if(!wrap)return;const st=wrap.scrol
     <section class="mf-sec mf-votesec"><h3>🐟 Vote: fish of the month</h3>${voteHTML}</section>
     <aside class="mf-side">
     <div class="mf-kpis"><div><b>${S.allLogs==null?"…":logs.length}</b><span>dives</span></div><div><b>${new Set(cs.map(c=>c.species)).size}</b><span>species</span></div><div><b>${caught.reduce((n,c)=>n+(+c.count||1),0)}</b><span>caught</span></div><div><b>${newSp.length}</b><span>new species</span></div></div>
-    <section class="mf-sec mf-ranksec"><h3>🏆 Overall</h3>${pts.length?`<ol class="mf-tot">${pts.slice(0,6).map((r,i)=>`<li${i<3?` class="p${i+1}"`:""}><span class="mf-m">${["🥇","🥈","🥉"][i]||i+1+"."}</span><b>${esc(r.who)}</b><span class="mf-p">${r.p} p</span><small>${esc(r.why.join(" · "))}</small></li>`).join("")}</ol>`:`<p class="mf-empty">No points yet this month.</p>`}
+    <section class="mf-sec mf-ranksec"><h3>🏆 Overall</h3>${pts.length?`<ol class="mf-tot">${pts.slice(0,6).map(r=>[r,pts.findIndex(x=>x.p===r.p)]).map(([r,i])=>`<li${i<3?` class="p${i+1}"`:""}><span class="mf-m">${["🥇","🥈","🥉"][i]||i+1+"."}</span><b>${esc(r.who)}</b><span class="mf-p">${r.p} p</span><small>${esc(r.why.join(" · "))}</small></li>`).join("")}</ol>`:`<p class="mf-empty">No points yet this month.</p>`}
       <p class="mf-rule">3, 2 and 1 points for places 1–3 in each discipline. In “Biggest per species” each species gives 2 points to the biggest and 1 to the second biggest, but only when at least two people have caught the species. 2 points per new species for the crew and 5 points for winning the vote.</p></section>
     </aside>
-    <section class="mf-sec mf-discsec"><h3>Disciplines</h3><div class="mf-ds">${dHTML}</div>
+    <section class="mf-sec mf-discsec"><h3>Disciplines</h3><p class="mf-note">Counted only for ${esc(mfLabel(M))}. The all-time numbers per person are under Stats → People.</p><div class="mf-ds">${dHTML}</div>
       ${newSp.length?`<div class="mf-new"><b>✨ New species for the crew:</b> ${newSp.map(c=>`${esc(spn(c.species))} <small>(${esc(catcherName(c)||"unknown")})</small>`).join(", ")}</div>`:""}</section>
     ${hist?`<section class="mf-sec mf-histsec"><h3>Earlier months</h3><div class="mf-hist">${hist}</div></section>`:""}
     </div>
@@ -5402,6 +5404,8 @@ function renderStatDlg(){
   for(const c of caught){const n=catcherName(c);if(n)(ppl[n]||(ppl[n]={d:0,f:0})).f+=cnt(c)}
   const pRows=Object.entries(ppl).sort((a,b)=>b[1].d-a[1].d||b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.d,text:`${v.d} dive${v.d===1?"":"s"} · ${v.f} fish`}));
   const fRows=Object.entries(ppl).filter(([,v])=>v.f).sort((a,b)=>b[1].f-a[1].f).slice(0,8).map(([k,v])=>({label:k,value:v.f,text:`${v.f} fish`}));
+  const pSp={};for(const c of caught){const n=catcherName(c);if(n)(pSp[n]||(pSp[n]=new Set())).add(c.species)}
+  const sRowsP=Object.entries(pSp).sort((a,b)=>b[1].size-a[1].size).slice(0,8).map(([k,v])=>({label:k,value:v.size,text:`${v.size} species`,tip:`${k}: ${[...v].map(x=>spn(x)).sort().join(", ")}`}));
   // building blocks
   const none=t=>`<p class="emptytxt">${t}</p>`;
   const tile=(ico,val,lab,col)=>`<div class="stk" style="--ac:${col}"><i>${ico}</i><b>${val}</b><span>${lab}</span></div>`;
@@ -5436,7 +5440,7 @@ function renderStatDlg(){
       ${nh>=3?`<h4 class="h4">Start time of dives (${nh} dives)</h4>${colChart(hrs.slice(h0,h1+1).map(v=>v||null),hrs.map((_,i)=>String(i)).slice(h0,h1+1),{fmt:v=>fnum(v,0),tip:()=>" dives",aria:"Dives by time of day",H:110})}`:""}`:none(`No dives logged in ${esc(yl)}.`));
   const spCard=card(C.art,"Species",spDiveRows.length?`<b>${dv.S}</b> species recorded. Diversity (Shannon H′) <b>${fnum(dv.H,2)}</b>.`:"",
     spDiveRows.length?`<h4 class="h4">Number of dives the species is recorded on</h4>${hbars(spDiveRows)}${rich.length?`<h4 class="h4">Most species-rich sites</h4>${hbars(rich.map(x=>({label:x.s.name,value:x.d.S,text:`${x.d.S} species`,tip:`${x.s.name}: ${x.d.S} species, H′ ${fnum(x.d.H,2)}`})))}`:""}`:none(`No species recorded in ${esc(yl)}.`));
-  const folkCard=pRows.length?card(C.folk,"People","",`<h4 class="h4">Most active divers</h4>${hbars(pRows)}${fRows.length?`<h4 class="h4">Most fish caught</h4>${hbars(fRows)}`:""}`):"";
+  const folkCard=pRows.length?card(C.folk,"People","",`<h4 class="h4">Most active divers</h4>${hbars(pRows)}${fRows.length?`<h4 class="h4">Most fish caught</h4>${hbars(fRows)}`:""}${sRowsP.length?`<h4 class="h4">Most species caught</h4>${hbars(sRowsP)}`:""}`):"";
   W.innerHTML=`${statHead()}
     <div class="chips" id="stY">${[...years.slice(0,6),"alle"].map(y=>`<button class="chip ${Y===y?"on":""}" data-y="${y}">${y==="alle"?"All years":y}</button>`).join("")}</div>
     <div class="sthero"><div class="sthero-h"><b>The tally</b><em>${esc(yl)}</em></div>
