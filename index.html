@@ -1615,6 +1615,36 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 .bd-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 2px 8px;font-size:13px;color:var(--muted)}
 .bd-topbar .linkbtn{font-weight:600}
 
+/* v103: biggest per species as a grid of large photo cards across the full width of Records */
+.recdlg .recgrid>.rbig{grid-column:1/-1}
+.rcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:6px}
+@media (min-width:1300px){.rcards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){.rcards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+.rcard{display:flex;flex-direction:column;min-width:0;background:var(--lb-bg1);border:1px solid var(--lb-line);border-radius:3px;overflow:hidden;
+  box-shadow:inset 0 0 0 3px var(--lb-bg1),inset 0 0 0 4px rgba(184,145,63,.55)}
+.rc-img{position:relative;margin:5px 5px 0}
+.rc-pic{display:block;width:100%;aspect-ratio:1/1;padding:0;border:0;border-radius:1px;overflow:hidden;background:var(--lb-bg2);cursor:zoom-in}
+.rc-pic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}
+@media (hover:hover){.rc-pic:hover img{transform:scale(1.03)}}
+.rc-pic.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--lb-t4);cursor:default}
+.rc-pic.ph small{font-size:12.5px}
+.rc-m{position:absolute;left:8px;bottom:8px;padding:4px 10px;border-radius:2px;background:#DDB866;color:#10262E;font:600 16px/1.2 "Source Serif 4",Georgia,serif;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.rc-tx{padding:9px 12px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.rc-tx b{font:400 21px/1.2 var(--lb-title);color:var(--lb-t1)}
+.rc-tx .small{color:var(--lb-t3);overflow-wrap:anywhere}
+@media (max-width:700px){.rc-tx{padding:7px 9px 9px}.rc-tx b{font-size:17px}.rc-m{font-size:14px;padding:3px 8px;left:6px;bottom:6px}}
+/* v104: the species legend sits at the bottom of the map, like a map legend, so it no longer covers the weather strip */
+.heatbar{top:auto;bottom:30px;left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);z-index:1001}
+#heatBar:not([hidden])~.hud{top:54px}
+@media (max-width:700px){#heatBar:not([hidden])~.hud{top:52px}.heatbar{top:auto;bottom:26px}}
+.heatbar .hbg{white-space:nowrap}
+
+/* v105: the way-back bar slides out of sight while you scroll down the site page and comes back as soon as you scroll up */
+.panel>.back{transition:transform .22s ease,box-shadow .22s ease}
+.panel>.back.hid{transform:translateY(calc(-100% - 14px));box-shadow:none;pointer-events:none}
+.panel>.back.hid:focus-visible{transform:none;pointer-events:auto}
+@media (prefers-reduced-motion:reduce){.panel>.back{transition:none}}
+
 </style>
 </head>
 <body>
@@ -1727,7 +1757,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v102 (Show fewer on top)";
+const APP_VERSION="v105 (Back bar hides)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -3642,6 +3672,10 @@ S.recOpen=false;
 function openRecords(){S.recOpen=true;renderRecords();const d=$("#recDlg");if(d&&!d.open)d.showModal();syncRecBtn();
   Promise.all([cachedQ("alllogs",sb.from("logs").select("*")),cachedQ("allreports",sb.from("vis_reports").select("*"))]).then(([a,b])=>{if(!a.error)S.allLogs=a.data;if(!b.error)S.allReports=b.data;if(S.recOpen)renderRecords()})}
 function closeRecords(){S.recOpen=false;const d=$("#recDlg");if(d&&d.open)d.close();syncRecBtn()}
+/* v103: the biggest per species as large photo cards */
+function recCard(c){const s=getSite(c.site_id),m=measureTxt(c),cap=spn(c.species)+(m?" · "+m:"")+(s?" · "+s.name:"")+(catcherName(c)?" · "+catcherName(c):"");
+  return `<div class="rcard"><div class="rc-img">${c.photo_path?`<button type="button" class="rc-pic" data-img="${esc(c.photo_path)}" data-cap="${esc(cap)}" aria-label="Show the photo of the ${esc(spn(c.species).toLocaleLowerCase("en-GB"))}"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`:`<span class="rc-pic ph">${iconSVG(SPICON(c.species),46)}<small>No photo yet</small></span>`}${m?`<span class="rc-m">${esc(m)}</span>`:""}</div>
+    <div class="rc-tx"><b>${esc(spn(c.species))}</b><span class="small">${s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button> · `:""}${esc(catcherName(c))}${c.date?" · "+esc(fdate(c.date)):""}</span></div></div>`}
 function recRow(c,i,medal){const s=getSite(c.site_id);
   return `<div class="rec">${i!=null?`<span class="rk">${i+1}</span>`:""}${c.photo_path?`<button class="thumb big" data-img="${esc(c.photo_path)}" data-cap="${esc(spn(c.species)+" · "+measureTxt(c)+(s?" · "+s.name:"")+(catcherName(c)?" · "+catcherName(c):""))}" aria-label="Show photo"><img src="${esc(photoURL(c.photo_path))}" alt="" loading="lazy"></button>`:`<span class="thumb big ph">${iconSVG(SPICON(c.species),22)}</span>`}
     <span class="rb"><b>${medal?"🥇 ":""}${esc(spn(c.species))}</b> <span class="rm">${esc(measureTxt(c)||"–")}</span><br><span class="small">${s?`<button class="linkbtn rsite" data-site="${esc(s.id)}">${esc(s.name)}</button> · `:""}${esc(catcherName(c))}${c.date?" · "+esc(fdate(c.date)):""}</span></span></div>`}
@@ -3678,8 +3712,8 @@ function renderRecords(){
   recWrap().innerHTML=`${recHead()}
     <div class="chips" id="yrChips">${[...years.slice(0,4),"alle"].filter((v,i,a)=>a.indexOf(v)===i).map(y=>`<button class="chip ${S.recYear===y?"on":""}" data-y="${y}">${y==="alle"?"All years":y}</button>`).join("")}${years.length?"":`<button class="chip on" data-y="alle">All years</button>`}</div>
     <div class="recgrid">
-    <section class="rsec"><h3>${S.recYear==="alle"?"Biggest per species":"This year's biggest per species"}</h3>
-      ${best.length?best.map(c=>recRow(c,null,true)).join(""):`<p class="emptytxt">No catches with weight or length ${S.recYear==="alle"?"yet":"in "+yl}. Add kg or cm when you log a catch.</p>`}</section>
+    <section class="rsec rbig"><h3>${S.recYear==="alle"?"Biggest per species":"This year's biggest per species"}</h3>
+      ${best.length?`<div class="rcards">${best.slice().sort((a,b)=>(b.photo_path?1:0)-(a.photo_path?1:0)||(+b.weight_kg||0)-(+a.weight_kg||0)||(+b.size_cm||0)-(+a.size_cm||0)).map(recCard).join("")}</div>`:`<p class="emptytxt">No catches with weight or length ${S.recYear==="alle"?"yet":"in "+yl}. Add kg or cm when you log a catch.</p>`}</section>
     <section class="rsec"><h3>Top 10 ${S.recSort==="kg"?"heaviest":"longest"} catches</h3>
       <div class="chips" id="sortChips"><button class="chip ${S.recSort==="kg"?"on":""}" data-s="kg">Weight</button><button class="chip ${S.recSort==="cm"?"on":""}" data-s="cm">Length</button></div>
       ${top.length?top.map((c,i)=>recRow(c,i)).join(""):`<p class="emptytxt">No catches with ${S.recSort==="kg"?"weight":"length"} ${S.recYear==="alle"?"yet":"in "+yl}.</p>`}</section>
@@ -5043,7 +5077,9 @@ function pickSpMap(sp){toggleSpPop(false);const sel=$("#spSel");
   if(pts.length)setTimeout(()=>{try{pts.length>1?S.lmap.fitBounds(pts,{padding:[50,50],maxZoom:13}):S.lmap.setView(pts[0],Math.max(10,Math.min(12,S.lmap.getZoom())))}catch(e){}},60)}
 document.addEventListener("click",e=>{const p=document.getElementById("spPop");if(p&&!p.hidden&&!e.target.closest(".spctl"))toggleSpPop(false)});
 document.addEventListener("keydown",e=>{const p=document.getElementById("spPop");if(e.key==="Escape"&&p&&!p.hidden){toggleSpPop(false);const b=$("#spMapBtn");if(b)b.focus()}});
-function renderHeat(){syncSpBtn();const bar=$("#heatBar");if(!S.heatLayer)return;S.heatLayer.clearLayers();
+function renderHeat(){syncSpBtn();const bar=$("#heatBar");
+  /* v104: the legend lives inside the map, at the bottom */
+  if(bar&&S.lmap&&bar.parentNode!==S.lmap.getContainer()){S.lmap.getContainer().appendChild(bar);L.DomEvent.disableClickPropagation(bar);L.DomEvent.disableScrollPropagation(bar)}if(!S.heatLayer)return;S.heatLayer.clearLayers();
   if(S.heatGbifLayer&&(!S.sp||!S.heatGbif||S.heatGbifLayer._sp!==S.sp)){S.lmap.removeLayer(S.heatGbifLayer);S.heatGbifLayer=null}
   if(!S.sp||!isLive()){if(bar)bar.hidden=true;return}
   const by={};for(const c of S.catches)if(c.species===S.sp)(by[c.site_id]=by[c.site_id]||[]).push(c);
@@ -5053,7 +5089,7 @@ function renderHeat(){syncSpBtn();const bar=$("#heatBar");if(!S.heatLayer)return
   if(S.heatGbif&&!S.heatGbifLayer){const sp=S.sp;gbifInfo(sp).then(g=>{if(!g||S.sp!==sp||!S.heatGbif||S.heatGbifLayer)return;
     S.heatGbifLayer=gbifHexLayer(g.key,{opacity:.75,pane:"heatPane"});S.heatGbifLayer._sp=sp;S.heatGbifLayer.addTo(S.lmap)})}
   if(bar){const n=Object.keys(by).length;bar.hidden=false;
-    bar.innerHTML=`<span class="hbt"><i class="hdot"></i><b>${esc(spn(S.sp))}</b> <span>${n?`${n} ${n===1?"site":"sites"}`:"not found by the crew yet"}</span></span><label class="hbg"><input type="checkbox" id="heatG" ${S.heatGbif?"checked":""}> All reported records</label><button type="button" id="heatX" aria-label="Remove heat map" title="Remove species filter">✕</button>`;
+    bar.innerHTML=`<span class="hbt"><i class="hdot"></i><b>${esc(spn(S.sp))}</b> <span>${n?`${n} ${n===1?"site":"sites"}`:"not found by the crew yet"}</span></span><label class="hbg" title="Hexagons: all reported records in Norway (GBIF, which includes Artskart)"><input type="checkbox" id="heatG" ${S.heatGbif?"checked":""}> All reported records</label><button type="button" id="heatX" aria-label="Remove heat map" title="Remove species filter">✕</button>`;
     $("#heatG").onchange=e=>{S.heatGbif=e.target.checked;renderHeat()};
     $("#heatX").onclick=()=>{S.sp="";const sel=$("#spSel");if(sel)sel.value="";if(S.view==="list")renderList();renderPins()}}}
 
@@ -5948,6 +5984,17 @@ $("#statHdr").onclick=toggleStats;$("#statBar").onclick=toggleStats;
 $("#statDlg").addEventListener("close",()=>{S.statOpen=false;syncRecBtn()});
 $("#statDlg").addEventListener("click",e=>{const b=e.target.closest("[data-img]");if(!b)return;e.stopPropagation();openLightbox(b)});
 $("#dexHdr").onclick=()=>openDex();$("#dexBar").onclick=()=>openDex();
+/* v105: the "‹ All sites" bar on a site page hides while you scroll down and comes back when you scroll up.
+   It only hides once it is stuck at the top, so it never slides over the map on a phone */
+(function(){const anchor=new WeakMap();
+  const scTop=t=>t===document.scrollingElement?0:t.getBoundingClientRect().top+t.clientTop;
+  const onScroll=e=>{const t=e.target===document?document.scrollingElement:e.target;if(!t||!t.querySelector)return;
+    const b=t.querySelector(".panel>.back");if(!b)return;const nx=b.nextElementSibling;
+    const y=t.scrollTop,a=anchor.has(t)?anchor.get(t):0;
+    const natTop=nx?nx.getBoundingClientRect().top-14-b.offsetHeight:Infinity,stuck=natTop<scTop(t)-12-30;
+    if(!stuck){b.classList.remove("hid");anchor.set(t,y);return}
+    if(y-a>8){b.classList.add("hid");anchor.set(t,y)}else if(a-y>8){b.classList.remove("hid");anchor.set(t,y)}};
+  document.addEventListener("scroll",onScroll,{capture:true,passive:true})})();
 /* v93: the big windows (records, stats, dex, season, monthly) open under the header instead of as blocking pop-ups,
    so the top bar stays usable: tap another button to switch, tap the same button again to close */
 (function(){const PAGES=[["recHdr","recDlg"],["statHdr","statDlg"],["dexHdr","dexDlg"],["seaHdr","seaDlg"],["mndHdr","mndDlg"],["recBar","recDlg"],["statBar","statDlg"],["dexBar","dexDlg"],["seaBar","seaDlg"],["mndBar","mndDlg"]];
