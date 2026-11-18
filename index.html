@@ -1645,6 +1645,40 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 .panel>.back.hid:focus-visible{transform:none;pointer-events:auto}
 @media (prefers-reduced-motion:reduce){.panel>.back{transition:none}}
 
+/* v106: colour key for the reported-records hexagons, under the species bar. The swatches sit on a light chart-coloured strip
+   at the same opacity as the layer, so they look the way the hexagons do on the map */
+.heatbar{left:0;right:0;margin:0 auto;width:max-content;transform:none}
+.heatbar .hrow{display:flex;align-items:center;gap:inherit}
+.heatbar.withkey{flex-direction:column;align-items:stretch;border-radius:16px;row-gap:5px;padding-bottom:6px;padding-right:12px}
+.hexkey{display:flex;align-items:center;justify-content:center;gap:7px;padding-top:5px;border-top:1px solid rgba(var(--lb-hi),.16);font-size:12.5px;color:var(--lb-t2)}
+.hexkey .hk-sw{display:inline-flex;gap:2px;padding:3px 5px;border-radius:6px;background:#eef3f3}
+.hexkey .hk-sw i{width:13px;height:15px;opacity:.8;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+@media (max-width:700px){.heatbar{bottom:34px}}
+@media (max-width:480px){.hexkey .hk-sw i{width:12px;height:14px}}
+.lg-hex{background:linear-gradient(90deg,#5e0063,#a42e61,#d26b63,#eeab79,#ffebaa)}
+
+/* v106: ship's knees. Where the header meets a narrower window band, a curved wooden bracket fills each corner,
+   cut from the same wood field so grain and silhouettes run on, with a gold edge along the curve and a brass bolt */
+.dexdlg .dextop,.seadlg .dextop,.recdlg .dextop,.dexdlg.statdlg .dextop{--kr:min(46px,var(--bandx,0px));--kb:1}
+@media (max-width:1500px){.dexdlg .dextop,.seadlg .dextop,.recdlg .dextop{--kb:0}}
+.dexdlg .dextop::before,.dexdlg .dextop::after,.seadlg .dextop::before,.seadlg .dextop::after,.recdlg .dextop::before,.recdlg .dextop::after{
+  content:"";position:absolute;top:0;width:var(--kr);height:var(--kr);pointer-events:none;background-color:#2a1e13;
+  background-size:100% 100%,100% 100%,var(--fld-sz),var(--fld-sz),var(--fld-sz),4000px 180px,700px 120px,4000px 180px;
+  background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat}
+.dexdlg .dextop::before,.seadlg .dextop::before,.recdlg .dextop::before{right:100%;--kx:calc(var(--kr) - var(--bandx,0px));
+  background-image:radial-gradient(circle at 0 100%,transparent calc(var(--kr) - .5px),rgba(226,188,92,.85) var(--kr),rgba(226,188,92,.85) calc(var(--kr) + 1.4px),transparent calc(var(--kr) + 2.2px)),
+    radial-gradient(circle at 85% 15%,#f3d98c 0,#c9a35e calc(var(--kb) * 1.6px),#6b4a1f calc(var(--kb) * 3px),rgba(0,0,0,.35) calc(var(--kb) * 3.6px),transparent calc(var(--kb) * 4.4px)),
+    var(--fld-k),var(--fld-c),var(--fld-r),var(--fld-o),var(--lb-woodgrain-h),var(--fld-b);
+  background-position:0 0,0 0,var(--kx) var(--fy),var(--kx) var(--fy),var(--kx) var(--fy),var(--kx) var(--fy),var(--kx) var(--fy),var(--kx) var(--fy);
+  -webkit-mask:radial-gradient(circle at 0 100%,transparent calc(var(--kr) - .5px),#000 var(--kr));mask:radial-gradient(circle at 0 100%,transparent calc(var(--kr) - .5px),#000 var(--kr))}
+.dexdlg .dextop::after,.seadlg .dextop::after,.recdlg .dextop::after{left:100%;--kx:calc(-1 * (var(--bandx,0px) + var(--bandw,0px)));
+  background-image:radial-gradient(circle at 100% 100%,transparent calc(var(--kr) - .5px),rgba(226,188,92,.85) var(--kr),rgba(226,188,92,.85) calc(var(--kr) + 1.4px),transparent calc(var(--kr) + 2.2px)),
+    radial-gradient(circle at 15% 15%,#f3d98c 0,#c9a35e calc(var(--kb) * 1.6px),#6b4a1f calc(var(--kb) * 3px),rgba(0,0,0,.35) calc(var(--kb) * 3.6px),transparent calc(var(--kb) * 4.4px)),
+    var(--fld-k),var(--fld-c),var(--fld-r),var(--fld-o),var(--lb-woodgrain-h),var(--fld-b);
+  background-position:0 0,0 0,var(--kx) var(--fy),var(--kx) var(--fy),var(--kx) var(--fy),var(--kx) var(--fy),var(--kx) var(--fy),var(--kx) var(--fy);
+  -webkit-mask:radial-gradient(circle at 100% 100%,transparent calc(var(--kr) - .5px),#000 var(--kr));mask:radial-gradient(circle at 100% 100%,transparent calc(var(--kr) - .5px),#000 var(--kr))}
+@media (max-width:700px){.dexdlg .dextop::before,.dexdlg .dextop::after,.seadlg .dextop::before,.seadlg .dextop::after,.recdlg .dextop::before,.recdlg .dextop::after{display:none}}
+
 </style>
 </head>
 <body>
@@ -1757,7 +1791,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v105 (Back bar hides)";
+const APP_VERSION="v106 (Hexagon key, ship's knees)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -5077,6 +5111,9 @@ function pickSpMap(sp){toggleSpPop(false);const sel=$("#spSel");
   if(pts.length)setTimeout(()=>{try{pts.length>1?S.lmap.fitBounds(pts,{padding:[50,50],maxZoom:13}):S.lmap.setView(pts[0],Math.max(10,Math.min(12,S.lmap.getZoom())))}catch(e){}},60)}
 document.addEventListener("click",e=>{const p=document.getElementById("spPop");if(p&&!p.hidden&&!e.target.closest(".spctl"))toggleSpPop(false)});
 document.addEventListener("keydown",e=>{const p=document.getElementById("spPop");if(e.key==="Escape"&&p&&!p.hidden){toggleSpPop(false);const b=$("#spMapBtn");if(b)b.focus()}});
+/* v106: colour key for the GBIF hexagons. The steps and colours are GBIF's own purpleYellow style (records per hexagon) */
+const HEXKEY=[["#5e0063","1–5"],["#851362","6–10"],["#a42e61","11–50"],["#be4c60","51–100"],["#d26b63","101–500"],["#e28b6b","501–1 000"],["#eeab79","1 001–5 000"],["#f7cb8e","5 001–10 000"],["#ffebaa","over 10 000"]];
+function hexKeyHTML(){return `<div class="hexkey" role="img" aria-label="Hexagon colours: deep purple means few reported records, pale yellow means many"><span class="hk-e">few</span><span class="hk-sw">${HEXKEY.map(([c,t])=>`<i style="background:${c}" title="${t} records in the hexagon"></i>`).join("")}</span><span class="hk-e">many</span></div>`}
 function renderHeat(){syncSpBtn();const bar=$("#heatBar");
   /* v104: the legend lives inside the map, at the bottom */
   if(bar&&S.lmap&&bar.parentNode!==S.lmap.getContainer()){S.lmap.getContainer().appendChild(bar);L.DomEvent.disableClickPropagation(bar);L.DomEvent.disableScrollPropagation(bar)}if(!S.heatLayer)return;S.heatLayer.clearLayers();
@@ -5089,7 +5126,7 @@ function renderHeat(){syncSpBtn();const bar=$("#heatBar");
   if(S.heatGbif&&!S.heatGbifLayer){const sp=S.sp;gbifInfo(sp).then(g=>{if(!g||S.sp!==sp||!S.heatGbif||S.heatGbifLayer)return;
     S.heatGbifLayer=gbifHexLayer(g.key,{opacity:.75,pane:"heatPane"});S.heatGbifLayer._sp=sp;S.heatGbifLayer.addTo(S.lmap)})}
   if(bar){const n=Object.keys(by).length;bar.hidden=false;
-    bar.innerHTML=`<span class="hbt"><i class="hdot"></i><b>${esc(spn(S.sp))}</b> <span>${n?`${n} ${n===1?"site":"sites"}`:"not found by the crew yet"}</span></span><label class="hbg" title="Hexagons: all reported records in Norway (GBIF, which includes Artskart)"><input type="checkbox" id="heatG" ${S.heatGbif?"checked":""}> All reported records</label><button type="button" id="heatX" aria-label="Remove heat map" title="Remove species filter">✕</button>`;
+    bar.innerHTML=`<div class="hrow"><span class="hbt"><i class="hdot"></i><b>${esc(spn(S.sp))}</b> <span>${n?`${n} ${n===1?"site":"sites"}`:"not found by the crew yet"}</span></span><label class="hbg" title="Hexagons: all reported records in Norway (GBIF, which includes Artskart)"><input type="checkbox" id="heatG" ${S.heatGbif?"checked":""}> All reported records</label><button type="button" id="heatX" aria-label="Remove heat map" title="Remove species filter">✕</button></div>${S.heatGbif?hexKeyHTML():""}`;bar.classList.toggle("withkey",!!S.heatGbif);
     $("#heatG").onchange=e=>{S.heatGbif=e.target.checked;renderHeat()};
     $("#heatX").onclick=()=>{S.sp="";const sel=$("#spSel");if(sel)sel.value="";if(S.view==="list")renderList();renderPins()}}}
 
@@ -5230,7 +5267,7 @@ function showDexCard(sp){S.dexCard=sp;
     <div class="dexdist"><div class="ddhead"><b>Distribution</b><span class="chips" id="ddChips"><button class="chip on" data-v="lokal">${miss?"Around "+esc(REG(curRegion()).short):"Our finds"}</button><button class="chip" data-v="norge">All of Norway</button></span></div>
       <div class="dexminimap" id="dexMini"></div>
       <p class="ddstats" id="ddStats">${miss?"Not recorded by the crew yet.":(()=>{const tot=S.catches.length||1,pct=o.n/tot*100;return `The crew: ${o.n} of ${S.catches.length} records (${fnum(pct,pct<1?1:0)} %) at ${o.sites.size} ${o.sites.size===1?"site":"sites"}.`})()} <span id="ddGbif"></span></p>
-      <div class="ddleg"><span><i class="lg-ring"></i>Crew finds</span><span><i class="lg-hex"></i>Reported records (GBIF, incl. the Norwegian Biodiversity Information Centre): purple = few, yellow = many</span></div>
+      <div class="ddleg"><span><i class="lg-ring"></i>Crew finds</span><span><i class="lg-hex"></i>Reported records (GBIF, incl. the Norwegian Biodiversity Information Centre): deep purple = few, pale yellow = many</span></div>
       <p class="dcred">GBIF shows where the species has been <i>reported</i>, not how common it is. Species people rarely report can look rarer than they are.</p></div>
     <button class="btn" id="dexMap" style="margin-top:6px">${miss?"Show the distribution on the main map":"Show on the main map"}</button></div>`;
   el.hidden=false;
@@ -5999,7 +6036,7 @@ $("#dexHdr").onclick=()=>openDex();$("#dexBar").onclick=()=>openDex();
    so the top bar stays usable: tap another button to switch, tap the same button again to close */
 (function(){const PAGES=[["recHdr","recDlg"],["statHdr","statDlg"],["dexHdr","dexDlg"],["seaHdr","seaDlg"],["mndHdr","mndDlg"],["recBar","recDlg"],["statBar","statDlg"],["dexBar","dexDlg"],["seaBar","seaDlg"],["mndBar","mndDlg"]];
   const hdrH=()=>{const h=document.querySelector("header.top");const v=h&&h.offsetParent!==null?Math.max(0,Math.round(h.getBoundingClientRect().bottom)):0;document.documentElement.style.setProperty("--hdrh",v+"px")};
-  const bandX=()=>{const d=document.querySelector("dialog.dexdlg[open]");const b=d&&d.querySelector(".dextop");if(b)document.documentElement.style.setProperty("--bandx",Math.round(b.getBoundingClientRect().left)+"px")};
+  const bandX=()=>{const d=document.querySelector("dialog.dexdlg[open]");const b=d&&d.querySelector(".dextop");if(b){const r=b.getBoundingClientRect(),st=document.documentElement.style;st.setProperty("--bandx",Math.round(r.left)+"px");st.setProperty("--bandw",Math.round(r.width)+"px")}};
   const bandLater=()=>{requestAnimationFrame(bandX);setTimeout(bandX,300);setTimeout(bandX,1200)};
   const openPages=()=>[...document.querySelectorAll("dialog.dexdlg[open]")];
   const sync=()=>{for(const [b,d] of PAGES){const bt=document.getElementById(b),dl=document.getElementById(d);if(bt&&dl){bt.classList.toggle("on",dl.open);bt.setAttribute("aria-pressed",String(dl.open))}}document.body.classList.toggle("pageopen",openPages().length>0)};
