@@ -1781,6 +1781,12 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 }
 @media (max-width:700px){.dexdlg .dextop::before,.seadlg .dextop::before,.recdlg .dextop::before,.dexdlg .dextop::after,.seadlg .dextop::after,.recdlg .dextop::after{display:none}}
 
+/* v114: "Start a new crew" on the not-in-a-crew screen */
+#auth details.newcrew{margin-top:16px;border:1px solid rgba(var(--lb-hi),.18);border-radius:10px;padding:10px 12px;text-align:left}
+#auth details.newcrew summary{cursor:pointer;font-weight:600;color:var(--lb-gold)}
+#auth details.newcrew[open] summary{margin-bottom:6px}
+#auth details.newcrew select{width:100%;box-sizing:border-box;height:44.5px;background-color:rgb(13,34,56);border:1px solid rgba(159,195,224,.25);border-radius:10px;padding:10px 12px;color:rgb(227,237,244);font-size:15px}
+
 </style>
 </head>
 <body>
@@ -1893,7 +1899,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v113 (Cropped picture)";
+const APP_VERSION="v114 (Crews)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -1905,8 +1911,9 @@ function isNetErr(e){return !navigator.onLine||/fetch|network|load failed|timed?
 function setOffline(on){const b=document.getElementById("offBar");if(b)b.hidden=!on}
 async function cachedQ(key,query){
   const r=await query;
-  if(!r.error){setOffline(false);lsSet0("dkc:"+key,r.data);return r}
-  const c=lsGet0("dkc:"+key);
+  const ck="dkc:"+(S.user&&S.user.id?S.user.id+":":"")+key;
+  if(!r.error){setOffline(false);lsSet0(ck,r.data);return r}
+  const c=lsGet0(ck);
   if(c&&isNetErr(r.error)){setOffline(true);return{data:c,error:null}}
   return r;
 }
@@ -1942,7 +1949,7 @@ const ERR_NB=[[/invalid login credentials/i,"wrong e-mail or password"],[/email 
 function errMsg(e){if(e&&isNetErr(e))return "no internet connection. Try again when you have coverage";const raw=(e&&(e.message||e.error_description||e.code))||String(e);
   for(const [re,nb] of ERR_NB){const m=String(raw).match(re);if(m)return typeof nb==="function"?nb(m):nb}return raw}
 function imgUrl(path){return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl}
-function newPath(file){const ext=(file.name&&file.name.includes(".")?file.name.split(".").pop():"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");return `${S.user.id}/${crypto.randomUUID()}.${ext||"jpg"}`}
+function newPath(file){const ext=(file.name&&file.name.includes(".")?file.name.split(".").pop():"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");return `${S.crew&&S.crew.id?S.crew.id+"/":""}${S.user.id}/${crypto.randomUUID()}.${ext||"jpg"}`}
 async function uploadImage(file){if(file.size>45*1024*1024)throw{message:"The image is larger than 45 MB."};const path=newPath(file);
   const {error}=await sb.storage.from(BUCKET).upload(path,file,{contentType:file.type||"image/jpeg",upsert:false});if(error)throw error;return path}
 
@@ -1982,7 +1989,22 @@ function authScreen(kind,msg){
   const a=$("#auth"),b=$("#authBox");a.hidden=false;
   const logo=`<div class="jk-brandrow"><svg class="jk-logo" width="40" height="40" viewBox="0 0 64 64" aria-hidden="true"><clipPath id="jkA"><circle cx="32" cy="32" r="24"/></clipPath><circle cx="32" cy="32" r="24" fill="#123a5e"/><g clip-path="url(#jkA)"><path d="M4 33 C12 29 18 37 26 33 S40 29 48 33 S58 37 62 33 V62 H4Z" fill="#4fd0d6"/><g transform="translate(16,35) scale(.27)"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="#F1E6C8"/><circle cx="22" cy="34" r="5" fill="#1ea5ae"/></g></g><circle cx="32" cy="32" r="24" fill="none" stroke="#F1E6C8" stroke-width="3.6"/><path d="M32 2v9M32 53v9M2 32h9M53 32h9" stroke="#F1E6C8" stroke-width="3.6" stroke-linecap="round"/></svg><b>Jaktkart</b></div>`;
   if(kind==="config"){b.innerHTML=`${logo}<h1>Almost ready</h1><p>Fill in the Supabase address and key in <b>config.js</b>, and reload the page.</p>`;return}
-  if(kind==="notmember"){b.innerHTML=`${logo}<h1>Not invited yet</h1><p>You are logged in as <b>${esc(S.user.email)}</b>, but this e-mail has not been added to the map. Ask the owner of the map to add you under Menu, Members.</p><button class="btn" id="aOut" style="margin-top:14px">Log out</button>`;$("#aOut").onclick=()=>sb.auth.signOut();return}
+  if(kind==="notmember"){const opts=REGIONS.map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join("");
+    b.innerHTML=`${logo}<h1>Not in a crew yet</h1><p>You are logged in as <b>${esc(S.user.email)}</b>. If your crew already uses Jaktkart, ask the crew's admin to add this e-mail under Menu, Members.</p>
+    <details class="newcrew"><summary>Start a new crew</summary><p class="small">You need a crew code from Jaktkart. You become the crew's admin and add the others afterwards.</p>
+    <form class="f" id="ncf"><label for="ncName">Crew name</label><input type="text" id="ncName" required maxlength="60" placeholder="E.g. Tromsø Spearos">
+    <label for="ncMe">Your name</label><input type="text" id="ncMe" required maxlength="40">
+    <label for="ncArea">Home area</label><select id="ncArea" required><option value="" disabled selected>Choose your area</option>${opts}</select>
+    <label for="ncCode">Crew code</label><input type="text" id="ncCode" required placeholder="JK-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false">
+    <div class="err" id="ncErr"></div><div style="margin-top:14px"><button class="btn primary" id="ncGo">Start the crew</button></div></form></details>
+    <button class="btn" id="aOut" style="margin-top:14px">Log out</button>`;
+    $("#aOut").onclick=()=>sb.auth.signOut();
+    $("#ncf").onsubmit=async e=>{e.preventDefault();const go=$("#ncGo");go.disabled=true;$("#ncErr").textContent="";
+      const {error}=await sb.rpc("create_crew",{crew_name:$("#ncName").value.trim(),your_name:$("#ncMe").value.trim(),area:$("#ncArea").value,crew_code:$("#ncCode").value.trim()});
+      go.disabled=false;
+      if(error){const m=String(error.message||"");$("#ncErr").textContent=/create_crew|schema cache/i.test(m)||error.code==="PGRST202"?"Starting new crews is not switched on for this map yet.":m;return}
+      const {data}=await sb.auth.getSession();onSession(data.session)};
+    return}
   if(kind==="name"){b.innerHTML=`${logo}<h1>What's your name?</h1><p>The name is shown on the dives you log.</p><form class="f" id="nf"><label for="aName">Name</label><input type="text" id="aName" required><div class="err" id="aErr"></div><div style="margin-top:14px"><button class="btn primary">Continue</button></div></form>`;
     $("#nf").onsubmit=async e=>{e.preventDefault();const n=$("#aName").value.trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error){$("#aErr").textContent=errMsg(error);return}S.me.name=n;a.hidden=true;start()};$("#aName").focus();return}
   const signup=kind==="signup";
@@ -2000,6 +2022,10 @@ function authScreen(kind,msg){
   };
   $("#aEmail").focus();
 }
+/* v114: where the map opens: the crew's saved home view, else the middle of its home area, else all of Norway (Bodø for a map from before crews) */
+function crewView(){const c=S.crew;if(c&&c.home_lat!=null&&c.home_lon!=null)return [[c.home_lat,c.home_lon],c.home_zoom||10];
+  if(c&&c.region&&REGIONS.some(g=>g.id===c.region)){const g=REG(c.region);return [[g.lat,g.lon],9]}
+  return c?[[65.2,13.5],5]:[[67.28,14.40],10]}
 async function onSession(session){
   if(!session){S.user=null;S.me=null;authScreen("login");return}
   S.user=session.user;
@@ -2007,6 +2033,8 @@ async function onSession(session){
   if(error){authScreen("login",errMsg(error));return}
   S.members=data||[];S.me=S.members.find(m=>m.email.toLowerCase()===S.user.email.toLowerCase())||null;
   if(!S.me){authScreen("notmember");return}
+  /* v114: the crew this person belongs to (missing table = the map from before crews existed) */
+  S.crew=null;try{const c=await sb.from("crews").select("*").maybeSingle();if(!c.error&&c.data)S.crew=c.data}catch(e){}
   if(!S.me.name){authScreen("name");return}
   $("#auth").hidden=true;start();
 }
@@ -2055,7 +2083,7 @@ function initLeaflet(){
   if(S.lmap)return;
   const kv=l=>retryTiles(L.tileLayer(`https://cache.kartverket.no/v1/wmts/1.0.0/${l}/default/webmercator/{z}/{y}/{x}.png`,{maxZoom:18,attribution:'&copy; <a href="https://www.kartverket.no/">Kartverket</a>'}));
   const sea=kv("sjokartraster"),topo=kv("topo"),grey=kv("topograatone");
-  S.lmap=L.map(lmapEl,{zoomControl:true,renderer:L.svg({padding:.5})}).setView([67.28,14.40],10);S.lmap.addLayer(S.lmap.options.renderer);
+  S.lmap=L.map(lmapEl,{zoomControl:true,renderer:L.svg({padding:.5})}).setView(...crewView());S.lmap.addLayer(S.lmap.options.renderer);
   S.lmap.createPane("heatPane").style.zIndex=390;S.heatLayer=L.layerGroup().addTo(S.lmap);
   sea.addTo(S.lmap);
   L.control.layers({"Sjøkart":sea,"Topographic":topo,"Greyscale":grey},null,{position:"topright"}).addTo(S.lmap);initLayers();
@@ -2464,7 +2492,7 @@ function renderMenu(){
   <label for="mGeoKind" style="display:block;margin:14px 0 3px" class="small">Import areas, lines and markers (EPSG:4326). Type for objects without a type:</label>
   <select id="mGeoKind" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)">${AREA_ORDER.map(k=>`<optgroup label="${AREA_TYPES[k].name}">${Object.entries(AREA_TYPES[k].vals).filter(([v,x])=>!x[3]).map(([v,x])=>`<option value="${k}:${v}">${x[0]}</option>`).join("")}</optgroup>`).join("")}</select>
   <input type="file" id="mGeoImp" accept=".geojson,.json,application/geo+json,application/json" style="margin-top:8px"><div id="mGeoMsg" class="small"></div></div>
-  ${admin?`<div class="menu-sec"><h3>Import from the Claude version</h3><p class="small" style="margin:0 0 8px">Choose the file <b>dykkekart-migrering.json</b>. Only done once.</p><input type="file" id="mImp" accept=".json,application/json"><div id="mImpMsg" class="small"></div></div>`:""}
+  ${S.crew?`<div class="menu-sec"><h3>Crew</h3>${admin?`<form class="f" id="mCrew"><label for="mCrewName">Crew name</label><input type="text" id="mCrewName" maxlength="60" value="${esc(S.crew.name||"")}"><label for="mCrewArea">Home area</label><select id="mCrewArea">${REGIONS.map(g=>`<option value="${g.id}"${g.id===S.crew.region?" selected":""}>${esc(g.name)}</option>`).join("")}</select><p class="small" style="margin:8px 0 0">The map opens ${S.crew.home_lat!=null?"at the crew's saved home view":"over the home area"}. To change it, move the map to where the crew dives, open this menu again and tap the button.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn primary">Save</button><button type="button" class="btn" id="mCrewHome">Use the current map view as home</button></div><div id="mCrewMsg" class="small" style="margin-top:6px"></div></form>`:`<p class="small" style="margin:0">You are in <b>${esc(S.crew.name||"")}</b>.</p>`}</div>`:""}
   <div class="err" id="mErr"></div>
   <div class="formbtns"><button class="btn" id="mOut">Log out</button><button class="btn ghost" id="mClose">Close</button></div>`;
   $("#mClose").onclick=()=>mdlg.close();
@@ -2485,9 +2513,15 @@ $("#mChart").onclick=()=>{mdlg.close();openChartDlg(null)};
   $("#mGeoImp").onchange=e=>{const f=e.target.files[0];if(f)importGeoJSON(f,$("#mGeoKind").value)};
   if(admin){
     $("#mAdd").onsubmit=async e=>{e.preventDefault();const em=$("#mEmail").value.trim().toLowerCase();if(!em.includes("@")){$("#mErr").textContent="Enter a valid e-mail.";return}
-      const {error}=await sb.from("members").insert({email:em});if(error)$("#mErr").textContent=error.code==="23505"?"That e-mail has already been added.":errMsg(error);else{await loadMembers();renderMenu()}};
+      const {error}=await sb.from("members").insert({email:em});if(error)$("#mErr").textContent=error.code==="23505"?"That e-mail is already a member, of this crew or another one.":errMsg(error);else{await loadMembers();renderMenu()}};
     $("#menuBody").querySelectorAll("[data-rm]").forEach(b=>b.onclick=async()=>{if(!confirm(`Remove ${b.dataset.rm} from the map?`))return;const {error}=await sb.from("members").delete().eq("email",b.dataset.rm);if(error)$("#mErr").textContent=errMsg(error);else{await loadMembers();renderMenu()}});
-    $("#mImp").onchange=e=>{const f=e.target.files[0];if(f)importFile(f)};
+    const cf=$("#mCrew");if(cf){
+      cf.onsubmit=async e=>{e.preventDefault();const row={name:$("#mCrewName").value.trim()||S.crew.name,region:$("#mCrewArea").value};
+        const {error}=await sb.from("crews").update(row).eq("id",S.crew.id);if(error){$("#mCrewMsg").textContent=errMsg(error);return}
+        Object.assign(S.crew,row);$("#mCrewMsg").textContent="Saved."};
+      $("#mCrewHome").onclick=async()=>{const c=S.lmap.getCenter(),row={home_lat:+c.lat.toFixed(5),home_lon:+c.lng.toFixed(5),home_zoom:S.lmap.getZoom()};
+        const {error}=await sb.from("crews").update(row).eq("id",S.crew.id);if(error){$("#mCrewMsg").textContent=errMsg(error);return}
+        Object.assign(S.crew,row);$("#mCrewMsg").textContent="Saved. The map will open here."}}
   }
 }
 function downloadGpx(){
@@ -5146,7 +5180,7 @@ function regionOf(lat,lon){if(lat==null||lon==null)return null;lat=+lat;lon=+lon
   const inBox=REGIONS.find(g=>lat>=g.box[0]&&lat<=g.box[1]&&lon>=g.box[2]&&lon<=g.box[3]);if(inBox)return inBox;
   let best=null,bd=1e9;for(const g of REGIONS){const dy=lat-g.lat,dx=(lon-g.lon)*Math.cos(lat*Math.PI/180),d=dx*dx+dy*dy;if(d<bd){bd=d;best=g}}return best}
 function autoRegion(){const n={};for(const st of (typeof allSites==="function"?allSites():[])){const g=regionOf(st.lat,st.lon);if(g)n[g.id]=(n[g.id]||0)+1}
-  const top=Object.entries(n).sort((a,b)=>b[1]-a[1])[0];return top?top[0]:"nordland"}
+  const top=Object.entries(n).sort((a,b)=>b[1]-a[1])[0];return top?top[0]:(S.crew&&S.crew.region)||"nordland"}
 function curRegion(){if(!S.region)S.region=lsGet("dk-region")||autoRegion();return S.region}
 function siteRegionId(id){const st=id&&typeof getSite==="function"?getSite(id):null,g=st?regionOf(st.lat,st.lon):null;return g?g.id:(S.homeRegion||(S.homeRegion=autoRegion()))}
 /* rules that differ from the northern base rules in RULES */
@@ -5182,7 +5216,7 @@ function gbifHexLayer(key,opts={}){return L.tileLayer(`https://api.gbif.org/v2/m
   Object.assign({hpt:GBIF_HPT,opacity:.8,maxZoom:18,tileSize:256,attribution:'Records: <a href="https://www.gbif.org/species/'+key+'" target="_blank" rel="noopener">GBIF.org</a>'},opts))}
 /* ---------- species heatmap on the main map ---------- */
 function showSpeciesOnMap(sp,noFinds){S.sp=sp;if(noFinds)S.heatGbif=true;if(!isLive())switchChart("live");S.view="list";renderPanel();renderPins();
-  if(noFinds)setTimeout(()=>{try{S.lmap.fitBounds([[66.75,13.2],[67.85,15.9]])}catch(e){}},60);
+  if(noFinds)setTimeout(()=>{try{{const b=REG(curRegion()).box;S.lmap.fitBounds([[b[0],b[2]],[b[1],b[3]]])}}catch(e){}},60);
   else{const pts=[...spSiteSet()].map(getSite).filter(s=>s&&s.lat!=null).map(s=>[s.lat,s.lon]);if(pts.length)setTimeout(()=>{try{pts.length>1?S.lmap.fitBounds(pts,{padding:[50,50],maxZoom:13}):S.lmap.setView(pts[0],12)}catch(e){}},60)}
   if(S.max){S.sheetList=false;updateSheet()}}
 S.heatGbif=false;S.heatGbifLayer=null;
