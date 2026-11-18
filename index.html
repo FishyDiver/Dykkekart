@@ -1590,6 +1590,31 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 .dexdlg .dexmode button{flex:1}
 .dexdlg .dexmode button.on{background:var(--lb-t1);color:var(--lb-bg0)}
 
+/* v101: fish button and species picker on the map */
+.spctl{position:relative;margin-top:8px!important}
+.lyrbtn.spbtn.on{background:#DDB866;color:#10262E;border-color:rgba(0,0,0,.25)}
+.sppop{position:absolute;right:calc(100% + 8px);top:0;width:300px;max-width:calc(100vw - 92px);max-height:min(70vh,560px);display:flex;flex-direction:column;box-sizing:border-box;
+  background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:10px 10px 8px;cursor:default;text-align:left}
+.sppop[hidden]{display:none}
+.sphead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 2px 8px}
+.sphead b{font:400 18px/1.2 var(--lb-title)}
+.spx{border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer;padding:2px 6px}
+#spPopQ{width:100%;box-sizing:border-box;margin:0 0 8px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit;font-size:14px}
+.splist{overflow:auto;flex:1;min-height:0;margin:0 -4px;padding:0 4px}
+.spgrp h4{margin:8px 4px 2px;font:600 12.5px Barlow,sans-serif;color:var(--muted)}
+.sprow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;width:100%;padding:7px 8px;border:0;border-radius:5px;background:none;color:inherit;font:500 14px Barlow,sans-serif;text-align:left;cursor:pointer}
+.sprow[hidden]{display:none}
+.sprow:hover,.sprow:focus-visible{background:var(--soft)}
+.sprow.on{background:rgba(221,184,102,.28)}
+.sprow small{color:var(--muted);font-size:12px;white-space:nowrap}
+.sprow.none span{opacity:.72}
+.sprow.clear{border:1px solid var(--line);margin:0 0 4px}
+.spnote{margin:8px 2px 0;font-size:11.5px;line-height:1.35}
+
+/* v102: when a long list is open, "Show fewer" also sits at the top */
+.bd-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 2px 8px;font-size:13px;color:var(--muted)}
+.bd-topbar .linkbtn{font-weight:600}
+
 </style>
 </head>
 <body>
@@ -1702,7 +1727,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v100 (Wood and dex)";
+const APP_VERSION="v102 (Show fewer on top)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -3100,6 +3125,11 @@ function initLayers(){
   const Exp=L.Control.extend({options:{position:"topright"},onAdd(){const b=L.DomUtil.create("button","lyrbtn expbtn");b.id="expBtn";b.type="button";b.title="Exploration mode: the map stays dark where the crew hasn't dived yet";b.setAttribute("aria-label","Exploration mode");b.setAttribute("aria-pressed","false");
       b.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 14.5 15 8.2l1.9 3.5-11.5 6.3z"/><path d="m15 8.2 3.6-2 1.9 3.5-3.6 2"/><path d="m2.4 15.1 1.9 3.5"/><path d="M10.2 14.6 8 21"/><path d="m11.4 14 3.1 7"/></svg>';L.DomEvent.disableClickPropagation(b);b.onclick=()=>{const on=!lyrOn("fog");lyrSet("fog",on);if(on){const n=allSites().filter(x=>x.lat!=null&&x.logCount>0).length;toast(n?`Exploration mode: ${n} ${n===1?"place":"places"} explored. Dive somewhere new to light up more of the map.`:"Exploration mode: log a dive to light up the first part of the map.")}};return b}});
   new Exp().addTo(S.lmap);
+  /* v101: fish button on the map: pick a species and see where it is (the crew's finds glow, all reported records show as hexagons) */
+  const SpCtl=L.Control.extend({options:{position:"topright"},onAdd(){const w=L.DomUtil.create("div","spctl");
+      w.innerHTML=`<button type="button" class="lyrbtn spbtn" id="spMapBtn" title="Show a species on the map" aria-label="Show a species on the map" aria-expanded="false" aria-controls="spPop"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12c2.2-3.3 5.2-5.1 8.5-5.1 3.2 0 5.8 2 7.5 5.1-1.7 3.1-4.3 5.1-7.5 5.1-3.3 0-6.3-1.8-8.5-5.1z"/><path d="M6 12 2.5 8.4v7.2z"/><circle cx="17.6" cy="11.1" r=".9" fill="currentColor" stroke="none"/></svg></button><div class="sppop" id="spPop" role="dialog" aria-label="Show a species on the map" hidden></div>`;
+      L.DomEvent.disableClickPropagation(w);L.DomEvent.disableScrollPropagation(w);w.querySelector("#spMapBtn").onclick=()=>toggleSpPop();return w}});
+  new SpCtl().addTo(S.lmap);
   let saved=lsGet("dk-lyr");if(!saved){const old=lsGet("dk-ovl")||[];saved=old.filter(k=>LY[k])}
   for(const id of saved)if(LY[id])lyrMake(LY[id]).addTo(S.lmap);
   S.lmap.on("zoomend",()=>{for(const d of LYR)if(d.feat)featZoom(d)});S.lmap.on("moveend",()=>{if(S.lyrOpen)renderLyr()});renderLyr();syncExpBtn()}
@@ -3911,7 +3941,7 @@ function renderBestDive(){const el=$("#bestDive");if(!el)return;const B=S.bd,cm=
   let body="";
   if(!B.res)body=`<p class="bd-wait">Calculating${B.busy&&B.prog[1]?` … ${B.prog[0]} of ${B.prog[1]} sites`:" …"}</p>`;
   else{const ok=B.res.filter(r=>r.best),none=B.res.filter(r=>r.none),err=B.res.filter(r=>r.err),skip=B.res.filter(r=>r.skip),show=B.all?ok:ok.slice(0,3),spl=B.sp?spn(B.sp).toLocaleLowerCase("nb"):"";
-    body=ok.length?`<ol class="bd-l">${show.map((r,i)=>`<li><button type="button" class="bd-r" data-bs="${esc(r.s.id)}" data-bt="${r.best.t}"><span class="bd-n">${i+1}</span><span class="bd-m"><b>${esc(r.s.name)}</b><span class="bd-when">${esc(bdWhen(r))}</span><span class="bd-tags">${bdTags(r).map(t=>`<i>${esc(t)}</i>`).join("")}</span></span><span class="bd-sc l${bdLvl(r.best.sc)}" title="Points out of 100">${r.best.sc}</span></button></li>`).join("")}</ol>${ok.length>3?`<button type="button" class="linkbtn bd-more" id="bdMore">${B.all?"Show fewer":`Show all ${ok.length}`}</button>`:""}`
+    body=ok.length?`${B.all&&ok.length>3?`<div class="bd-topbar"><span>All ${ok.length} sites</span><button type="button" class="linkbtn" data-bdmore>Show fewer</button></div>`:""}<ol class="bd-l">${show.map((r,i)=>`<li><button type="button" class="bd-r" data-bs="${esc(r.s.id)}" data-bt="${r.best.t}"><span class="bd-n">${i+1}</span><span class="bd-m"><b>${esc(r.s.name)}</b><span class="bd-when">${esc(bdWhen(r))}</span><span class="bd-tags">${bdTags(r).map(t=>`<i>${esc(t)}</i>`).join("")}</span></span><span class="bd-sc l${bdLvl(r.best.sc)}" title="Points out of 100">${r.best.sc}</span></button></li>`).join("")}</ol>${ok.length>3?`<button type="button" class="linkbtn bd-more" id="bdMore" data-bdmore>${B.all?"Show fewer":`Show all ${ok.length}`}</button>`:""}`
       :`<p class="bd-none">${B.sp&&skip.length===B.res.length?`No sites have recorded ${esc(spl)} yet. Log the catch, or write the species under “Species” at the site.`:`No sites look divable ${B.when==="idag"?"for the rest of the day":B.when==="imorgen"?"tomorrow":"in the next 48 hours"}${B.sp?` for ${esc(spl)}`:""}.`}</p>`;
     const notes=[];
     if(none.length)notes.push(`${none.length} ${none.length===1?"site is":"sites are"} not divable in the period`);
@@ -3925,7 +3955,7 @@ function renderBestDive(){const el=$("#bestDive");if(!el)return;const B=S.bd,cm=
   el.querySelectorAll("[data-bw]").forEach(b=>b.onclick=()=>{if(B.when===b.dataset.bw)return;B.when=b.dataset.bw;lsSet("dk-bdw",B.when);B.all=false;renderBestDive();bdCompute()});
   const sel=$("#bdSp");if(sel)sel.onchange=()=>{B.sp=sel.value;lsSet("dk-bdsp",B.sp);B.all=false;renderBestDive();bdCompute()};
   const re=$("#bdRe");if(re)re.onclick=()=>{VM.at=0;bdCompute(true)};
-  const mo=$("#bdMore");if(mo)mo.onclick=()=>{B.all=!B.all;renderBestDive()};
+  el.querySelectorAll("[data-bdmore]").forEach(b=>b.onclick=()=>{B.all=!B.all;renderBestDive();if(!B.all){const c=el.getBoundingClientRect();if(c.top<0)el.scrollIntoView({block:"start"})}});
   el.querySelectorAll("[data-bs]").forEach(b=>b.onclick=()=>{S.siteT="t"+b.dataset.bt;openSite(b.dataset.bs);focusSite(b.dataset.bs)})}
 
 /* ---------- Fiskejakt: a small freediving and spearfishing game ----------
@@ -4731,14 +4761,14 @@ function renderFeed(){
     ${it.photo?`<span class="thumb sm"><img src="${esc(photoURL(it.photo.photo_path))}" alt="" loading="lazy"></span>`:`<span class="aico">${it.kind==="site"?flagSVG(false,16):it.kind==="vis"?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>':iconSVG("dykker",18)}</span>`}
     <span class="atx"><span><b>${esc(it.who)}</b>${it.who?" ":""}${esc(it.verb)} <b>${esc(it.site.name)}</b></span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`;
   pop.innerHTML=`<div class="actph"><b>Latest activity</b><span class="chips"><button type="button" class="chip${S.actAll?"":" on"}" data-act="dive">Dives and votes</button><button type="button" class="chip${S.actAll?" on":""}" data-act="all">All</button></span><button type="button" class="actx" aria-label="Close">✕</button></div>
-    <div class="feed act">${show.map(row).join("")||`<p class="emptytxt">${S.actAll?"No activity":"No dives or votes"} in the last 45 days.</p>`}
-    ${items.length>10?`<button class="linkbtn" id="feedMore">${S.feedMore?"Show fewer":`Show more (${Math.min(items.length,30)-10})`}</button>`:""}</div>`;
+    <div class="feed act">${S.feedMore&&items.length>10?`<div class="bd-topbar"><span>Showing ${show.length}</span><button type="button" class="linkbtn" data-feedmore>Show fewer</button></div>`:""}${show.map(row).join("")||`<p class="emptytxt">${S.actAll?"No activity":"No dives or votes"} in the last 45 days.</p>`}
+    ${items.length>10?`<button class="linkbtn" id="feedMore" data-feedmore>${S.feedMore?"Show fewer":`Show more (${Math.min(items.length,30)-10})`}</button>`:""}</div>`;
   pop.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>{toggleAct(false);openSite(b.dataset.site);focusSite(b.dataset.site)});
   pop.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>{toggleAct(false);openGame();FJB.mode=b.dataset.game;if(b.dataset.lv){FJB.lv=b.dataset.lv;FJB.nd=+b.dataset.nd}FJ.boardFrom="title";FJ.st="board";fjOverlay();fjBoardLoad().then(()=>{if(FJ.st==="board")fjOverlay()})});
   pop.querySelectorAll("[data-mf]").forEach(b=>b.onclick=()=>{toggleAct(false);openMf();S.mf.month=b.dataset.mf;renderMf()});
   pop.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{S.actAll=b.dataset.act==="all";S.feedMore=false;renderFeed()});
   pop.querySelector(".actx").onclick=()=>toggleAct(false);
-  const fm=$("#feedMore");if(fm)fm.onclick=()=>{S.feedMore=!S.feedMore;renderFeed()};
+  const fm=$("#feedMore");pop.querySelectorAll("[data-feedmore]").forEach(b=>b.onclick=()=>{S.feedMore=!S.feedMore;renderFeed();if(!S.feedMore)pop.scrollTop=0});
   placeActPop();
 }
 
@@ -4986,7 +5016,34 @@ function showSpeciesOnMap(sp,noFinds){S.sp=sp;if(noFinds)S.heatGbif=true;if(!isL
   else{const pts=[...spSiteSet()].map(getSite).filter(s=>s&&s.lat!=null).map(s=>[s.lat,s.lon]);if(pts.length)setTimeout(()=>{try{pts.length>1?S.lmap.fitBounds(pts,{padding:[50,50],maxZoom:13}):S.lmap.setView(pts[0],12)}catch(e){}},60)}
   if(S.max){S.sheetList=false;updateSheet()}}
 S.heatGbif=false;S.heatGbifLayer=null;
-function renderHeat(){const bar=$("#heatBar");if(!S.heatLayer)return;S.heatLayer.clearLayers();
+/* v101: species picker behind the fish button on the map */
+function syncSpBtn(){const b=document.getElementById("spMapBtn");if(b){b.classList.toggle("on",!!S.sp);b.title=S.sp?`Showing ${spn(S.sp)}. Tap to choose another species`:"Show a species on the map"}}
+function toggleSpPop(force){const p=$("#spPop"),b=$("#spMapBtn");if(!p)return;const open=force!=null?force:p.hidden;p.hidden=!open;if(b)b.setAttribute("aria-expanded",String(open));
+  if(open){renderSpPop();try{const mc=S.lmap.getContainer().getBoundingClientRect(),pr=p.getBoundingClientRect();p.style.maxHeight=Math.max(220,Math.min(560,Math.round(mc.bottom-pr.top-10)))+"px"}catch(e){}setTimeout(()=>{const i=$("#spPopQ");if(i&&matchMedia("(pointer:fine)").matches)i.focus()},30)}}
+function renderSpPop(){const p=$("#spPop");if(!p)return;
+  const sites={};for(const c of S.catches){if(c.species)(sites[c.species]||(sites[c.species]=new Set())).add(c.site_id)}
+  const known=new Set(SPGROUPS.flatMap(g=>g[1])),extra=Object.keys(sites).filter(x=>!known.has(x)).sort((a,b)=>spn(a).localeCompare(spn(b),"en-GB"));
+  const groups=[...SPGROUPS,...(extra.length?[["Other species",extra]]:[])];
+  const row=sp=>{const n=sites[sp]?sites[sp].size:0;return `<button type="button" class="sprow${sp===S.sp?" on":""}${n?"":" none"}" data-sp="${esc(sp)}" data-q="${esc((spn(sp)+" "+sp+" "+(SCI[sp]||"")).toLowerCase())}"><span>${esc(spn(sp))}</span><small>${n?`${n} ${n===1?"site":"sites"}`:"not found by the crew"}</small></button>`};
+  p.innerHTML=`<div class="sphead"><b>Show a species on the map</b><button type="button" class="spx" id="spPopX" aria-label="Close">✕</button></div>
+    <input type="search" id="spPopQ" placeholder="Search species" autocomplete="off" aria-label="Search species">
+    ${S.sp?`<button type="button" class="sprow clear" data-sp=""><span>Show all sites again</span><small>now: ${esc(spn(S.sp))}</small></button>`:""}
+    <div class="splist">${groups.map(([g,L])=>`<div class="spgrp"><h4>${esc(g)}</h4>${L.map(row).join("")}</div>`).join("")}<p class="small spnone" hidden>No species match.</p></div>
+    <p class="small spnote">The glow shows where the crew has found it. The hexagons show all reported records (GBIF, which includes Artskart).</p>`;
+  $("#spPopX").onclick=()=>toggleSpPop(false);
+  p.querySelectorAll(".sprow[data-sp]").forEach(b=>b.onclick=()=>pickSpMap(b.dataset.sp));
+  $("#spPopQ").oninput=e=>{const q=e.target.value.trim().toLowerCase();let any=false;
+    for(const g of p.querySelectorAll(".spgrp")){let k=0;for(const r of g.querySelectorAll(".sprow")){const on=!q||r.dataset.q.includes(q);r.hidden=!on;if(on)k++}g.hidden=!k;if(k)any=true}
+    p.querySelector(".spnone").hidden=any};
+  $("#spPopQ").onkeydown=e=>{if(e.key==="Enter"){const f=[...p.querySelectorAll(".splist .sprow")].find(r=>!r.hidden);if(f)f.click()}}}
+function pickSpMap(sp){toggleSpPop(false);const sel=$("#spSel");
+  if(!sp){S.sp="";if(sel)sel.value="";if(S.view==="list")renderList();renderPins();return}
+  S.sp=sp;S.heatGbif=true;if(!isLive())switchChart("live");if(S.view==="list")renderList();renderPins();
+  const pts=[...spSiteSet()].map(getSite).filter(s=>s&&s.lat!=null).map(s=>[s.lat,s.lon]);
+  if(pts.length)setTimeout(()=>{try{pts.length>1?S.lmap.fitBounds(pts,{padding:[50,50],maxZoom:13}):S.lmap.setView(pts[0],Math.max(10,Math.min(12,S.lmap.getZoom())))}catch(e){}},60)}
+document.addEventListener("click",e=>{const p=document.getElementById("spPop");if(p&&!p.hidden&&!e.target.closest(".spctl"))toggleSpPop(false)});
+document.addEventListener("keydown",e=>{const p=document.getElementById("spPop");if(e.key==="Escape"&&p&&!p.hidden){toggleSpPop(false);const b=$("#spMapBtn");if(b)b.focus()}});
+function renderHeat(){syncSpBtn();const bar=$("#heatBar");if(!S.heatLayer)return;S.heatLayer.clearLayers();
   if(S.heatGbifLayer&&(!S.sp||!S.heatGbif||S.heatGbifLayer._sp!==S.sp)){S.lmap.removeLayer(S.heatGbifLayer);S.heatGbifLayer=null}
   if(!S.sp||!isLive()){if(bar)bar.hidden=true;return}
   const by={};for(const c of S.catches)if(c.species===S.sp)(by[c.site_id]=by[c.site_id]||[]).push(c);
