@@ -1822,6 +1822,54 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 #auth .alinks{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:0 16px}
 #auth .alinks .linkbtn{margin-top:14px}
 
+/* v122: "When do you wanna dive?" sits in the middle of the map bar and stands out.
+   The bar is split in three groups (left buttons, the question, coordinates). They only form a centred grid when the bar is wide
+   enough; on narrow bars, in full-map mode on smaller screens and while drawing, the groups dissolve and the bar flows as before. */
+.mt-in,.mt-l,.mt-c,.mt-r{display:contents}
+.maptools{container:mapbar/inline-size;--cq-ink:#7A5212;--cq-bd:rgba(156,112,30,.65);--cq-bg:rgba(184,145,63,.14);--cq-bgh:rgba(184,145,63,.26);--cq-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none' stroke='%237A5212' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M2 7.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3Cpath d='M2 13.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%237A5212' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");--cq-onbg:#1F6478;--cq-onbgh:#2A7890;--cq-onink:#F8F2E3;--cq-onimg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none' stroke='%23F8F2E3' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M2 7.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3Cpath d='M2 13.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23F8F2E3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .maptools{--cq-ink:#F3D67E;--cq-bd:rgba(243,214,126,.75);--cq-bg:rgba(243,214,126,.13);--cq-bgh:rgba(243,214,126,.22);--cq-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none' stroke='%23F3D67E' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M2 7.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3Cpath d='M2 13.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23F3D67E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");--cq-onbg:#4FD0D6;--cq-onbgh:#7FE0E4;--cq-onink:#05262C;--cq-onimg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none' stroke='%2305262C' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M2 7.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3Cpath d='M2 13.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2305262C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}}
+:root[data-theme="dark"] .maptools{--cq-ink:#F3D67E;--cq-bd:rgba(243,214,126,.75);--cq-bg:rgba(243,214,126,.13);--cq-bgh:rgba(243,214,126,.22);--cq-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none' stroke='%23F3D67E' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M2 7.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3Cpath d='M2 13.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23F3D67E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");--cq-onbg:#4FD0D6;--cq-onbgh:#7FE0E4;--cq-onink:#05262C;--cq-onimg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none' stroke='%2305262C' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M2 7.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3Cpath d='M2 13.5c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2305262C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+#coord{margin-left:auto}
+@container mapbar (min-width:700px){
+body:not(.mapmax) .maptools:not(.drawing) .mt-in{display:grid;grid-template-columns:minmax(max-content,1fr) auto minmax(max-content,1fr);align-items:center;column-gap:10px;row-gap:6px;flex:1 1 100%;min-width:0}
+body:not(.mapmax) .maptools:not(.drawing) .mt-l,body:not(.mapmax) .maptools:not(.drawing) .mt-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+body:not(.mapmax) .maptools:not(.drawing) .mt-r{justify-content:flex-end}
+body:not(.mapmax) .maptools:not(.drawing) .mt-c{display:flex;justify-content:center}
+body:not(.mapmax) .maptools:not(.drawing) #hint{grid-column:1/-1;flex:none}
+body:not(.mapmax) .maptools:not(.drawing) #hint:empty{display:none}
+}
+@container mapbar (min-width:1120px){
+body.mapmax .maptools:not(.drawing) .mt-in{display:grid;grid-template-columns:minmax(max-content,1fr) auto minmax(max-content,1fr);align-items:center;column-gap:10px;row-gap:6px;flex:1 1 100%;min-width:0}
+body.mapmax .maptools:not(.drawing) .mt-l,body.mapmax .maptools:not(.drawing) .mt-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+body.mapmax .maptools:not(.drawing) .mt-r{justify-content:flex-end}
+body.mapmax .maptools:not(.drawing) .mt-c{display:flex;justify-content:center}
+body.mapmax .maptools:not(.drawing) #hint{grid-column:1/-1;flex:none}
+body.mapmax .maptools:not(.drawing) #hint:empty{display:none}
+}
+.maptools #condSel{appearance:none;-webkit-appearance:none;border-radius:999px;border:1.5px solid var(--cq-bd);background-color:var(--cq-bg);
+  background-image:var(--cq-img);background-repeat:no-repeat,no-repeat;background-position:13px 50%,right 14px top 50%;background-size:19px 19px,11px 8px;
+  color:var(--cq-ink);font-weight:600;letter-spacing:.01em;padding-left:40px;padding-right:34px;cursor:pointer;text-overflow:ellipsis;max-width:100%}
+.maptools #condSel:hover{background-color:var(--cq-bgh);border-color:var(--cq-ink)}
+.maptools #condSel:focus-visible{outline:2px solid var(--cq-ink);outline-offset:2px}
+.maptools #condSel:not(:has(option[value="off"]:checked)){background-color:var(--cq-onbg);border-color:var(--cq-onbg);color:var(--cq-onink);background-image:var(--cq-onimg)}
+.maptools #condSel:not(:has(option[value="off"]:checked)):hover{background-color:var(--cq-onbgh);border-color:var(--cq-onbgh)}
+.maptools #condSel option{color:#e3edf4;background:#0d2238}
+@media (max-width:480px){.maptools #condSel{padding-left:30px;padding-right:24px;letter-spacing:0;background-position:9px 50%,right 10px top 50%;background-size:16px 16px,10px 7px}}
+
+/* v122: privacy and terms */
+dialog.privdlg{max-width:min(640px,94vw);max-height:88vh;overflow:auto;padding:24px 26px 20px}
+.priv h2{margin:0}
+.priv .pv-date{font-size:13px;margin:2px 0 6px}
+.priv h3{font-size:17px;margin:20px 0 4px}
+.priv p,.priv li{color:var(--ink);font-size:15px;line-height:1.5}
+.priv p{margin:6px 0 0;max-width:62ch}
+.priv ul{margin:6px 0 0;padding-left:20px}
+.priv li{margin:4px 0;max-width:60ch}
+.priv a{color:var(--alpha)}
+.priv .formbtns{margin-top:20px;bottom:-20px;padding:12px 0 6px;border-top:1px solid var(--line)}
+#auth .aprv{margin:12px 0 0;font-size:13px;color:inherit;opacity:.85}
+#auth .aprv .linkbtn{margin:0;font-size:13px}
+
 </style>
 </head>
 <body>
@@ -1856,7 +1904,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
       <div id="inner" class="inner"><img id="chartImg" alt=""><div id="frames"></div><div id="pins"></div></div>
       <div id="overlay" class="overlay" hidden></div>
     </div>
-    <div class="maptools">
+    <div class="maptools"><div class="mt-in"><div class="mt-l">
       <button id="listBtn" class="btn maxonly" type="button">List</button>
       <button id="recBar" class="btn maxonly recbar" type="button" title="Records"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Records</span></button>
       <button id="statBar" class="btn maxonly statbtn" type="button" aria-pressed="false" title="Stats"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M6 21V11"/><path d="M11 21V4"/><path d="M16 21v-7"/><path d="M21 21V8"/></svg><span>Stats</span></button>
@@ -1866,11 +1914,13 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
       <button id="mndBar" class="btn maxonly mndbtn" type="button" title="Catch of the month"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg></button>
       <button id="placeBtn" class="btn primary">New <span class="pl-l">dive </span>site</button>
       <button id="drawBtn" class="btn">Draw</button>
-      <select id="condSel" class="btn" aria-label="Show wind conditions on the map"><option value="off">Conditions: off</option><option value="now">Conditions now</option><option value="+3">In 3 hours</option><option value="+6">In 6 hours</option><option value="d1h10">Tomorrow 10:00</option><option value="d1h15">Tomorrow 15:00</option><option value="d2h10">In 2 days, 10:00</option></select>
       <span id="drawBar" hidden><span class="dgrp" id="dPick"><button class="btn" id="dPoly">Polygon</button><button class="btn" id="dLine">Line</button><button class="btn" id="dRect">Rectangle</button><button class="btn" id="dPoint">Marker</button></span><button class="btn" id="dUndo">Undo point</button><button class="btn primary" id="dDone">Done</button><button class="btn ghost" id="dCancel">Cancel</button></span>
-      <span id="hint"></span><span id="coord"></span>
+    </div>
+    <div class="mt-c"><select id="condSel" class="btn" aria-label="When do you want to dive? Shows the conditions at the dive sites for that time" title="Pick when you want to dive, and the dive sites show wind and waves for that time"><option value="off">When do you wanna dive?</option><option value="now">Diving now</option><option value="+3">Diving in 3 hours</option><option value="+6">Diving in 6 hours</option><option value="d1h10">Diving tomorrow 10:00</option><option value="d1h15">Diving tomorrow 15:00</option><option value="d2h10">Diving in 2 days, 10:00</option><option value="off">Hide conditions</option></select></div>
+    <div class="mt-r"><span id="coord"></span>
       <div class="legend"><span><i style="background:var(--alpha)"></i>Shared</span><span><i style="background:var(--magenta)"></i>Only for you</span></div>
-      <div class="zoom" id="imgZoom"><button class="btn" id="zin" aria-label="Zoom in">+</button><button class="btn" id="zout" aria-label="Zoom out">−</button><button class="btn" id="zfit">Whole map</button></div>
+      <div class="zoom" id="imgZoom"><button class="btn" id="zin" aria-label="Zoom in">+</button><button class="btn" id="zout" aria-label="Zoom out">−</button><button class="btn" id="zfit">Whole map</button></div></div>
+    <span id="hint"></span></div>
     </div>
     <div class="hgrip" id="gripMap" title="Drag to change the map height (double-click: full height)" aria-hidden="true"></div>
     <div class="edgeh" id="edgeMap" title="Drag the edge to change the width (double-click: reset)" aria-hidden="true"></div>
@@ -1925,6 +1975,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <div id="newSp" class="newsp" hidden role="status"></div>
 <dialog id="imgDlg" class="imgdlg"><div class="lbwrap"><img id="imgBig" alt=""><button type="button" class="lbnav lbprev" id="lbPrev" aria-label="Previous image">‹</button><button type="button" class="lbnav lbnext" id="lbNext" aria-label="Next image">›</button></div><div class="lbfoot"><p id="imgCap" class="small"></p><span class="lbcount" id="lbCount"></span><form method="dialog"><button class="btn">Close</button></form></div></dialog>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
+<dialog id="privDlg" class="privdlg" aria-labelledby="privH"></dialog>
 <dialog id="gameDlg" class="gamedlg" aria-label="SeaHunt"><canvas id="fgCv"></canvas><div id="fgOv" class="fg-ov"></div><button type="button" class="fg-x fg-snd" id="fgSnd" aria-label="Sound on/off"></button><button type="button" class="fg-x fg-fs" id="fgFs" aria-label="Fullskjerm" title="Fullskjerm">⛶</button><button type="button" class="fg-x" id="fgX" aria-label="Close the game">✕</button></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1934,7 +1985,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <script src="config.js"></script>
 <script>
 /* ================= SeaHunter (formerly Jaktkart and Dykkekart), Supabase version ================= */
-const APP_VERSION="v121 (Forgot password, e-mail confirmation)";
+const APP_VERSION="v122 (When do you wanna dive?, privacy)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -2032,8 +2083,8 @@ function authScreen(kind,msg,pre){
     <label for="ncArea">Home area</label><select id="ncArea" required><option value="" disabled selected>Choose your area</option>${opts}</select>
     <label for="ncCode">Crew code</label><input type="text" id="ncCode" required placeholder="JK-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false">
     <div class="err" id="ncErr"></div><div style="margin-top:14px"><button class="btn primary" id="ncGo">Start the crew</button></div></form></details>
-    <button class="btn" id="aOut" style="margin-top:14px">Log out</button>`;
-    $("#aOut").onclick=()=>sb.auth.signOut();
+    <button class="btn" id="aOut" style="margin-top:14px">Log out</button><p class="aprv"><button type="button" class="linkbtn" data-priv>Privacy and terms</button></p>`;
+    $("#aOut").onclick=()=>{sb.auth.signOut();clearLocalCopy()};
     $("#ncf").onsubmit=async e=>{e.preventDefault();const go=$("#ncGo");go.disabled=true;$("#ncErr").textContent="";
       const {error}=await sb.rpc("create_crew",{crew_name:$("#ncName").value.trim(),your_name:$("#ncMe").value.trim(),area:$("#ncArea").value,crew_code:$("#ncCode").value.trim()});
       go.disabled=false;
@@ -2069,7 +2120,8 @@ function authScreen(kind,msg,pre){
   <form class="f" id="af"><label for="aEmail">E-mail</label><input type="text" id="aEmail" inputmode="email" autocomplete="email" required>
   <label for="aPw">Password${signup?" (at least 6 characters)":""}</label><input type="password" id="aPw" autocomplete="${signup?"new-password":"current-password"}" required minlength="6">
   <div class="err" id="aErr" role="alert">${esc(msg||"")}</div><div class="aok" id="aOk" role="status"></div><div style="margin-top:14px"><button class="btn primary" id="aGo">${signup?"Create account":"Log in"}</button></div></form>
-  <div class="alinks"><button class="linkbtn" id="aSwitch">${signup?"Have an account? Log in":"First time? Create an account"}</button>${signup?"":`<button class="linkbtn" id="aForgot">Forgot password?</button>`}</div>`;
+  <div class="alinks"><button class="linkbtn" id="aSwitch">${signup?"Have an account? Log in":"First time? Create an account"}</button>${signup?"":`<button class="linkbtn" id="aForgot">Forgot password?</button>`}</div>
+  <p class="aprv">${signup?"By creating an account you accept the ":""}<button type="button" class="linkbtn" data-priv>${signup?"privacy and terms":"Privacy and terms"}</button>${signup?".":""}</p>`;
   if(pre)$("#aEmail").value=pre;
   $("#aSwitch").onclick=()=>authScreen(signup?"login":"signup","",$("#aEmail").value.trim());
   if(!signup)$("#aForgot").onclick=()=>authScreen("forgot","",$("#aEmail").value.trim());
@@ -2096,6 +2148,45 @@ function confirmNote(email,text){const ok=$("#aOk");if(!ok)return;
     const {error}=await sb.auth.resend({type:"signup",email,options:{emailRedirectTo:appUrl()}});
     if(error){bt.disabled=false;$("#aErr").textContent=authErr(error);return}
     bt.textContent="Sent again. Check the inbox and the spam folder."}}
+/* v122: privacy and terms. Plain words, what is stored, who sees it, where it is. Opened by any [data-priv] button. */
+const PRIV_CONTACT="seahunter.app@gmail.com";
+function openPrivacy(){const d=$("#privDlg");if(!d)return;
+  const mail=`<a href="mailto:${PRIV_CONTACT}">${PRIV_CONTACT}</a>`;
+  d.innerHTML=`<div class="priv"><h2 id="privH">Privacy and terms</h2><p class="pv-date">Last updated 19 November 2026</p>
+  <h3>A free test version</h3>
+  <p>SeaHunter is free while it is being tested with a few crews. It comes with no guarantees: it can have bugs, be down, change, or close. Keep your own copy of anything important (Menu, Download as GeoJSON gives you the dive sites and areas).</p>
+  <p>Weather, waves, tide and fishing rules in SeaHunter come from other services and can be wrong or out of date. Always judge the conditions yourself, dive with a buddy, and check the rules where you fish.</p>
+  <h3>Who is responsible</h3>
+  <p>SeaHunter is run by Anders Dannesboe Larsen in Bodø, as a private person during the test. Questions, or a request to see or delete your data: ${mail}.</p>
+  <h3>What is stored</h3>
+  <ul><li>Your account: e-mail, name, your crew, and whether you are admin. The password is stored scrambled by Supabase, so nobody can read it, me included.</li>
+  <li>What you and your crew add: dive sites with their position, notes and photos; dive logs (date, time, depth, visibility, temperature, buddies, notes); catches (species, size, weight, who caught it, photo); drawn areas and lines; visibility reports, votes, season notes and SeaHunt scores.</li>
+  <li>Feedback you send from the menu, with your name and crew.</li></ul>
+  <p>Photos are drawn again in your browser before they are uploaded. That removes the hidden camera data, such as the GPS position.</p>
+  <h3>Who can see it</h3>
+  <ul><li>Your crew, and only your crew. Other crews can't see your sites, logs or catches. This is enforced by the database itself, not just by the app.</li>
+  <li>Areas marked "Only for you" are seen by you alone.</li>
+  <li>Photos have a long random web address. They are only shown inside your crew, but anyone who gets the exact link can open that photo.</li>
+  <li>Me, as the one who runs SeaHunter: I have technical access to the whole database. I only use it to keep SeaHunter running, fix problems, take backups, read feedback, or when you ask me to.</li></ul>
+  <p>Your data is not sold or shared, and there are no ads and no tracking.</p>
+  <h3>Where it is stored</h3>
+  <p>Accounts, data and photos are stored with Supabase, on servers in Frankfurt, Germany (EU). Backups are copies kept in the same place. The app itself is served from GitHub Pages.</p>
+  <h3>Other services the app talks to</h3>
+  <p>To show maps, weather and tide, your browser asks these services directly. Like any website they see your IP address and which map area or position is asked about, but not your name, e-mail or logs. The positions of the dive sites are sent to the weather and tide services, without names, to get forecasts for them.</p>
+  <ul><li>Maps and place search: Kartverket, Esri (satellite), Fiskeridirektoratet, NGU, Miljødirektoratet and NASA.</li>
+  <li>Weather, waves and tide: MET Norway, Open-Meteo and Kartverket.</li>
+  <li>Species and fish data: GBIF and iNaturalist.</li>
+  <li>Fonts and code: Google Fonts, jsDelivr and cdnjs.</li></ul>
+  <h3>On your phone or computer</h3>
+  <p>The app keeps your settings, the map pictures you have looked at, and a copy of your crew's data in the browser, so it opens fast and works with poor coverage. Logging out removes the copy of the crew's data. No tracking cookies are used.</p>
+  <h3>How long, and deleting</h3>
+  <p>Your data is kept as long as you or your crew use SeaHunter. Ask your crew's admin to remove you from the crew, or e-mail ${mail} to have your account and what you added deleted. If a whole crew is deleted, all its data is deleted. Deleted data can stay in a backup copy for a while, until that backup is cleared.</p>
+  <p>You can ask to see, correct, download or delete your data at any time. If you think your data is handled wrongly, you can complain to <a href="https://www.datatilsynet.no" target="_blank" rel="noopener">Datatilsynet</a>, the Norwegian Data Protection Authority.</p>
+  <div class="formbtns"><button type="button" class="btn primary" id="privClose">Close</button></div></div>`;
+  $("#privClose").onclick=()=>d.close();d.showModal();d.scrollTop=0;$("#privClose").blur();d.focus()}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-priv]");if(b){e.preventDefault();openPrivacy()}});
+/* v122: log out also removes the copy of the crew's data kept in this browser */
+function clearLocalCopy(){try{for(const k of Object.keys(localStorage))if(k.startsWith("dkc:"))localStorage.removeItem(k)}catch(e){}}
 /* v114: where the map opens: the crew's saved home view, else the middle of its home area, else all of Norway (Bodø for a map from before crews) */
 function crewView(){const c=S.crew;if(c&&c.home_lat!=null&&c.home_lon!=null)return [[c.home_lat,c.home_lon],c.home_zoom||10];
   if(c&&c.region&&REGIONS.some(g=>g.id===c.region)){const g=REG(c.region);return [[g.lat,g.lon],9]}
@@ -2479,7 +2570,7 @@ function renderEdit(s){
       lat:both?lat:null,lon:both?lon:null,icon:sIcon,color:sColor,updated_at:new Date().toISOString()};
     if(row.min_depth!=null&&row.max_depth!=null&&row.min_depth>row.max_depth)[row.min_depth,row.max_depth]=[row.max_depth,row.min_depth];
     try{
-      const f=$("#fPhoto").files[0];if(f)row.photo_path=await uploadImage(f);
+      const f=$("#fPhoto").files[0];if(f)row.photo_path=await uploadImage(await shrinkImage(f,2000));
       if(isNew){row.private=panel.querySelector('input[name="vis"]:checked')?.value==="priv";row.created_by=S.user.id;
         row.chart_id=S.draft.live?null:S.draft.chartId;row.x=S.draft.live?null:S.draft.x;row.y=S.draft.live?null:S.draft.y;
         const {data,error}=await tideSafe(r=>colSafe(x=>sb.from("sites").insert(x).select().single(),r,["icon","color","slack_hw","slack_lw","slack_len","min_depth"],"style.sql"),row);if(error)throw error;
@@ -2555,7 +2646,7 @@ const mdlg=$("#menuDlg");
 $("#menuBtn").onclick=async()=>{await loadMembers();renderMenu();mdlg.showModal()};
 function renderMenu(){
   const admin=S.me.role==="admin";
-  $("#menuBody").innerHTML=`<h2>Menu</h2><p class="small" style="margin:0">Version ${APP_VERSION}</p><p>Logged in as <b>${esc(S.me.name)}</b> (${esc(S.user.email)})</p>
+  $("#menuBody").innerHTML=`<h2>Menu</h2><p class="small" style="margin:0">Version ${APP_VERSION}. <button type="button" class="linkbtn" data-priv>Privacy and terms</button></p><p>Logged in as <b>${esc(S.me.name)}</b> (${esc(S.user.email)})</p>
   <div class="menu-sec"><h3>Your dive year</h3><p class="small" style="margin:0 0 8px">Look back at your dives, catches and best moments this year, and replay the year on the map.</p><button class="btn primary" id="mYear">Open your dive year</button></div>
   <div class="menu-sec fg-menu"><h3>SeaHunt</h3><p class="small" style="margin:0 0 8px">A small freediving game: swim from the kelp forest to the sandy bottom and look for fish. Four levels.${typeof fgBestTxt==="function"&&fgBestTxt()?` Records: <b>${esc(fgBestTxt())}</b>.`:""}</p><button class="btn primary" id="mGame">Play</button></div>
   <div class="menu-sec"><h3>Your name</h3><form class="f" id="mName" style="display:flex;gap:8px"><input type="text" id="mNameIn" value="${esc(S.me.name)}" required><button class="btn">Save</button></form><p class="small" style="margin:6px 0 0">If you change it, your dives, catches, votes and game scores move to the new name, and the old name disappears.</p></div>
@@ -2575,7 +2666,7 @@ function renderMenu(){
   <div class="formbtns"><button class="btn" id="mOut">Log out</button><button class="btn ghost" id="mClose">Close</button></div>`;
   $("#mClose").onclick=()=>mdlg.close();
   $("#mYear").onclick=()=>{mdlg.close();openDiveYear()};
-  $("#mOut").onclick=async()=>{mdlg.close();await sb.auth.signOut();location.reload()};
+  $("#mOut").onclick=async()=>{mdlg.close();await sb.auth.signOut();clearLocalCopy();location.reload()};
   $("#mName").onsubmit=async e=>{e.preventDefault();const n=$("#mNameIn").value.trim(),old=(S.me.name||"").trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error){$("#mErr").textContent=errMsg(error);return}
     S.me.name=n;const r=old&&old.toLowerCase()!==n.toLowerCase()?await mergeNames(old,n):null;await loadMembers();renderMenu();
     if(r&&r.err)$("#mErr").textContent="Your name is saved, but the old entries still say "+old+". "+r.err;else if(r&&r.n)toast(`Name saved. ${r.n} ${r.n===1?"entry":"entries"} moved from ${old} to ${n}.`);else toast("Name saved")};
@@ -2812,6 +2903,7 @@ function geomSize(g){
 /* drawing */
 function updateDrawUI(){
   const live=isLive();
+  {const mt=document.querySelector(".maptools");if(mt)mt.classList.toggle("drawing",!!(S.drawMenu||S.drawer||S.editingArea))}
   if(!live&&(S.drawer||S.drawMenu)){cancelDraw();return}
   $("#drawBtn").hidden=!live||S.drawMenu||!!S.drawer||!!S.editingArea;
   $("#drawBar").hidden=!(S.drawMenu||S.drawer);
@@ -3510,7 +3602,7 @@ function condNoteHTML(){
 }
 function initCond(){
   const sel=$("#condSel");const saved=lsGet("dk-cond");if(saved&&[...sel.options].some(o=>o.value===saved))sel.value=saved;
-  S.condSel=sel.value;if(S.condSel!=="off")S.siteT=S.condSel;sel.onchange=()=>{S.condSel=sel.value;lsSet("dk-cond",S.condSel);refreshCond();if(S.condSel!=="off"){S.siteT=S.condSel;const s=S.view==="site"&&getSite(S.sel);if(s)renderCond(s)}};
+  S.condSel=sel.value;if(S.condSel!=="off")S.siteT=S.condSel;sel.onchange=()=>{if(sel.value==="off")sel.selectedIndex=0;S.condSel=sel.value;lsSet("dk-cond",S.condSel);refreshCond();if(S.condSel!=="off"){S.siteT=S.condSel;const s=S.view==="site"&&getSite(S.sel);if(s)renderCond(s)}};
   if(S.condSel!=="off")refreshCond();
   setInterval(()=>{if(S.condSel!=="off")refreshCond()},30*60e3);
 }
@@ -3749,10 +3841,11 @@ const MONTHS=["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov",
 function photoURL(p){return p?imgUrl(p):""}
 function withTimeout(p,ms){return Promise.race([p,new Promise(r=>setTimeout(()=>r(null),ms))])}
 async function shrinkImage(file,max=1600){
-  try{if(!window.createImageBitmap||!file.type.startsWith("image/"))return file;
-    const bm=await createImageBitmap(file);const sc=Math.min(1,max/Math.max(bm.width,bm.height));if(sc>=1&&file.size<1.5e6)return file;
+  /* v122: every photo is drawn again before upload, also small ones, so the file never carries the camera's hidden data (GPS position, phone model, time) */
+  try{if(!window.createImageBitmap||!file.type.startsWith("image/")||file.type==="image/gif")return file;
+    const bm=await createImageBitmap(file);const sc=Math.min(1,max/Math.max(bm.width,bm.height));const png=file.type==="image/png";
     const c=document.createElement("canvas");c.width=Math.round(bm.width*sc);c.height=Math.round(bm.height*sc);c.getContext("2d").drawImage(bm,0,0,c.width,c.height);
-    const b=await new Promise(r=>c.toBlob(r,"image/jpeg",.85));return b?new File([b],"image.jpg",{type:"image/jpeg"}):file}catch(e){return file}
+    const b=await new Promise(r=>c.toBlob(r,png?"image/png":"image/jpeg",.85));return b?new File([b],png?"image.png":"image.jpg",{type:png?"image/png":"image/jpeg"}):file}catch(e){return file}
 }
 function measureTxt(c){return [c.weight_kg!=null?`${fnum(c.weight_kg,2)} kg`:"",c.size_cm!=null?`${fnum(c.size_cm)} cm`:""].filter(Boolean).join(" · ")}
 
