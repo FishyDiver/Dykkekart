@@ -1878,6 +1878,20 @@ details.mdet[open]>summary{margin-bottom:6px}
 .mfoot{margin:18px 0 0;border-top:1px solid var(--line);padding-top:10px}
 .mfoot .linkbtn{margin:0;font-size:13px}
 
+/* v128: your picture in the header opens your profile */
+.profbtn{display:inline-grid;place-items:center;flex:none;width:38px;height:38px;padding:0;margin:0 2px;border:0;border-radius:50%;background:none;cursor:pointer}
+.profbtn .av{box-shadow:0 0 0 2px rgba(243,214,126,.75)}
+.profbtn:hover .av{box-shadow:0 0 0 2px #F3D67E,0 0 0 5px rgba(243,214,126,.2)}
+.profbtn:focus-visible{outline:2px solid #F3D67E;outline-offset:2px}
+@media (max-width:700px){.profbtn{width:32px;height:32px}.profbtn .av{width:26px!important;height:26px!important;font-size:11px!important}}
+.prof-edit{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.prof-edit textarea{width:100%;box-sizing:border-box;resize:vertical}
+.prof-edit input[type=text]{width:100%;box-sizing:border-box}
+.prof-edit .prof-top{margin:6px 0 2px}
+.prof-edit .prof-avb{flex-direction:row;align-items:center;gap:12px}
+#addChartBtn{white-space:nowrap}
+@media (max-width:1499px){#menuBtn .mlab{display:none}#menuBtn .mico{display:block}}
+
 </style>
 </head>
 <body>
@@ -1897,6 +1911,7 @@ details.mdet[open]>summary{margin-bottom:6px}
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">New chart</button>
   <button id="actBtn" class="hdrbtn actbtn" type="button" aria-haspopup="true" aria-expanded="false" title="Latest activity in the crew"><svg class="act-bell" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="act-l">Activity</span><b class="actcnt" id="actCnt" hidden></b></button>
+  <button id="profBtn" class="profbtn" type="button" aria-label="Your profile" title="Your profile" hidden></button>
   <button id="menuBtn" class="btn ghost" aria-label="Menu" title="Menu"><span class="mlab">Menu</span><svg class="mico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 <div class="actpop" id="actPop" hidden></div>
@@ -1994,7 +2009,7 @@ details.mdet[open]>summary{margin-bottom:6px}
 <script src="config.js"></script>
 <script>
 /* ================= SeaHunter (formerly Jaktkart and Dykkekart), Supabase version ================= */
-const APP_VERSION="v127 (Speargun lines everywhere)";
+const APP_VERSION="v128 (Profile in the header)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -2169,7 +2184,7 @@ function avatarHTML(x,size=32,cls=""){const m=memberOf(x);const name=String((m&&
   return m&&m.avatar_path?`<span class="av ${cls}" style="${st}"><img src="${esc(photoURL(m.avatar_path))}" alt="" loading="lazy"></span>`:`<span class="av ini ${cls}" style="${st};--avh:${hue}" aria-hidden="true">${esc(ini)}</span>`}
 async function squareImage(file,size){try{const bm=await createImageBitmap(file);const s=Math.min(bm.width,bm.height),c=document.createElement("canvas");c.width=c.height=Math.min(size,s);
   c.getContext("2d").drawImage(bm,(bm.width-s)/2,(bm.height-s)/2,s,s,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,"image/jpeg",.86));return b?new File([b],"avatar.jpg",{type:"image/jpeg"}):file}catch(e){return shrinkImage(file,size)}}
-async function openProfile(name){const d=$("#profDlg");if(!d||!name)return;const m=memberOf(name),nm=String((m&&m.name)||name);
+async function openProfile(name,keep){const d=$("#profDlg");if(!d||!name)return;const m=memberOf(name),nm=String((m&&m.name)||name);
   if(!S.allLogs){try{const a=await sb.from("logs").select("*");if(!a.error)S.allLogs=a.data}catch(e){}}
   const k=nm.trim().toLowerCase(),eq=v=>String(v||"").trim().toLowerCase()===k;
   const logs=(S.allLogs||S.feedLogs||[]).filter(l=>eq(l.author_name)||(l.buddies||[]).some(eq));
@@ -2186,9 +2201,36 @@ async function openProfile(name){const d=$("#profDlg");if(!d||!name)return;const
     <div class="prof-stats"><div><b>${logs.length}</b><span>${logs.length===1?"dive":"dives"}</span></div><div><b>${nFish}</b><span>fish caught</span></div><div><b>${nSp}</b><span>${nSp===1?"species":"species"}</span></div></div>
     ${big?`<p class="small">Biggest catch: <b>${esc(spn(big.species))}, ${esc(fnum(big.weight_kg,1))} kg</b>${big.date?", "+esc(fdate(big.date)):""}.</p>`:""}
     ${ts?`<p class="small">Dives most at <b>${esc(ts.name)}</b>${last?`. Last dive ${esc(fdate(last))}`:""}.</p>`:""}
-    ${self?`<div class="formbtns"><button type="button" class="btn primary" id="profEdit">Edit your profile</button></div>`:""}</div>`;
-  if(!d.open)d.showModal();const pe=$("#profEdit");if(pe)pe.onclick=async()=>{d.close();await loadMembers();syncMe();renderMenu();if(!mdlg.open)mdlg.showModal();const s=$("#secProf");if(s)s.scrollIntoView({block:"start"})}}
+    ${self?`<details class="mdet prof-edit"${!S.me.bio&&!S.me.avatar_path?" open":""}><summary>Edit your profile</summary>${profileFormHTML()}</details>`:""}</div>`;
+  d.dataset.self=self?"1":"";if(self)wireProfileForm();if(!d.open)d.showModal()}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-prof]");if(!b||!b.dataset.prof)return;e.preventDefault();e.stopPropagation();openProfile(b.dataset.prof)},true);
+/* v128: your own profile lives behind your picture in the header, not in the menu */
+function profileFormHTML(){return `  <div class="prof-top"><div class="prof-avb"><label class="btn" for="mAvFile" id="mAvLab">${S.me.avatar_path?"Change photo":"Add a photo"}</label><input type="file" id="mAvFile" accept="image/*" class="sr-only">${S.me.avatar_path?`<button type="button" class="linkbtn" id="mAvDel">Remove photo</button>`:""}</div></div>
+  <form class="f" id="mName"><label for="mNameIn">Name</label><input type="text" id="mNameIn" value="${esc(S.me.name)}" required maxlength="40">
+  <label for="mBio">About you</label><textarea id="mBio" rows="3" maxlength="300" placeholder="Where you dive, what you hunt, your best story"${profOff()?" disabled":""}>${esc(S.me.bio||"")}</textarea>
+  <label for="mFav">Favourite fish</label><input type="text" id="mFav" list="mFavList" maxlength="60" value="${esc(S.me.fav_species||"")}"${profOff()?" disabled":""}><datalist id="mFavList">${SPECIES.map(x=>`<option value="${esc(spn(x))}">`).join("")}</datalist>
+  <div style="margin-top:10px"><button class="btn primary">Save profile</button></div></form>
+  <p class="small" style="margin:8px 0 0">${profOff()?"Photo and text aren't switched on yet: the owner of SeaHunter needs to run profile.sql once. ":""}Your crew sees your profile. If you change your name, your dives, catches, votes and game scores move with it. You can't pick a name someone else in the crew uses or has used.</p><div class="err" id="pfErr" role="alert"></div>`}
+function wireProfileForm(){if(!$("#mName"))return;
+  $("#mName").onsubmit=async e=>{e.preventDefault();$("#pfErr").textContent="";const n=$("#mNameIn").value.trim(),old=(S.me.name||"").trim();
+    const row={name:n};if(!profOff()){row.bio=$("#mBio").value.trim();row.fav_species=$("#mFav").value.trim()}
+    const btn=$("#mName").querySelector("button.primary");btn.disabled=true;
+    const {error}=await sb.from("members").update(row).eq("email",S.me.email);btn.disabled=false;if(error){$("#pfErr").textContent=errMsg(error);return}
+    Object.assign(S.me,row);const r=old&&old.toLowerCase()!==n.toLowerCase()?await mergeNames(old,n):null;await loadMembers();syncMe();refreshProfile();
+    if(r&&r.err)$("#pfErr").textContent="Your name is saved, but the old entries still say "+old+". "+r.err;else if(r&&r.n)toast(`Profile saved. ${r.n} ${r.n===1?"entry":"entries"} moved from ${old} to ${n}.`);else toast("Profile saved")};
+  {const avf=$("#mAvFile");if(avf)avf.onchange=async()=>{const f=avf.files[0];if(!f)return;$("#pfErr").textContent="";
+    if(profOff()){$("#pfErr").textContent="Profile photos aren't switched on yet: the owner of SeaHunter needs to run profile.sql once.";return}
+    $("#mAvLab").textContent="Saving…";
+    try{const sq=await squareImage(f,480);const path=await uploadImage(sq);const old=S.me.avatar_path;
+      const {error}=await sb.from("members").update({avatar_path:path}).eq("email",S.me.email);if(error)throw error;
+      if(old)sb.storage.from(BUCKET).remove([old]).catch(()=>{});S.me.avatar_path=path;await loadMembers();syncMe();refreshProfile();toast("Profile photo saved")}
+    catch(err){refreshProfile();$("#pfErr").textContent="Could not save the photo: "+errMsg(err)}};
+  const avd=$("#mAvDel");if(avd)avd.onclick=async()=>{const old=S.me.avatar_path;const {error}=await sb.from("members").update({avatar_path:null}).eq("email",S.me.email);
+    if(error){$("#pfErr").textContent=errMsg(error);return}if(old)sb.storage.from(BUCKET).remove([old]).catch(()=>{});S.me.avatar_path=null;await loadMembers();syncMe();refreshProfile()}}
+}
+function renderProfBtn(){const b=$("#profBtn");if(!b)return;b.hidden=!S.me;if(S.me)b.innerHTML=avatarHTML(S.me,30)}
+function refreshProfile(){renderProfBtn();const d=$("#profDlg");if(d&&d.open&&d.dataset.self==="1")openProfile(S.me.name,true);if(typeof mdlg!=="undefined"&&mdlg.open)renderMenu();renderFeed()}
+document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#profBtn")&&S.me){e.preventDefault();openProfile(S.me.name)}});
 /* small pictures next to names in the activity list */
 function feedAvatars(root){if(!root)return;root.querySelectorAll(".arow .atx > span:first-child > b:first-child").forEach(b=>{if(b.previousElementSibling&&b.previousElementSibling.classList.contains("av"))return;
   const t=b.textContent.trim(),m=t==="You"?S.me:memberOf(t);if(m)b.insertAdjacentHTML("beforebegin",avatarHTML(m,18,"mini"))})}
@@ -2268,7 +2310,7 @@ async function onSession(session){
   /* v114: the crew this person belongs to (missing table = the map from before crews existed) */
   S.crew=null;try{const c=await sb.from("crews").select("*").maybeSingle();if(!c.error&&c.data)S.crew=c.data}catch(e){}
   if(!S.me.name){authScreen("name");return}
-  $("#auth").hidden=true;start();
+  $("#auth").hidden=true;renderProfBtn();start();
 }
 async function start(){
   if(S.started)return;S.started=true;setTimeout(()=>{loadVotes().then(()=>{syncMfDot();renderFeed()}).catch(()=>{})},2500);
@@ -2714,13 +2756,6 @@ $("#menuBtn").onclick=async()=>{await loadMembers();renderMenu();mdlg.showModal(
 function renderMenu(){
   const admin=S.me.role==="admin";
   $("#menuBody").innerHTML=`<button type="button" class="dlgx" aria-label="Close the menu">✕</button><h2>Menu</h2>
-  <div class="menu-sec" id="secProf"><h3>Your profile</h3>
-  <div class="prof-top">${avatarHTML(S.me,72)}<div class="prof-avb"><label class="btn" for="mAvFile" id="mAvLab">${S.me.avatar_path?"Change photo":"Add a photo"}</label><input type="file" id="mAvFile" accept="image/*" class="sr-only">${S.me.avatar_path?`<button type="button" class="linkbtn" id="mAvDel">Remove photo</button>`:""}<button type="button" class="linkbtn" data-prof="${esc(S.me.name)}">See your profile</button></div></div>
-  <form class="f" id="mName"><label for="mNameIn">Name</label><input type="text" id="mNameIn" value="${esc(S.me.name)}" required maxlength="40">
-  <label for="mBio">About you</label><textarea id="mBio" rows="3" maxlength="300" placeholder="Where you dive, what you hunt, your best story"${profOff()?" disabled":""}>${esc(S.me.bio||"")}</textarea>
-  <label for="mFav">Favourite fish</label><input type="text" id="mFav" list="mFavList" maxlength="60" value="${esc(S.me.fav_species||"")}"${profOff()?" disabled":""}><datalist id="mFavList">${SPECIES.map(x=>`<option value="${esc(spn(x))}">`).join("")}</datalist>
-  <div style="margin-top:10px"><button class="btn primary">Save profile</button></div></form>
-  <p class="small" style="margin:8px 0 0">${profOff()?"Photo and text aren't switched on yet: the owner of SeaHunter needs to run profile.sql once. ":""}Your crew sees your profile. If you change your name, your dives, catches, votes and game scores move with it. You can't pick a name someone else in the crew uses or has used.</p></div>
   <div class="menu-sec fg-menu mobonly" id="secGame"><h3>SeaHunt</h3><p class="small" style="margin:0 0 8px">A small freediving game: swim from the kelp forest to the sandy bottom and look for fish. Four levels.${typeof fgBestTxt==="function"&&fgBestTxt()?` Records: <b>${esc(fgBestTxt())}</b>.`:""}</p><button class="btn primary" id="mGame">Play</button></div>
   <div class="menu-sec" id="secMembers"><h3>Members</h3>${S.members.map(m=>`<div class="mrow"><button type="button" class="mwho" data-prof="${esc(m.name||"")}"${m.name?"":" disabled"}>${avatarHTML(m,36)}<span>${esc(m.name||"Invited, hasn't signed up yet")}<small>${esc(m.email)}${m.role==="admin"?", admin":""}</small></span></button>${admin&&m.email.toLowerCase()!==S.user.email.toLowerCase()?`<button class="btn ghost danger" data-rm="${esc(m.email)}">Remove</button>`:""}</div>`).join("")}
   ${admin?`<form class="f" id="mAdd"><label for="mEmail">Invite a dive buddy (e-mail)</label><div style="display:flex;gap:8px"><input type="text" id="mEmail" inputmode="email" required placeholder="buddy@email.com"><button class="btn primary">Add</button></div></form>
@@ -2737,26 +2772,11 @@ function renderMenu(){
   <p class="small mfoot">SeaHunter ${esc(String(APP_VERSION).split(" ")[0])}. Logged in as ${esc(S.user.email)}. <button type="button" class="linkbtn" data-priv>Privacy and terms</button></p><div class="err" id="mErr"></div>
   <div class="formbtns"><button class="btn" id="mOut">Log out</button><button class="btn ghost" id="mClose">Close</button></div>`;
   $("#mClose").onclick=()=>mdlg.close();
-  /* v126: menu order: profile, crew, members, feedback, then the rest */
+  /* v126: menu order: crew, members, feedback, then the rest */
   {const body=$("#menuBody"),foot=body.querySelector(".mfoot"),vis=id=>{const x=$(id);return !!(x&&x.offsetParent&&x.getBoundingClientRect().width>0)};
-   if(vis("#gameHdr")&&$("#secGame"))$("#secGame").hidden=true;if(vis("#addChartBtn")&&$("#secChart"))$("#secChart").hidden=true;for(const id of ["secProf","secCrew","secMembers","secFb","secGame","secChart","secExp","secApp"]){const el=$("#"+id);if(el)body.insertBefore(el,foot)}}
+   if(vis("#gameHdr")&&$("#secGame"))$("#secGame").hidden=true;if(vis("#addChartBtn")&&$("#secChart"))$("#secChart").hidden=true;for(const id of ["secCrew","secMembers","secFb","secGame","secChart","secExp","secApp"]){const el=$("#"+id);if(el)body.insertBefore(el,foot)}}
   $("#mOut").onclick=async()=>{mdlg.close();await sb.auth.signOut();clearLocalCopy();location.reload()};
-  $("#mName").onsubmit=async e=>{e.preventDefault();$("#mErr").textContent="";const n=$("#mNameIn").value.trim(),old=(S.me.name||"").trim();
-    const row={name:n};if(!profOff()){row.bio=$("#mBio").value.trim();row.fav_species=$("#mFav").value.trim()}
-    const btn=$("#mName").querySelector("button.primary");btn.disabled=true;
-    const {error}=await sb.from("members").update(row).eq("email",S.me.email);btn.disabled=false;if(error){$("#mErr").textContent=errMsg(error);return}
-    Object.assign(S.me,row);const r=old&&old.toLowerCase()!==n.toLowerCase()?await mergeNames(old,n):null;await loadMembers();syncMe();renderMenu();renderFeed();
-    if(r&&r.err)$("#mErr").textContent="Your name is saved, but the old entries still say "+old+". "+r.err;else if(r&&r.n)toast(`Profile saved. ${r.n} ${r.n===1?"entry":"entries"} moved from ${old} to ${n}.`);else toast("Profile saved")};
-  {const avf=$("#mAvFile");if(avf)avf.onchange=async()=>{const f=avf.files[0];if(!f)return;$("#mErr").textContent="";
-    if(profOff()){$("#mErr").textContent="Profile photos aren't switched on yet: the owner of SeaHunter needs to run profile.sql once.";return}
-    $("#mAvLab").textContent="Saving…";
-    try{const sq=await squareImage(f,480);const path=await uploadImage(sq);const old=S.me.avatar_path;
-      const {error}=await sb.from("members").update({avatar_path:path}).eq("email",S.me.email);if(error)throw error;
-      if(old)sb.storage.from(BUCKET).remove([old]).catch(()=>{});S.me.avatar_path=path;await loadMembers();syncMe();renderMenu();renderFeed();toast("Profile photo saved")}
-    catch(err){renderMenu();$("#mErr").textContent="Could not save the photo: "+errMsg(err)}};
-  const avd=$("#mAvDel");if(avd)avd.onclick=async()=>{const old=S.me.avatar_path;const {error}=await sb.from("members").update({avatar_path:null}).eq("email",S.me.email);
-    if(error){$("#mErr").textContent=errMsg(error);return}if(old)sb.storage.from(BUCKET).remove([old]).catch(()=>{});S.me.avatar_path=null;await loadMembers();syncMe();renderMenu();renderFeed()}}
-  const mg=$("#mMerge");if(mg)mg.onsubmit=async e=>{e.preventDefault();const o=$("#mMgOld").value.trim(),n=$("#mMgNew").value.trim();$("#mErr").textContent="";
+    const mg=$("#mMerge");if(mg)mg.onsubmit=async e=>{e.preventDefault();const o=$("#mMgOld").value.trim(),n=$("#mMgNew").value.trim();$("#mErr").textContent="";
     if(!o||!n||o.toLowerCase()===n.toLowerCase()){$("#mErr").textContent="Choose two different names.";return}
     if(!confirm(`Move everything registered as "${o}" to "${n}"? "${o}" disappears from all lists. This can't be undone.`))return;
     const r=await mergeNames(o,n);if(r.err){$("#mErr").textContent=r.err;return}toast(r.n?`${r.n} ${r.n===1?"entry":"entries"} moved from ${o} to ${n}`:`Nothing was registered as ${o}`);renderMenu()};
