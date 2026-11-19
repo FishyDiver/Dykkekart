@@ -1899,7 +1899,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v115 (New crew fixes)";
+const APP_VERSION="v116 (Satellite)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -2083,10 +2083,13 @@ function initLeaflet(){
   if(S.lmap)return;
   const kv=l=>retryTiles(L.tileLayer(`https://cache.kartverket.no/v1/wmts/1.0.0/${l}/default/webmercator/{z}/{y}/{x}.png`,{maxZoom:18,attribution:'&copy; <a href="https://www.kartverket.no/">Kartverket</a>'}));
   const sea=kv("sjokartraster"),topo=kv("topo"),grey=kv("topograatone");
+  /* v116: satellite / aerial imagery (Esri World Imagery), to see sand, rock and kelp in shallow water. Free while the app earns nothing; see GUIDE before charging */
+  const sat=retryTiles(L.tileLayer("https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:18,maxNativeZoom:18,attribution:'Powered by <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a> | Esri, Maxar, Earthstar Geographics, and the GIS User Community'}));
+  const BASES={"Sjøkart":sea,"Satellite":sat,"Topographic":topo,"Greyscale":grey};
   S.lmap=L.map(lmapEl,{zoomControl:true,renderer:L.svg({padding:.5})}).setView(...crewView());S.lmap.addLayer(S.lmap.options.renderer);
   S.lmap.createPane("heatPane").style.zIndex=390;S.heatLayer=L.layerGroup().addTo(S.lmap);
-  sea.addTo(S.lmap);
-  L.control.layers({"Sjøkart":sea,"Topographic":topo,"Greyscale":grey},null,{position:"topright"}).addTo(S.lmap);initLayers();
+  (BASES[lsGet("dk-base")]||sea).addTo(S.lmap);
+  L.control.layers(BASES,null,{position:"topright"}).addTo(S.lmap);S.lmap.on("baselayerchange",e=>lsSet("dk-base",e.name));initLayers();
   L.control.scale({imperial:false}).addTo(S.lmap);
   S.fLayer=L.layerGroup().addTo(S.lmap);S.aLayer=L.layerGroup().addTo(S.lmap);S.apLayer=makeAreaPointLayer().addTo(S.lmap);S.prLayer=makeAreaPointLayer();S.pkLayer=makeAreaPointLayer();S.bdLayer=L.layerGroup();S.lmap.on("zoomend",applyZoomLayers);{const zn=$("#zoomNote");if(zn)lmapEl.appendChild(zn)}S.dLayer=L.layerGroup().addTo(S.lmap);S.lLayer=makeSiteLayer().addTo(S.lmap);S.sdLayer=L.layerGroup().addTo(S.lmap);if(L.Draw)hookDrawEvents();else showErr("the drawing tool did not load");
   S.lmap.on("click",e=>liveClick(e.latlng));
