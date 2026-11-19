@@ -1892,6 +1892,28 @@ details.mdet[open]>summary{margin-bottom:6px}
 #addChartBtn{white-space:nowrap}
 @media (max-width:1499px){#menuBtn .mlab{display:none}#menuBtn .mico{display:block}}
 
+/* v129: welcome tour */
+.tour{position:fixed;inset:0;z-index:4000}
+.tour-dim{position:absolute;inset:0;background:transparent}
+.tour.centre .tour-dim{background:rgba(4,10,16,.62)}
+.tour-spot{position:fixed;border:0;padding:0;margin:0;background:transparent;border-radius:12px;cursor:pointer;
+  box-shadow:0 0 0 2px #F3D67E,0 0 0 6px rgba(243,214,126,.28),0 0 0 9999px rgba(4,10,16,.62);transition:left .25s ease,top .25s ease,width .25s ease,height .25s ease}
+.tour-spot:focus-visible{outline:2px solid #F3D67E;outline-offset:4px}
+.tour-bub{position:fixed;box-sizing:border-box;background:#F8F2E3;color:#14303A;border-radius:14px;padding:16px 18px 14px;box-shadow:0 10px 30px rgba(0,0,0,.45);outline:none;
+  transition:left .25s ease,top .25s ease}
+.tour-bub h3{margin:0 0 6px;font:600 20px/1.2 var(--lb-title,Georgia,serif);color:#14303A}
+.tour-bub p{margin:0;font-size:15px;line-height:1.45;color:#2b4550}
+.tour-bub .tour-n{font-size:12.5px;color:#6b7f86;margin:0 0 4px}
+.tour-btns{display:flex;align-items:center;gap:8px;margin-top:14px}
+.tour-sp{flex:1}
+.tour-btns .linkbtn{color:#4b6066;margin:0;font-size:13.5px}
+.tour-btns .btn{background:#fff;border:1px solid #d8cba8;color:#14303A}
+.tour-btns .btn.primary{background:#B8452B;border-color:#B8452B;color:#fff}
+.tour-arrow{position:absolute;width:16px;height:16px;background:#F8F2E3;transform:rotate(45deg)}
+.tour-arrow.up{top:-7px}
+.tour-arrow.down{bottom:-7px}
+@media (prefers-reduced-motion:reduce){.tour-spot,.tour-bub{transition:none}}
+
 </style>
 </head>
 <body>
@@ -2009,7 +2031,7 @@ details.mdet[open]>summary{margin-bottom:6px}
 <script src="config.js"></script>
 <script>
 /* ================= SeaHunter (formerly Jaktkart and Dykkekart), Supabase version ================= */
-const APP_VERSION="v128 (Profile in the header)";
+const APP_VERSION="v129 (Welcome tour)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -2235,6 +2257,46 @@ document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#pr
 function feedAvatars(root){if(!root)return;root.querySelectorAll(".arow .atx > span:first-child > b:first-child").forEach(b=>{if(b.previousElementSibling&&b.previousElementSibling.classList.contains("av"))return;
   const t=b.textContent.trim(),m=t==="You"?S.me:memberOf(t);if(m)b.insertAdjacentHTML("beforebegin",avatarHTML(m,18,"mini"))})}
 function whoBtn(name,label){return `<button type="button" class="whob" data-prof="${esc(name)}">${avatarHTML(name,18,"mini")}${esc(label||name)}</button>`}
+/* v129: the welcome tour. Speech bubbles with an arrow walk a new member round the app, one part at a time: the part is lit up,
+   the rest dimmed. Next, Back, the arrow keys, or a tap on the lit-up part move on; Esc or "Skip tour" ends it. It shows once per person,
+   and "Take the tour" in the menu starts it again. Parts that aren't on screen (narrow screens, map not shown) are skipped. */
+function tourSteps(){const admin=S.me&&S.me.role==="admin",crew=(S.crew&&S.crew.name)||"your crew",noSites=!(S.sites||[]).length;
+  return [
+  {t:`Welcome to SeaHunter`,b:`This is ${crew}'s own map and dive log. Only your crew sees what you put in. This short tour shows where everything is.`},
+  {el:["#placeBtn"],t:"Add your dive sites",b:"Tap here, then tap the map where the site is. Fill in access, depth and species. A site marked “Only for you” stays secret, also from the crew."},
+  {el:[".leaflet-control-layers"],t:"Choose the map",b:"Switch between sea chart, satellite, topographic and grey. The satellite view shows sand, kelp and rock."},
+  {el:["#condSel"],t:"When do you wanna dive?",b:"Pick a time, and every dive site shows the wind and the waves for that time."},
+  {el:["#drawBtn"],t:"Draw on the map",b:"Mark kelp forests, sandy bottom, hazards or protected areas as areas, lines or markers. The crew sees them too."},
+  {el:["#recHdr","#statHdr","#dexHdr","#seaHdr","#mndHdr"],t:"The crew's pages",b:"Records, Stats, Dex, Season calendar and Monthly catch. Your dives fill them: the biggest fish, the species you've found, the best months, and a vote for the catch of the month."},
+  {el:["#actBtn"],t:"What's new in the crew",b:"The bell shows the latest dives, catches, new sites and votes. A red number means something new since you last looked."},
+  {el:["#profBtn"],t:"Your profile",b:"Add a photo, a few lines about yourself and your favourite fish. Tap anyone's name to see their profile and their numbers."},
+  {el:["#menuBtn"],t:"The menu",b:admin?"Invite your crew here: add their e-mail under Members, then send them the link to SeaHunter. Feedback and privacy are here too.":"The crew's members, feedback to the people who make SeaHunter, and privacy and terms."},
+  {t:"You're ready",b:noSites?"Start with your crew's first dive site, then log a dive there with what you saw and caught.":"Open a dive site and log your next dive. You can take this tour again from the menu.",go:noSites?"Add the first dive site":""}]}
+function tourKey(){return "dk-tour-"+((S.user&&S.user.id)||"")}
+function maybeTour(){if(!S.user||lsGet(tourKey()))return;if(document.querySelector("dialog[open]")||!$("#auth").hidden){setTimeout(maybeTour,4000);return}startTour()}
+function tourRect(sels){let r=null;for(const s of sels){const e=document.querySelector(s);if(!e||!e.offsetParent)continue;const q=e.getBoundingClientRect();if(q.width<2||q.height<2)continue;
+  if(q.bottom<0||q.top>innerHeight||q.right<0||q.left>innerWidth)continue;r=r?{left:Math.min(r.left,q.left),top:Math.min(r.top,q.top),right:Math.max(r.right,q.right),bottom:Math.max(r.bottom,q.bottom)}:{left:q.left,top:q.top,right:q.right,bottom:q.bottom}}return r}
+function startTour(){endTour(true);const steps=tourSteps().filter(s=>!s.el||tourRect(s.el));if(!steps.length)return;
+  const root=document.createElement("div");root.id="tour";root.className="tour";root.setAttribute("role","dialog");root.setAttribute("aria-modal","true");root.setAttribute("aria-labelledby","tourT");
+  root.innerHTML=`<div class="tour-dim"></div><button type="button" class="tour-spot" aria-label="Next"></button><div class="tour-bub" tabindex="-1"><span class="tour-arrow" aria-hidden="true"></span><p class="tour-n" id="tourN"></p><h3 id="tourT"></h3><p id="tourB"></p><div class="tour-btns"><button type="button" class="linkbtn" id="tourSkip">Skip tour</button><span class="tour-sp"></span><button type="button" class="btn" id="tourBack">Back</button><button type="button" class="btn primary" id="tourNext">Next</button></div></div>`;
+  document.body.appendChild(root);S.tour={steps,i:0,root,prevFocus:document.activeElement};
+  $("#tourNext").onclick=()=>tourGo(1);$("#tourBack").onclick=()=>tourGo(-1);$("#tourSkip").onclick=()=>endTour();root.querySelector(".tour-spot").onclick=()=>tourGo(1);
+  tourShow();addEventListener("resize",tourShow);addEventListener("keydown",tourKeys,true)}
+function tourKeys(e){if(!S.tour)return;if(e.key==="Escape"){e.preventDefault();e.stopPropagation();endTour()}else if(e.key==="ArrowRight"){e.preventDefault();tourGo(1)}else if(e.key==="ArrowLeft"){e.preventDefault();tourGo(-1)}}
+function tourGo(d){const T=S.tour;if(!T)return;const n=T.i+d;if(n<0)return;if(n>=T.steps.length){const s=T.steps[T.i];endTour();if(s.go)setTimeout(()=>{const b=$("#placeBtn");if(b)b.click()},50);return}T.i=n;tourShow()}
+function tourShow(){const T=S.tour;if(!T)return;const s=T.steps[T.i],root=T.root,bub=root.querySelector(".tour-bub"),spot=root.querySelector(".tour-spot"),arrow=root.querySelector(".tour-arrow");
+  $("#tourN").textContent=`${T.i+1} of ${T.steps.length}`;$("#tourT").textContent=s.t;$("#tourB").textContent=s.b;
+  const last=T.i===T.steps.length-1;$("#tourNext").textContent=last?(s.go||"Done"):"Next";$("#tourBack").hidden=T.i===0;$("#tourSkip").hidden=last;
+  const r=s.el?tourRect(s.el):null;root.classList.toggle("centre",!r);
+  const vw=innerWidth,vh=innerHeight,M=12,bw=Math.min(330,vw-2*M);bub.style.width=bw+"px";
+  if(!r){spot.hidden=true;bub.style.left=Math.round((vw-bw)/2)+"px";bub.style.top=Math.round(Math.max(M,(vh-bub.offsetHeight)/2))+"px";arrow.hidden=true}
+  else{const P=6;spot.hidden=false;Object.assign(spot.style,{left:(r.left-P)+"px",top:(r.top-P)+"px",width:(r.right-r.left+2*P)+"px",height:(r.bottom-r.top+2*P)+"px"});
+    const bh=bub.offsetHeight,cx=(r.left+r.right)/2,below=vh-r.bottom>bh+28||r.top<bh+28;
+    const left=Math.round(Math.min(vw-bw-M,Math.max(M,cx-bw/2)));const top=below?Math.round(Math.min(vh-bh-M,r.bottom+P+14)):Math.round(Math.max(M,r.top-P-14-bh));
+    bub.style.left=left+"px";bub.style.top=top+"px";arrow.hidden=false;arrow.className="tour-arrow "+(below?"up":"down");arrow.style.left=Math.round(Math.min(bw-22,Math.max(10,cx-left-8)))+"px"}
+  bub.focus({preventScroll:true})}
+function endTour(silent){const T=S.tour;if(T){T.root.remove();removeEventListener("resize",tourShow);removeEventListener("keydown",tourKeys,true);S.tour=null;
+  if(!silent){lsSet(tourKey(),1);try{T.prevFocus&&T.prevFocus.focus&&T.prevFocus.focus()}catch(e){}}}}
 /* v122: privacy and terms. Plain words, what is stored, who sees it, where it is. Opened by any [data-priv] button. */
 const PRIV_CONTACT="seahunter.app@gmail.com";
 function openPrivacy(){const d=$("#privDlg");if(!d)return;
@@ -2313,7 +2375,7 @@ async function onSession(session){
   $("#auth").hidden=true;renderProfBtn();start();
 }
 async function start(){
-  if(S.started)return;S.started=true;setTimeout(()=>{loadVotes().then(()=>{syncMfDot();renderFeed()}).catch(()=>{})},2500);
+  if(S.started)return;S.started=true;setTimeout(maybeTour,1800);setTimeout(()=>{loadVotes().then(()=>{syncMfDot();renderFeed()}).catch(()=>{})},2500);
   initLeaflet();
   await Promise.all([loadCharts(),loadSites(),loadAreas().catch(e=>showErr("areas: "+errMsg(e))),loadCatches().catch(()=>{}),loadReports().catch(()=>{})]);
   renderTabs();renderChart();renderPanel();
@@ -2769,7 +2831,7 @@ function renderMenu(){
   <input type="file" id="mGeoImp" accept=".geojson,.json,application/geo+json,application/json" style="margin-top:8px"><div id="mGeoMsg" class="small"></div></details>
   <div class="menu-sec" id="secFb"><h3>Feedback</h3><form class="f" id="mFb"><label for="mFbTx">What works, what is confusing, what is missing?</label><textarea id="mFbTx" rows="3" maxlength="4000" placeholder="Anything goes. It goes straight to the person who makes SeaHunter, who reads every message."></textarea><div style="margin-top:8px"><button class="btn primary">Send feedback</button></div><div id="mFbMsg" class="small" style="margin-top:6px" role="status"></div></form><div id="mFbList"></div></div>
   ${S.crew?`<div class="menu-sec" id="secCrew"><h3>Crew</h3>${admin?`<form class="f" id="mCrew"><label for="mCrewName">Crew name</label><input type="text" id="mCrewName" maxlength="60" value="${esc(S.crew.name||"")}"><label for="mCrewArea">Home area</label><select id="mCrewArea">${REGIONS.map(g=>`<option value="${g.id}"${g.id===S.crew.region?" selected":""}>${esc(g.name)}</option>`).join("")}</select><p class="small" style="margin:8px 0 0">The map opens ${S.crew.home_lat!=null?"at the crew's saved home view":"over the home area"}. To change it, move the map to where the crew dives, open this menu again and tap the button.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn primary">Save</button><button type="button" class="btn" id="mCrewHome">Use the current map view as home</button></div><div id="mCrewMsg" class="small" style="margin-top:6px"></div></form>`:`<p class="small" style="margin:0">You are in <b>${esc(S.crew.name||"")}</b>.</p>`}</div>`:""}
-  <p class="small mfoot">SeaHunter ${esc(String(APP_VERSION).split(" ")[0])}. Logged in as ${esc(S.user.email)}. <button type="button" class="linkbtn" data-priv>Privacy and terms</button></p><div class="err" id="mErr"></div>
+  <p class="small mfoot">SeaHunter ${esc(String(APP_VERSION).split(" ")[0])}. Logged in as ${esc(S.user.email)}. <button type="button" class="linkbtn" data-priv>Privacy and terms</button> <button type="button" class="linkbtn" id="mTour">Take the tour</button></p><div class="err" id="mErr"></div>
   <div class="formbtns"><button class="btn" id="mOut">Log out</button><button class="btn ghost" id="mClose">Close</button></div>`;
   $("#mClose").onclick=()=>mdlg.close();
   /* v126: menu order: crew, members, feedback, then the rest */
@@ -2780,6 +2842,7 @@ function renderMenu(){
     if(!o||!n||o.toLowerCase()===n.toLowerCase()){$("#mErr").textContent="Choose two different names.";return}
     if(!confirm(`Move everything registered as "${o}" to "${n}"? "${o}" disappears from all lists. This can't be undone.`))return;
     const r=await mergeNames(o,n);if(r.err){$("#mErr").textContent=r.err;return}toast(r.n?`${r.n} ${r.n===1?"entry":"entries"} moved from ${o} to ${n}`:`Nothing was registered as ${o}`);renderMenu()};
+  {const mt=$("#mTour");if(mt)mt.onclick=()=>{mdlg.close();setTimeout(startTour,150)}}
   $("#mGpx").onclick=downloadGpx;
   /* v123: every name change and merge in the crew, for everyone to see */
   sb.from("name_log").select("*").order("at",{ascending:false}).limit(15).then(({data,error})=>{const el=$("#mNameLog");if(!el||error||!data||!data.length)return;
