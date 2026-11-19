@@ -1914,6 +1914,14 @@ details.mdet[open]>summary{margin-bottom:6px}
 .tour-arrow.down{bottom:-7px}
 @media (prefers-reduced-motion:reduce){.tour-spot,.tour-bub{transition:none}}
 
+/* v130: error reports for the owner, and admin buttons in the members list */
+.errdet{margin-top:14px}
+.errtx{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;word-break:break-word}
+.errst{margin:4px 0 0;padding:6px 8px;border-radius:6px;background:rgba(127,127,127,.12);font-size:11px;line-height:1.35;white-space:pre-wrap;word-break:break-all;max-height:6.5em;overflow:hidden}
+.errdet .linkbtn.danger{color:var(--danger);margin:8px 0 0;font-size:13px}
+.mrow .mbtns{display:flex;gap:4px;flex:none}
+.mrow .mbtns .btn{padding:5px 8px;font-size:13px}
+
 </style>
 </head>
 <body>
@@ -2031,7 +2039,7 @@ details.mdet[open]>summary{margin-bottom:6px}
 <script src="config.js"></script>
 <script>
 /* ================= SeaHunter (formerly Jaktkart and Dykkekart), Supabase version ================= */
-const APP_VERSION="v129 (Welcome tour)";
+const APP_VERSION="v130 (Ready for the pilot)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -2053,9 +2061,20 @@ window.addEventListener("online",()=>{setOffline(false);if(typeof loadSites==="f
 let installEvt=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installEvt=e});
 function isStandalone(){return (window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true}
 function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1)}
-function showErr(m){try{const b=document.getElementById("errBar");if(!b)return;b.hidden=false;b.innerHTML=`<button aria-label="Close" onclick="this.parentNode.hidden=true">×</button>Something went wrong: ${String(m).replace(/[<>&]/g,"")}. Take a screenshot and send it to Claude.`}catch(e){}}
-window.addEventListener("error",e=>showErr(e.message+(e.lineno?` (line ${e.lineno})`:"")));
-window.addEventListener("unhandledrejection",e=>showErr(e.reason&&(e.reason.message||e.reason)||"unknown error"));
+function showErr(m){try{reportErr("shown",String(m));const b=document.getElementById("errBar");if(!b)return;b.hidden=false;b.innerHTML=`<button aria-label="Close" onclick="this.parentNode.hidden=true">×</button>Something went wrong: ${String(m).replace(/[<>&]/g,"")}. It has been reported, so you don't need to do anything. Reload the page if something looks wrong.`}catch(e){}}
+/* v130: automatic error reports. When something breaks, a short report goes to the owner of SeaHunter (error_reports, pilot.sql):
+   the message, where in the code, app version and browser. Never dive data, positions or the page address's #… part (it can hold login tokens).
+   At most 8 per page load, each message once; network trouble and browser-extension noise are left out. */
+const ERR_SEEN=new Set();let ERR_N=0;
+function reportErr(kind,msg,detail){try{msg=String(msg||"").trim().slice(0,1000);if(!msg||typeof sb==="undefined"||!sb||!S||!S.user)return;
+  if(/no internet connection|failed to fetch|load failed|networkerror|network request failed|resizeobserver loop|script error\.?$/i.test(msg))return;
+  if(/chrome-extension:|moz-extension:|safari-extension:/i.test(String(detail||"")))return;
+  const k=kind+"|"+msg;if(ERR_SEEN.has(k)||ERR_N>=8)return;ERR_SEEN.add(k);ERR_N++;
+  const row={kind,message:msg,detail:String(detail||"").slice(0,3000),app_version:String(APP_VERSION).slice(0,80),agent:(navigator.userAgent||"").slice(0,300),author_name:String((S.me&&S.me.name)||"").slice(0,80)};
+  sb.from("error_reports").insert(row).then(()=>{},()=>{})}catch(e){}}
+window.addEventListener("error",e=>{const st=(e.error&&e.error.stack)||(e.filename?`${e.filename}:${e.lineno}:${e.colno}`:"");if(/extension:/i.test(st))return;reportErr("error",e.message,st);showErrBar(e.message+(e.lineno?` (line ${e.lineno})`:""))});
+window.addEventListener("unhandledrejection",e=>{const r=e.reason,m=r&&(r.message||r.error_description||r)||"unknown error";reportErr("promise",String(m),r&&r.stack||"");showErrBar(m)});
+function showErrBar(m){try{const b=document.getElementById("errBar");if(!b)return;const t=String(m);if(/no internet connection|failed to fetch|load failed/i.test(t))return;b.hidden=false;b.innerHTML=`<button aria-label="Close" onclick="this.parentNode.hidden=true">×</button>Something went wrong: ${t.replace(/[<>&]/g,"")}. It has been reported, so you don't need to do anything. Reload the page if something looks wrong.`}catch(e){}}
 const CFG=window.DYKKEKART_CONFIG||{};
 const BUCKET="dykkekart";
 const DIRS=["N","NE","E","SE","S","SW","W","NW"];
@@ -2127,7 +2146,7 @@ function authScreen(kind,msg,pre){
     <form class="f" id="ncf"><label for="ncName">Crew name</label><input type="text" id="ncName" required maxlength="60" placeholder="E.g. Tromsø Spearos">
     <label for="ncMe">Your name</label><input type="text" id="ncMe" required maxlength="40">
     <label for="ncArea">Home area</label><select id="ncArea" required><option value="" disabled selected>Choose your area</option>${opts}</select>
-    <label for="ncCode">Crew code</label><input type="text" id="ncCode" required placeholder="JK-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false">
+    <label for="ncCode">Crew code</label><input type="text" id="ncCode" required placeholder="SH-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false">
     <div class="err" id="ncErr"></div><div style="margin-top:14px"><button class="btn primary" id="ncGo">Start the crew</button></div></form></details>
     <button class="btn" id="aOut" style="margin-top:14px">Log out</button><p class="aprv"><button type="button" class="linkbtn" data-priv>Privacy and terms</button></p>`;
     $("#aOut").onclick=()=>{sb.auth.signOut();clearLocalCopy()};
@@ -2152,8 +2171,8 @@ function authScreen(kind,msg,pre){
       $("#aOk").textContent=`If ${email} has an account, the link is on its way. It can take a few minutes, so check the spam folder too.`};
     $("#aEmail").focus();return}
   if(kind==="newpw"){b.innerHTML=`${logo}<h1>Choose a new password</h1><p>${pre?`For <b>${esc(pre)}</b>.`:"For your SeaHunter account."}</p>
-    <form class="f" id="pf"><label for="aPw">New password (at least 6 characters)</label><input type="password" id="aPw" autocomplete="new-password" required minlength="6">
-    <label for="aPw2">The same password again</label><input type="password" id="aPw2" autocomplete="new-password" required minlength="6">
+    <form class="f" id="pf"><label for="aPw">New password (at least 8 characters)</label><input type="password" id="aPw" autocomplete="new-password" required minlength="8">
+    <label for="aPw2">The same password again</label><input type="password" id="aPw2" autocomplete="new-password" required minlength="8">
     <div class="err" id="aErr" role="alert">${esc(msg||"")}</div><div style="margin-top:14px"><button class="btn primary" id="aGo">Save the password</button></div></form>`;
     $("#pf").onsubmit=async e=>{e.preventDefault();const pw=$("#aPw").value;$("#aErr").textContent="";
       if(pw!==$("#aPw2").value){$("#aErr").textContent="The two passwords are not the same.";return}
@@ -2162,9 +2181,9 @@ function authScreen(kind,msg,pre){
       S.recovery=false;const {data}=await sb.auth.getSession();onSession(data.session)};
     $("#aPw").focus();return}
   const signup=kind==="signup";
-  b.innerHTML=`${logo}<h1>${signup?"Create account":"Log in"}</h1><p>${signup?"Use the e-mail you were invited with.":"SeaHunter – spearfishing for you and your crew."}</p>
+  b.innerHTML=`${logo}<h1>${signup?"Create account":"Log in"}</h1><p>${signup?"Use the e-mail you were invited with. Starting a new crew? Then any e-mail works.":"SeaHunter – spearfishing for you and your crew."}</p>
   <form class="f" id="af"><label for="aEmail">E-mail</label><input type="text" id="aEmail" inputmode="email" autocomplete="email" required>
-  <label for="aPw">Password${signup?" (at least 6 characters)":""}</label><input type="password" id="aPw" autocomplete="${signup?"new-password":"current-password"}" required minlength="6">
+  <label for="aPw">Password${signup?" (at least 8 characters)":""}</label><input type="password" id="aPw" autocomplete="${signup?"new-password":"current-password"}" required minlength="${signup?8:6}">
   <div class="err" id="aErr" role="alert">${esc(msg||"")}</div><div class="aok" id="aOk" role="status"></div><div style="margin-top:14px"><button class="btn primary" id="aGo">${signup?"Create account":"Log in"}</button></div></form>
   <div class="alinks"><button class="linkbtn" id="aSwitch">${signup?"Have an account? Log in":"First time? Create an account"}</button>${signup?"":`<button class="linkbtn" id="aForgot">Forgot password?</button>`}</div>
   <p class="aprv">${signup?"By creating an account you accept the ":""}<button type="button" class="linkbtn" data-priv>${signup?"privacy and terms":"Privacy and terms"}</button>${signup?".":""}</p>`;
@@ -2336,6 +2355,14 @@ function openPrivacy(){const d=$("#privDlg");if(!d)return;
   <div class="formbtns"><button type="button" class="btn primary" id="privClose">Close</button></div></div>`;
   $("#privClose").onclick=()=>d.close();d.showModal();d.scrollTop=0;$("#privClose").blur();d.focus()}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-priv]");if(b){e.preventDefault();openPrivacy()}});
+/* v130: error reports from all crews, for the owner only */
+function loadErrList(){const el=$("#mErrList");if(!el)return;
+  sb.from("error_reports").select("*",{count:"exact"}).order("created_at",{ascending:false}).limit(25).then(({data,error,count})=>{
+    if(!$("#mErrList"))return;if(error||!data||!data.length){el.innerHTML="";return}const n=count||data.length;
+    el.innerHTML=`<details class="mdet errdet"><summary>Error reports from the app (${n})</summary><p class="small" style="margin:0 0 6px">Sent by the app by itself when something breaks. Only you see them.</p>`
+      +data.map(r=>`<div class="fbrow"><div class="small"><b>${esc(r.author_name||"Someone")}</b> · ${esc(ago(r.created_at))} · ${esc(String(r.app_version||"").split(" ")[0])} · ${esc(/iPhone|iPad/.test(r.agent)?"iPhone":/Android/.test(r.agent)?"Android":/Mac/.test(r.agent)?"Mac":/Windows/.test(r.agent)?"Windows":"other")}</div><div class="fbtx errtx">${esc(r.message)}</div>${r.detail?`<pre class="errst">${esc(String(r.detail).split("\n").slice(0,4).join("\n"))}</pre>`:""}</div>`).join("")
+      +`<button type="button" class="linkbtn danger" id="errAll">Delete all error reports</button></details>`;
+    $("#errAll").onclick=async()=>{if(!confirm(`Delete all ${n} error reports?`))return;const {error}=await sb.from("error_reports").delete().gt("id",0);if(!error)loadErrList()}}).catch(()=>{})}
 /* v124: feedback from all crews, for the owner only: newest first, each can be deleted, or all at once */
 function loadFbList(){const el=$("#mFbList");if(!el)return;
   sb.from("feedback").select("*",{count:"exact"}).order("created_at",{ascending:false}).limit(30).then(({data,error,count})=>{
@@ -2819,7 +2846,7 @@ function renderMenu(){
   const admin=S.me.role==="admin";
   $("#menuBody").innerHTML=`<button type="button" class="dlgx" aria-label="Close the menu">✕</button><h2>Menu</h2>
   <div class="menu-sec fg-menu mobonly" id="secGame"><h3>SeaHunt</h3><p class="small" style="margin:0 0 8px">A small freediving game: swim from the kelp forest to the sandy bottom and look for fish. Four levels.${typeof fgBestTxt==="function"&&fgBestTxt()?` Records: <b>${esc(fgBestTxt())}</b>.`:""}</p><button class="btn primary" id="mGame">Play</button></div>
-  <div class="menu-sec" id="secMembers"><h3>Members</h3>${S.members.map(m=>`<div class="mrow"><button type="button" class="mwho" data-prof="${esc(m.name||"")}"${m.name?"":" disabled"}>${avatarHTML(m,36)}<span>${esc(m.name||"Invited, hasn't signed up yet")}<small>${esc(m.email)}${m.role==="admin"?", admin":""}</small></span></button>${admin&&m.email.toLowerCase()!==S.user.email.toLowerCase()?`<button class="btn ghost danger" data-rm="${esc(m.email)}">Remove</button>`:""}</div>`).join("")}
+  <div class="menu-sec" id="secMembers"><h3>Members</h3>${S.members.map(m=>`<div class="mrow"><button type="button" class="mwho" data-prof="${esc(m.name||"")}"${m.name?"":" disabled"}>${avatarHTML(m,36)}<span>${esc(m.name||"Invited, hasn't signed up yet")}<small>${esc(m.email)}${m.role==="admin"?", admin":""}</small></span></button>${admin&&m.email.toLowerCase()!==S.user.email.toLowerCase()?`<span class="mbtns"><button class="btn ghost" data-role="${esc(m.email)}" data-to="${m.role==="admin"?"member":"admin"}">${m.role==="admin"?"Remove admin":"Make admin"}</button><button class="btn ghost danger" data-rm="${esc(m.email)}">Remove</button></span>`:""}</div>`).join("")}
   ${admin?`<form class="f" id="mAdd"><label for="mEmail">Invite a dive buddy (e-mail)</label><div style="display:flex;gap:8px"><input type="text" id="mEmail" inputmode="email" required placeholder="buddy@email.com"><button class="btn primary">Add</button></div></form>
   <p class="small">Then send them the link to this page: <b>${esc(location.origin+location.pathname)}</b>. They tap “First time? Create an account” and use the e-mail you added.</p><details class="mdet"><summary>Admin tools: merge two names</summary><form class="f" id="mMerge" style="margin-top:8px"><label for="mMgOld">Merge two names</label><p class="small" style="margin:0 0 6px">For a name typed in two ways, or the old name of someone who changed it. Everything under the old name moves to the new name. A name that a member uses now can't be merged, and what one person has logged can never be moved to someone else. Every merge is listed for the whole crew below.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="mMgOld" list="mMgList" required placeholder="Old name" style="flex:1;min-width:130px"><input type="text" id="mMgNew" list="mMgList" required placeholder="New name" style="flex:1;min-width:130px"><button class="btn">Merge</button></div><datalist id="mMgList">${allNamesSeen().map(x=>`<option value="${esc(x)}">`).join("")}</datalist></form></details>`:""}<div id="mNameLog" class="namelog"></div></div>
   <div class="menu-sec mobonly" id="secChart"><h3>Charts</h3><p class="small" style="margin:0 0 8px">Add your own chart image (screenshot or QGIS export) as an extra tab.</p><button class="btn" id="mChart">New chart</button></div>
@@ -2829,7 +2856,7 @@ function renderMenu(){
   <label for="mGeoKind" style="display:block;margin:14px 0 3px" class="small">Import areas, lines and markers (EPSG:4326). Type for objects without a type:</label>
   <select id="mGeoKind" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)">${AREA_ORDER.map(k=>`<optgroup label="${AREA_TYPES[k].name}">${Object.entries(AREA_TYPES[k].vals).filter(([v,x])=>!x[3]).map(([v,x])=>`<option value="${k}:${v}">${x[0]}</option>`).join("")}</optgroup>`).join("")}</select>
   <input type="file" id="mGeoImp" accept=".geojson,.json,application/geo+json,application/json" style="margin-top:8px"><div id="mGeoMsg" class="small"></div></details>
-  <div class="menu-sec" id="secFb"><h3>Feedback</h3><form class="f" id="mFb"><label for="mFbTx">What works, what is confusing, what is missing?</label><textarea id="mFbTx" rows="3" maxlength="4000" placeholder="Anything goes. It goes straight to the person who makes SeaHunter, who reads every message."></textarea><div style="margin-top:8px"><button class="btn primary">Send feedback</button></div><div id="mFbMsg" class="small" style="margin-top:6px" role="status"></div></form><div id="mFbList"></div></div>
+  <div class="menu-sec" id="secFb"><h3>Feedback</h3><form class="f" id="mFb"><label for="mFbTx">What works, what is confusing, what is missing?</label><textarea id="mFbTx" rows="3" maxlength="4000" placeholder="Anything goes. It goes straight to the person who makes SeaHunter, who reads every message."></textarea><div style="margin-top:8px"><button class="btn primary">Send feedback</button></div><div id="mFbMsg" class="small" style="margin-top:6px" role="status"></div></form><div id="mFbList"></div><div id="mErrList"></div></div>
   ${S.crew?`<div class="menu-sec" id="secCrew"><h3>Crew</h3>${admin?`<form class="f" id="mCrew"><label for="mCrewName">Crew name</label><input type="text" id="mCrewName" maxlength="60" value="${esc(S.crew.name||"")}"><label for="mCrewArea">Home area</label><select id="mCrewArea">${REGIONS.map(g=>`<option value="${g.id}"${g.id===S.crew.region?" selected":""}>${esc(g.name)}</option>`).join("")}</select><p class="small" style="margin:8px 0 0">The map opens ${S.crew.home_lat!=null?"at the crew's saved home view":"over the home area"}. To change it, move the map to where the crew dives, open this menu again and tap the button.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn primary">Save</button><button type="button" class="btn" id="mCrewHome">Use the current map view as home</button></div><div id="mCrewMsg" class="small" style="margin-top:6px"></div></form>`:`<p class="small" style="margin:0">You are in <b>${esc(S.crew.name||"")}</b>.</p>`}</div>`:""}
   <p class="small mfoot">SeaHunter ${esc(String(APP_VERSION).split(" ")[0])}. Logged in as ${esc(S.user.email)}. <button type="button" class="linkbtn" data-priv>Privacy and terms</button> <button type="button" class="linkbtn" id="mTour">Take the tour</button></p><div class="err" id="mErr"></div>
   <div class="formbtns"><button class="btn" id="mOut">Log out</button><button class="btn ghost" id="mClose">Close</button></div>`;
@@ -2842,6 +2869,7 @@ function renderMenu(){
     if(!o||!n||o.toLowerCase()===n.toLowerCase()){$("#mErr").textContent="Choose two different names.";return}
     if(!confirm(`Move everything registered as "${o}" to "${n}"? "${o}" disappears from all lists. This can't be undone.`))return;
     const r=await mergeNames(o,n);if(r.err){$("#mErr").textContent=r.err;return}toast(r.n?`${r.n} ${r.n===1?"entry":"entries"} moved from ${o} to ${n}`:`Nothing was registered as ${o}`);renderMenu()};
+  loadErrList();
   {const mt=$("#mTour");if(mt)mt.onclick=()=>{mdlg.close();setTimeout(startTour,150)}}
   $("#mGpx").onclick=downloadGpx;
   /* v123: every name change and merge in the crew, for everyone to see */
@@ -2861,6 +2889,11 @@ $("#mChart").onclick=()=>{mdlg.close();openChartDlg(null)};
   if(admin){
     $("#mAdd").onsubmit=async e=>{e.preventDefault();const em=$("#mEmail").value.trim().toLowerCase();if(!em.includes("@")){$("#mErr").textContent="Enter a valid e-mail.";return}
       const {error}=await sb.from("members").insert({email:em});if(error)$("#mErr").textContent=error.code==="23505"?"That e-mail is already a member, of this crew or another one.":errMsg(error);else{await loadMembers();renderMenu()}};
+    $("#menuBody").querySelectorAll("[data-role]").forEach(b=>b.onclick=async()=>{const to=b.dataset.to,em=b.dataset.role;
+      if(!confirm(to==="admin"?`Make ${em} an admin? Admins can invite and remove members, change the crew's name and home area, and merge names.`:`Make ${em} a normal member again?`))return;
+      b.disabled=true;const {error}=await sb.rpc("set_member_role",{member_email:em,new_role:to});b.disabled=false;
+      if(error){$("#mErr").textContent=/set_member_role|schema cache|Could not find/i.test(error.message||"")?"This isn't switched on yet: the owner of SeaHunter needs to run pilot.sql once.":(error.message||errMsg(error));return}
+      await loadMembers();syncMe();renderMenu();toast(to==="admin"?"Now an admin":"Now a member")});
     $("#menuBody").querySelectorAll("[data-rm]").forEach(b=>b.onclick=async()=>{if(!confirm(`Remove ${b.dataset.rm} from the map?`))return;const {error}=await sb.from("members").delete().eq("email",b.dataset.rm);if(error)$("#mErr").textContent=errMsg(error);else{await loadMembers();renderMenu()}});
     const cf=$("#mCrew");if(cf){
       cf.onsubmit=async e=>{e.preventDefault();const row={name:$("#mCrewName").value.trim()||S.crew.name,region:$("#mCrewArea").value};
