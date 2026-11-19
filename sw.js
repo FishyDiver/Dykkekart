@@ -1,5 +1,5 @@
-/* Jaktkart (formerly Dykkekart) service worker: keeps the app on the phone and caches map tiles you have viewed. */
-const V = "dk-app-v8";
+/* SeaHunter (formerly Jaktkart and Dykkekart) service worker: keeps the app on the phone and caches map tiles you have viewed. */
+const V = "dk-app-v9";
 const TILES = "dk-tiles-2", TILE_MAX = 2500; // new name: drops tiles cached by older versions (some were error responses)
 const SHELL = ["./", "./index.html", "./config.js", "./manifest.webmanifest", "./icon-192.png?v=53", "./icon-512.png?v=53", "./favicon.png?v=53"];
 

@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Jaktkart</title>
+<title>SeaHunter</title>
 <link rel="icon" type="image/png" href="favicon.png?v=53">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0D252E">
 <link rel="apple-touch-icon" href="icon-180.png?v=53">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Jaktkart">
+<meta name="apple-mobile-web-app-title" content="SeaHunter">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Source+Serif+4:wght@400;600&family=Young+Serif&display=swap" rel="stylesheet">
@@ -1791,6 +1791,9 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 .feed.act .arow .aico.aarea{background:color-mix(in oklab,var(--ac) 38%,transparent);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--ac) 70%,transparent)}
 .feed.act .arow.amember{cursor:default}
 
+/* v119: the game is SeaHunt; small subtitle on its title screen */
+.fg-tagline{font:500 13px Barlow,sans-serif;letter-spacing:0;text-transform:none;color:#9fc3e0;margin-left:.5em;vertical-align:middle;white-space:nowrap}
+
 </style>
 </head>
 <body>
@@ -1799,14 +1802,14 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <header class="top">
   <div class="brand">
     <svg class="jk-logo" width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><clipPath id="jkH"><circle cx="32" cy="32" r="24"/></clipPath><circle cx="32" cy="32" r="24" fill="#123a5e"/><g clip-path="url(#jkH)"><path d="M4 33 C12 29 18 37 26 33 S40 29 48 33 S58 37 62 33 V62 H4Z" fill="#4fd0d6"/><g transform="translate(16,35) scale(.27)"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="#F1E6C8"/><circle cx="22" cy="34" r="5" fill="#1ea5ae"/></g></g><circle cx="32" cy="32" r="24" fill="none" stroke="#F1E6C8" stroke-width="3.6"/><path d="M32 2v9M32 53v9M2 32h9M53 32h9" stroke="#F1E6C8" stroke-width="3.6" stroke-linecap="round"/></svg>
-    <h1>Jaktkart</h1><span class="ver"></span>
+    <h1>SeaHunter</h1><span class="ver"></span>
   </div>
   <button id="recHdr" class="hdrbtn" type="button" aria-pressed="false" title="Records"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1 -10 0v-8"/><path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg><span>Records</span></button>
   <button id="statHdr" class="hdrbtn statbtn" type="button" aria-pressed="false" title="Stats: fish, sizes, visibility and temperature"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M6 21V11"/><path d="M11 21V4"/><path d="M16 21v-7"/><path d="M21 21V8"/></svg><span>Stats</span></button>
   <button id="dexHdr" class="hdrbtn dexbtn" type="button" title="Species dex – species bingo for the crew"><svg width="20" height="14" viewBox="0 0 120 72" aria-hidden="true"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="currentColor"/><circle cx="21" cy="34" r="4.5" fill="var(--dexbtn-bg,#0b2440)"/></svg><span>Dex</span><b class="dexcnt" id="dexHdrCnt"></b></button>
   <button id="seaHdr" class="hdrbtn seabtn" type="button" title="Season calendar: when are the species here?"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span>Season<span class="kal"> calendar</span></span></button>
   <button id="mndHdr" class="hdrbtn mndbtn" type="button" title="Catch of the month: vote and disciplines"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg><span>Monthly<span class="mf-l"> catch</span></span><b class="mnddot" id="mndDot" hidden></b></button>
-  <button id="gameHdr" class="hdrbtn gamebtn" type="button" title="SeaHunter – the freediving game"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="currentColor" stroke="none"/><path d="M8.4 12.1L6.2 10.2v3.8z" fill="currentColor" stroke="none"/></svg><span>SeaHunter</span></button>
+  <button id="gameHdr" class="hdrbtn gamebtn" type="button" title="SeaHunt – the SeaHunter freediving game"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="currentColor" stroke="none"/><path d="M8.4 12.1L6.2 10.2v3.8z" fill="currentColor" stroke="none"/></svg><span>SeaHunt</span></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">New chart</button>
   <button id="actBtn" class="hdrbtn actbtn" type="button" aria-haspopup="true" aria-expanded="false" title="Latest activity in the crew"><svg class="act-bell" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="act-l">Activity</span><b class="actcnt" id="actCnt" hidden></b></button>
@@ -1894,7 +1897,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <div id="newSp" class="newsp" hidden role="status"></div>
 <dialog id="imgDlg" class="imgdlg"><div class="lbwrap"><img id="imgBig" alt=""><button type="button" class="lbnav lbprev" id="lbPrev" aria-label="Previous image">‹</button><button type="button" class="lbnav lbnext" id="lbNext" aria-label="Next image">›</button></div><div class="lbfoot"><p id="imgCap" class="small"></p><span class="lbcount" id="lbCount"></span><form method="dialog"><button class="btn">Close</button></form></div></dialog>
 <dialog id="menuDlg"><div id="menuBody"></div></dialog>
-<dialog id="gameDlg" class="gamedlg" aria-label="SeaHunter"><canvas id="fgCv"></canvas><div id="fgOv" class="fg-ov"></div><button type="button" class="fg-x fg-snd" id="fgSnd" aria-label="Sound on/off"></button><button type="button" class="fg-x fg-fs" id="fgFs" aria-label="Fullskjerm" title="Fullskjerm">⛶</button><button type="button" class="fg-x" id="fgX" aria-label="Close the game">✕</button></dialog>
+<dialog id="gameDlg" class="gamedlg" aria-label="SeaHunt"><canvas id="fgCv"></canvas><div id="fgOv" class="fg-ov"></div><button type="button" class="fg-x fg-snd" id="fgSnd" aria-label="Sound on/off"></button><button type="button" class="fg-x fg-fs" id="fgFs" aria-label="Fullskjerm" title="Fullskjerm">⛶</button><button type="button" class="fg-x" id="fgX" aria-label="Close the game">✕</button></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
@@ -1902,8 +1905,8 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script>
-/* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v117 (All activity)";
+/* ================= SeaHunter (formerly Jaktkart and Dykkekart), Supabase version ================= */
+const APP_VERSION="v119 (SeaHunt)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -1991,11 +1994,11 @@ function chartCorners(c){const g=c.geo;return[[0,0],[1,0],[1,1],[0,1]].map(([a,b
 /* ---------- auth ---------- */
 function authScreen(kind,msg){
   const a=$("#auth"),b=$("#authBox");a.hidden=false;
-  const logo=`<div class="jk-brandrow"><svg class="jk-logo" width="40" height="40" viewBox="0 0 64 64" aria-hidden="true"><clipPath id="jkA"><circle cx="32" cy="32" r="24"/></clipPath><circle cx="32" cy="32" r="24" fill="#123a5e"/><g clip-path="url(#jkA)"><path d="M4 33 C12 29 18 37 26 33 S40 29 48 33 S58 37 62 33 V62 H4Z" fill="#4fd0d6"/><g transform="translate(16,35) scale(.27)"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="#F1E6C8"/><circle cx="22" cy="34" r="5" fill="#1ea5ae"/></g></g><circle cx="32" cy="32" r="24" fill="none" stroke="#F1E6C8" stroke-width="3.6"/><path d="M32 2v9M32 53v9M2 32h9M53 32h9" stroke="#F1E6C8" stroke-width="3.6" stroke-linecap="round"/></svg><b>Jaktkart</b></div>`;
+  const logo=`<div class="jk-brandrow"><svg class="jk-logo" width="40" height="40" viewBox="0 0 64 64" aria-hidden="true"><clipPath id="jkA"><circle cx="32" cy="32" r="24"/></clipPath><circle cx="32" cy="32" r="24" fill="#123a5e"/><g clip-path="url(#jkA)"><path d="M4 33 C12 29 18 37 26 33 S40 29 48 33 S58 37 62 33 V62 H4Z" fill="#4fd0d6"/><g transform="translate(16,35) scale(.27)"><path d="M9,38 C13,26 30,20 50,20 C70,20 86,26 97,33 L112,23 C110,30 109,34 109,38 C109,42 110,46 112,53 L97,43 C86,51 70,56 50,56 C30,56 13,50 9,38 Z" fill="#F1E6C8"/><circle cx="22" cy="34" r="5" fill="#1ea5ae"/></g></g><circle cx="32" cy="32" r="24" fill="none" stroke="#F1E6C8" stroke-width="3.6"/><path d="M32 2v9M32 53v9M2 32h9M53 32h9" stroke="#F1E6C8" stroke-width="3.6" stroke-linecap="round"/></svg><b>SeaHunter</b></div>`;
   if(kind==="config"){b.innerHTML=`${logo}<h1>Almost ready</h1><p>Fill in the Supabase address and key in <b>config.js</b>, and reload the page.</p>`;return}
   if(kind==="notmember"){const opts=REGIONS.map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join("");
-    b.innerHTML=`${logo}<h1>Not in a crew yet</h1><p>You are logged in as <b>${esc(S.user.email)}</b>. If your crew already uses Jaktkart, ask the crew's admin to add this e-mail under Menu, Members.</p>
-    <details class="newcrew"><summary>Start a new crew</summary><p class="small">You need a crew code from Jaktkart. You become the crew's admin and add the others afterwards.</p>
+    b.innerHTML=`${logo}<h1>Not in a crew yet</h1><p>You are logged in as <b>${esc(S.user.email)}</b>. If your crew already uses SeaHunter, ask the crew's admin to add this e-mail under Menu, Members.</p>
+    <details class="newcrew"><summary>Start a new crew</summary><p class="small">You need a crew code from SeaHunter. You become the crew's admin and add the others afterwards.</p>
     <form class="f" id="ncf"><label for="ncName">Crew name</label><input type="text" id="ncName" required maxlength="60" placeholder="E.g. Tromsø Spearos">
     <label for="ncMe">Your name</label><input type="text" id="ncMe" required maxlength="40">
     <label for="ncArea">Home area</label><select id="ncArea" required><option value="" disabled selected>Choose your area</option>${opts}</select>
@@ -2012,7 +2015,7 @@ function authScreen(kind,msg){
   if(kind==="name"){b.innerHTML=`${logo}<h1>What's your name?</h1><p>The name is shown on the dives you log.</p><form class="f" id="nf"><label for="aName">Name</label><input type="text" id="aName" required><div class="err" id="aErr"></div><div style="margin-top:14px"><button class="btn primary">Continue</button></div></form>`;
     $("#nf").onsubmit=async e=>{e.preventDefault();const n=$("#aName").value.trim();const {error}=await sb.from("members").update({name:n}).eq("email",S.me.email);if(error){$("#aErr").textContent=errMsg(error);return}S.me.name=n;a.hidden=true;start()};$("#aName").focus();return}
   const signup=kind==="signup";
-  b.innerHTML=`${logo}<h1>${signup?"Create account":"Log in"}</h1><p>${signup?"Use the e-mail you were invited with.":"Jaktkart – spearfishing for you and your buddies."}</p>
+  b.innerHTML=`${logo}<h1>${signup?"Create account":"Log in"}</h1><p>${signup?"Use the e-mail you were invited with.":"SeaHunter – spearfishing for you and your crew."}</p>
   <form class="f" id="af"><label for="aEmail">E-mail</label><input type="text" id="aEmail" inputmode="email" autocomplete="email" required>
   <label for="aPw">Password${signup?" (at least 6 characters)":""}</label><input type="password" id="aPw" autocomplete="${signup?"new-password":"current-password"}" required minlength="6">
   <div class="err" id="aErr">${esc(msg||"")}</div><div style="margin-top:14px"><button class="btn primary" id="aGo">${signup?"Create account":"Log in"}</button></div></form>
@@ -2487,13 +2490,13 @@ function renderMenu(){
   const admin=S.me.role==="admin";
   $("#menuBody").innerHTML=`<h2>Menu</h2><p class="small" style="margin:0">Version ${APP_VERSION}</p><p>Logged in as <b>${esc(S.me.name)}</b> (${esc(S.user.email)})</p>
   <div class="menu-sec"><h3>Your dive year</h3><p class="small" style="margin:0 0 8px">Look back at your dives, catches and best moments this year, and replay the year on the map.</p><button class="btn primary" id="mYear">Open your dive year</button></div>
-  <div class="menu-sec fg-menu"><h3>SeaHunter</h3><p class="small" style="margin:0 0 8px">A small freediving game: swim from the kelp forest to the sandy bottom and look for fish. Four levels.${typeof fgBestTxt==="function"&&fgBestTxt()?` Records: <b>${esc(fgBestTxt())}</b>.`:""}</p><button class="btn primary" id="mGame">Play</button></div>
+  <div class="menu-sec fg-menu"><h3>SeaHunt</h3><p class="small" style="margin:0 0 8px">A small freediving game: swim from the kelp forest to the sandy bottom and look for fish. Four levels.${typeof fgBestTxt==="function"&&fgBestTxt()?` Records: <b>${esc(fgBestTxt())}</b>.`:""}</p><button class="btn primary" id="mGame">Play</button></div>
   <div class="menu-sec"><h3>Your name</h3><form class="f" id="mName" style="display:flex;gap:8px"><input type="text" id="mNameIn" value="${esc(S.me.name)}" required><button class="btn">Save</button></form><p class="small" style="margin:6px 0 0">If you change it, your dives, catches, votes and game scores move to the new name, and the old name disappears.</p></div>
   <div class="menu-sec"><h3>Members</h3>${S.members.map(m=>`<div class="mrow"><span>${esc(m.name||"(no name)")}<br><small>${esc(m.email)}${m.role==="admin"?", administrator":""}</small></span>${admin&&m.email.toLowerCase()!==S.user.email.toLowerCase()?`<button class="btn ghost danger" data-rm="${esc(m.email)}">Remove</button>`:""}</div>`).join("")}
   ${admin?`<form class="f" id="mAdd"><label for="mEmail">Invite a dive buddy (e-mail)</label><div style="display:flex;gap:8px"><input type="text" id="mEmail" inputmode="email" required placeholder="buddy@email.com"><button class="btn primary">Add</button></div></form>
   <p class="small">Then send them the link to this page: <b>${esc(location.origin+location.pathname)}</b>. They tap “First time? Create an account” and use the e-mail you added.</p><form class="f" id="mMerge" style="margin-top:14px"><label for="mMgOld">Merge two names</label><p class="small" style="margin:0 0 6px">For someone who changed their name, or a name typed in two ways. Everything under the old name (dives, dive buddies, catches, “caught by”, visibility, votes, game scores) moves to the new name, and the old name disappears.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="mMgOld" list="mMgList" required placeholder="Old name" style="flex:1;min-width:130px"><input type="text" id="mMgNew" list="mMgList" required placeholder="New name" style="flex:1;min-width:130px"><button class="btn">Merge</button></div><datalist id="mMgList">${allNamesSeen().map(x=>`<option value="${esc(x)}">`).join("")}</datalist></form>`:""}</div>
   <div class="menu-sec"><h3>Charts</h3><p class="small" style="margin:0 0 8px">Add your own chart image (screenshot or QGIS export) as an extra tab.</p><button class="btn" id="mChart">New chart</button></div>
-  <div class="menu-sec"><h3>App</h3>${isStandalone()?`<p class="small" style="margin:0">You are using the app version.</p>`:installEvt?`<p class="small" style="margin:0 0 8px">Add Jaktkart to the home screen as an app.</p><button class="btn primary" id="mInstall">Install app</button>`:isIOS()?`<p class="small" style="margin:0">iPhone: open the page in Safari, tap the Share button (square with an arrow up) and choose “Add to Home Screen”.</p>`:`<p class="small" style="margin:0">Android: open the page in Chrome, tap ⋮ and choose “Install app” or “Add to Home screen”.</p>`}<p class="small" style="margin:8px 0 0">Sea-creature silhouettes in the wooden bands: <a href="https://www.phylopic.org" target="_blank" rel="noopener">PhyloPic</a>, public domain. Plaice by Birgit Lang, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a>. Dragon prows: “Drakkar dragon” by Delapouite, <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a>.</p></div>
+  <div class="menu-sec"><h3>App</h3>${isStandalone()?`<p class="small" style="margin:0">You are using the app version.</p>`:installEvt?`<p class="small" style="margin:0 0 8px">Add SeaHunter to the home screen as an app.</p><button class="btn primary" id="mInstall">Install app</button>`:isIOS()?`<p class="small" style="margin:0">iPhone: open the page in Safari, tap the Share button (square with an arrow up) and choose “Add to Home Screen”.</p>`:`<p class="small" style="margin:0">Android: open the page in Chrome, tap ⋮ and choose “Install app” or “Add to Home screen”.</p>`}<p class="small" style="margin:8px 0 0">Sea-creature silhouettes in the wooden bands: <a href="https://www.phylopic.org" target="_blank" rel="noopener">PhyloPic</a>, public domain. Plaice by Birgit Lang, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a>. Dragon prows: “Drakkar dragon” by Delapouite, <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a>.</p></div>
   <div class="menu-sec"><h3>Export</h3><p class="small" style="margin:0 0 8px">All sites with coordinates as GPX, for GPS, OsmAnd or Google Earth.</p><button class="btn" id="mGpx">Download GPX</button></div>
   <div class="menu-sec"><h3>GeoJSON (QGIS)</h3><p class="small" style="margin:0 0 8px">All dive sites and areas you can see, as GeoJSON.</p><button class="btn" id="mGeo">Download GeoJSON</button>
   <label for="mGeoKind" style="display:block;margin:14px 0 3px" class="small">Import areas, lines and markers (EPSG:4326). Type for objects without a type:</label>
@@ -2535,13 +2538,13 @@ function downloadGpx(){
   const x=v=>esc(v||"");const pts=allSites().filter(s=>s.lat!=null&&s.lon!=null);
   const body=pts.map(s=>{const d=[depthTxt(s)?`Depth ${depthTxt(s)}`:"",s.bottom&&`Bottom: ${s.bottom}`,s.tide&&`Tide/current: ${s.tide}`,s.wind?.length&&`Tolerates wind from: ${s.wind.join(", ")}`,s.hazards&&`Hazards: ${s.hazards}`,s.species&&`Species: ${s.species}`,s.notes].filter(Boolean).join("\n");
     return `  <wpt lat="${s.lat}" lon="${s.lon}"><name>${x(s.name)}</name><desc>${x(d)}</desc><sym>Scuba Flag</sym></wpt>`}).join("\n");
-  const gpx=`<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="Jaktkart" xmlns="http://www.topografix.com/GPX/1/1">\n${body}\n</gpx>\n`;
+  const gpx=`<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="SeaHunter" xmlns="http://www.topografix.com/GPX/1/1">\n${body}\n</gpx>\n`;
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([gpx],{type:"application/gpx+xml"}));a.download="dive-sites.gpx";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
 }
 async function importFile(file){
   const msg=$("#mImpMsg");const say=t=>{msg.textContent=t};
   try{
-    const d=JSON.parse(await file.text());if(!d||d.format!=="dykkekart-migrering")throw{message:"This is not a migration file from Jaktkart (Dykkekart)."};
+    const d=JSON.parse(await file.text());if(!d||d.format!=="dykkekart-migrering")throw{message:"This is not a migration file from SeaHunter (Dykkekart)."};
     const cmap={},smap={};let nc=0,ns=0,nl=0;
     for(const c of d.charts||[]){say(`Uploading chart “${c.name}”…`);
       const blob=await (await fetch(c.image)).blob();const f=new File([blob],"chart."+(blob.type.split("/")[1]||"jpg"),{type:blob.type});
@@ -2939,7 +2942,7 @@ function downloadGeoJSON(){
   for(const s of S.sites)if(s.lat!=null&&s.lon!=null)feats.push({type:"Feature",geometry:{type:"Point",coordinates:[s.lon,s.lat]},
     properties:{layer:"dive site",name:s.name,access:ACCESS[s.access]||s.access,min_depth:s.minDepth??null,max_depth:s.maxDepth,bottom:s.bottom,tide:s.tide,season:s.season,wind:(s.wind||[]).join(","),hazards:s.hazards,rules:s.rules,species:s.species,notes:s.notes,rating:s.rating,log_count:s.logCount,last_dive:s.lastDive,icon:s.icon,color:s.color,private:s._priv}});
   for(const a of S.areas)feats.push({type:"Feature",geometry:a.geom,properties:{layer:isPoint(a.geom)?"markor":"omrade",name:a.name,kind:a.kind,kind_name:AREA_TYPES[a.kind]?.name,value:a.value,value_name:areaLabel(a),color:colorOf(a),icon:a.icon,pattern:a.pattern,dash:a.dash,notes:a.notes,site:a.siteId?(getSite(a.siteId)?.name||""):"",private:a._priv}});
-  download("jaktkart.geojson",JSON.stringify({type:"FeatureCollection",features:feats},null,1),"application/geo+json");
+  download("seahunter.geojson",JSON.stringify({type:"FeatureCollection",features:feats},null,1),"application/geo+json");
 }
 async function importGeoJSON(file,fallback){
   const msg=$("#mGeoMsg");const say=t=>{msg.textContent=t};
@@ -4551,13 +4554,13 @@ function fjFeedItems(){const out=[],me=S.user&&S.user.id,cut=Date.now()-45*864e5
   const rows=[...(S.gameRows||[])].sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at)),best={},days={};
   for(const r of rows){if(r.mode==="day"){if(r.day&&r.day<today&&(!days[r.day]||r.score>days[r.day].score))days[r.day]=r;continue}
     const k=r.level+"|"+r.dives,prev=best[k];if(!prev||r.score>prev.score){const t=Date.parse(r.created_at);
-      if(prev&&t>cut){const mine=r.player===me,beatMe=prev.player===me&&!mine;out.push({kind:"game",mine,ct:t,t,when:ago(r.created_at),who:mine?"You":(r.player_name||"Someone"),verb:beatMe?"beat your SeaHunter record":"set a new SeaHunter record",
+      if(prev&&t>cut){const mine=r.player===me,beatMe=prev.player===me&&!mine;out.push({kind:"game",mine,ct:t,t,when:ago(r.created_at),who:mine?"You":(r.player_name||"Someone"),verb:beatMe?"beat your SeaHunt record":"set a new SeaHunt record",
         text:`${FJ_LV[r.level]?FJ_LV[r.level].name:r.level}, ${r.dives} dive${r.dives===1?"":"s"}: ${r.score} points${prev.player!==r.player?` (previous: ${prev.player===me?"you":(prev.player_name||"?")} with ${prev.score})`:""}`,lv:r.level,nd:r.dives,mode:"fri"})}
       best[k]=r}}
   for(const [day,r] of Object.entries(days)){const t=Date.parse(day+"T23:59:00");if(!(t>cut))continue;const mine=r.player===me;
-    out.push({kind:"game",mine,ct:t,t,when:fjDayTxt(day),who:mine?"You":(r.player_name||"Someone"),verb:"won the SeaHunter daily dive",text:`${r.score} points${r.best_species?` · biggest ${spn(String(r.best_species)).toLowerCase()} ${String(r.best_kg)} kg`:""}`,mode:"dag"})}
+    out.push({kind:"game",mine,ct:t,t,when:fjDayTxt(day),who:mine?"You":(r.player_name||"Someone"),verb:"won the SeaHunt daily dive",text:`${r.score} points${r.best_species?` · biggest ${spn(String(r.best_species)).toLowerCase()} ${String(r.best_kg)} kg`:""}`,mode:"dag"})}
   for(const p of S.gameProfiles||[])for(const [id,iso] of Object.entries(p.badges||{})){const t=Date.parse(iso),b=fjBadgeDef(id);if(!b||!(t>cut)||id==="blackout")continue;const mine=p.player===me;
-    out.push({kind:"game",mine,ct:t,t,when:ago(iso),who:mine?"You":(p.player_name||"Someone"),verb:"got the SeaHunter badge",text:`${b[1]}: ${b[2].toLocaleLowerCase("nb")}`,badge:true})}
+    out.push({kind:"game",mine,ct:t,t,when:ago(iso),who:mine?"You":(p.player_name||"Someone"),verb:"got the SeaHunt badge",text:`${b[1]}: ${b[2].toLocaleLowerCase("nb")}`,badge:true})}
   return out}
 async function fjFeedLoad(){if(typeof sb==="undefined"||!fjMe())return;
   try{const [a,b]=await Promise.all([sb.from("game_scores").select("*").order("created_at",{ascending:false}).limit(600),sb.from("game_profile").select("*")]);
@@ -4793,7 +4796,7 @@ function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
   const wireLv=()=>ov.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{FJ.lvl=b.dataset.lv;lsSet("dk-fj-lvl",FJ.lvl);fjOverlay()});
   const ctl=FJ.touch||(window.matchMedia&&matchMedia("(pointer:coarse)").matches)?"<b>Left thumb</b> swims (drag far to swim fast, drag down at the surface to duck-dive). <b>Tap</b> where you want to shoot.":"<b>WASD</b> swims, <b>Shift</b> swims fast, <b>S</b> at the surface does a duck-dive. Aim with the <b>mouse</b> or the <b>arrow keys</b>, shoot with <b>click</b> or <b>space</b>.";
   if(FJ.st==="title"){const day=fjDay(),dl=fjBoardList("normal",5,"today","dag"),lead=dl[0],mb=fjDayBest(),nb=Object.keys(FJP.badges).length,nd=Object.keys(FJP.dex).length,ns=Object.keys(FJ_SP).length;
-    ov.innerHTML=`<div class="fg-card fg-wide"><div class="fg-top"><h2 class="fg-title"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#38c6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="#38c6d4" stroke="none"/><path d="M8.4 12.1L6.2 10.2v3.8z" fill="#38c6d4" stroke="none"/></svg> SeaHunter</h2><span class="fg-shells" title="Shells: earned from points and badges, spent on gear"><svg class="fg-shell" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-5 0-9 4.2-9 9.5 0 2.6 1.2 4.6 3 5.8L8 21h8l2-2.7c1.8-1.2 3-3.2 3-5.8C21 7.2 17 3 12 3z"/><path d="M12 3v15M7.5 5.5L10 18M16.5 5.5L14 18M4 10.5l5.5 7.5M20 10.5l-5.5 7.5"/></svg> ${FJP.coins}</span></div><p class="fg-ctl">${ctl}</p>
+    ov.innerHTML=`<div class="fg-card fg-wide"><div class="fg-top"><h2 class="fg-title"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#38c6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="#38c6d4" stroke="none"/><path d="M8.4 12.1L6.2 10.2v3.8z" fill="#38c6d4" stroke="none"/></svg> SeaHunt <small class="fg-tagline">The SeaHunter game</small></h2><span class="fg-shells" title="Shells: earned from points and badges, spent on gear"><svg class="fg-shell" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-5 0-9 4.2-9 9.5 0 2.6 1.2 4.6 3 5.8L8 21h8l2-2.7c1.8-1.2 3-3.2 3-5.8C21 7.2 17 3 12 3z"/><path d="M12 3v15M7.5 5.5L10 18M16.5 5.5L14 18M4 10.5l5.5 7.5M20 10.5l-5.5 7.5"/></svg> ${FJP.coins}</span></div><p class="fg-ctl">${ctl}</p>
     <div class="fg-day"><div><b>Daily dive</b> <span>· ${esc(fjDayTxt(day))}</span><small>Same seabed and fish for everyone today · normal · 5 dives · standard gear</small>
       <small>${lead?`Leader: <b>${esc(lead.player_name||"?")}</b> with ${lead.score}`:"Nobody has done the daily dive yet"}${mb?` · your best today: <b>${mb}</b>`:""}</small></div>
       <button type="button" class="btn primary" id="fgDay">Play the daily dive</button></div>
@@ -4836,7 +4839,7 @@ function fjOverlay(){const ov=$("#fgOv");if(!ov)return;
       ${md==="dag"?chips("q","Day",[["today","Today"],["yday","Yesterday"]],per):chips("n","Level",Object.entries(FJ_LV).map(([k,v])=>[k,v.name]),lv)+chips("d","Dives",[[3,3],[5,5],[10,10]],nd)+chips("p","Period",[["all","All time"],["month","This month"]],per)}
       ${FJB.err&&!/updated/.test(FJB.err)?`<p class="fg-warn">${esc(FJB.err)}</p>`:!fjMe()?`<p class="fg-best">Log in to see the leaderboard.</p>`:FJB.rows==null||FJB.loading&&!FJB.rows.length?`<p class="fg-best">Fetching the leaderboard …</p>`:fjBoardRows(list,10)}
       ${FJB.err&&/updated/.test(FJB.err)?`<p class="fg-warn">${esc(FJB.err)}</p>`:""}
-      ${big.length?`<h3 class="fg-h3">Biggest fish in SeaHunter</h3><ol class="fg-board fg-big">${big.map((r,i)=>`<li><b class="r${i<3?i+1:""}">${i+1}</b><span>${esc(spn(r.best_species))} ${String(r.best_kg)} kg</span><em>${esc(r.player_name||"?")}</em><small>${r.mode==="dag"?"Daily dive":esc(FJ_LV[r.level]?FJ_LV[r.level].name:r.level)+", "+r.dives+" dives"} · ${new Date(r.created_at).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</small></li>`).join("")}</ol>`:""}
+      ${big.length?`<h3 class="fg-h3">Biggest fish in SeaHunt</h3><ol class="fg-board fg-big">${big.map((r,i)=>`<li><b class="r${i<3?i+1:""}">${i+1}</b><span>${esc(spn(r.best_species))} ${String(r.best_kg)} kg</span><em>${esc(r.player_name||"?")}</em><small>${r.mode==="dag"?"Daily dive":esc(FJ_LV[r.level]?FJ_LV[r.level].name:r.level)+", "+r.dives+" dives"} · ${new Date(r.created_at).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</small></li>`).join("")}</ol>`:""}
       <div class="fg-btns"><button type="button" class="btn primary" id="fgBack">Back</button></div></div>`;
     ov.querySelectorAll("[data-bm]").forEach(b=>b.onclick=()=>{FJB.mode=b.dataset.bm;fjOverlay()});ov.querySelectorAll("[data-bq]").forEach(b=>b.onclick=()=>{FJB.dper=b.dataset.bq;fjOverlay()});
     ov.querySelectorAll("[data-bn]").forEach(b=>b.onclick=()=>{FJB.lv=b.dataset.bn;fjOverlay()});ov.querySelectorAll("[data-bd]").forEach(b=>b.onclick=()=>{FJB.nd=+b.dataset.bd;fjOverlay()});ov.querySelectorAll("[data-bp]").forEach(b=>b.onclick=()=>{FJB.per=b.dataset.bp;fjOverlay()});
@@ -4887,7 +4890,7 @@ function toast(msg){let t=$("#toast");if(!t){t=document.createElement("div");t.i
 function shareURL(kind,id){return location.origin+location.pathname+"#"+kind+"="+id}
 async function shareLink(kind,id,title){
   const url=shareURL(kind,id);
-  try{if(navigator.share){await navigator.share({title:title+" – Jaktkart",text:title,url});return}}catch(e){if(e&&e.name==="AbortError")return}
+  try{if(navigator.share){await navigator.share({title:title+" – SeaHunter",text:title,url});return}}catch(e){if(e&&e.name==="AbortError")return}
   try{await navigator.clipboard.writeText(url);toast("Link copied. Paste it into Messenger or a message.")}catch(e){prompt("Copy the link:",url)}
 }
 function syncHash(){
