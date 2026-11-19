@@ -1787,6 +1787,10 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 #auth details.newcrew[open] summary{margin-bottom:6px}
 #auth details.newcrew select{width:100%;box-sizing:border-box;height:44.5px;background-color:rgb(13,34,56);border:1px solid rgba(159,195,224,.25);border-radius:10px;padding:10px 12px;color:rgb(227,237,244);font-size:15px}
 
+/* v117: activity rows for drawn areas and new members */
+.feed.act .arow .aico.aarea{background:color-mix(in oklab,var(--ac) 38%,transparent);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--ac) 70%,transparent)}
+.feed.act .arow.amember{cursor:default}
+
 </style>
 </head>
 <body>
@@ -1805,7 +1809,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
   <button id="gameHdr" class="hdrbtn gamebtn" type="button" title="SeaHunter – the freediving game"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="currentColor" stroke="none"/><path d="M8.4 12.1L6.2 10.2v3.8z" fill="currentColor" stroke="none"/></svg><span>SeaHunter</span></button>
   <nav id="tabs" aria-label="Kartblad"></nav>
   <button id="addChartBtn" class="btn">New chart</button>
-  <button id="actBtn" class="hdrbtn actbtn" type="button" aria-haspopup="true" aria-expanded="false" title="Latest activity: dives, logs and new sites"><svg class="act-bell" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="act-l">Activity</span><b class="actcnt" id="actCnt" hidden></b></button>
+  <button id="actBtn" class="hdrbtn actbtn" type="button" aria-haspopup="true" aria-expanded="false" title="Latest activity in the crew"><svg class="act-bell" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="act-l">Activity</span><b class="actcnt" id="actCnt" hidden></b></button>
   <button id="menuBtn" class="btn ghost" aria-label="Menu" title="Menu"><span class="mlab">Menu</span><svg class="mico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 <div class="actpop" id="actPop" hidden></div>
@@ -1899,7 +1903,7 @@ body.pageopen header.top{background-image:var(--fld-k),var(--fld-c),var(--fld-r)
 <script src="config.js"></script>
 <script>
 /* ================= Jaktkart, formerly Dykkekart (Supabase-versjon) ================= */
-const APP_VERSION="v116 (Satellite)";
+const APP_VERSION="v117 (All activity)";
 /* Species are stored under their Norwegian names in the database. spn() gives the English name for display; spKey() turns a typed English name back into the stored key. */
 const SP_EN={"Torsk":"Cod","Sei":"Saithe","Lyr":"Pollock","Hyse":"Haddock","Hvitting":"Whiting","Sypike":"Poor cod","Lysing":"Hake","Lange":"Ling","Brosme":"Tusk","Steinbit":"Wolffish","Flekksteinbit":"Spotted wolffish","Breiflabb":"Monkfish","Kveite":"Halibut","Rødspette":"Plaice","Skrubbe":"Flounder","Sandflyndre":"Dab","Lomre":"Lemon sole","Piggvar":"Turbot","Uer":"Redfish","Lusuer":"Norway redfish","Berggylt":"Ballan wrasse","Grønngylt":"Corkwing wrasse","Bergnebb":"Goldsinny wrasse","Rødnebb/blåstål":"Cuckoo wrasse","Makrell":"Mackerel","Sild":"Herring","Ulke":"Shorthorn sculpin","Rognkjeks":"Lumpsucker","Ålekvabbe":"Eelpout","Tangsprell":"Butterfish","Pigghå":"Spurdog","Laks":"Salmon","Sjøørret":"Sea trout","Kamskjell":"Great scallop","Harpeskjell":"Iceland scallop","Blåskjell":"Blue mussel","O-skjell":"Flat oyster","Hestskjell":"Horse mussel","Kuskjell":"Ocean quahog","Hjerteskjell":"Cockle","Sandskjell":"Softshell clam","Kongsnegl":"Whelk","Strandsnegl":"Periwinkle","Kongekrabbe":"King crab","Taskekrabbe":"Brown crab","Strandkrabbe":"Shore crab","Pyntekrabbe":"Spider crab","Hummer":"Lobster","Sjøkreps":"Norway lobster","Kråkebolle":"Green sea urchin","Rød kråkebolle":"Edible sea urchin","Sjøpølse":"Sea cucumber","Sjøstjerne":"Starfish","Akkar":"Flying squid","Sukkertare":"Sugar kelp","Fingertare":"Oarweed","Stortare":"Tangle kelp","Butare":"Winged kelp","Søl":"Dulse","Krusflik":"Irish moss","Havsalat":"Sea lettuce","Blæretang":"Bladder wrack","Grisetang":"Knotted wrack","Sel":"Harbour seal","Havert":"Grey seal","Oter":"Otter","Nise":"Harbour porpoise","Spekkhogger":"Orca","Kolmule":"Blue whiting","Sanktpetersfisk":"John Dory","Klumpfisk":"Ocean sunfish","Brugde":"Basking shark","Håbrann":"Porbeagle","Vågehval":"Minke whale","Knølhval":"Humpback whale","Kvitnos":"White-beaked dolphin"};
 const SP_NO={};for(const k in SP_EN){SP_NO[SP_EN[k].toLowerCase()]=k;SP_NO[k.toLowerCase()]=k}
@@ -2638,7 +2642,7 @@ function iconOf(a){return (a.icon&&ICONS[a.icon]&&a.icon)||AREA_TYPES[a.kind]?.v
 function isPoint(g){return !!g&&/Point$/.test(g.type)}
 function patOf(a){return a.pattern||AREA_TYPES[a.kind]?.pat||"fylt"}
 function dashOf(a){return a.dash||AREA_TYPES[a.kind]?.dash||"heltrukket"}
-function rowToArea(r){return{id:r.id,name:r.name||"",kind:r.kind,value:r.value,notes:r.notes||"",geom:r.geom,siteId:r.site_id,_priv:r.private,createdBy:r.created_by,authorName:r.author_name||"",
+function rowToArea(r){return{id:r.id,name:r.name||"",kind:r.kind,value:r.value,notes:r.notes||"",geom:r.geom,siteId:r.site_id,_priv:r.private,createdBy:r.created_by,authorName:r.author_name||"",createdAt:r.created_at||null,
   color:r.color||null,icon:r.icon||null,pattern:r.pattern||null,dash:r.dash||null}}
 function areaErr(e){const m=errMsg(e);
   if(/areas_kind_check|check constraint/i.test(m))return "This type needs style.sql. Run it in Supabase.";
@@ -2646,7 +2650,7 @@ function areaErr(e){const m=errMsg(e);
 async function loadAreas(){
   const {data,error}=await cachedQ("areas",sb.from("areas").select("*"));
   if(error){S.areasErr=areaErr(error);if(S.view==="list")renderList();return}
-  S.areasErr=null;S.areas=data.map(rowToArea);renderAreas();
+  S.areasErr=null;S.areas=data.map(rowToArea);renderAreas();renderFeed();
   if(S.view==="list")renderList();
   else if(S.view==="area"){if(!S.areas.find(a=>a.id===S.selArea)){S.view="list";S.selArea=null;renderPanel()}else if(!S.editingArea)renderAreaBody()}
 }
@@ -4918,7 +4922,19 @@ function feedItems(){
   const cutoff=Date.now()-45*864e5;
   for(const r of S.reports){if(r.vis==null||r.note==="Fra dykkelogg")continue;const t=Date.parse(r.created_at);if(!(t>cutoff))continue;const s=getSite(r.site_id);if(!s)continue;
     items.push({kind:"vis",mine:r.author===S.user.id,ct:t,t,when:ago(r.created_at),site:s,who:r.author===S.user.id?"You":(r.author_name||"Someone"),verb:"reported visibility at",text:`${fnum(r.vis,1)} m${r.note?" · "+r.note:""}`})}
-  for(const s of S.sites)if(s.createdAt&&Date.parse(s.createdAt)>cutoff)items.push({kind:"site",mine:s.createdBy===S.user.id,ct:Date.parse(s.createdAt),t:Date.parse(s.createdAt),when:ago(s.createdAt),site:s,who:s.createdBy===S.user.id?"You":"",verb:s.createdBy===S.user.id?"added":"New dive site:",text:"",isNew:true});
+  /* v117: sites keep only the maker's id, so look the name up in their dives, areas and reports */
+  const uidName=id=>{if(!id)return "";for(const arr of [S.feedLogs||[],S.logs||[],S.areas||[],S.reports||[],S.catches||[]])for(const x of arr){if((x.author||x.createdBy)===id){const n=x.author_name||x.authorName;if(n)return n}}return ""};
+  for(const s of S.sites)if(s.createdAt&&Date.parse(s.createdAt)>cutoff){const me=s.createdBy===S.user.id;
+    items.push({kind:"site",mine:me,ct:Date.parse(s.createdAt),t:Date.parse(s.createdAt),when:ago(s.createdAt),site:s,who:me?"You":(uidName(s.createdBy)||"Someone"),verb:"added the dive site",text:"",isNew:true})}
+  /* v117: areas, lines and points drawn on the map */
+  for(const a of S.areas||[]){const t=Date.parse(a.createdAt||"");if(!(t>cutoff))continue;
+    const me=a.createdBy===S.user.id,ty=AREA_TYPES[a.kind],pt=isPoint(a.geom),ln=!!a.geom&&/LineString$/.test(a.geom.type),st=a.siteId&&getSite(a.siteId);
+    items.push({kind:"area",mine:me,ct:t,t,when:ago(a.createdAt),area:a,who:me?"You":(a.authorName||uidName(a.createdBy)||"Someone"),
+      verb:pt?"marked":ln?"drew a line:":"drew an area:",obj:a.name||areaLabel(a),
+      text:[ty?(a.name&&a.name.trim().toLowerCase()!==String(areaLabel(a)).toLowerCase()?ty.name+": "+areaLabel(a):ty.name):"",st?"at "+st.name:""].filter(Boolean).join(" · ")})}
+  /* v117: new members, once they have chosen a name */
+  for(const m of S.members||[]){const t=Date.parse(m.added_at||"");if(!(t>cutoff)||!m.name)continue;const me=!!S.me&&m.email===S.me.email;
+    items.push({kind:"member",mine:me,ct:t,t,when:ago(m.added_at),who:me?"You":m.name,verb:"joined the crew",text:""})}
   try{items.push(...fjFeedItems())}catch(e){}
   try{items.push(...mfFeedItems(cutoff))}catch(e){}
   return items.filter(it=>isFinite(it.t)).sort((a,b)=>b.t-a.t);
@@ -4938,7 +4954,7 @@ function diveWhen(l){
   return d.toLocaleDateString("en-GB",{day:"numeric",month:"short"});
 }
 /* activity lives behind the bell in the header (and in the map tools when the map is maximised): dives and logs first, "Alt" adds new sites and visibility reports */
-S.actOpen=false;S.actAll=false;S.actAnchor="hdr";S.actFresh=-1;S.actSeen=+(lsGet("dk-actseen")||0)||Date.now()-7*864e5;S.actSeenPrev=S.actSeen;
+S.actOpen=false;S.actAll=lsGet("dk-actall")!==false;S.actAnchor="hdr";S.actFresh=-1;S.actSeen=+(lsGet("dk-actseen")||0)||Date.now()-7*864e5;S.actSeenPrev=S.actSeen;
 function toggleAct(force){S.actOpen=force!=null?force:!S.actOpen;if(S.actOpen){S.actSeenPrev=S.actSeen;S.actSeen=Date.now();lsSet("dk-actseen",S.actSeen);loadVotes().then(()=>{syncMfDot();if(S.actOpen)renderFeed()}).catch(()=>{})}else S.feedMore=false;renderFeed()}
 document.addEventListener("click",e=>{if(!S.actOpen)return;if(e.target.closest("#actPop")||e.target.closest("#actBtn")||e.target.closest("#actBar"))return;toggleAct(false)});
 $("#actBtn").onclick=e=>{e.stopPropagation();S.actAnchor="hdr";toggleAct()};
@@ -4956,24 +4972,29 @@ function renderFeed(){
   for(const [b,c] of [[btn,$("#actCnt")],[$("#actBar"),$("#actCntBar")]]){if(!b)continue;
     if(c){c.hidden=!fresh;c.textContent=fresh>9?"9+":String(fresh)}
     b.classList.toggle("has",!!fresh);b.classList.toggle("on",S.actOpen);b.setAttribute("aria-expanded",String(S.actOpen));
-    b.title=fresh?`Latest activity: ${fresh} ${fresh===1?"new event":"new events"} since last time`:"Latest activity: dives, votes and new sites";
+    b.title=fresh?`Latest activity: ${fresh} ${fresh===1?"new event":"new events"} since last time`:"Latest activity in the crew";
     /* a short ring of the bell when something new has arrived */
     if(grew&&!S.actOpen){b.classList.remove("ring");void b.offsetWidth;b.classList.add("ring");setTimeout(()=>b.classList.remove("ring"),1600)}}
   if(!pop)return;pop.hidden=!S.actOpen;if(!S.actOpen){pop.innerHTML="";return}
   pop.onclick=e=>e.stopPropagation(); // clicks inside re-render the panel; don't let them count as "outside"
   const items=S.actAll?all:all.filter(it=>it.kind==="dive"||it.kind==="vote"||it.kind==="mfres"),N=S.feedMore?30:10,show=items.slice(0,N);
-  const row=it=>(it.kind==="vote"||it.kind==="mfres")?`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-mf="${esc(it.month)}">${it.photo?`<span class="thumb sm"><img src="${esc(photoURL(it.photo.photo_path))}" alt="" loading="lazy"></span>`:`<span class="aico avote"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg></span>`}
+  const row=it=>it.kind==="area"?`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-area="${esc(it.area.id)}"><span class="aico aarea" style="--ac:${esc(colorOf(it.area))}">${iconSVG(iconOf(it.area),18)}</span>
+    <span class="atx"><span><b>${esc(it.who)}</b> ${esc(it.verb)} <b>${esc(it.obj)}</b></span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`
+    :it.kind==="member"?`<div class="arow amember${!it.mine&&it.ct>S.actSeenPrev?" new":""}"><span class="aico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4.2 4.3-6.2 8-6.2s6.8 2 8 6.2"/></svg></span>
+    <span class="atx"><span><b>${esc(it.who)}</b> ${esc(it.verb)}</span></span><span class="small aago">${esc(it.when)}</span></div>`
+    :(it.kind==="vote"||it.kind==="mfres")?`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-mf="${esc(it.month)}">${it.photo?`<span class="thumb sm"><img src="${esc(photoURL(it.photo.photo_path))}" alt="" loading="lazy"></span>`:`<span class="aico avote"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-2 6h-4z"/><circle cx="12" cy="15" r="6"/><path d="M12 12.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="currentColor" stroke="none"/></svg></span>`}
     <span class="atx"><span>${it.who?`<b>${esc(it.who)}</b> `:""}${esc(it.verb)} <b>${esc(it.obj)}</b></span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`:it.kind==="game"?`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-game="${it.mode==="day"?"day":"fri"}"${it.lv?` data-lv="${esc(it.lv)}" data-nd="${it.nd}"`:""}><span class="aico agame"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7.6"/><path d="M12 1.2v3.4M12 19.4v3.4M1.2 12h3.4M19.4 12h3.4"/><path d="M8.1 12.1c1.8-2.6 6.2-2.9 8.7-.1-2.5 2.8-6.9 2.6-8.7.1z" fill="currentColor" stroke="none"/></svg></span>
     <span class="atx"><span><b>${esc(it.who)}</b> ${esc(it.verb)}</span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`:`<button class="arow${!it.mine&&it.ct>S.actSeenPrev?" new":""}" data-site="${esc(it.site.id)}">
     ${it.photo?`<span class="thumb sm"><img src="${esc(photoURL(it.photo.photo_path))}" alt="" loading="lazy"></span>`:`<span class="aico">${it.kind==="site"?flagSVG(false,16):it.kind==="vis"?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>':iconSVG("dykker",18)}</span>`}
     <span class="atx"><span><b>${esc(it.who)}</b>${it.who?" ":""}${esc(it.verb)} <b>${esc(it.site.name)}</b></span>${it.text?`<span class="small">${esc(it.text)}</span>`:""}</span><span class="small aago">${esc(it.when)}</span></button>`;
-  pop.innerHTML=`<div class="actph"><b>Latest activity</b><span class="chips"><button type="button" class="chip${S.actAll?"":" on"}" data-act="dive">Dives and votes</button><button type="button" class="chip${S.actAll?" on":""}" data-act="all">All</button></span><button type="button" class="actx" aria-label="Close">✕</button></div>
+  pop.innerHTML=`<div class="actph"><b>Latest activity</b><span class="chips"><button type="button" class="chip${S.actAll?" on":""}" data-act="all">All activity</button><button type="button" class="chip${S.actAll?"":" on"}" data-act="dive">Dives and votes</button></span><button type="button" class="actx" aria-label="Close">✕</button></div>
     <div class="feed act">${S.feedMore&&items.length>10?`<div class="bd-topbar"><span>Showing ${show.length}</span><button type="button" class="linkbtn" data-feedmore>Show fewer</button></div>`:""}${show.map(row).join("")||`<p class="emptytxt">${S.actAll?"No activity":"No dives or votes"} in the last 45 days.</p>`}
     ${items.length>10?`<button class="linkbtn" id="feedMore" data-feedmore>${S.feedMore?"Show fewer":`Show more (${Math.min(items.length,30)-10})`}</button>`:""}</div>`;
   pop.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>{toggleAct(false);openSite(b.dataset.site);focusSite(b.dataset.site)});
   pop.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>{toggleAct(false);openGame();FJB.mode=b.dataset.game;if(b.dataset.lv){FJB.lv=b.dataset.lv;FJB.nd=+b.dataset.nd}FJ.boardFrom="title";FJ.st="board";fjOverlay();fjBoardLoad().then(()=>{if(FJ.st==="board")fjOverlay()})});
   pop.querySelectorAll("[data-mf]").forEach(b=>b.onclick=()=>{toggleAct(false);openMf();S.mf.month=b.dataset.mf;renderMf()});
-  pop.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{S.actAll=b.dataset.act==="all";S.feedMore=false;renderFeed()});
+  pop.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{S.actAll=b.dataset.act==="all";lsSet("dk-actall",S.actAll);S.feedMore=false;renderFeed()});
+  pop.querySelectorAll("[data-area]").forEach(b=>b.onclick=()=>{toggleAct(false);const a=S.areas.find(x=>x.id===b.dataset.area);if(!a)return;openArea(a.id);zoomToArea(a)});
   pop.querySelector(".actx").onclick=()=>toggleAct(false);
   const fm=$("#feedMore");pop.querySelectorAll("[data-feedmore]").forEach(b=>b.onclick=()=>{S.feedMore=!S.feedMore;renderFeed();if(!S.feedMore)pop.scrollTop=0});
   placeActPop();
@@ -6185,7 +6206,7 @@ $("#dexHdr").onclick=()=>openDex();$("#dexBar").onclick=()=>openDex();
     hdrH();for(const o of openPages())if(o!==this)closePage(o);if(!this.open)this.show();sync();bandLater()};
   for(const d of document.querySelectorAll("dialog.dexdlg"))d.addEventListener("close",()=>setTimeout(sync,0));
   document.addEventListener("click",e=>{const t=e.target;if(!t||!t.closest)return;
-    if(t.closest("#actPop [data-site],#actPop [data-game]")){for(const d of openPages())closePage(d);return}
+    if(t.closest("#actPop [data-site],#actPop [data-game],#actPop [data-area]")){for(const d of openPages())closePage(d);return}
     const b=t.closest("button");if(!b)return;const m=PAGES.find(p=>p[0]===b.id);if(!m)return;const d=document.getElementById(m[1]);
     if(d&&d.open){e.stopImmediatePropagation();e.preventDefault();closePage(d)}},true);
   document.addEventListener("keydown",e=>{if(e.key!=="Escape"||S.actOpen)return;let modal=null;try{modal=document.querySelector("dialog:modal")}catch(_){}if(modal)return;
